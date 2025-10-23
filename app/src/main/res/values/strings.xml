@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name" translatable="false">Alvima Truck</string>
+    <string name="googlemapkey">AIzaSyCIH1XjSwGg8TyoC0xvREyu5nMO4Qof4vk</string>
+    <string name="api_fail_message">Alvima Truck server is currently unavailable; please try again later.</string>
+    <string name="please_check_your_internet_connection">Please check your internet connection</string>
+    <string name="backgroud_location_message">Alvima Truck App collects the driver\'s location data when the app is always in use or in the background, so the admin receives the driver\'s live location.</string>
+
+</resources>

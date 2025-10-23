@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/orange">
+
+    <!--    &lt;!&ndash; Background image (truck and city) &ndash;&gt;-->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/bgImage"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="400dp"-->
+    <!--        android:scaleType="centerCrop"-->
+    <!--        android:src="@drawable/login_bg" />-->
+
+    <!-- White curved container -->
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_white_top_curve"
+        android:orientation="vertical"
+        android:padding="@dimen/_21sdp">
+
+        <!-- Sales Person -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:fontFamily="@font/sanssemibold"
+            android:text="Select Sales Person"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_11ssp" />
+
+
+        <TextView
+            android:id="@+id/tvPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_44sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:background="@drawable/input_bg"
+            android:drawableStart="@drawable/ic_person"
+            android:drawablePadding="@dimen/_7sdp"
+            android:fontFamily="@font/sansregular"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:text="ABCD"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="@dimen/_12ssp" />
+
+        <!-- Password -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:fontFamily="@font/sanssemibold"
+            android:text="Password"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_11ssp" />
+
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_44sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:background="@drawable/input_bg"
+            android:drawableStart="@drawable/ic_lock"
+            android:drawableEnd="@drawable/eye"
+            android:drawablePadding="@dimen/_7sdp"
+            android:fontFamily="@font/sansregular"
+            android:hint="At least 8 character"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="@dimen/_12ssp" />
+
+        <ProgressBar
+            android:id="@+id/passwordStrengthBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/password_strength_progress"
+            android:visibility="gone" />
+
+        <!-- Remember Me & Forgot Password -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_11sdp">
+
+            <CheckBox
+                android:id="@+id/chkRemember"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/white"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Remember me"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11ssp" />
+
+            <TextView
+                android:id="@+id/txtForgot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Forgot Password?"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11ssp" />
+        </RelativeLayout>
+
+        <!-- Submit button -->
+
+        <TextView
+            android:id="@+id/tvSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_21sdp"
+            android:layout_marginBottom="@dimen/_30sdp"
+            android:background="@drawable/rounded_button_orange"
+            android:fontFamily="@font/sanssemibold"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="Submit"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp" />
+    </LinearLayout>
+
+</RelativeLayout>

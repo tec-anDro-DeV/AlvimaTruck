@@ -1,0 +1,50 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.AlvimaTruck" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryVariant">@color/orange</item>
+        <item name="colorOnPrimary">@color/orange</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/gray</item>
+        <item name="colorSecondaryVariant">@color/orange</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:targetApi="35">true</item>
+
+        <!-- Customize your theme here. -->
+
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:datePickerDialogTheme">@style/style_date_picker_dialog</item>
+        <item name="android:forceDarkAllowed">false</item>
+        <item name="android:textViewStyle">@style/BaseTextStyle</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <!-- Customize the dialog appearance here -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <!-- Add any other customization as needed -->
+    </style>
+
+    <style name="style_date_picker_dialog" parent="@android:style/Theme.DeviceDefault.Light">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:datePickerStyle">@style/style_datepicker</item>
+        <item name="android:colorAccent">@color/lightblue</item>
+    </style>
+
+    <style name="style_datepicker" parent="android:Widget.Material.Light.DatePicker">
+        <item name="android:datePickerMode">calendar</item>
+        <item name="android:headerBackground">@color/lightblue</item>
+    </style>
+
+    <style name="BaseTextStyle">
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+
+</resources>
