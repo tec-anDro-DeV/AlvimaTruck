@@ -25,6 +25,7 @@ import com.alvimatruck.adapter.DemoSingleItemSelectionAdapter
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityDemoBinding
 import com.alvimatruck.service.LocationService
+import androidx.core.graphics.drawable.toDrawable
 
 
 class DemoActivity : BaseActivity<ActivityDemoBinding>() {
@@ -182,10 +183,10 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>() {
         var productSeletionsAdapter = DemoSingleItemSelectionAdapter(this, filterList!!, "")
 
         val lLayout = LinearLayoutManager(this)
-        val rvBinList = alertLayout.findViewById<RecyclerView>(R.id.rvBinList)
+        val rvBinList = alertLayout.findViewById<RecyclerView>(R.id.rvItemList)
         rvBinList.layoutManager = lLayout
         rvBinList.adapter = productSeletionsAdapter
-        val etBinSearch = alertLayout.findViewById<EditText>(R.id.etBinSearch)
+        val etBinSearch = alertLayout.findViewById<EditText>(R.id.etItemSearch)
 
 
 
@@ -221,7 +222,7 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>() {
         alert.setCancelable(false)
 
         val dialog = alert.create()
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window!!.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
         dialog.show()
 
         tv_cancel.setOnClickListener { view: View? -> dialog.dismiss() }

@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sansregular"
-            android:includeFontPadding="false"
+
             android:padding="@dimen/_3sdp"
             android:textColor="@color/black"
             android:textSize="@dimen/_8ssp"

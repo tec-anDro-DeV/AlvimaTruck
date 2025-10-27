@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:padding="@dimen/_8sdp"
             android:src="@drawable/outline_circle"
             android:visibility="visible" />
@@ -25,17 +25,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="@font/sansbold"
-            android:includeFontPadding="false"
+            android:fontFamily="@font/sansregular"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp"
             tools:text="Test 123" />
 
-
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"
-        android:background="@color/gray" />
+
 </LinearLayout>

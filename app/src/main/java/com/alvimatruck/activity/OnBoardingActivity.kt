@@ -57,10 +57,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
             R.layout.onboarding_slide,
             R.layout.onboarding_slide,
             R.layout.onboarding_slide,
-            R.layout.onboarding_slide,
-            R.layout.onboarding_slide,
             R.layout.onboarding_slide
-
         )
 
         sliderAdapter = SliderAdapter(this, layouts)

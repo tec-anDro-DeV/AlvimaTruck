@@ -2,14 +2,23 @@ package com.alvimatruck.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.view.MotionEvent
+import android.view.View
+import android.view.WindowManager
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
+import com.alvimatruck.adapter.DemoSingleItemSelectionAdapter
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityLoginBinding
 import com.alvimatruck.utils.SharedHelper
@@ -18,6 +27,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
+    var itemList: ArrayList<String>? = ArrayList()
+    var filterList: ArrayList<String>? = ArrayList()
     override fun inflateBinding(): ActivityLoginBinding {
         return ActivityLoginBinding.inflate(layoutInflater)
     }
@@ -25,32 +36,92 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        itemList!!.add("Item 1")
+        itemList!!.add("Item 2")
+        itemList!!.add("Item 3")
+        itemList!!.add("Item 4")
+        itemList!!.add("Item 5")
+        itemList!!.add("Item 6")
+        itemList!!.add("Item 7")
+        itemList!!.add("Item 8")
+        itemList!!.add("Item 9")
+
+
+//        binding.etPassword.setOnTouchListener { v, event ->
+//            if ((event.action == MotionEvent.ACTION_UP) && event.rawX >= (binding.etPassword.right - binding.etPassword.compoundDrawables[2].bounds.width())) {
+//                if (binding.etPassword.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+//                    binding.etPassword.inputType =
+//                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+//                    binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
+//                        0,
+//                        0,
+//                        R.drawable.eye,
+//                        0
+//                    )
+//                } else {
+//                    binding.etPassword.inputType =
+//                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+//                    binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
+//                        0,
+//                        0,
+//                        R.drawable.hide_eye,
+//                        0
+//                    )
+//                }
+//                binding.etPassword.setSelection(binding.etPassword.text.length)
+//                true
+//            } else false
+//        }
 
         binding.etPassword.setOnTouchListener { v, event ->
-            if ((event.action == MotionEvent.ACTION_UP) && event.rawX >= (binding.etPassword.right - binding.etPassword.compoundDrawables[2].bounds.width())) {
-                if (binding.etPassword.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
-                    binding.etPassword.inputType =
-                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                    binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
-                        0,
-                        0,
-                        R.drawable.eye,
-                        0
-                    )
-                } else {
-                    binding.etPassword.inputType =
-                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                    binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
-                        0,
-                        0,
-                        R.drawable.hide_eye,
-                        0
-                    )
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = binding.etPassword.compoundDrawables[2]
+                if (drawableEnd != null && event.rawX >= (binding.etPassword.right - drawableEnd.bounds.width() - binding.etPassword.paddingEnd)) {
+
+                    // ✅ Prevent EditText from gaining focus / opening keyboard
+                    binding.etPassword.clearFocus()
+                    v.performClick() // for accessibility
+                    v.cancelLongPress()
+                    v.isFocusable = false
+                    v.isFocusableInTouchMode = false
+
+                    // 🔄 Toggle show/hide password
+                    val isVisible = binding.etPassword.inputType ==
+                            (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
+
+                    if (isVisible) {
+                        binding.etPassword.inputType =
+                            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                        binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
+                            0,
+                            0,
+                            R.drawable.eye,
+                            0
+                        )
+                    } else {
+                        binding.etPassword.inputType =
+                            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                        binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
+                            0,
+                            0,
+                            R.drawable.hide_eye,
+                            0
+                        )
+                    }
+
+                    // keep cursor at end
+                    binding.etPassword.setSelection(binding.etPassword.text.length)
+
+                    // restore focusable state
+                    v.isFocusable = true
+                    v.isFocusableInTouchMode = true
+
+                    return@setOnTouchListener true
                 }
-                binding.etPassword.setSelection(binding.etPassword.text.length)
-                true
-            } else false
+            }
+            false
         }
+
 
 //        binding.etPassword.addTextChangedListener(object : TextWatcher {
 //            override fun afterTextChanged(s: Editable?) {
@@ -97,6 +168,83 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
 
         checkForFingerprintLogin()
+
+        binding.tvPersonName.setOnClickListener {
+            filterList!!.clear()
+            dialogSingleSelection(itemList!!, "Select Sales Person", "Search Sales Person")
+        }
+
+        binding.tvVanNumber.setOnClickListener {
+            filterList!!.clear()
+            dialogSingleSelection(itemList!!, "Select Van No.", "Search Van No.")
+        }
+
+    }
+
+
+    private fun dialogSingleSelection(list: ArrayList<String>, title: String, hint: String) {
+        filterList!!.addAll(list)
+        val inflater = layoutInflater
+        val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
+
+        var productSeletionsAdapter = DemoSingleItemSelectionAdapter(this, filterList!!, "")
+
+        val lLayout = LinearLayoutManager(this)
+        val rvBinList = alertLayout.findViewById<RecyclerView>(R.id.rvItemList)
+        rvBinList.layoutManager = lLayout
+        rvBinList.adapter = productSeletionsAdapter
+        val etBinSearch = alertLayout.findViewById<EditText>(R.id.etItemSearch)
+        etBinSearch.hint = hint
+
+
+
+        etBinSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                //filter(s.toString())
+                filterList!!.clear()
+                if (s.toString().trim().isEmpty()) {
+                    filterList!!.addAll(list)
+                } else {
+                    for (item in list) {
+                        if (item.lowercase().contains(s.toString().lowercase())) {
+                            filterList!!.add(item)
+                        }
+                    }
+                }
+                productSeletionsAdapter = DemoSingleItemSelectionAdapter(
+                    this@LoginActivity, filterList!!, ""
+                )
+                rvBinList.adapter = productSeletionsAdapter
+            }
+        })
+
+        val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel2)
+        val tvConfirm = alertLayout.findViewById<TextView>(R.id.tvConfirm2)
+        val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
+        tvTitle.text = title
+
+
+        val alert = AlertDialog.Builder(this)
+        alert.setView(alertLayout)
+        alert.setCancelable(false)
+
+        val dialog = alert.create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+        dialog.show()
+
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { view: View? ->
+            // binding.tvChangeBin.text = productSeletionsAdapter.selected
+            dialog.dismiss()
+        }
     }
 
 //    private fun updatePasswordStrength(password: String, bar: ProgressBar) {

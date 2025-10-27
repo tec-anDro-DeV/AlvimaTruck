@@ -54,7 +54,7 @@
         android:id="@+id/skipBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="@dimen/_14sdp"
         android:layout_marginTop="@dimen/_7sdp"
         android:layout_marginEnd="@dimen/_10sdp"

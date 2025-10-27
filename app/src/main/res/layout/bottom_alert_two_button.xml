@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:fontFamily="@font/sansbold"
-            android:includeFontPadding="false"
+
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp"
             tools:text="Alert!" />
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         android:fontFamily="@font/sansregular"
-        android:includeFontPadding="false"
+
         android:textColor="@color/black"
         android:textSize="@dimen/_12ssp"
         tools:text="12345678" />
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:background="@color/gray"
             android:fontFamily="@font/sansbold"
-            android:includeFontPadding="false"
+
             android:paddingHorizontal="@dimen/_24sdp"
             android:paddingVertical="@dimen/_8sdp"
             android:text="No"
@@ -66,7 +66,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:background="@color/orange"
             android:fontFamily="@font/sansbold"
-            android:includeFontPadding="false"
+
             android:paddingHorizontal="@dimen/_24sdp"
             android:paddingVertical="@dimen/_8sdp"
             android:text="Yes"

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/orange">
 
     <!--    &lt;!&ndash; Background image (truck and city) &ndash;&gt;-->
-    <!--    <ImageView-->
-    <!--        android:id="@+id/bgImage"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="400dp"-->
-    <!--        android:scaleType="centerCrop"-->
-    <!--        android:src="@drawable/login_bg" />-->
+    <ImageView
+        android:id="@+id/bgImage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_360sdp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/loginbg" />
 
     <!-- White curved container -->
     <LinearLayout
@@ -26,9 +27,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_14sdp"
             android:fontFamily="@font/sanssemibold"
-            android:text="Select Van"
+            android:text="Select Van No."
             android:textColor="@color/white"
             android:textSize="@dimen/_11ssp" />
 
@@ -39,8 +39,6 @@
             android:layout_height="@dimen/_44sdp"
             android:layout_marginTop="@dimen/_7sdp"
             android:background="@drawable/input_bg"
-            android:drawableStart="@drawable/ic_van"
-            android:drawableEnd="@drawable/ic_rounded_arrow_drop_down"
             android:drawablePadding="@dimen/_7sdp"
             android:fontFamily="@font/sansregular"
             android:gravity="center_vertical"
@@ -48,7 +46,9 @@
             android:text="GJ01AB1111"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="@dimen/_12ssp" />
+            android:textSize="@dimen/_12ssp"
+            app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down"
+            app:drawableStartCompat="@drawable/ic_van" />
 
         <!-- Sales Person -->
         <TextView
@@ -67,8 +67,6 @@
             android:layout_height="@dimen/_44sdp"
             android:layout_marginTop="@dimen/_7sdp"
             android:background="@drawable/input_bg"
-            android:drawableStart="@drawable/ic_person"
-            android:drawableEnd="@drawable/ic_rounded_arrow_drop_down"
             android:drawablePadding="@dimen/_7sdp"
             android:fontFamily="@font/sansregular"
             android:gravity="center_vertical"
@@ -76,7 +74,9 @@
             android:text="ABCD"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="@dimen/_12ssp" />
+            android:textSize="@dimen/_12ssp"
+            app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down"
+            app:drawableStartCompat="@drawable/ic_person" />
 
         <!-- Password -->
 

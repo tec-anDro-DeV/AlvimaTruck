@@ -4,8 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#F58618</color>
     <color name="lightblue">#3B77D7</color>
-    <color name="gray">#BDBDBD</color>
-    <color name="divider">#B3B3B3</color>
+    <color name="gray">#DEDEDE</color>
 
 
 </resources>
