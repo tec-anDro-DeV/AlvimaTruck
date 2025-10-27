@@ -1,5 +1,6 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -67,30 +68,13 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
         dataSet()
 
 
-//        binding.skipBtn.setOnClickListener {
-//            // Launch login screen
-//            // navigateToLogin()
-//        }
-        binding.startBtn.setOnClickListener {
-            // Launch login screen
-            // navigateToLogin()
+        binding.skipBtn.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
-//        binding.nextBtn.setOnClickListener {
-//            /**
-//             *  Checking for last page, if last page
-//             *  login screen will be launched
-//             * */
-//            val current = getCurrentScreen(+1)
-//            if (current < layouts.size) {
-//                /**
-//                 * Move to next screen
-//                 * */
-//                binding.slider.currentItem = current
-//            } else {
-//                // Launch login screen
-//                // navigateToLogin()
-//            }
-//        }
+        binding.startBtn.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+
     }
 
     private fun dataSet() {
@@ -127,8 +111,6 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
             dots!![i] = null // no need to track TextViews now
         }
     }
-
-    private fun getCurrentScreen(i: Int): Int = binding.slider.currentItem.plus(i)
 
 
 }

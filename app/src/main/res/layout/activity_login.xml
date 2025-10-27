@@ -28,6 +28,34 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_14sdp"
             android:fontFamily="@font/sanssemibold"
+            android:text="Select Van"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_11ssp" />
+
+
+        <TextView
+            android:id="@+id/tvVanNumber"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_44sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:background="@drawable/input_bg"
+            android:drawableStart="@drawable/ic_van"
+            android:drawableEnd="@drawable/ic_rounded_arrow_drop_down"
+            android:drawablePadding="@dimen/_7sdp"
+            android:fontFamily="@font/sansregular"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:text="GJ01AB1111"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="@dimen/_12ssp" />
+
+        <!-- Sales Person -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:fontFamily="@font/sanssemibold"
             android:text="Select Sales Person"
             android:textColor="@color/white"
             android:textSize="@dimen/_11ssp" />
@@ -40,6 +68,7 @@
             android:layout_marginTop="@dimen/_7sdp"
             android:background="@drawable/input_bg"
             android:drawableStart="@drawable/ic_person"
+            android:drawableEnd="@drawable/ic_rounded_arrow_drop_down"
             android:drawablePadding="@dimen/_7sdp"
             android:fontFamily="@font/sansregular"
             android:gravity="center_vertical"

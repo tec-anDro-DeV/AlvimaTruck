@@ -50,18 +50,18 @@
         android:textSize="@dimen/_14ssp"
         android:visibility="gone" />
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/skipBtn"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="@dimen/_14sdp"-->
-    <!--        android:layout_marginBottom="@dimen/_7sdp"-->
-    <!--        android:background="@android:color/transparent"-->
-    <!--        android:text="Skip"-->
-    <!--        android:textColor="@color/black"-->
-    <!--        android:textSize="@dimen/_14ssp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/dotsLayout" />-->
+    <TextView
+        android:id="@+id/skipBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/sanssemibold"
+        android:text="Skip"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14ssp" />
 
 </RelativeLayout>

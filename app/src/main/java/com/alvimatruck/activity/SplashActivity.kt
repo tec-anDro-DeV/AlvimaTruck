@@ -25,7 +25,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         val isLogin = SharedHelper.getBoolKey(this, Constants.IS_LOGIN)
         Handler(Looper.getMainLooper()).postDelayed({
             if (!isLogin) {
-                startActivity(Intent(this, LoginActivity::class.java))
+                startActivity(Intent(this, OnBoardingActivity::class.java))
                 finish()
             } else {
                 startActivity(Intent(this, DemoActivity::class.java))
@@ -33,7 +33,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             }
 
         }, 3000)
-        
+
         binding.tvAppVersion.text = "Version " + BuildConfig.VERSION_NAME
 
 
