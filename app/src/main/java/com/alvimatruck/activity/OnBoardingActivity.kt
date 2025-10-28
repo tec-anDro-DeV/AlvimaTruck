@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.WindowCompat
 import androidx.viewpager.widget.ViewPager
 import com.alvimatruck.R
 import com.alvimatruck.adapter.SliderAdapter
@@ -16,7 +17,21 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
 
     private lateinit var sliderAdapter: SliderAdapter
     private var dots: Array<TextView?>? = null
-    private lateinit var layouts: Array<Int>
+    private lateinit var bgImages: Array<Int>
+
+    private var titles = arrayOf(
+        "Quality You Deliver",
+        "Smart & Fast Logistics",
+        "Accurate Orders, Happy Customers",
+        "Track. Deliver. Succeed"
+    )
+
+    private var descriptions = arrayOf(
+        "Carry Alvima’s high-standard pasta and flour safely to every customer with trust and pride.",
+        "Enjoy seamless deliveries powered by fully automated systems and ERP-integrated routing.",
+        "Ensure every delivery meets expectations, boosting customer satisfaction across Ethiopia.",
+        "Real-time status updates help you complete your route efficiently and grow with Alvima."
+    )
 
 
     override fun inflateBinding(): ActivityOnBoardingBinding {
@@ -27,8 +42,8 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
 
         override fun onPageSelected(position: Int) {
             addBottomDots(position)
-
-            if (position == layouts.size.minus(1)) {
+            binding.rlOnboarding.setBackgroundResource(bgImages[position])
+            if (position == titles.size.minus(1)) {
                 //   binding.nextBtn.visibility = View.GONE
                 binding.dotsLayout.visibility = View.GONE
                 binding.startBtn.visibility = View.VISIBLE
@@ -53,14 +68,18 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        layouts = arrayOf(
-            R.layout.onboarding_slide,
-            R.layout.onboarding_slide,
-            R.layout.onboarding_slide,
-            R.layout.onboarding_slide
+        val controller = WindowCompat.getInsetsController(window, window.decorView)
+        controller?.isAppearanceLightStatusBars = false // false = white icons
+
+
+        bgImages = arrayOf(
+            R.drawable.onboarding1,
+            R.drawable.onboarding2,
+            R.drawable.onboarding3,
+            R.drawable.onboarding4
         )
 
-        sliderAdapter = SliderAdapter(this, layouts)
+        sliderAdapter = SliderAdapter(this, titles, descriptions)
 
         dataSet()
 
@@ -87,7 +106,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
     }
 
     private fun addBottomDots(currentPage: Int) {
-        dots = arrayOfNulls(layouts.size)
+        dots = arrayOfNulls(titles.size)
         binding.dotsLayout.removeAllViews()
 
         for (i in dots!!.indices) {

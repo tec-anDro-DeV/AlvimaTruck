@@ -46,33 +46,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         itemList!!.add("Item 8")
         itemList!!.add("Item 9")
 
-
-//        binding.etPassword.setOnTouchListener { v, event ->
-//            if ((event.action == MotionEvent.ACTION_UP) && event.rawX >= (binding.etPassword.right - binding.etPassword.compoundDrawables[2].bounds.width())) {
-//                if (binding.etPassword.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
-//                    binding.etPassword.inputType =
-//                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-//                    binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
-//                        0,
-//                        0,
-//                        R.drawable.eye,
-//                        0
-//                    )
-//                } else {
-//                    binding.etPassword.inputType =
-//                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-//                    binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
-//                        0,
-//                        0,
-//                        R.drawable.hide_eye,
-//                        0
-//                    )
-//                }
-//                binding.etPassword.setSelection(binding.etPassword.text.length)
-//                true
-//            } else false
-//        }
-
         binding.etPassword.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val drawableEnd = binding.etPassword.compoundDrawables[2]
@@ -246,26 +219,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             dialog.dismiss()
         }
     }
-
-//    private fun updatePasswordStrength(password: String, bar: ProgressBar) {
-//        var strength = 0
-//
-//        if (password.length >= 8) strength += 20
-//        if (password.matches(Regex(".*[A-Z].*"))) strength += 20
-//        if (password.matches(Regex(".*[a-z].*"))) strength += 20
-//        if (password.matches(Regex(".*[0-9].*"))) strength += 20
-//        if (password.matches(Regex(".*[!@#\$%^&*(),.?\":{}|<>].*"))) strength += 20
-//
-//        bar.progress = strength
-//
-//        val color = when {
-//            strength <= 40 -> Color.RED
-//            strength <= 60 -> Color.parseColor("#FFA500") // orange
-//            strength <= 80 -> Color.YELLOW
-//            else -> Color.GREEN
-//        }
-//        bar.progressDrawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
-//    }
 
 
     private fun checkForFingerprintLogin() {

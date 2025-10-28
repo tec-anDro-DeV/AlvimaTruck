@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlOnboarding"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/white">
+    android:background="@drawable/onboarding1">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/slider"
@@ -61,7 +62,7 @@
         android:background="@android:color/transparent"
         android:fontFamily="@font/sanssemibold"
         android:text="Skip"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="@dimen/_14ssp" />
 
 </RelativeLayout>

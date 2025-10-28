@@ -5,27 +5,15 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.provider.Settings
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
-import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.alvimatruck.R
-import com.alvimatruck.adapter.DemoSingleItemSelectionAdapter
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityDemoBinding
 import com.alvimatruck.service.LocationService
-import androidx.core.graphics.drawable.toDrawable
 
 
 class DemoActivity : BaseActivity<ActivityDemoBinding>() {
@@ -37,8 +25,6 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>() {
 
     private var locationService: LocationService? = null
     private var isBound = false  // ✅ Add this flag
-    var itemList: ArrayList<String>? = ArrayList()
-    var filterList: ArrayList<String>? = ArrayList()
 
 
     private val connection = object : ServiceConnection {
@@ -67,22 +53,15 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>() {
             try {
                 unbindService(connection)
                 isBound = false
-            } catch (_: Exception) {
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        itemList!!.add("Item 1")
-        itemList!!.add("Item 2")
-        itemList!!.add("Item 3")
-        itemList!!.add("Item 4")
-        itemList!!.add("Item 5")
-        itemList!!.add("Item 6")
-
-
         checkAllPermissionsAndStartService()
 
         binding.btnOpenMap.setOnClickListener {
@@ -98,15 +77,6 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>() {
 
         binding.btnOpenImagePicker.setOnClickListener {
             startActivity(Intent(this, ImagePickerActivity::class.java))
-        }
-
-        binding.btnOpenOnBoarding.setOnClickListener {
-            startActivity(Intent(this, OnBoardingActivity::class.java))
-        }
-
-        binding.btnOpenSearchDialogList.setOnClickListener {
-            filterList!!.clear()
-            dialog_single_selection(itemList!!)
         }
     }
 
@@ -173,64 +143,5 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>() {
                 startActivity(intent)
             }.setNegativeButton("Cancel", null).show()
     }
-
-
-    private fun dialog_single_selection(list: ArrayList<String>) {
-        filterList!!.addAll(list)
-        val inflater = layoutInflater
-        val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
-
-        var productSeletionsAdapter = DemoSingleItemSelectionAdapter(this, filterList!!, "")
-
-        val lLayout = LinearLayoutManager(this)
-        val rvBinList = alertLayout.findViewById<RecyclerView>(R.id.rvItemList)
-        rvBinList.layoutManager = lLayout
-        rvBinList.adapter = productSeletionsAdapter
-        val etBinSearch = alertLayout.findViewById<EditText>(R.id.etItemSearch)
-
-
-
-        etBinSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                //filter(s.toString())
-                filterList!!.clear()
-                if (s.toString().trim().isEmpty()) {
-                    filterList!!.addAll(list)
-                } else {
-                    for (item in list) {
-                        if (item.lowercase().contains(s.toString().lowercase())) {
-                            filterList!!.add(item)
-                        }
-                    }
-                }
-                productSeletionsAdapter = DemoSingleItemSelectionAdapter(
-                    this@DemoActivity, filterList!!, ""
-                )
-                rvBinList.adapter = productSeletionsAdapter
-            }
-        })
-
-        val tv_cancel = alertLayout.findViewById<TextView>(R.id.tvCancel2)
-        val tv_confirm = alertLayout.findViewById<TextView>(R.id.tvConfirm2)
-
-        val alert = AlertDialog.Builder(this)
-        alert.setView(alertLayout)
-        alert.setCancelable(false)
-
-        val dialog = alert.create()
-        dialog.window!!.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
-        dialog.show()
-
-        tv_cancel.setOnClickListener { view: View? -> dialog.dismiss() }
-        tv_confirm.setOnClickListener { view: View? ->
-            // binding.tvChangeBin.text = productSeletionsAdapter.selected
-            dialog.dismiss()
-        }
-    }
-
 }
 

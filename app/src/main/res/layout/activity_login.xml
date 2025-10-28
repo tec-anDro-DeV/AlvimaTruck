@@ -155,7 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_21sdp"
-            android:layout_marginBottom="@dimen/_30sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
             android:background="@drawable/rounded_button_orange"
             android:fontFamily="@font/sanssemibold"
             android:gravity="center"

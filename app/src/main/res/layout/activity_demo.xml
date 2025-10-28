@@ -60,23 +60,6 @@
             android:text="Open Image Picker"
             android:textColor="@color/black" />
 
-        <Button
-            android:id="@+id/btnOpenOnBoarding"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="Open OnBoarding Slider"
-            android:textColor="@color/black" />
-
-
-        <Button
-            android:id="@+id/btnOpenSearchDialogList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="Open Search Dialog List"
-            android:textColor="@color/black" />
-
 
 
     </LinearLayout>
