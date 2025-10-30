@@ -7,6 +7,7 @@ import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.viewbinding.ViewBinding
 
@@ -27,6 +28,9 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
 
         // Apply edge-to-edge padding automatically
         applyEdgeToEdgePadding()
+
+        val controller = WindowCompat.getInsetsController(window, window.decorView)
+        controller.isAppearanceLightStatusBars = false // false = white icons
 
         onBackPressedDispatcher.addCallback(this) {
             handleBackPressed(this)

@@ -283,7 +283,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             askEnableFingerprint(username, password)
         } else {
             // Either fingerprint already enabled or hardware not supported → go to DemoActivity
-            startActivity(Intent(this@LoginActivity, DemoActivity::class.java))
+            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
             finishAffinity()
         }
 
@@ -378,7 +378,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             btnYes!!.text = "Yes"
             btnNo.setOnClickListener {
                 alertDialog.dismiss()
-                startActivity(Intent(this@LoginActivity, DemoActivity::class.java))
+                startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                 finishAffinity()
             }
             btnYes.setOnClickListener {
@@ -386,7 +386,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 SharedHelper.putKey(this, "username", username)
                 SharedHelper.putKey(this, "password", password)
                 SharedHelper.putKey(this, "fingerprint_enabled", true)
-                startActivity(Intent(this@LoginActivity, DemoActivity::class.java))
+                startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                 finishAffinity()
             }
             alertDialog.show()

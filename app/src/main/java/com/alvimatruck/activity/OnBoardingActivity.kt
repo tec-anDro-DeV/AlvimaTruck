@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.WindowCompat
 import androidx.viewpager.widget.ViewPager
 import com.alvimatruck.R
 import com.alvimatruck.adapter.SliderAdapter
@@ -68,8 +67,6 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val controller = WindowCompat.getInsetsController(window, window.decorView)
-        controller?.isAppearanceLightStatusBars = false // false = white icons
 
 
         bgImages = arrayOf(

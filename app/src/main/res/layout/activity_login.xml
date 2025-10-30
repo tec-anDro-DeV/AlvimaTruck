@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orange">
+    android:background="@drawable/loginpg">
 
-    <!--    &lt;!&ndash; Background image (truck and city) &ndash;&gt;-->
-    <ImageView
-        android:id="@+id/bgImage"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_360sdp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/loginbg" />
+    <!--    &lt;!&ndash;    &lt;!&ndash; Background image (truck and city) &ndash;&gt;&ndash;&gt;-->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/bgImage"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="@dimen/_360sdp"-->
+    <!--        android:scaleType="centerCrop"-->
+    <!--        android:src="@drawable/loginbg" />-->
 
     <!-- White curved container -->
     <LinearLayout
