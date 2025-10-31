@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/orange">
@@ -82,6 +83,156 @@
         android:orientation="vertical"
         android:padding="@dimen/_21sdp">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/box1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/ic_box"
+                android:orientation="vertical"
+                android:padding="@dimen/_14sdp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/box2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sansregular"
+                        android:text="Today’s"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_11ssp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sansbold"
+                        android:text=" Sales"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_11ssp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tvTodaySales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="$1560.00"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_21ssp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/box2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:background="@drawable/ic_box"
+                android:orientation="vertical"
+                android:padding="@dimen/_14sdp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toEndOf="@id/box1"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sansregular"
+                        android:text="Today’s"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_11ssp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sansbold"
+                        android:text=" Visit"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_11ssp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tvTodayVisit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="45"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_21ssp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp">
+
+            <LinearLayout
+                android:id="@+id/box3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/ic_box2"
+                android:orientation="vertical"
+                android:padding="@dimen/_14sdp"
+                app:layout_constraintDimensionRatio="2.1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sansregular"
+                        android:text="Today’s"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_11ssp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sansbold"
+                        android:text=" Payment"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_11ssp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tvTodayPayment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="$165451.00"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_21ssp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

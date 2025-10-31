@@ -37,6 +37,19 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        loadCredentials()
+
+        // Set a listener to clear credentials if the user unchecks the box
+        binding.chkRemember.setOnCheckedChangeListener { _, isChecked ->
+            if (!isChecked) {
+                // If user unchecks "Remember me", clear the saved credentials
+                SharedHelper.putKey(this, Constants.Username, "")
+                SharedHelper.putKey(this, Constants.Password, "")
+                SharedHelper.putKey(this, Constants.VanNo, "")
+                SharedHelper.putKey(this, Constants.RememberMe, false)
+            }
+        }
+
         itemList!!.add("Item 1")
         itemList!!.add("Item 2")
         itemList!!.add("Item 3")
@@ -159,6 +172,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     }
 
+    private fun loadCredentials() {
+        val rememberMe = SharedHelper.getBoolKey(this, Constants.RememberMe)
+        binding.chkRemember.isChecked = rememberMe
+        if (rememberMe) {
+            binding.tvPersonName.text = SharedHelper.getKey(this, Constants.Username)
+            binding.etPassword.setText(SharedHelper.getKey(this, Constants.Password))
+            binding.tvVanNumber.text = SharedHelper.getKey(this, Constants.VanNo)
+        }
+    }
+
 
     private fun dialogSingleSelection(list: ArrayList<String>, title: String, hint: String) {
         filterList!!.addAll(list)
@@ -234,7 +257,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         val savedUsername = SharedHelper.getKey(this, Constants.Username)
         val savedPassword = SharedHelper.getKey(this, Constants.Password)
         val savedVanNumber = SharedHelper.getKey(this, Constants.VanNo)
-        val fingerprintEnabled = SharedHelper.getBoolKey(this, "fingerprint_enabled")
+        val fingerprintEnabled = SharedHelper.getBoolKey(this, Constants.FingerPrintEnabled)
 
 
         if (fingerprintEnabled && canAuthenticate == BiometricManager.BIOMETRIC_SUCCESS) {
@@ -279,10 +302,17 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
 
     fun login(username: String, password: String, vannumber: String) {
+        if (binding.chkRemember.isChecked) {
+            SharedHelper.putKey(this, Constants.Username, username)
+            SharedHelper.putKey(this, Constants.Password, password)
+            SharedHelper.putKey(this, Constants.VanNo, vannumber)
+            SharedHelper.putKey(this, Constants.RememberMe, true)
+        }
+
         val biometricManager = BiometricManager.from(this)
         val canAuthenticate =
             biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
-        val fingerprintEnabled = SharedHelper.getBoolKey(this, "fingerprint_enabled")
+        val fingerprintEnabled = SharedHelper.getBoolKey(this, Constants.FingerPrintEnabled)
 
         if (!fingerprintEnabled && canAuthenticate == BiometricManager.BIOMETRIC_SUCCESS) {
             // First-time login and hardware supports fingerprint → ask user
@@ -392,7 +422,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 SharedHelper.putKey(this, Constants.Username, username)
                 SharedHelper.putKey(this, Constants.Password, password)
                 SharedHelper.putKey(this, Constants.VanNo, vannumber)
-                SharedHelper.putKey(this, "fingerprint_enabled", true)
+                SharedHelper.putKey(this, Constants.FingerPrintEnabled, true)
                 startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                 finishAffinity()
             }

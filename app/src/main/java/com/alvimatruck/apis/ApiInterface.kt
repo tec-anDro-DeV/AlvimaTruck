@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 interface ApiInterface {
 
-    @POST(Constants.SIGN_IN)
+    @POST(Constants.API_SignIn)
     fun login(@Body loginRequest: LoginRequest): Call<JsonObject>
 
 
