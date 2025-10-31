@@ -21,6 +21,7 @@ import com.alvimatruck.R
 import com.alvimatruck.adapter.DemoSingleItemSelectionAdapter
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityLoginBinding
+import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -126,7 +127,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 //                            this@LoginActivity, DemoActivity::class.java
 //                        )
 //                    )
-                    login(binding.tvPersonName.text.toString(), binding.etPassword.text.toString())
+                    login(
+                        binding.tvPersonName.text.toString(),
+                        binding.etPassword.text.toString(),
+                        binding.tvVanNumber.text.toString()
+                    )
                 } else {
                     Toast.makeText(
                         this,
@@ -226,17 +231,18 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         val canAuthenticate =
             biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
 
-        val savedUsername = SharedHelper.getKey(this, "username")
-        val savedPassword = SharedHelper.getKey(this, "password")
+        val savedUsername = SharedHelper.getKey(this, Constants.Username)
+        val savedPassword = SharedHelper.getKey(this, Constants.Password)
+        val savedVanNumber = SharedHelper.getKey(this, Constants.VanNo)
         val fingerprintEnabled = SharedHelper.getBoolKey(this, "fingerprint_enabled")
 
 
         if (fingerprintEnabled && canAuthenticate == BiometricManager.BIOMETRIC_SUCCESS) {
-            showFingerprintPrompt(savedUsername, savedPassword)
+            showFingerprintPrompt(savedUsername, savedPassword, savedVanNumber)
         }
     }
 
-    private fun showFingerprintPrompt(username: String, password: String) {
+    private fun showFingerprintPrompt(username: String, password: String, vannumber: String) {
         val executor = ContextCompat.getMainExecutor(this)
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle("Fingerprint Authentication")
@@ -249,7 +255,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
-                    login(username, password)
+                    login(username, password, vannumber)
                 }
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
@@ -272,7 +278,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     }
 
 
-    fun login(username: String, password: String) {
+    fun login(username: String, password: String, vannumber: String) {
         val biometricManager = BiometricManager.from(this)
         val canAuthenticate =
             biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
@@ -280,7 +286,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
         if (!fingerprintEnabled && canAuthenticate == BiometricManager.BIOMETRIC_SUCCESS) {
             // First-time login and hardware supports fingerprint → ask user
-            askEnableFingerprint(username, password)
+            askEnableFingerprint(username, password, vannumber)
         } else {
             // Either fingerprint already enabled or hardware not supported → go to DemoActivity
             startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
@@ -356,7 +362,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 //        })
     }
 
-    private fun askEnableFingerprint(username: String, password: String) {
+    private fun askEnableFingerprint(username: String, password: String, vannumber: String) {
         val biometricManager = BiometricManager.from(this)
         if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
             == BiometricManager.BIOMETRIC_SUCCESS
@@ -383,8 +389,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             }
             btnYes.setOnClickListener {
                 alertDialog.dismiss()
-                SharedHelper.putKey(this, "username", username)
-                SharedHelper.putKey(this, "password", password)
+                SharedHelper.putKey(this, Constants.Username, username)
+                SharedHelper.putKey(this, Constants.Password, password)
+                SharedHelper.putKey(this, Constants.VanNo, vannumber)
                 SharedHelper.putKey(this, "fingerprint_enabled", true)
                 startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                 finishAffinity()

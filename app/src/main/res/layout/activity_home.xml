@@ -49,8 +49,8 @@
             android:background="@drawable/transparent_circle">
 
             <ImageView
-                android:layout_width="@dimen/_21sdp"
-                android:layout_height="@dimen/_21sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:src="@drawable/ic_sync" />
         </RelativeLayout>
@@ -64,8 +64,8 @@
             android:background="@drawable/transparent_circle">
 
             <ImageView
-                android:layout_width="@dimen/_21sdp"
-                android:layout_height="@dimen/_21sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:src="@drawable/ic_logout" />
         </RelativeLayout>
@@ -84,4 +84,67 @@
 
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/_21sdp"
+        android:background="@drawable/round_home_bottom"
+        android:orientation="horizontal"
+        android:padding="@dimen/_7sdp">
+
+        <RelativeLayout
+            android:id="@+id/rlBottomHome"
+            android:layout_width="@dimen/_49sdp"
+            android:layout_height="@dimen/_49sdp"
+            android:background="@drawable/orange_circle">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_home" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlBottomTrip"
+            android:layout_width="@dimen/_49sdp"
+            android:layout_height="@dimen/_49sdp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_trip" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlBottomVanStock"
+            android:layout_width="@dimen/_49sdp"
+            android:layout_height="@dimen/_49sdp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_van_stock" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlBottomProfile"
+            android:layout_width="@dimen/_49sdp"
+            android:layout_height="@dimen/_49sdp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_profile" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
 </RelativeLayout>

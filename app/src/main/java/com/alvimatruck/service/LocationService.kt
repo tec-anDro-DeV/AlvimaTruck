@@ -74,7 +74,7 @@ class LocationService : Service() {
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Location Service Active")
             .setContentText("Tracking your location in background")
-            .setSmallIcon(R.drawable.app_logo)
+            .setSmallIcon(R.drawable.logo)
             .setOngoing(true)
             .build()
 
