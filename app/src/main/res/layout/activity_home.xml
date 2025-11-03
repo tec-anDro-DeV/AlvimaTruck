@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/orange">
 
     <!--    &lt;!&ndash;    &lt;!&ndash; Background image (truck and city) &ndash;&gt;&ndash;&gt;-->
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvUsername"
             android:fontFamily="@font/sansbold"
-            android:text="30 Oct, 2025"
+            tools:text="30 Oct, 2025"
             android:textColor="@color/white"
             android:textSize="@dimen/_19ssp" />
 
@@ -83,25 +83,119 @@
         android:orientation="vertical"
         android:padding="@dimen/_21sdp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_118sdp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_sale_route"
+                android:padding="@dimen/_14sdp">
+
+                <TextView
+                    android:id="@+id/tvSalesRoute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="Sales Route"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16ssp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_118sdp"
+                android:layout_marginStart="@dimen/_13sdp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_customer"
+                android:padding="@dimen/_14sdp">
+
+                <TextView
+                    android:id="@+id/tvCustomer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="Customer"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16ssp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_13sdp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_118sdp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_vehicale_breakdown"
+                android:padding="@dimen/_14sdp">
+
+                <TextView
+                    android:id="@+id/tvVehicleBreakdown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="Vehicle Breakdown"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16ssp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_118sdp"
+                android:layout_marginStart="@dimen/_13sdp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_report"
+                android:padding="@dimen/_14sdp">
+
+                <TextView
+                    android:id="@+id/tvReportModules"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="Report Modules"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16ssp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_13sdp"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/box1"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="@dimen/_84sdp"
+                android:layout_weight="1"
                 android:background="@drawable/ic_box"
                 android:orientation="vertical"
-                android:padding="@dimen/_14sdp"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toStartOf="@id/box2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:paddingHorizontal="@dimen/_3sdp"
+                android:paddingVertical="@dimen/_7sdp">
+
+                <TextView
+                    android:id="@+id/tvTodaySales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="$1560"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16ssp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -121,35 +215,33 @@
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
 
-
-                <TextView
-                    android:id="@+id/tvTodaySales"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="$1560.00"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_21ssp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/box2"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_height="@dimen/_84sdp"
+                android:layout_marginStart="@dimen/_6sdp"
+                android:layout_weight="1"
                 android:background="@drawable/ic_box"
                 android:orientation="vertical"
-                android:padding="@dimen/_14sdp"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@id/box1"
-                app:layout_constraintTop_toTopOf="parent">
+                android:paddingHorizontal="@dimen/_3sdp"
+                android:paddingVertical="@dimen/_7sdp">
+
+
+                <TextView
+                    android:id="@+id/tvTodayVisit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="45"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16ssp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -168,40 +260,33 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/tvTodayVisit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="45"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_21ssp" />
             </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp">
 
             <LinearLayout
                 android:id="@+id/box3"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/ic_box2"
+                android:layout_height="@dimen/_84sdp"
+                android:layout_marginStart="@dimen/_6sdp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_box"
                 android:orientation="vertical"
-                android:padding="@dimen/_14sdp"
-                app:layout_constraintDimensionRatio="2.1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:paddingHorizontal="@dimen/_3sdp"
+                android:paddingVertical="@dimen/_7sdp">
+
+
+                <TextView
+                    android:id="@+id/tvTodayPayment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="$165451"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16ssp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -215,24 +300,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/sansbold"
+                        android:maxLines="1"
                         android:text=" Payment"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/tvTodayPayment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="$165451.00"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_21ssp" />
             </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
 
     </LinearLayout>
 
@@ -285,7 +362,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/rlBottomProfile"
+            android:id="@+id/rlBottomOpreation"
             android:layout_width="@dimen/_49sdp"
             android:layout_height="@dimen/_49sdp">
 
@@ -293,7 +370,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_profile" />
+                android:src="@drawable/ic_opreation" />
         </RelativeLayout>
     </LinearLayout>
 

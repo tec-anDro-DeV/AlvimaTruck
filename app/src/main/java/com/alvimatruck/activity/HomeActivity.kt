@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityHomeBinding
+import com.alvimatruck.utils.Utils
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     override fun inflateBinding(): ActivityHomeBinding {
@@ -13,19 +14,21 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding.tvDate.text = Utils.getFullDate(System.currentTimeMillis())
+
 
         binding.rlBottomHome.setOnClickListener {
             binding.rlBottomHome.setBackgroundResource(R.drawable.orange_circle)
             binding.rlBottomTrip.setBackgroundResource(0)
             binding.rlBottomVanStock.setBackgroundResource(0)
-            binding.rlBottomProfile.setBackgroundResource(0)
+            binding.rlBottomOpreation.setBackgroundResource(0)
         }
 
         binding.rlBottomTrip.setOnClickListener {
             binding.rlBottomHome.setBackgroundResource(0)
             binding.rlBottomTrip.setBackgroundResource(R.drawable.orange_circle)
             binding.rlBottomVanStock.setBackgroundResource(0)
-            binding.rlBottomProfile.setBackgroundResource(0)
+            binding.rlBottomOpreation.setBackgroundResource(0)
         }
 
 
@@ -33,15 +36,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             binding.rlBottomHome.setBackgroundResource(0)
             binding.rlBottomTrip.setBackgroundResource(0)
             binding.rlBottomVanStock.setBackgroundResource(R.drawable.orange_circle)
-            binding.rlBottomProfile.setBackgroundResource(0)
+            binding.rlBottomOpreation.setBackgroundResource(0)
         }
 
 
-        binding.rlBottomProfile.setOnClickListener {
+        binding.rlBottomOpreation.setOnClickListener {
             binding.rlBottomHome.setBackgroundResource(0)
             binding.rlBottomTrip.setBackgroundResource(0)
             binding.rlBottomVanStock.setBackgroundResource(0)
-            binding.rlBottomProfile.setBackgroundResource(R.drawable.orange_circle)
+            binding.rlBottomOpreation.setBackgroundResource(R.drawable.orange_circle)
         }
 
 

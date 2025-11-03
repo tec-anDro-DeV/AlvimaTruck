@@ -10,10 +10,10 @@ import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-
 import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 
 @SuppressLint("SimpleDateFormat")
@@ -35,7 +35,7 @@ object Utils {
 
     @SuppressLint("SimpleDateFormat")
     fun getFullDate(time: Long?): String {
-        return SimpleDateFormat("dd/MM/yyyy").format(Date(time!!))
+        return SimpleDateFormat("dd MMM, yyyy").format(Date(time!!))
     }
 
     @SuppressLint("SimpleDateFormat")
