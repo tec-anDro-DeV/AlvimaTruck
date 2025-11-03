@@ -1,5 +1,6 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
@@ -47,6 +48,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             binding.rlBottomOpreation.setBackgroundResource(R.drawable.orange_circle)
         }
 
+        binding.rlSalesRoute.setOnClickListener {
+            startActivity(Intent(this, TripRouteListActivity::class.java))
+        }
 
     }
 }
