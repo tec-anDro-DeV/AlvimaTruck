@@ -24,8 +24,6 @@ import com.alvimatruck.databinding.ActivityLoginBinding
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     var itemList: ArrayList<String>? = ArrayList()
@@ -38,7 +36,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         super.onCreate(savedInstanceState)
 
         loadCredentials()
-
         // Set a listener to clear credentials if the user unchecks the box
         binding.chkRemember.setOnCheckedChangeListener { _, isChecked ->
             if (!isChecked) {
@@ -397,28 +394,35 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
             == BiometricManager.BIOMETRIC_SUCCESS
         ) {
+            val inflater = layoutInflater
+            val alertLayout = inflater.inflate(R.layout.alert_two_button_dialog, null)
 
-            val alertDialog = BottomSheetDialog(this)
-            alertDialog.setCancelable(false)
-            alertDialog.setContentView(R.layout.bottom_alert_two_button)
-            alertDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
+            val tvMessage = alertLayout.findViewById<TextView>(R.id.tvMessage)
+            val btnNo = alertLayout.findViewById<TextView>(R.id.btnNo)
+            val btnYes = alertLayout.findViewById<TextView>(R.id.btnYes)
 
-            (alertDialog.findViewById<TextView>(R.id.tvTitle))!!.text =
-                "Enable Fingerprint Login?"
+            // Set content
+            tvTitle.text = "Enable Fingerprint Login?"
+            tvMessage.text = "Would you like to use your fingerprint for future logins?"
+            btnNo.text = "No"
+            btnYes.text = "Yes"
 
-            (alertDialog.findViewById<TextView>(R.id.tvMessage))!!.text =
-                "Would you like to use your fingerprint for future logins?"
-            val btnNo = alertDialog.findViewById<TextView>(R.id.btnNo)
-            btnNo!!.text = "No"
-            val btnYes = alertDialog.findViewById<TextView>(R.id.btnYes)
-            btnYes!!.text = "Yes"
+
+            val dialog = AlertDialog.Builder(this)
+                .setView(alertLayout)
+                .setCancelable(false)
+                .create()
+            dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+
             btnNo.setOnClickListener {
-                alertDialog.dismiss()
+                dialog.dismiss()
                 startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                 finishAffinity()
             }
             btnYes.setOnClickListener {
-                alertDialog.dismiss()
+                dialog.dismiss()
                 SharedHelper.putKey(this, Constants.Username, username)
                 SharedHelper.putKey(this, Constants.Password, password)
                 SharedHelper.putKey(this, Constants.VanNo, vannumber)
@@ -426,7 +430,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                 finishAffinity()
             }
-            alertDialog.show()
+            dialog.show()
+            val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+            dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
     }
 }

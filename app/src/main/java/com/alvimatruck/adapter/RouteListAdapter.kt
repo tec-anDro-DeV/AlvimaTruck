@@ -2,17 +2,20 @@ package com.alvimatruck.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.alvimatruck.R
+import com.alvimatruck.activity.RouteDetailActivity
 import com.alvimatruck.databinding.SingleRouteItemBinding
+import com.alvimatruck.utils.Constants
 
 
 class RouteListAdapter(
     private val mActivity: Activity,
     private val list: ArrayList<String>,
-) :
-    RecyclerView.Adapter<RouteListAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<RouteListAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = mActivity.layoutInflater
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = SingleRouteItemBinding.inflate(layoutInflater, parent, false)
@@ -22,6 +25,31 @@ class RouteListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         //   holder.binding.detail = list[position]
         //   holder.binding.tvData.text = "Demo List Item " + (position + 1)
+
+        when (position) {
+            0 -> {
+                holder.binding.tvStatus.text = "In Progress"
+                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
+            }
+
+            2 -> {
+                holder.binding.tvStatus.text = "Completed"
+                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
+            }
+
+            else -> {
+                holder.binding.tvStatus.text = "Pending"
+                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
+            }
+        }
+
+        holder.itemView.setOnClickListener {
+            mActivity.startActivity(
+                Intent(
+                    mActivity, RouteDetailActivity::class.java
+                ).putExtra(Constants.Status, holder.binding.tvStatus.text.toString())
+            )
+        }
 
     }
 
