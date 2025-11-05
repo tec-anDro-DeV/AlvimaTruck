@@ -5,15 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/loginpg">
 
-    <!--    &lt;!&ndash;    &lt;!&ndash; Background image (truck and city) &ndash;&gt;&ndash;&gt;-->
-    <!--    <ImageView-->
-    <!--        android:id="@+id/bgImage"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="@dimen/_360sdp"-->
-    <!--        android:scaleType="centerCrop"-->
-    <!--        android:src="@drawable/loginbg" />-->
 
-    <!-- White curved container -->
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -137,7 +129,7 @@
                 android:textSize="@dimen/_11ssp" />
 
             <TextView
-                android:id="@+id/txtForgot"
+                android:id="@+id/tvForgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -145,8 +137,7 @@
                 android:fontFamily="@font/sanssemibold"
                 android:text="Forgot Password?"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_11ssp"
-                android:visibility="gone" />
+                android:textSize="@dimen/_11ssp" />
         </RelativeLayout>
 
         <!-- Submit button -->

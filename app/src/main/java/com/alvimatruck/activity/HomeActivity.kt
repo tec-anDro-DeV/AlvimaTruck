@@ -59,7 +59,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         binding.rlLogout.setOnClickListener {
             val inflater = layoutInflater
-            val alertLayout = inflater.inflate(R.layout.alert_two_button_dialog, null)
+            val alertLayout = inflater.inflate(R.layout.dialog_alert_two_button, null)
 
             val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
             val tvMessage = alertLayout.findViewById<TextView>(R.id.tvMessage)

@@ -17,7 +17,7 @@ object ProgressDialog {
                 progressDialog!!.setCancelable(false)
                 progressDialog!!.setCanceledOnTouchOutside(false)
                 progressDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                progressDialog!!.setContentView(R.layout.view_progress_dialog)
+                progressDialog!!.setContentView(R.layout.dialog_view_progress)
                 progressDialog!!.show()
 
             }

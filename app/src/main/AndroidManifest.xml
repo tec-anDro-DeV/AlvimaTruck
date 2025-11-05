@@ -38,8 +38,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.OTPVerificationActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.FirstTimePasswordActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.RouteDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.TripRouteListActivity"
             android:exported="false"
@@ -93,6 +102,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.DemoListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ResetPasswordActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 

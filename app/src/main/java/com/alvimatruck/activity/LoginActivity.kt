@@ -107,19 +107,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         }
 
 
-//        binding.etPassword.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(s: Editable?) {
-//                val password = s.toString()
-//                binding.passwordStrengthBar.visibility =
-//                    if (password.isEmpty()) View.GONE else View.VISIBLE
-//                updatePasswordStrength(password, binding.passwordStrengthBar)
-//            }
-//
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-//        })
-
-
         binding.tvSignIn.setOnClickListener {
 
             if (binding.tvPersonName.text.trim().toString().isEmpty()) {
@@ -165,6 +152,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         binding.tvVanNumber.setOnClickListener {
             filterList!!.clear()
             dialogSingleSelection(itemList!!, "Select Van No.", "Search Van No.")
+        }
+
+        binding.tvForgotPassword.setOnClickListener {
+            startActivity(Intent(this, OTPVerificationActivity::class.java))
         }
 
     }
@@ -316,7 +307,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             askEnableFingerprint(username, password, vannumber)
         } else {
             // Either fingerprint already enabled or hardware not supported → go to DemoActivity
-            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+            startActivity(Intent(this@LoginActivity, FirstTimePasswordActivity::class.java))
             finishAffinity()
         }
 
@@ -395,7 +386,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             == BiometricManager.BIOMETRIC_SUCCESS
         ) {
             val inflater = layoutInflater
-            val alertLayout = inflater.inflate(R.layout.alert_two_button_dialog, null)
+            val alertLayout = inflater.inflate(R.layout.dialog_alert_two_button, null)
 
             val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
             val tvMessage = alertLayout.findViewById<TextView>(R.id.tvMessage)

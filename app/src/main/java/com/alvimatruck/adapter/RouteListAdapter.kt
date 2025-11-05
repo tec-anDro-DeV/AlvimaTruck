@@ -29,12 +29,12 @@ class RouteListAdapter(
         when (position) {
             0 -> {
                 holder.binding.tvStatus.text = "In Progress"
-                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
+                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
             }
 
             2 -> {
                 holder.binding.tvStatus.text = "Completed"
-                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
+                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
             }
 
             else -> {
