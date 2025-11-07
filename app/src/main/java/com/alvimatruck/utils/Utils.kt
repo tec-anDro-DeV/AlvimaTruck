@@ -10,6 +10,8 @@ import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import org.json.JSONObject
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -30,6 +32,17 @@ object Utils {
             stringArrayList.add("")
         }
         return stringArrayList
+    }
+
+    fun parseErrorMessage(response: Response<*>): String {
+        return try {
+            JSONObject(response.errorBody()?.string() ?: "").optString(
+                "message",
+                "Something went wrong"
+            )
+        } catch (_: Exception) {
+            "Something went wrong"
+        }
     }
 
 

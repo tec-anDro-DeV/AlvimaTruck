@@ -9,16 +9,17 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
+import com.alvimatruck.model.responses.VanDetail
 
-class DemoSingleItemSelectionAdapter(
+class VanItemSelectionAdapter(
     private val context: Context,
-    private val products: ArrayList<String>,
-    private val selectedBin: String
+    private val van: ArrayList<VanDetail>,
+    private val selectedVan: VanDetail?
 ) :
-    RecyclerView.Adapter<DemoSingleItemSelectionAdapter.SingleViewHolder?>() {
+    RecyclerView.Adapter<VanItemSelectionAdapter.SingleViewHolder?>() {
     // if checkedPosition = -1, there is no default selection
     // if checkedPosition = 0, 1st item is selected by default
-    private var checkedPosition = products.indexOf(selectedBin).takeIf { it >= 0 } ?: 0
+    private var checkedPosition = van.indexOf(selectedVan).takeIf { it >= 0 } ?: 0
 
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): SingleViewHolder {
@@ -27,18 +28,18 @@ class DemoSingleItemSelectionAdapter(
     }
 
     override fun onBindViewHolder(singleViewHolder: SingleViewHolder, position: Int) {
-        singleViewHolder.bind(products[position])
+        singleViewHolder.bind(van[position].vanNo)
     }
 
     override fun getItemCount(): Int {
-        return products.size
+        return van.size
     }
 
     inner class SingleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textView: TextView = itemView.findViewById(R.id.textView)
         private val imageView: ImageView = itemView.findViewById(R.id.imageView)
 
-        fun bind(product: String) {
+        fun bind(vanNo: String) {
             if (checkedPosition == -1) {
                 //     imageView.setVisibility(View.GONE);
                 imageView.setImageDrawable(
@@ -66,7 +67,7 @@ class DemoSingleItemSelectionAdapter(
                     )
                 }
             }
-            textView.text = product.toString()
+            textView.text = vanNo
 
             itemView.setOnClickListener { view: View? ->
                 //imageView.setVisibility(View.VISIBLE);
@@ -84,10 +85,10 @@ class DemoSingleItemSelectionAdapter(
         }
     }
 
-    val selected: String?
+    val selected: VanDetail?
         get() {
             if (checkedPosition != -1) {
-                return products[checkedPosition]
+                return van[checkedPosition]
             }
             return null
         }

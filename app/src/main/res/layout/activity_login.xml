@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/loginpg">
@@ -34,8 +35,8 @@
             android:drawablePadding="@dimen/_7sdp"
             android:fontFamily="@font/sansregular"
             android:gravity="center_vertical"
+            android:hint="---Select Van No.---"
             android:paddingHorizontal="@dimen/_10sdp"
-            android:text="GJ01AB1111"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="@dimen/_12ssp"
@@ -48,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_14sdp"
             android:fontFamily="@font/sanssemibold"
-            android:text="Select Sales Person"
+            android:text="Sales Person"
             android:textColor="@color/white"
             android:textSize="@dimen/_11ssp" />
 
@@ -62,13 +63,13 @@
             android:drawablePadding="@dimen/_7sdp"
             android:fontFamily="@font/sansregular"
             android:gravity="center_vertical"
+            android:hint="-"
             android:paddingHorizontal="@dimen/_10sdp"
-            android:text="ABCD"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="@dimen/_12ssp"
-            app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down"
-            app:drawableStartCompat="@drawable/ic_person" />
+            app:drawableStartCompat="@drawable/ic_person"
+            tools:text="ABCD" />
 
         <!-- Password -->
 

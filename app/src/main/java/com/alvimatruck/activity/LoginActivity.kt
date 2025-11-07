@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -18,16 +19,30 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
-import com.alvimatruck.adapter.DemoSingleItemSelectionAdapter
+import com.alvimatruck.adapter.VanItemSelectionAdapter
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityLoginBinding
+import com.alvimatruck.model.request.LoginRequest
+import com.alvimatruck.model.responses.UserDetail
+import com.alvimatruck.model.responses.VanDetail
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
-    var itemList: ArrayList<String>? = ArrayList()
-    var filterList: ArrayList<String>? = ArrayList()
+    var itemList: ArrayList<VanDetail>? = ArrayList()
+    var filterList: ArrayList<VanDetail>? = ArrayList()
+    var selectedVan: VanDetail? = null
+
+    var userDetail: UserDetail? = null
+
     override fun inflateBinding(): ActivityLoginBinding {
         return ActivityLoginBinding.inflate(layoutInflater)
     }
@@ -36,6 +51,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         super.onCreate(savedInstanceState)
 
         loadCredentials()
+        getVanList()
         // Set a listener to clear credentials if the user unchecks the box
         binding.chkRemember.setOnCheckedChangeListener { _, isChecked ->
             if (!isChecked) {
@@ -47,15 +63,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             }
         }
 
-        itemList!!.add("Item 1")
-        itemList!!.add("Item 2")
-        itemList!!.add("Item 3")
-        itemList!!.add("Item 4")
-        itemList!!.add("Item 5")
-        itemList!!.add("Item 6")
-        itemList!!.add("Item 7")
-        itemList!!.add("Item 8")
-        itemList!!.add("Item 9")
 
         binding.etPassword.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
@@ -119,11 +126,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 ).show()
             } else {
                 if (Utils.isOnline(this)) {
-//                    startActivity(
-//                        Intent(
-//                            this@LoginActivity, DemoActivity::class.java
-//                        )
-//                    )
                     login(
                         binding.tvPersonName.text.toString(),
                         binding.etPassword.text.toString(),
@@ -137,17 +139,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     ).show()
                 }
             }
-            // startActivity(Intent(this, HomeActivity::class.java))
         }
 
 
 
         checkForFingerprintLogin()
-
-        binding.tvPersonName.setOnClickListener {
-            filterList!!.clear()
-            dialogSingleSelection(itemList!!, "Select Sales Person", "Search Sales Person")
-        }
 
         binding.tvVanNumber.setOnClickListener {
             filterList!!.clear()
@@ -157,6 +153,50 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         binding.tvForgotPassword.setOnClickListener {
             startActivity(Intent(this, OTPVerificationActivity::class.java))
         }
+
+    }
+
+    private fun getVanList() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@LoginActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL
+            )!!.webservices.vanList().enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            itemList = response.body()!!.getAsJsonArray("data").map {
+                                Gson().fromJson(it, VanDetail::class.java)
+                            } as ArrayList<VanDetail>
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@LoginActivity, getString(R.string.api_fail_message), Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this,
+                getString(R.string.please_check_your_internet_connection),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
 
     }
 
@@ -171,17 +211,17 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     }
 
 
-    private fun dialogSingleSelection(list: ArrayList<String>, title: String, hint: String) {
+    private fun dialogSingleSelection(list: ArrayList<VanDetail>, title: String, hint: String) {
         filterList!!.addAll(list)
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
 
-        var productSeletionsAdapter = DemoSingleItemSelectionAdapter(this, filterList!!, "")
+        var vanItemSelectionAdapter = VanItemSelectionAdapter(this, filterList!!, selectedVan)
 
         val lLayout = LinearLayoutManager(this)
         val rvBinList = alertLayout.findViewById<RecyclerView>(R.id.rvItemList)
         rvBinList.layoutManager = lLayout
-        rvBinList.adapter = productSeletionsAdapter
+        rvBinList.adapter = vanItemSelectionAdapter
         val etBinSearch = alertLayout.findViewById<EditText>(R.id.etItemSearch)
         etBinSearch.hint = hint
 
@@ -199,15 +239,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     filterList!!.addAll(list)
                 } else {
                     for (item in list) {
-                        if (item.lowercase().contains(s.toString().lowercase())) {
+                        if (item.vanNo.lowercase().contains(s.toString().lowercase())) {
                             filterList!!.add(item)
                         }
                     }
                 }
-                productSeletionsAdapter = DemoSingleItemSelectionAdapter(
-                    this@LoginActivity, filterList!!, ""
-                )
-                rvBinList.adapter = productSeletionsAdapter
+                vanItemSelectionAdapter.notifyDataSetChanged()
             }
         })
 
@@ -231,7 +268,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
         tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
         tvConfirm.setOnClickListener { view: View? ->
-            // binding.tvChangeBin.text = productSeletionsAdapter.selected
+            selectedVan = vanItemSelectionAdapter.selected!!
+            binding.tvVanNumber.text = vanItemSelectionAdapter.selected!!.vanNo
+            binding.tvPersonName.text = vanItemSelectionAdapter.selected!!.salesPerson
             dialog.dismiss()
         }
     }
@@ -266,7 +305,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
-                    login(username, password, vannumber)
+                    if (Utils.isOnline(this@LoginActivity)) {
+                        login(username, password, vannumber)
+                    } else {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            getString(R.string.please_check_your_internet_connection),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
@@ -290,94 +337,94 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
 
     fun login(username: String, password: String, vannumber: String) {
-        if (binding.chkRemember.isChecked) {
-            SharedHelper.putKey(this, Constants.Username, username)
-            SharedHelper.putKey(this, Constants.Password, password)
-            SharedHelper.putKey(this, Constants.VanNo, vannumber)
-            SharedHelper.putKey(this, Constants.RememberMe, true)
-        }
 
-        val biometricManager = BiometricManager.from(this)
-        val canAuthenticate =
-            biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
-        val fingerprintEnabled = SharedHelper.getBoolKey(this, Constants.FingerPrintEnabled)
+        ProgressDialog.start(this@LoginActivity)
+        ApiClient.getRestClient(
+            Constants.BASE_URL
+        )!!.webservices.login(
+            LoginRequest(
+                password, username, vannumber
+            )
+        ).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                ProgressDialog.dismiss()
+                if (response.isSuccessful) {
+                    try {
+                        userDetail = Gson().fromJson(
+                            response.body()!!.getAsJsonObject("data"),
+                            UserDetail::class.java
+                        )
+                        SharedHelper.putKey(
+                            this@LoginActivity,
+                            Constants.UserDetail,
+                            Gson().toJson(userDetail)
+                        )
+                        Toast.makeText(
+                            this@LoginActivity,
+                            response.body()!!.get("message").toString().replace('"', ' ')
+                                .trim(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        if (binding.chkRemember.isChecked) {
+                            SharedHelper.putKey(this@LoginActivity, Constants.Username, username)
+                            SharedHelper.putKey(this@LoginActivity, Constants.Password, password)
+                            SharedHelper.putKey(this@LoginActivity, Constants.VanNo, vannumber)
+                            SharedHelper.putKey(this@LoginActivity, Constants.RememberMe, true)
+                        }
 
-        if (!fingerprintEnabled && canAuthenticate == BiometricManager.BIOMETRIC_SUCCESS) {
-            // First-time login and hardware supports fingerprint → ask user
-            askEnableFingerprint(username, password, vannumber)
-        } else {
-            // Either fingerprint already enabled or hardware not supported → go to DemoActivity
-            startActivity(Intent(this@LoginActivity, FirstTimePasswordActivity::class.java))
-            finishAffinity()
-        }
 
-//        ProgressDialog.start(this@LoginActivity)
-//        ApiClient.getRestClient(
-//            Constants.BASE_URL
-//        )!!.webservices.login(
-//            LoginRequest(
-//                password, username
-//            )
-//        ).enqueue(object : Callback<JsonObject> {
-//            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-//                ProgressDialog.dismiss()
-//                if (response.isSuccessful) {
-//                    try {
-//                        if (response.body()!!.get("status").toString().replace('"', ' ').trim()
-//                                .lowercase() != "true"
-//                        ) {
-//                            Toast.makeText(
-//                                this@LoginActivity,
-//                                response.body()!!.get("message").toString().replace('"', ' ')
-//                                    .trim(),
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                        } else {
-//                            Toast.makeText(
-//                                this@LoginActivity,
-//                                response.body()!!.get("message").toString().replace('"', ' ')
-//                                    .trim(),
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                            SharedHelper.putKey(
-//                                this@LoginActivity,
-//                                Constants.UserName,
-//                                response.body()!!.get("userID")
-//                                    .toString().replace('"', ' ').trim()
-//                            )
-//
-//                            SharedHelper.putKey(
-//                                this@LoginActivity,
-//                                Constants.UserEmail,
-//                                response.body()!!.get("eMail")
-//                                    .toString().replace('"', ' ').trim()
-//                            )
-//                            SharedHelper.putKey(
-//                                this@LoginActivity, Constants.IS_LOGIN, true
-//                            )
-//
-//                            startActivity(
-//                                Intent(
-//                                    this@LoginActivity, DemoActivity::class.java
-//                                )
-//                            )
-//                            finishAffinity()
-//                        }
-//
-//
-//                    } catch (e: Exception) {
-//                        e.printStackTrace()
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-//                Toast.makeText(
-//                    this@LoginActivity, getString(R.string.api_fail_message), Toast.LENGTH_SHORT
-//                ).show()
-//                ProgressDialog.dismiss()
-//            }
-//        })
+                        val biometricManager = BiometricManager.from(this@LoginActivity)
+                        val canAuthenticate =
+                            biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
+                        val fingerprintEnabled =
+                            SharedHelper.getBoolKey(
+                                this@LoginActivity,
+                                Constants.FingerPrintEnabled
+                            )
+
+                        if (!fingerprintEnabled && canAuthenticate == BiometricManager.BIOMETRIC_SUCCESS) {
+                            // First-time login and hardware supports fingerprint → ask user
+                            askEnableFingerprint(username, password, vannumber)
+                        } else {
+                            // Either fingerprint already enabled or hardware not supported → go to DemoActivity
+                            if (userDetail!!.isDefaultPassword) {
+                                startActivity(
+                                    Intent(
+                                        this@LoginActivity,
+                                        FirstTimePasswordActivity::class.java
+                                    )
+                                )
+                            } else {
+                                startActivity(
+                                    Intent(
+                                        this@LoginActivity,
+                                        HomeActivity::class.java
+                                    )
+                                )
+                            }
+
+                            finishAffinity()
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        Utils.parseErrorMessage(response),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                Toast.makeText(
+                    this@LoginActivity, getString(R.string.api_fail_message), Toast.LENGTH_SHORT
+                ).show()
+                ProgressDialog.dismiss()
+            }
+        })
     }
 
     private fun askEnableFingerprint(username: String, password: String, vannumber: String) {
@@ -409,16 +456,43 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
             btnNo.setOnClickListener {
                 dialog.dismiss()
-                startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                if (userDetail!!.isDefaultPassword) {
+                    startActivity(
+                        Intent(
+                            this@LoginActivity,
+                            FirstTimePasswordActivity::class.java
+                        )
+                    )
+                } else {
+                    startActivity(
+                        Intent(
+                            this@LoginActivity,
+                            HomeActivity::class.java
+                        )
+                    )
+                }
+
                 finishAffinity()
             }
             btnYes.setOnClickListener {
                 dialog.dismiss()
-                SharedHelper.putKey(this, Constants.Username, username)
-                SharedHelper.putKey(this, Constants.Password, password)
-                SharedHelper.putKey(this, Constants.VanNo, vannumber)
                 SharedHelper.putKey(this, Constants.FingerPrintEnabled, true)
-                startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                if (userDetail!!.isDefaultPassword) {
+                    startActivity(
+                        Intent(
+                            this@LoginActivity,
+                            FirstTimePasswordActivity::class.java
+                        )
+                    )
+                } else {
+                    startActivity(
+                        Intent(
+                            this@LoginActivity,
+                            HomeActivity::class.java
+                        )
+                    )
+                }
+
                 finishAffinity()
             }
             dialog.show()
