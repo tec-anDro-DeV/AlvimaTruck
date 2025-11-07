@@ -5,9 +5,10 @@ class Constants {
 
         // Base URL
         const val BASE_URL =
-            "https://api.businesscentral.dynamics.com/v2.0/Sandbox/api/tbs/htseafood/v2.0/companies(988d3bde-ac0d-ee11-8f6e-00224805c459)/" //Sandbox
+            "http://192.168.1.148:8696/api/" //Sandbox
 
         const val API_SignIn = "login"
+        const val API_VanList = "Dropdown/get-van-sales-dropdown"
 
 
         // Constants Key

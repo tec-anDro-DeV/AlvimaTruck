@@ -59,19 +59,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         binding.rlLogout.setOnClickListener {
             val inflater = layoutInflater
-            val alertLayout = inflater.inflate(R.layout.dialog_alert_two_button, null)
+            val alertLayout = inflater.inflate(R.layout.dialog_logout, null)
 
-            val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
-            val tvMessage = alertLayout.findViewById<TextView>(R.id.tvMessage)
             val btnNo = alertLayout.findViewById<TextView>(R.id.btnNo)
             val btnYes = alertLayout.findViewById<TextView>(R.id.btnYes)
-
-            // Set content
-            tvTitle.text = "Log out?"
-            tvMessage.text = "Are you sure you want to log out of your account?"
-            btnNo.text = "Cancel"
-            btnYes.text = "Logout"
-
 
             val dialog = AlertDialog.Builder(this)
                 .setView(alertLayout)
@@ -102,5 +93,14 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
 
+        binding.llProgressRoute.setOnClickListener {
+            startActivity(
+                Intent(this, RouteDetailActivity::class.java).putExtra(
+                    Constants.Status,
+                    binding.tvStatus.text.toString()
+                )
+            )
+
+        }
     }
 }

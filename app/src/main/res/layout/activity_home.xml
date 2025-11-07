@@ -165,6 +165,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llProgressRoute"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_13sdp"
@@ -194,7 +195,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/bg_status_green"
+                        android:background="@drawable/bg_status_orange"
                         android:fontFamily="@font/sanssemibold"
                         android:padding="@dimen/_5sdp"
                         android:text="In Progress"
@@ -222,30 +223,132 @@
                         android:layout_marginBottom="@dimen/_12sdp">
 
                         <ImageView
-                            android:id="@+id/icCustomers"
+                            android:id="@+id/icRegularCustomers"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
                             android:src="@drawable/ic_people" />
 
                         <TextView
-                            android:id="@+id/tvCustomersLabel"
+                            android:id="@+id/tvRegularCustomersLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_7sdp"
-                            android:layout_toEndOf="@id/icCustomers"
+                            android:layout_toEndOf="@id/icRegularCustomers"
                             android:fontFamily="@font/sansregular"
-                            android:text="Customers"
+                            android:text="Regular Customers"
                             android:textColor="#8c8c8c"
                             android:textSize="@dimen/_11ssp" />
 
                         <TextView
-                            android:id="@+id/tvCustomersValue"
+                            android:id="@+id/tvRegularCustomersValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/sanssemibold"
-                            android:text="34"
+                            android:text="12"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/_12ssp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_12sdp">
+
+                        <ImageView
+                            android:id="@+id/icVisitedCustomers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_people" />
+
+                        <TextView
+                            android:id="@+id/tvVisitedCustomersLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_toEndOf="@id/icVisitedCustomers"
+                            android:fontFamily="@font/sansregular"
+                            android:text="Visited Customers"
+                            android:textColor="#8c8c8c"
+                            android:textSize="@dimen/_11ssp" />
+
+                        <TextView
+                            android:id="@+id/tvVisitedCustomersValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/sanssemibold"
+                            android:text="9"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/_12ssp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_12sdp">
+
+                        <ImageView
+                            android:id="@+id/icSkippedCustomers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_people" />
+
+                        <TextView
+                            android:id="@+id/tvSkippedCustomersLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_toEndOf="@id/icSkippedCustomers"
+                            android:fontFamily="@font/sansregular"
+                            android:text="Skipped Customers"
+                            android:textColor="#8c8c8c"
+                            android:textSize="@dimen/_11ssp" />
+
+                        <TextView
+                            android:id="@+id/tvSkippedCustomersValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/sanssemibold"
+                            android:text="10"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/_12ssp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_12sdp">
+
+                        <ImageView
+                            android:id="@+id/icTotalCustomers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_people" />
+
+                        <TextView
+                            android:id="@+id/tvTotalCustomersLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_toEndOf="@id/icTotalCustomers"
+                            android:fontFamily="@font/sansregular"
+                            android:text="Total Customers Assigned"
+                            android:textColor="#8c8c8c"
+                            android:textSize="@dimen/_11ssp" />
+
+                        <TextView
+                            android:id="@+id/tvTotalCustomersValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/sanssemibold"
+                            android:text="31"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/_12ssp" />
                     </RelativeLayout>
