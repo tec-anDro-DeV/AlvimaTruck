@@ -9,6 +9,7 @@ class Constants {
 
         const val API_SignIn = "MobileLogin/mobilelogin"
         const val API_VanList = "Dropdown/get-van-sales-dropdown"
+        const val API_ResetPassword = "MobileLogin/reset-password"
 
 
         // Constants Key
@@ -16,6 +17,9 @@ class Constants {
         const val VanNo = "van_no"
         const val Username = "username"
         const val UserDetail = "userdetails"
+
+        const val Token = "token"
+
         const val Password = "password"
         const val RememberMe = "remember_me"
 

@@ -13,10 +13,10 @@
         android:layout_marginBottom="@dimen/_10sdp"
         android:fontFamily="@font/sansbold"
         android:gravity="center"
-        android:text="Lorem ipsum"
+        android:text="Accurate Orders, Happy Customers"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_28ssp" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/_24ssp" />
 
 
     <TextView
@@ -29,7 +29,7 @@
         android:fontFamily="@font/sansregular"
         android:gravity="center"
         android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="@dimen/_14ssp" />
 
 

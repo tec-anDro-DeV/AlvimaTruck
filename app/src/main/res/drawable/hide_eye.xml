@@ -8,19 +8,19 @@
     <path
         android:pathData="M3.88867 4L19.8887 20"
         android:strokeWidth="0.888889"
-        android:strokeColor="@color/white"
+        android:strokeColor="@color/black"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M10.6301 10.7441C10.2966 11.0775 10.1091 11.5297 10.1089 12.0013C10.1087 12.4729 10.2959 12.9252 10.6292 13.2588C10.9626 13.5924 11.4148 13.7799 11.8864 13.7801C12.358 13.7802 12.8103 13.593 13.1439 13.2597"
         android:strokeWidth="0.888889"
-        android:strokeColor="@color/white"
+        android:strokeColor="@color/black"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M9.54489 6.10233C10.307 5.8843 11.0962 5.77508 11.8889 5.77788C15.4444 5.77788 18.4071 7.85166 20.7778 12.0001C20.0862 13.2099 19.3449 14.2437 18.5529 15.1006M16.6507 16.7548C15.2009 17.7326 13.6151 18.2223 11.8889 18.2223C8.33333 18.2223 5.37067 16.1486 3 12.0001C4.21689 9.87122 5.58933 8.289 7.11733 7.25255"
         android:strokeWidth="0.888889"
-        android:strokeColor="@color/white"
+        android:strokeColor="@color/black"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
 </vector>

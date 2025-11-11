@@ -9,14 +9,14 @@
 
         android:pathData="M11.9998 12.0002C13.8408 12.0002 15.3332 10.5078 15.3332 8.66683C15.3332 6.82588 13.8408 5.3335 11.9998 5.3335C10.1589 5.3335 8.6665 6.82588 8.6665 8.66683C8.6665 10.5078 10.1589 12.0002 11.9998 12.0002Z"
         android:strokeWidth="1"
-        android:strokeColor="@color/white"
+        android:strokeColor="@color/black"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
 
         android:pathData="M17.7268 18.6667C17.7268 16.0867 15.1601 14 12.0001 14C8.8401 14 6.27344 16.0867 6.27344 18.6667"
         android:strokeWidth="1"
-        android:strokeColor="@color/white"
+        android:strokeColor="@color/black"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
 </vector>

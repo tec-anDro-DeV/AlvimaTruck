@@ -62,7 +62,7 @@
         android:background="@android:color/transparent"
         android:fontFamily="@font/sanssemibold"
         android:text="Skip"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="@dimen/_14ssp" />
 
 </RelativeLayout>

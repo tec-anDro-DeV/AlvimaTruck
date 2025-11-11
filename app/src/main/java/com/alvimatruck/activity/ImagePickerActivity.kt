@@ -1,21 +1,21 @@
 package com.alvimatruck.activity
 
-import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
-import androidx.activity.result.ActivityResultLauncher
-import com.alvimatruck.custom.BaseActivity
-import com.alvimatruck.databinding.ActivityImagePickerBinding
 import android.Manifest
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.alvimatruck.custom.BaseActivity
+import com.alvimatruck.databinding.ActivityImagePickerBinding
 import java.io.File
 
 
@@ -77,7 +77,11 @@ class ImagePickerActivity : BaseActivity<ActivityImagePickerBinding>() {
         val permissionsNeeded = mutableListOf<String>()
 
         // For Android 13+ (API 33+), no need for WRITE_EXTERNAL_STORAGE
-        if (ContextCompat.checkSelfPermission(this, CAMERA_PERMISSION) != PackageManager.PERMISSION_GRANTED)
+        if (ContextCompat.checkSelfPermission(
+                this,
+                CAMERA_PERMISSION
+            ) != PackageManager.PERMISSION_GRANTED
+        )
             permissionsNeeded.add(CAMERA_PERMISSION)
 
         if (permissionsNeeded.isNotEmpty()) {
@@ -103,11 +107,19 @@ class ImagePickerActivity : BaseActivity<ActivityImagePickerBinding>() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // Android 13+
-            if (ContextCompat.checkSelfPermission(this, READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED)
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    READ_MEDIA_IMAGES
+                ) != PackageManager.PERMISSION_GRANTED
+            )
                 permissionsNeeded.add(READ_MEDIA_IMAGES)
         } else {
             // Android 12 and below
-            if (ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            )
                 permissionsNeeded.add(READ_EXTERNAL_STORAGE)
         }
 

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orange">
+    android:background="@color/black">
 
     <RelativeLayout
         android:id="@+id/rlTop"
@@ -41,14 +41,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rlTop"
-        android:background="@drawable/bg_white_top_curve"
-        android:padding="@dimen/_21sdp">
+        android:background="@drawable/bg_white_top_curve">
 
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/_21sdp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/sansbold"
                     android:text="549SD0X87"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_14ssp" />
 
                 <TextView
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
                     android:text="Route Distance"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
                 <RelativeLayout
@@ -115,7 +115,7 @@
                         android:layout_toEndOf="@id/icDistance"
                         android:fontFamily="@font/sansregular"
                         android:text="Distance"
-                        android:textColor="#8c8c8c"
+                        android:textColor="@color/darkgray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -125,7 +125,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="40km"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -150,7 +150,7 @@
                         android:layout_toEndOf="@id/icDistance1"
                         android:fontFamily="@font/sansregular"
                         android:text="Van Start Kilometer"
-                        android:textColor="#8c8c8c"
+                        android:textColor="@color/darkgray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -160,7 +160,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="1101"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -184,7 +184,7 @@
                         android:layout_toEndOf="@id/icDistance2"
                         android:fontFamily="@font/sansregular"
                         android:text="Van End Kilometer"
-                        android:textColor="#8c8c8c"
+                        android:textColor="@color/darkgray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -194,7 +194,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="1200"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
             </LinearLayout>
@@ -213,7 +213,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
                     android:text="Total Customers Assigned"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
 
@@ -239,7 +239,7 @@
                         android:layout_toEndOf="@id/icRegularCustomers"
                         android:fontFamily="@font/sansregular"
                         android:text="Regular Customers"
-                        android:textColor="#8c8c8c"
+                        android:textColor="@color/darkgray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -249,7 +249,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="12"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -273,7 +273,7 @@
                         android:layout_toEndOf="@id/icVisitedCustomers"
                         android:fontFamily="@font/sansregular"
                         android:text="Visited Customers"
-                        android:textColor="#8c8c8c"
+                        android:textColor="@color/darkgray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -283,7 +283,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="9"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -307,7 +307,7 @@
                         android:layout_toEndOf="@id/icSkippedCustomers"
                         android:fontFamily="@font/sansregular"
                         android:text="Skipped Customers"
-                        android:textColor="#8c8c8c"
+                        android:textColor="@color/darkgray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -317,7 +317,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="10"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -340,7 +340,7 @@
                         android:layout_toEndOf="@id/icTotalCustomers"
                         android:fontFamily="@font/sansregular"
                         android:text="Total Customers Assigned"
-                        android:textColor="#8c8c8c"
+                        android:textColor="@color/darkgray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -350,7 +350,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="31"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -370,7 +370,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
                     android:text="Customer Visits"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
 
@@ -396,7 +396,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sanssemibold"
                         android:text="Customer Visited"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -416,7 +416,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansbold"
                         android:text="/34"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -431,7 +431,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sanssemibold"
                         android:text="Pending"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -460,7 +460,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
                     android:text="Total Sales Value"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
                 <RelativeLayout
@@ -482,7 +482,7 @@
                         android:layout_toEndOf="@id/icSaleValue"
                         android:fontFamily="@font/sansregular"
                         android:text="Total Sale"
-                        android:textColor="#8c8c8c"
+                        android:textColor="@color/darkgray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -492,7 +492,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="$97248.00"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
             </LinearLayout>

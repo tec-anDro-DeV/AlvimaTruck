@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orange">
+    android:background="@color/black">
 
     <RelativeLayout
         android:id="@+id/rlTop"
@@ -61,7 +61,7 @@
             android:fontFamily="@font/sansregular"
             android:text="Please enter the OTP sent to your registered mobile number to reset your password."
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/_12ssp" />
 
         <!-- OTP Input Boxes -->
@@ -123,7 +123,7 @@
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/sansregular"
                 android:text="Didn't you receive any code? "
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp"
                 android:visibility="visible" />
 

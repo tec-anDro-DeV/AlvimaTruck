@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/sanssemibold"
             android:text="Select Van No."
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
 
@@ -37,8 +37,8 @@
             android:gravity="center_vertical"
             android:hint="---Select Van No.---"
             android:paddingHorizontal="@dimen/_10sdp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
             android:textSize="@dimen/_12ssp"
             app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down"
             app:drawableStartCompat="@drawable/ic_van" />
@@ -50,7 +50,7 @@
             android:layout_marginTop="@dimen/_14sdp"
             android:fontFamily="@font/sanssemibold"
             android:text="Sales Person"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
 
@@ -65,8 +65,8 @@
             android:gravity="center_vertical"
             android:hint="-"
             android:paddingHorizontal="@dimen/_10sdp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
             android:textSize="@dimen/_12ssp"
             app:drawableStartCompat="@drawable/ic_person"
             tools:text="ABCD" />
@@ -79,7 +79,7 @@
             android:layout_marginTop="@dimen/_14sdp"
             android:fontFamily="@font/sanssemibold"
             android:text="Password"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
 
@@ -97,21 +97,11 @@
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:paddingHorizontal="@dimen/_10sdp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
             android:textSize="@dimen/_12ssp" />
 
-        <ProgressBar
-            android:id="@+id/passwordStrengthBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_7sdp"
-            android:layout_marginTop="@dimen/_7sdp"
-            android:indeterminate="false"
-            android:max="100"
-            android:progress="0"
-            android:progressDrawable="@drawable/password_strength_progress"
-            android:visibility="gone" />
+
 
         <!-- Remember Me & Forgot Password -->
         <RelativeLayout
@@ -123,10 +113,10 @@
                 android:id="@+id/chkRemember"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/white"
+                android:buttonTint="@color/black"
                 android:fontFamily="@font/sanssemibold"
                 android:text="Remember me"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
             <TextView
@@ -137,7 +127,7 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/sanssemibold"
                 android:text="Forgot Password?"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
         </RelativeLayout>
 

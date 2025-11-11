@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.MotionEvent
+import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -19,35 +20,38 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.etPassword.setOnTouchListener { v, event ->
+        binding.tvOldPassword.visibility = View.GONE
+        binding.etOldPassword.visibility = View.GONE
+
+        binding.etNewPassword.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = binding.etPassword.compoundDrawables[2]
-                if (drawableEnd != null && event.rawX >= (binding.etPassword.right - drawableEnd.bounds.width() - binding.etPassword.paddingEnd)) {
+                val drawableEnd = binding.etNewPassword.compoundDrawables[2]
+                if (drawableEnd != null && event.rawX >= (binding.etNewPassword.right - drawableEnd.bounds.width() - binding.etNewPassword.paddingEnd)) {
 
                     // ✅ Prevent EditText from gaining focus / opening keyboard
-                    binding.etPassword.clearFocus()
+                    binding.etNewPassword.clearFocus()
                     v.performClick() // for accessibility
                     v.cancelLongPress()
                     v.isFocusable = false
                     v.isFocusableInTouchMode = false
 
                     // 🔄 Toggle show/hide password
-                    val isVisible = binding.etPassword.inputType ==
+                    val isVisible = binding.etNewPassword.inputType ==
                             (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
 
                     if (isVisible) {
-                        binding.etPassword.inputType =
+                        binding.etNewPassword.inputType =
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                        binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
+                        binding.etNewPassword.setCompoundDrawablesWithIntrinsicBounds(
                             0,
                             0,
                             R.drawable.eye,
                             0
                         )
                     } else {
-                        binding.etPassword.inputType =
+                        binding.etNewPassword.inputType =
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                        binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
+                        binding.etNewPassword.setCompoundDrawablesWithIntrinsicBounds(
                             0,
                             0,
                             R.drawable.hide_eye,
@@ -56,7 +60,7 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
                     }
 
                     // keep cursor at end
-                    binding.etPassword.setSelection(binding.etPassword.text.length)
+                    binding.etNewPassword.setSelection(binding.etNewPassword.text.length)
 
                     // restore focusable state
                     v.isFocusable = true
@@ -105,7 +109,7 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
                     }
 
                     // keep cursor at end
-                    binding.etConfirmPassword.setSelection(binding.etPassword.text.length)
+                    binding.etConfirmPassword.setSelection(binding.etConfirmPassword.text.length)
 
                     // restore focusable state
                     v.isFocusable = true

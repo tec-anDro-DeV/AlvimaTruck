@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.WindowCompat
 import androidx.viewpager.widget.ViewPager
 import com.alvimatruck.R
 import com.alvimatruck.adapter.SliderAdapter
@@ -67,13 +68,14 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val controller = WindowCompat.getInsetsController(window, window.decorView)
+        controller.isAppearanceLightStatusBars = true
 
         bgImages = arrayOf(
             R.drawable.onboarding1,
             R.drawable.onboarding2,
             R.drawable.onboarding3,
-            R.drawable.onboarding4
+            R.drawable.onboarding3
         )
 
         sliderAdapter = SliderAdapter(this, titles, descriptions)

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orange">
+    android:background="@color/black">
 
     <RelativeLayout
         android:id="@+id/rlTop"
@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sanssemibold"
                         android:text="Sales Route"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_16ssp" />
                 </RelativeLayout>
 
@@ -117,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sanssemibold"
                         android:text="Customer"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_16ssp" />
                 </RelativeLayout>
             </LinearLayout>
@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sanssemibold"
                         android:text="Vehicle Breakdown"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_16ssp" />
                 </RelativeLayout>
 
@@ -159,7 +159,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sanssemibold"
                         android:text="Report Modules"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_16ssp" />
                 </RelativeLayout>
             </LinearLayout>
@@ -186,7 +186,7 @@
                         android:layout_centerVertical="true"
                         android:fontFamily="@font/sansbold"
                         android:text="549SD0X87"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_14ssp" />
 
                     <TextView
@@ -208,7 +208,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
                     android:layout_marginVertical="@dimen/_12sdp"
-                    android:background="#363636" />
+                    android:background="@color/gray" />
 
                 <!-- Bottom Info Row -->
                 <LinearLayout
@@ -237,7 +237,7 @@
                             android:layout_toEndOf="@id/icRegularCustomers"
                             android:fontFamily="@font/sansregular"
                             android:text="Regular Customers"
-                            android:textColor="#8c8c8c"
+                            android:textColor="@color/darkgray"
                             android:textSize="@dimen/_11ssp" />
 
                         <TextView
@@ -247,7 +247,7 @@
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/sanssemibold"
                             android:text="12"
-                            android:textColor="@android:color/white"
+                            android:textColor="@android:color/black"
                             android:textSize="@dimen/_12ssp" />
                     </RelativeLayout>
 
@@ -271,7 +271,7 @@
                             android:layout_toEndOf="@id/icVisitedCustomers"
                             android:fontFamily="@font/sansregular"
                             android:text="Visited Customers"
-                            android:textColor="#8c8c8c"
+                            android:textColor="@color/darkgray"
                             android:textSize="@dimen/_11ssp" />
 
                         <TextView
@@ -281,7 +281,7 @@
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/sanssemibold"
                             android:text="9"
-                            android:textColor="@android:color/white"
+                            android:textColor="@android:color/black"
                             android:textSize="@dimen/_12ssp" />
                     </RelativeLayout>
 
@@ -305,7 +305,7 @@
                             android:layout_toEndOf="@id/icSkippedCustomers"
                             android:fontFamily="@font/sansregular"
                             android:text="Skipped Customers"
-                            android:textColor="#8c8c8c"
+                            android:textColor="@color/darkgray"
                             android:textSize="@dimen/_11ssp" />
 
                         <TextView
@@ -315,7 +315,7 @@
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/sanssemibold"
                             android:text="10"
-                            android:textColor="@android:color/white"
+                            android:textColor="@android:color/black"
                             android:textSize="@dimen/_12ssp" />
                     </RelativeLayout>
 
@@ -339,7 +339,7 @@
                             android:layout_toEndOf="@id/icTotalCustomers"
                             android:fontFamily="@font/sansregular"
                             android:text="Total Customers Assigned"
-                            android:textColor="#8c8c8c"
+                            android:textColor="@color/darkgray"
                             android:textSize="@dimen/_11ssp" />
 
                         <TextView
@@ -349,7 +349,7 @@
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/sanssemibold"
                             android:text="31"
-                            android:textColor="@android:color/white"
+                            android:textColor="@android:color/black"
                             android:textSize="@dimen/_12ssp" />
                     </RelativeLayout>
 
@@ -373,7 +373,7 @@
                             android:layout_toEndOf="@id/icDistance"
                             android:fontFamily="@font/sansregular"
                             android:text="Distance"
-                            android:textColor="#8c8c8c"
+                            android:textColor="@color/darkgray"
                             android:textSize="@dimen/_11ssp" />
 
                         <TextView
@@ -383,7 +383,7 @@
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/sanssemibold"
                             android:text="40km"
-                            android:textColor="@android:color/white"
+                            android:textColor="@android:color/black"
                             android:textSize="@dimen/_12ssp" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -400,26 +400,15 @@
                 <LinearLayout
                     android:id="@+id/box1"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_84sdp"
+                    android:layout_height="@dimen/_98sdp"
                     android:layout_weight="1"
                     android:background="@drawable/ic_box"
                     android:orientation="vertical"
-                    android:paddingHorizontal="@dimen/_3sdp"
-                    android:paddingVertical="@dimen/_7sdp">
-
-                    <TextView
-                        android:id="@+id/tvTodaySales"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sanssemibold"
-                        android:text="$1560"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_16ssp" />
+                    android:padding="@dimen/_14sdp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -427,7 +416,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sansregular"
                             android:text="Today’s"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_11ssp" />
 
                         <TextView
@@ -435,37 +424,35 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sansbold"
                             android:text=" Sales"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_11ssp" />
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvTodaySales"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sanssemibold"
+                        android:text="$1560"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_21ssp" />
+
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/box2"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_84sdp"
-                    android:layout_marginStart="@dimen/_6sdp"
+                    android:layout_height="@dimen/_98sdp"
+                    android:layout_marginStart="@dimen/_14sdp"
                     android:layout_weight="1"
                     android:background="@drawable/ic_box"
                     android:orientation="vertical"
-                    android:paddingHorizontal="@dimen/_3sdp"
-                    android:paddingVertical="@dimen/_7sdp">
-
-
-                    <TextView
-                        android:id="@+id/tvTodayVisit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sanssemibold"
-                        android:text="45"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_16ssp" />
+                    android:padding="@dimen/_14sdp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -473,7 +460,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sansregular"
                             android:text="Today’s"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_11ssp" />
 
                         <TextView
@@ -481,59 +468,70 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sansbold"
                             android:text=" Visit"
-                            android:textColor="@color/white"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_11ssp" />
                     </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/box3"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_84sdp"
-                    android:layout_marginStart="@dimen/_6sdp"
-                    android:layout_weight="1"
-                    android:background="@drawable/ic_box"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="@dimen/_3sdp"
-                    android:paddingVertical="@dimen/_7sdp">
-
 
                     <TextView
-                        android:id="@+id/tvTodayPayment"
+                        android:id="@+id/tvTodayVisit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sanssemibold"
-                        android:text="$165451"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_16ssp" />
+                        android:text="45"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_21ssp" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/sansregular"
-                            android:text="Today’s"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_11ssp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/sansbold"
-                            android:maxLines="1"
-                            android:text=" Payment"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_11ssp" />
-                    </LinearLayout>
                 </LinearLayout>
+
+
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/box3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_98sdp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:background="@drawable/ic_box2"
+                android:orientation="vertical"
+                android:padding="@dimen/_14sdp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sansregular"
+                        android:text="Today’s"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11ssp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sansbold"
+                        android:maxLines="1"
+                        android:text=" Payment"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11ssp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvTodayPayment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="$165451"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_21ssp" />
+
+
+            </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

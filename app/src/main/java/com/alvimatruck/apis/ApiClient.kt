@@ -1,6 +1,6 @@
 package com.alvimatruck.apis
 
-import com.alvimatruck.utils.Utils
+import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,17 +9,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class ApiClient private constructor(
-    baseURL: String
+    baseURL: String,
+    token: String
 ) {
     var webservices: ApiInterface
 
     companion object {
         private var restClient: ApiClient? = null
         fun getRestClient(
-            url: String
+            url: String,
+            token: String
         ): ApiClient? {
             try {
-                restClient = ApiClient(url)
+                restClient = ApiClient(url, token)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -35,8 +37,11 @@ class ApiClient private constructor(
             .addNetworkInterceptor { chain: Interceptor.Chain ->
                 val request = chain.request().newBuilder()
                 request.method(chain.request().method, chain.request().body)
-                request.addHeader("Authorization", "Bearer " + Utils.token)
+                if (token.trim().isNotEmpty()) {
+                    request.addHeader("Authorization", "Bearer $token")
+                }
                 request.build()
+                Log.d("TAG", request.build().body.toString())
                 chain.proceed(request.build())
             }
             .readTimeout(100, TimeUnit.SECONDS)

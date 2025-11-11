@@ -9,19 +9,19 @@
 
         android:pathData="M15.889 11.2222H8.11122C7.25211 11.2222 6.55566 11.9186 6.55566 12.7777V17.4444C6.55566 18.3035 7.25211 18.9999 8.11122 18.9999H15.889C16.7481 18.9999 17.4446 18.3035 17.4446 17.4444V12.7777C17.4446 11.9186 16.7481 11.2222 15.889 11.2222Z"
         android:strokeWidth="1"
-        android:strokeColor="@color/white"
+        android:strokeColor="@color/black"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M11.9999 15.8891C12.4295 15.8891 12.7777 15.5408 12.7777 15.1113C12.7777 14.6817 12.4295 14.3335 11.9999 14.3335C11.5704 14.3335 11.2222 14.6817 11.2222 15.1113C11.2222 15.5408 11.5704 15.8891 11.9999 15.8891Z"
         android:strokeWidth="1"
-        android:strokeColor="@color/white"
+        android:strokeColor="@color/black"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M8.88867 11.2222V8.11111C8.88867 7.28599 9.21645 6.49467 9.7999 5.91122C10.3833 5.32778 11.1747 5 11.9998 5C12.8249 5 13.6162 5.32778 14.1997 5.91122C14.7831 6.49467 15.1109 7.28599 15.1109 8.11111V11.2222"
         android:strokeWidth="1"
-        android:strokeColor="@color/white"
+        android:strokeColor="@color/black"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
 </vector>

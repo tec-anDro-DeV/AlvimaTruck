@@ -38,7 +38,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
-            android:background="#dde4ee" />
+            android:background="@color/gray" />
 
         <RadioButton
             android:id="@+id/rbEmergency"
@@ -55,7 +55,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
-            android:background="#dde4ee" />
+            android:background="@color/gray" />
 
         <RadioButton
             android:id="@+id/rbAdverseWeather"
@@ -72,7 +72,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
-            android:background="#dde4ee" />
+            android:background="@color/gray" />
 
         <RadioButton
             android:id="@+id/rbRouteBlocked"
@@ -89,7 +89,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
-            android:background="#dde4ee" />
+            android:background="@color/gray" />
 
         <RadioButton
             android:id="@+id/rbUnexpectedDelay"

@@ -9,7 +9,6 @@ import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityHomeBinding
 import com.alvimatruck.utils.Constants
-import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
@@ -76,16 +75,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             }
             btnYes.setOnClickListener {
                 dialog.dismiss()
-                SharedHelper.putKey(
-                    this,
-                    Constants.IS_LOGIN,
-                    false
-                )
-                SharedHelper.clearSharedPreferences(this)
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finishAffinity()
+                Utils.logout(this)
 
             }
             dialog.show()

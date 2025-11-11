@@ -3,6 +3,7 @@ package com.alvimatruck.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -10,6 +11,7 @@ import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.alvimatruck.activity.LoginActivity
 import org.json.JSONObject
 import retrofit2.Response
 import java.text.SimpleDateFormat
@@ -142,37 +144,30 @@ object Utils {
         return ((System.currentTimeMillis() - time) / (1000 * 60 * 60 * 24)).toInt()
     }
 
+    fun logout(activity: Activity) {
+        SharedHelper.putKey(
+            activity,
+            Constants.IS_LOGIN,
+            false
+        )
+        //SharedHelper.clearSharedPreferences(this)
 
-//    fun logoutDialog(context: Activity, message: String) {
-//        val builder = android.app.AlertDialog.Builder(context)
-//        builder.setTitle(R.string.logout)
-//        builder.setMessage(message)
-//
-//        //performing positive action
-//        builder.setPositiveButton(context.getString(R.string.yes)) { dialogInterface, which ->
-//        
-//            SharedHelper.putKey(
-//                context,
-//                Constants.IS_LOGIN,
-//                false
-//            )
-//            SharedHelper.clearSharedPreferences(context)
-//            val notificationManager: NotificationManager =
-//                context.applicationContext.getSystemService(
-//                    Context.NOTIFICATION_SERVICE
-//                ) as NotificationManager
-//            notificationManager.cancelAll()
-//            val intent = Intent(context, LandingActivity::class.java)
-//            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//            context.startActivity(intent)
-//            context.finishAffinity()
-//
-//            builder.setCancelable(true)
-//        }
-//        builder.setCancelable(false)
-//        builder.show()
-//    }
+        SharedHelper.putKey(
+            activity,
+            Constants.Token,
+            ""
+        )
 
+        SharedHelper.putKey(
+            activity,
+            Constants.UserDetail,
+            ""
+        )
+        val intent = Intent(activity, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        activity.startActivity(intent)
+        activity.finishAffinity()
+    }
 
     fun getTimeAgo(mTime: Long): String {
         val SECOND_MILLIS = 1000

@@ -24,7 +24,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 startActivity(Intent(this, OnBoardingActivity::class.java))
                 finish()
             } else {
-                startActivity(Intent(this, DemoActivity::class.java))
+                startActivity(Intent(this, HomeActivity::class.java))
                 finish()
             }
 
