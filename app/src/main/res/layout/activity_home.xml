@@ -79,90 +79,216 @@
             android:layout_marginBottom="@dimen/_80sdp"
             android:orientation="vertical">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RelativeLayout
-                    android:id="@+id/rlSalesRoute"
+                <LinearLayout
+                    android:id="@+id/llSalesRoute"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_118sdp"
+                    android:layout_height="@dimen/_88sdp"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_sale_route"
-                    android:padding="@dimen/_14sdp">
+                    android:background="@drawable/home_btn_bg"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_new_sales_route" />
 
                     <TextView
                         android:id="@+id/tvSalesRoute"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:autoSizeMinTextSize="@dimen/_1sdp"
+                        android:autoSizeTextType="uniform"
                         android:fontFamily="@font/sanssemibold"
+                        android:gravity="center"
+                        android:maxLines="2"
                         android:text="Sales Route"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_16ssp" />
-                </RelativeLayout>
+                        android:textSize="@dimen/_11ssp" />
+                </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_118sdp"
-                    android:layout_marginStart="@dimen/_13sdp"
+                    android:layout_height="@dimen/_88sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_customer"
-                    android:padding="@dimen/_14sdp">
+                    android:background="@drawable/home_btn_bg"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_new_customer" />
 
                     <TextView
                         android:id="@+id/tvCustomer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:autoSizeMinTextSize="@dimen/_1sdp"
+                        android:autoSizeTextType="uniform"
                         android:fontFamily="@font/sanssemibold"
+                        android:gravity="center"
+                        android:maxLines="1"
                         android:text="Customer"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_16ssp" />
-                </RelativeLayout>
-            </LinearLayout>
+                        android:textSize="@dimen/_11ssp" />
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_13sdp"
-                android:orientation="horizontal">
-
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_118sdp"
+                    android:layout_height="@dimen/_88sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_vehicale_breakdown"
-                    android:padding="@dimen/_14sdp">
+                    android:background="@drawable/home_btn_bg"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_new_van_break" />
 
                     <TextView
                         android:id="@+id/tvVehicleBreakdown"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:autoSizeMinTextSize="@dimen/_1sdp"
+                        android:autoSizeTextType="uniform"
                         android:fontFamily="@font/sanssemibold"
+                        android:gravity="center"
+                        android:maxLines="2"
                         android:text="Vehicle Breakdown"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_16ssp" />
-                </RelativeLayout>
+                        android:textSize="@dimen/_11ssp" />
+                </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_118sdp"
-                    android:layout_marginStart="@dimen/_13sdp"
+                    android:layout_height="@dimen/_88sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_report"
-                    android:padding="@dimen/_14sdp">
+                    android:background="@drawable/home_btn_bg"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_new_report" />
 
                     <TextView
                         android:id="@+id/tvReportModules"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:autoSizeMinTextSize="@dimen/_1sdp"
+                        android:autoSizeTextType="uniform"
                         android:fontFamily="@font/sanssemibold"
+                        android:gravity="center"
+                        android:maxLines="2"
                         android:text="Report Modules"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_16ssp" />
-                </RelativeLayout>
+                        android:textSize="@dimen/_11ssp" />
+                </LinearLayout>
             </LinearLayout>
+
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:orientation="horizontal">-->
+
+            <!--                <RelativeLayout-->
+            <!--                    android:id="@+id/rlSalesRoute"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="@dimen/_118sdp"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:background="@drawable/ic_sale_route"-->
+            <!--                    android:padding="@dimen/_14sdp">-->
+
+            <!--                    <TextView-->
+            <!--                        android:id="@+id/tvSalesRoute"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:fontFamily="@font/sanssemibold"-->
+            <!--                        android:text="Sales Route"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textSize="@dimen/_16ssp" />-->
+            <!--                </RelativeLayout>-->
+
+            <!--                <RelativeLayout-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="@dimen/_118sdp"-->
+            <!--                    android:layout_marginStart="@dimen/_13sdp"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:background="@drawable/ic_customer"-->
+            <!--                    android:padding="@dimen/_14sdp">-->
+
+            <!--                    <TextView-->
+            <!--                        android:id="@+id/tvCustomer"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:fontFamily="@font/sanssemibold"-->
+            <!--                        android:text="Customer"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textSize="@dimen/_16ssp" />-->
+            <!--                </RelativeLayout>-->
+            <!--            </LinearLayout>-->
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/_13sdp"-->
+            <!--                android:orientation="horizontal">-->
+
+            <!--                <RelativeLayout-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="@dimen/_118sdp"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:background="@drawable/ic_vehicale_breakdown"-->
+            <!--                    android:padding="@dimen/_14sdp">-->
+
+            <!--                    <TextView-->
+            <!--                        android:id="@+id/tvVehicleBreakdown"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:fontFamily="@font/sanssemibold"-->
+            <!--                        android:text="Vehicle Breakdown"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textSize="@dimen/_16ssp" />-->
+            <!--                </RelativeLayout>-->
+
+            <!--                <RelativeLayout-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="@dimen/_118sdp"-->
+            <!--                    android:layout_marginStart="@dimen/_13sdp"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:background="@drawable/ic_report"-->
+            <!--                    android:padding="@dimen/_14sdp">-->
+
+            <!--                    <TextView-->
+            <!--                        android:id="@+id/tvReportModules"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:fontFamily="@font/sanssemibold"-->
+            <!--                        android:text="Report Modules"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textSize="@dimen/_16ssp" />-->
+            <!--                </RelativeLayout>-->
+            <!--            </LinearLayout>-->
 
             <LinearLayout
                 android:id="@+id/llProgressRoute"

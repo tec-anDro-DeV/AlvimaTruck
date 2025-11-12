@@ -7,8 +7,8 @@
     <group>
         <clip-path android:pathData="M0,8C0,3.58 3.58,0 8,0H148C152.42,0 156,3.58 156,8V104C156,108.42 152.42,112 148,112H8C3.58,112 0,108.42 0,104V8Z" />
         <path
-            android:fillAlpha="0.07"
-            android:fillColor="#F58618"
+
+            android:fillColor="#ffffff"
             android:pathData="M0,8C0,3.58 3.58,0 8,0H148C152.42,0 156,3.58 156,8V104C156,108.42 152.42,112 148,112H8C3.58,112 0,108.42 0,104V8Z" />
         <path android:pathData="M34.5,88.77C21.32,81.95 5.49,88.97 0,94.13V135H157L156.48,59.42C122.17,48.52 88.91,77.38 75,86.77C70.36,89.9 50.98,97.29 34.5,88.77Z">
             <aapt:attr name="android:fillColor">

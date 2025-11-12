@@ -10,6 +10,9 @@ class Constants {
         const val API_SignIn = "MobileLogin/mobilelogin"
         const val API_VanList = "Dropdown/get-van-sales-dropdown"
         const val API_ResetPassword = "MobileLogin/reset-password"
+        const val API_ResendOTP = "MobileLogin/resend-otp"
+        const val API_OTPVerify = "MobileLogin/verify-otp"
+        const val API_ChangePassword = "MobileLogin/change-password"
 
 
         // Constants Key

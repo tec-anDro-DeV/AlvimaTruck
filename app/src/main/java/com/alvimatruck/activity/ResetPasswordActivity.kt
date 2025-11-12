@@ -7,12 +7,24 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.alvimatruck.R
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityResetPasswordBinding
+import com.alvimatruck.model.request.ChangePasswordRequest
+import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.Utils
+import com.google.gson.JsonObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
+    var vanNo: String = ""
+
     override fun inflateBinding(): ActivityResetPasswordBinding {
         return ActivityResetPasswordBinding.inflate(layoutInflater)
     }
@@ -121,6 +133,11 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
             false
         }
 
+        if (intent != null) {
+            vanNo = intent.getStringExtra(Constants.VanNo).toString()
+        }
+
+
         binding.tvSignIn.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -133,35 +150,109 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
         }
 
         binding.tvResetPassword.setOnClickListener {
-            val inflater = layoutInflater
-            val alertLayout = inflater.inflate(R.layout.dialog_password_sucessfull, null)
+            if (binding.etNewPassword.text.trim().toString().isEmpty()) {
+                Toast.makeText(
+                    this, "Please enter new password", Toast.LENGTH_SHORT
+                ).show()
+            } else if (binding.etConfirmPassword.text.trim().toString().isEmpty()) {
+                Toast.makeText(
+                    this, "Please enter confirm password", Toast.LENGTH_SHORT
+                ).show()
+            } else if (binding.etNewPassword.text.trim()
+                    .toString() != binding.etConfirmPassword.text.trim().toString()
+            ) {
+                Toast.makeText(
+                    this, "New password and confirm password does not match", Toast.LENGTH_SHORT
+                ).show()
+            } else {
 
+                if (Utils.isOnline(this@ResetPasswordActivity)) {
+                    resetNewPassword()
+                } else {
+                    Toast.makeText(
+                        this@ResetPasswordActivity,
+                        getString(R.string.please_check_your_internet_connection),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
-            val tvContinue = alertLayout.findViewById<TextView>(R.id.tvContinue)
-            val tvMessage = alertLayout.findViewById<TextView>(R.id.tvMessage)
-
-            tvMessage.text =
-                "Your password has been updated securely. Use your new password to sign in to your account."
-
-
-            val dialog = AlertDialog.Builder(this)
-                .setView(alertLayout)
-                .setCancelable(false)
-                .create()
-            dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background2)
-
-
-            tvContinue.setOnClickListener {
-                dialog.dismiss()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finishAffinity()
 
             }
-            dialog.show()
-            val width =
-                (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
-            dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
+
+    }
+
+    fun resetNewPassword() {
+        ProgressDialog.start(this@ResetPasswordActivity)
+        ApiClient.getRestClient(
+            Constants.BASE_URL, ""
+        )!!.webservices.changePassword(
+            ChangePasswordRequest(
+                vanNo,
+                binding.etNewPassword.text.toString().trim()
+            )
+        ).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                ProgressDialog.dismiss()
+                if (response.isSuccessful) {
+                    try {
+                        val inflater = layoutInflater
+                        val alertLayout =
+                            inflater.inflate(R.layout.dialog_password_sucessfull, null)
+
+
+                        val tvContinue = alertLayout.findViewById<TextView>(R.id.tvContinue)
+                        val tvMessage = alertLayout.findViewById<TextView>(R.id.tvMessage)
+
+                        tvMessage.text =
+                            "Your password has been updated securely. Use your new password to sign in to your account."
+
+
+                        val dialog = AlertDialog.Builder(this@ResetPasswordActivity)
+                            .setView(alertLayout)
+                            .setCancelable(false)
+                            .create()
+                        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background2)
+
+
+                        tvContinue.setOnClickListener {
+                            dialog.dismiss()
+                            startActivity(
+                                Intent(
+                                    this@ResetPasswordActivity,
+                                    LoginActivity::class.java
+                                )
+                            )
+                            finishAffinity()
+
+                        }
+                        dialog.show()
+                        val width =
+                            (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+                        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    Toast.makeText(
+                        this@ResetPasswordActivity,
+                        Utils.parseErrorMessage(response),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                Toast.makeText(
+                    this@ResetPasswordActivity,
+                    getString(R.string.api_fail_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+                ProgressDialog.dismiss()
+            }
+        })
 
     }
 }

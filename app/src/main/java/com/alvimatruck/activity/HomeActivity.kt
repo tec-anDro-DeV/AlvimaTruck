@@ -52,7 +52,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             binding.rlBottomOpreation.setBackgroundResource(R.drawable.orange_circle)
         }
 
-        binding.rlSalesRoute.setOnClickListener {
+        binding.llSalesRoute.setOnClickListener {
             startActivity(Intent(this, TripRouteListActivity::class.java))
         }
 

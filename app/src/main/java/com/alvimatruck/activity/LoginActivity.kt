@@ -77,26 +77,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     v.isFocusableInTouchMode = false
 
                     // 🔄 Toggle show/hide password
-                    val isVisible = binding.etPassword.inputType ==
-                            (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
+                    val isVisible =
+                        binding.etPassword.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
 
                     if (isVisible) {
                         binding.etPassword.inputType =
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                         binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
-                            0,
-                            0,
-                            R.drawable.eye,
-                            0
+                            0, 0, R.drawable.eye, 0
                         )
                     } else {
                         binding.etPassword.inputType =
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                         binding.etPassword.setCompoundDrawablesWithIntrinsicBounds(
-                            0,
-                            0,
-                            R.drawable.hide_eye,
-                            0
+                            0, 0, R.drawable.hide_eye, 0
                         )
                     }
 
@@ -151,7 +145,18 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         }
 
         binding.tvForgotPassword.setOnClickListener {
-            startActivity(Intent(this, OTPVerificationActivity::class.java))
+            if (binding.tvVanNumber.text.trim().toString().isEmpty()) {
+                Toast.makeText(
+                    this, "Please select van no.", Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                startActivity(
+                    Intent(
+                        this, OTPVerificationActivity::class.java
+                    ).putExtra(Constants.VanNo, binding.tvVanNumber.text.trim().toString())
+                )
+            }
+
         }
 
     }
@@ -191,9 +196,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             })
         } else {
             Toast.makeText(
-                this,
-                getString(R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
 
@@ -294,15 +297,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     private fun showFingerprintPrompt(username: String, password: String, vannumber: String) {
         val executor = ContextCompat.getMainExecutor(this)
-        val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Fingerprint Authentication")
-            .setSubtitle("Use your fingerprint to log in")
-            .setNegativeButtonText("Cancel")
-            .build()
+        val promptInfo = BiometricPrompt.PromptInfo.Builder().setTitle("Fingerprint Authentication")
+            .setSubtitle("Use your fingerprint to log in").setNegativeButtonText("Cancel").build()
 
         val biometricPrompt = BiometricPrompt(
-            this, executor,
-            object : BiometricPrompt.AuthenticationCallback() {
+            this, executor, object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     if (Utils.isOnline(this@LoginActivity)) {
@@ -319,9 +318,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
                     Toast.makeText(
-                        applicationContext,
-                        "Authentication error: $errString",
-                        Toast.LENGTH_SHORT
+                        applicationContext, "Authentication error: $errString", Toast.LENGTH_SHORT
                     ).show()
                 }
 
@@ -352,45 +349,34 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     try {
                         Toast.makeText(
                             this@LoginActivity,
-                            response.body()!!.get("message").toString().replace('"', ' ')
-                                .trim(),
+                            response.body()!!.get("message").toString().replace('"', ' ').trim(),
                             Toast.LENGTH_SHORT
                         ).show()
                         userDetail = Gson().fromJson(
-                            response.body()!!.getAsJsonObject("data"),
-                            UserDetail::class.java
+                            response.body()!!.getAsJsonObject("data"), UserDetail::class.java
                         )
                         SharedHelper.putKey(
-                            this@LoginActivity,
-                            Constants.Token,
-                            userDetail!!.token
+                            this@LoginActivity, Constants.Token, userDetail!!.token
                         )
                         if (userDetail!!.isDefaultPassword) {
                             startActivity(
                                 Intent(
-                                    this@LoginActivity,
-                                    FirstTimePasswordActivity::class.java
+                                    this@LoginActivity, FirstTimePasswordActivity::class.java
                                 )
                             )
                             finishAffinity()
                         } else {
                             SharedHelper.putKey(
-                                this@LoginActivity,
-                                Constants.UserDetail,
-                                Gson().toJson(userDetail)
+                                this@LoginActivity, Constants.UserDetail, Gson().toJson(userDetail)
                             )
 
 
                             if (binding.chkRemember.isChecked) {
                                 SharedHelper.putKey(
-                                    this@LoginActivity,
-                                    Constants.Username,
-                                    username
+                                    this@LoginActivity, Constants.Username, username
                                 )
                                 SharedHelper.putKey(
-                                    this@LoginActivity,
-                                    Constants.Password,
-                                    password
+                                    this@LoginActivity, Constants.Password, password
                                 )
                                 SharedHelper.putKey(this@LoginActivity, Constants.VanNo, vannumber)
                                 SharedHelper.putKey(this@LoginActivity, Constants.RememberMe, true)
@@ -399,15 +385,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                             val biometricManager = BiometricManager.from(this@LoginActivity)
                             val canAuthenticate =
                                 biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
-                            val fingerprintEnabled =
-                                SharedHelper.getBoolKey(
-                                    this@LoginActivity,
-                                    Constants.FingerPrintEnabled
-                                )
+                            val fingerprintEnabled = SharedHelper.getBoolKey(
+                                this@LoginActivity, Constants.FingerPrintEnabled
+                            )
                             startActivity(
                                 Intent(
-                                    this@LoginActivity,
-                                    HomeActivity::class.java
+                                    this@LoginActivity, HomeActivity::class.java
                                 )
                             )
                             if (!fingerprintEnabled && canAuthenticate == BiometricManager.BIOMETRIC_SUCCESS) {
@@ -415,9 +398,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                                 askEnableFingerprint(username, password, vannumber)
                             } else {
                                 SharedHelper.putKey(
-                                    this@LoginActivity,
-                                    Constants.IS_LOGIN,
-                                    true
+                                    this@LoginActivity, Constants.IS_LOGIN, true
                                 )
 
                                 finishAffinity()
@@ -429,9 +410,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     }
                 } else {
                     Toast.makeText(
-                        this@LoginActivity,
-                        Utils.parseErrorMessage(response),
-                        Toast.LENGTH_SHORT
+                        this@LoginActivity, Utils.parseErrorMessage(response), Toast.LENGTH_SHORT
                     ).show()
 
                 }
@@ -448,9 +427,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     private fun askEnableFingerprint(username: String, password: String, vannumber: String) {
         val biometricManager = BiometricManager.from(this)
-        if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
-            == BiometricManager.BIOMETRIC_SUCCESS
-        ) {
+        if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {
             val inflater = layoutInflater
             val alertLayout = inflater.inflate(R.layout.dialog_alert_two_button, null)
 
@@ -466,10 +443,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             btnYes.text = "Yes"
 
 
-            val dialog = AlertDialog.Builder(this)
-                .setView(alertLayout)
-                .setCancelable(false)
-                .create()
+            val dialog =
+                AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
             dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
 
@@ -477,8 +452,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 dialog.dismiss()
                 startActivity(
                     Intent(
-                        this@LoginActivity,
-                        HomeActivity::class.java
+                        this@LoginActivity, HomeActivity::class.java
                     )
                 )
                 finishAffinity()
@@ -491,8 +465,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 SharedHelper.putKey(this, Constants.VanNo, vannumber)
                 startActivity(
                     Intent(
-                        this@LoginActivity,
-                        HomeActivity::class.java
+                        this@LoginActivity, HomeActivity::class.java
                     )
                 )
                 finishAffinity()
