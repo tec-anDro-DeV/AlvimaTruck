@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.viewpager.widget.ViewPager
 import com.alvimatruck.R
@@ -42,7 +43,12 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
 
         override fun onPageSelected(position: Int) {
             addBottomDots(position)
-            binding.rlOnboarding.setBackgroundResource(bgImages[position])
+            binding.ivOnboard.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this@OnBoardingActivity,
+                    bgImages[position]
+                )
+            )
             if (position == titles.size.minus(1)) {
                 //   binding.nextBtn.visibility = View.GONE
                 binding.dotsLayout.visibility = View.GONE
@@ -72,10 +78,10 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
         controller.isAppearanceLightStatusBars = true
 
         bgImages = arrayOf(
-            R.drawable.onboarding1,
-            R.drawable.onboarding2,
-            R.drawable.onboarding3,
-            R.drawable.onboarding3
+            R.drawable.onboard1,
+            R.drawable.onboard2,
+            R.drawable.onboard3,
+            R.drawable.onboard4
         )
 
         sliderAdapter = SliderAdapter(this, titles, descriptions)
