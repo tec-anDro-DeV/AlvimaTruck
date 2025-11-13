@@ -1,5 +1,6 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -141,12 +142,17 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             }
             btnSubmit.setOnClickListener {
                 dialog.dismiss()
-
             }
             dialog.show()
             val width =
                 (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+        }
+
+        binding.llCustomer.setOnClickListener {
+
+            startActivity(Intent(this, CustomersActivity::class.java))
+
         }
     }
 }

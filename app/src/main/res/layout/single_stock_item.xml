@@ -46,7 +46,7 @@
                 android:fontFamily="@font/sansregular"
                 android:text="SKU : "
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_11ssp" />
 
             <TextView
                 android:id="@+id/tvSKUValue"
@@ -57,7 +57,7 @@
                 android:fontFamily="@font/sansbold"
                 android:text="N209-7635-8529"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_11ssp" />
         </RelativeLayout>
 
 
