@@ -23,10 +23,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
 
         binding.rlBottomHome.setOnClickListener {
-            binding.rlBottomHome.setBackgroundResource(R.drawable.orange_circle)
-            binding.rlBottomTrip.setBackgroundResource(0)
-            binding.rlBottomVanStock.setBackgroundResource(0)
-            binding.rlBottomOpreation.setBackgroundResource(0)
+//            binding.rlBottomHome.setBackgroundResource(R.drawable.orange_circle)
+//            binding.rlBottomTrip.setBackgroundResource(0)
+//            binding.rlBottomVanStock.setBackgroundResource(0)
+//            binding.rlBottomOpreation.setBackgroundResource(0)
         }
 
         binding.rlBottomTrip.setOnClickListener {
@@ -38,10 +38,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
 
         binding.rlBottomVanStock.setOnClickListener {
-            binding.rlBottomHome.setBackgroundResource(0)
-            binding.rlBottomTrip.setBackgroundResource(0)
-            binding.rlBottomVanStock.setBackgroundResource(R.drawable.orange_circle)
-            binding.rlBottomOpreation.setBackgroundResource(0)
+            startActivity(Intent(this, VanStockActivity::class.java))
+//            binding.rlBottomHome.setBackgroundResource(0)
+//            binding.rlBottomTrip.setBackgroundResource(0)
+//            binding.rlBottomVanStock.setBackgroundResource(R.drawable.orange_circle)
+//            binding.rlBottomOpreation.setBackgroundResource(0)
         }
 
 
