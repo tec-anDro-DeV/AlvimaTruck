@@ -1,8 +1,8 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alvimatruck.R
 import com.alvimatruck.adapter.VanStockListAdapter
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
@@ -23,32 +23,17 @@ class VanStockActivity : BaseActivity<ActivityVanStockBinding>() {
         }
 
         binding.rlBottomHome.setOnClickListener {
-            handleBackPressed()
-            //            binding.rlBottomHome.setBackgroundResource(R.drawable.orange_circle)
-//            binding.rlBottomTrip.setBackgroundResource(0)
-//            binding.rlBottomVanStock.setBackgroundResource(0)
-//            binding.rlBottomOpreation.setBackgroundResource(0
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
         }
 
-        binding.rlBottomVanStock.setOnClickListener {
-//            binding.rlBottomHome.setBackgroundResource(0)
-//            binding.rlBottomTrip.setBackgroundResource(0)
-//            binding.rlBottomVanStock.setBackgroundResource(R.drawable.orange_circle)
-//            binding.rlBottomOpreation.setBackgroundResource(0)
-        }
 
         binding.rlBottomTrip.setOnClickListener {
-            binding.rlBottomHome.setBackgroundResource(0)
-            binding.rlBottomTrip.setBackgroundResource(R.drawable.orange_circle)
-            binding.rlBottomVanStock.setBackgroundResource(0)
-            binding.rlBottomOpreation.setBackgroundResource(0)
+
         }
 
         binding.rlBottomOpreation.setOnClickListener {
-            binding.rlBottomHome.setBackgroundResource(0)
-            binding.rlBottomTrip.setBackgroundResource(0)
-            binding.rlBottomVanStock.setBackgroundResource(0)
-            binding.rlBottomOpreation.setBackgroundResource(R.drawable.orange_circle)
+            startActivity(Intent(this@VanStockActivity, OperationsActivity::class.java))
         }
 
 

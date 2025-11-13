@@ -47,14 +47,19 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
 
         binding.rlBottomOpreation.setOnClickListener {
-            binding.rlBottomHome.setBackgroundResource(0)
-            binding.rlBottomTrip.setBackgroundResource(0)
-            binding.rlBottomVanStock.setBackgroundResource(0)
-            binding.rlBottomOpreation.setBackgroundResource(R.drawable.orange_circle)
+//            binding.rlBottomHome.setBackgroundResource(0)
+//            binding.rlBottomTrip.setBackgroundResource(0)
+//            binding.rlBottomVanStock.setBackgroundResource(0)
+//            binding.rlBottomOpreation.setBackgroundResource(R.drawable.orange_circle)
+            startActivity(Intent(this, OperationsActivity::class.java))
         }
 
         binding.llSalesRoute.setOnClickListener {
             startActivity(Intent(this, TripRouteListActivity::class.java))
+        }
+
+        binding.llCustomer.setOnClickListener {
+            startActivity(Intent(this, CustomersActivity::class.java))
         }
 
         binding.rlLogout.setOnClickListener {
@@ -64,10 +69,8 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             val btnNo = alertLayout.findViewById<TextView>(R.id.btnNo)
             val btnYes = alertLayout.findViewById<TextView>(R.id.btnYes)
 
-            val dialog = AlertDialog.Builder(this)
-                .setView(alertLayout)
-                .setCancelable(false)
-                .create()
+            val dialog =
+                AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
             dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
 
@@ -87,8 +90,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         binding.llProgressRoute.setOnClickListener {
             startActivity(
                 Intent(this, RouteDetailActivity::class.java).putExtra(
-                    Constants.Status,
-                    binding.tvStatus.text.toString()
+                    Constants.Status, binding.tvStatus.text.toString()
                 )
             )
 

@@ -115,6 +115,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llCustomer"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_88sdp"
                     android:layout_marginStart="@dimen/_6sdp"
