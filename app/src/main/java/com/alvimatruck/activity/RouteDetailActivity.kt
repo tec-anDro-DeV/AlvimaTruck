@@ -154,5 +154,9 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             startActivity(Intent(this, CustomersActivity::class.java))
 
         }
+
+        binding.tvViewMap.setOnClickListener {
+            startActivity(Intent(this, RouteMapActivity::class.java))
+        }
     }
 }

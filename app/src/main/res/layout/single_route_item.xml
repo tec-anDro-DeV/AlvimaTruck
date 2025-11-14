@@ -228,6 +228,19 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/_12ssp" />
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvViewMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_9sdp"
+                android:background="@drawable/bg_status_blue"
+                android:fontFamily="@font/sansbold"
+                android:padding="@dimen/_5sdp"
+                android:text="View Route on Map"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp" />
         </LinearLayout>
 
     </LinearLayout>

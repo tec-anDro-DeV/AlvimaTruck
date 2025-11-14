@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.activity.RouteDetailActivity
+import com.alvimatruck.activity.RouteMapActivity
 import com.alvimatruck.databinding.SingleRouteItemBinding
 import com.alvimatruck.utils.Constants
 
@@ -49,6 +50,10 @@ class RouteListAdapter(
                     mActivity, RouteDetailActivity::class.java
                 ).putExtra(Constants.Status, holder.binding.tvStatus.text.toString())
             )
+        }
+
+        holder.binding.tvViewMap.setOnClickListener {
+            mActivity.startActivity(Intent(mActivity, RouteMapActivity::class.java))
         }
 
     }
