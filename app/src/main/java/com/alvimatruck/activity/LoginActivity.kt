@@ -219,7 +219,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
 
-        var vanItemSelectionAdapter = VanItemSelectionAdapter(this, filterList!!, selectedVan)
+        val vanItemSelectionAdapter = VanItemSelectionAdapter(this, filterList!!, selectedVan)
 
         val lLayout = LinearLayoutManager(this)
         val rvBinList = alertLayout.findViewById<RecyclerView>(R.id.rvItemList)

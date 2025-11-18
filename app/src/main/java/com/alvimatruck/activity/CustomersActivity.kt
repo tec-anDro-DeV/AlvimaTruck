@@ -1,5 +1,6 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.CustomerListAdapter
@@ -35,6 +36,11 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>() {
             this@CustomersActivity, Utils.getDummyArrayList(5)
         )
         binding.rvCustomerList.adapter = customerListAdapter
+
+
+        binding.ivAddCustomer.setOnClickListener {
+            startActivity(Intent(this@CustomersActivity, CreateCustomerActivity::class.java))
+        }
     }
 
 

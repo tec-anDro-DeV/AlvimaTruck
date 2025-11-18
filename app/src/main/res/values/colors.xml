@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#121212</color>
     <color name="darkgray">#909090</color>
+    <color name="hintGary">#585858</color>
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#F58618</color>
     <color name="gray">#e8e8e8</color>

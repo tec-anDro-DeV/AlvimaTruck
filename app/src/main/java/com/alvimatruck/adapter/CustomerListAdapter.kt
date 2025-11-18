@@ -2,9 +2,11 @@ package com.alvimatruck.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.alvimatruck.activity.ViewCustomerActivity
 import com.alvimatruck.databinding.SingleCustomerItemBinding
 
 
@@ -21,6 +23,10 @@ class CustomerListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         //   holder.binding.detail = list[position]
         //   holder.binding.tvData.text = "Demo List Item " + (position + 1)
+
+        holder.itemView.setOnClickListener {
+            mActivity.startActivity(Intent(mActivity, ViewCustomerActivity::class.java))
+        }
 
     }
 

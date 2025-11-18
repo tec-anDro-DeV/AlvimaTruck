@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <RelativeLayout
+        android:id="@+id/rlTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_21sdp">
+
+        <RelativeLayout
+            android:id="@+id/btnBack"
+            android:layout_width="@dimen/_42sdp"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/transparent_circle">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_back" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/sanssemibold"
+            android:text="Update Customer"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16ssp" />
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rlTop"
+        android:background="@drawable/bg_white_top_curve">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_21sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Customer Name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp" />
+
+
+            <EditText
+                android:id="@+id/etCustomerName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_44sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:background="@drawable/input_bg"
+                android:fontFamily="@font/sansregular"
+                android:gravity="center_vertical"
+                android:hint="Enter Customer Name"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/hintGary"
+                android:textSize="@dimen/_12ssp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Telephone Number"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp" />
+
+
+            <EditText
+                android:id="@+id/etTelephoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_44sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:background="@drawable/input_bg"
+                android:fontFamily="@font/sansregular"
+                android:gravity="center_vertical"
+                android:hint="Enter Telephone Number"
+                android:imeOptions="actionNext"
+                android:inputType="phone"
+                android:maxEms="13"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/hintGary"
+                android:textSize="@dimen/_12ssp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="City"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="Postal Code"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etCity"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_44sdp"
+                    android:layout_weight="1"
+
+                    android:background="@drawable/input_bg"
+                    android:fontFamily="@font/sansregular"
+                    android:gravity="center_vertical"
+                    android:hint="Enter City"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hintGary"
+                    android:textSize="@dimen/_12ssp" />
+
+                <EditText
+                    android:id="@+id/etPostalCode"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_44sdp"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/input_bg"
+                    android:fontFamily="@font/sansregular"
+                    android:gravity="center_vertical"
+                    android:hint="Enter Postal Code"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hintGary"
+                    android:textSize="@dimen/_12ssp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Address"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp" />
+
+
+            <EditText
+                android:id="@+id/etAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/input_bg"
+                android:fontFamily="@font/sansregular"
+                android:gravity="top"
+                android:hint="Enter Address"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_7sdp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/hintGary"
+                android:textSize="@dimen/_12ssp" />
+
+
+            <LinearLayout
+                android:id="@+id/llBottomButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_21sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvCancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_button_red"
+                    android:fontFamily="@font/sansbold"
+                    android:gravity="center"
+                    android:padding="@dimen/_14sdp"
+                    android:text="Cancel"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp" />
+
+                <TextView
+                    android:id="@+id/tvUpdate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_button_orange"
+                    android:fontFamily="@font/sansbold"
+                    android:gravity="center"
+                    android:padding="@dimen/_14sdp"
+                    android:text="Update"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>
