@@ -4,16 +4,23 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.location.Location
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
+import android.provider.OpenableColumns
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.FileProvider
 import com.alvimatruck.activity.LoginActivity
 import org.json.JSONObject
 import retrofit2.Response
+import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -25,6 +32,9 @@ object Utils {
     var mLastClickTime: Long = 0
     var token: String = ""
     var currentLocation: Location? = null
+
+
+    val MAX_FILE_SIZE_BYTES = 1 * 1024 * 1024
 
 
     fun getDummyArrayList(counter: Int): ArrayList<String> {
@@ -199,5 +209,53 @@ object Utils {
         } else {
             (diff / DAY_MILLIS).toString() + " days ago"
         }
+    }
+
+    fun getFileSizeFromUri(context: Context, uri: Uri): Long {
+        context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+            if (sizeIndex != -1 && cursor.moveToFirst()) {
+                return cursor.getLong(sizeIndex)
+            }
+        }
+        return -1L // Return -1 if size cannot be determined
+    }
+
+    fun getCompressedUri(context: Context, uri: Uri): Uri {
+        val fileSize = getFileSizeFromUri(context, uri)
+        // Return original URI if size is unknown or already within the limit
+        if (fileSize == -1L || fileSize <= MAX_FILE_SIZE_BYTES) {
+            return uri
+        }
+
+        // Prepare the output file for the compressed image in the app's cache directory
+        val compressedFileName = "compressed_${System.currentTimeMillis()}.jpg"
+        val compressedFile = File(context.cacheDir, compressedFileName)
+
+        // Use a try-with-resources block to auto-close streams
+        try {
+            context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                FileOutputStream(compressedFile).use { outputStream ->
+                    // Decode and compress the bitmap
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    bitmap.compress(
+                        Bitmap.CompressFormat.JPEG,
+                        80,
+                        outputStream
+                    ) // Adjust quality (0-100)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // In case of an error, return the original URI
+            return uri
+        }
+
+        // Return the content URI for the newly created compressed file
+        return FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.provider",
+            compressedFile
+        )
     }
 }

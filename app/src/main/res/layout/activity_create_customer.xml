@@ -105,6 +105,60 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
+                android:text="Upload Photo"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp" />
+
+            <RelativeLayout
+                android:id="@+id/rlChoosePhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:background="@drawable/ic_dash_bg">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_file_upload" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/ivUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_108sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+
+                    android:scaleType="centerCrop" />
+
+                <RelativeLayout
+                    android:id="@+id/btnDeleteUser"
+                    android:layout_width="@dimen/_21sdp"
+                    android:layout_height="@dimen/_21sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/transparent_circle">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_delete" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:fontFamily="@font/sanssemibold"
                 android:text="Customer Phone Number"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
@@ -227,6 +281,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
+                android:text="Address"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp" />
+
+
+            <EditText
+                android:id="@+id/etAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/input_bg"
+                android:fontFamily="@font/sansregular"
+                android:gravity="top"
+                android:hint="Enter Address"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_7sdp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/hintGary"
+                android:textSize="@dimen/_12ssp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:fontFamily="@font/sanssemibold"
                 android:text="TIN Number"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
@@ -253,27 +335,55 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Address"
+                android:text="ID Proof"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
-
-            <EditText
-                android:id="@+id/etAddress"
+            <RelativeLayout
+                android:id="@+id/rlChooseID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@drawable/input_bg"
-                android:fontFamily="@font/sansregular"
-                android:gravity="top"
-                android:hint="Enter Address"
-                android:inputType="textMultiLine"
-                android:minLines="3"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:paddingVertical="@dimen/_7sdp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/hintGary"
-                android:textSize="@dimen/_12ssp" />
+                android:layout_marginTop="@dimen/_7sdp"
+                android:background="@drawable/ic_dash_bg">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_file_upload" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlIDProof"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/ivIDProof"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_108sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+
+                    android:scaleType="centerCrop" />
+
+                <RelativeLayout
+                    android:id="@+id/btnDeleteIDProof"
+                    android:layout_width="@dimen/_21sdp"
+                    android:layout_height="@dimen/_21sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/transparent_circle">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_delete" />
+                </RelativeLayout>
+            </RelativeLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"
