@@ -55,7 +55,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
 
         binding.llSalesRoute.setOnClickListener {
-            startActivity(Intent(this, TripRouteListActivity::class.java))
+            startActivity(Intent(this, SalesRouteActivity::class.java))
         }
 
         binding.llCustomer.setOnClickListener {

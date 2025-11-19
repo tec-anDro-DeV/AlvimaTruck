@@ -38,67 +38,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activity.UpdateCustomerActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:name=".activity.SellOrderListActivity"
+            android:exported="false" />
         <activity
-            android:name=".activity.ViewCustomerActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.CreateCustomerActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.RouteMapActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.OperationsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.CustomersActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.VanStockActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.OTPVerificationActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.FirstTimePasswordActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.RouteDetailActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.TripRouteListActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.HomeActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.OnBoardingActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:name=".activity.SellOrderDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.ImagePickerActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.DemoActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -111,6 +61,69 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.OnBoardingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.OTPVerificationActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.FirstTimePasswordActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ResetPasswordActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.HomeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TripRouteListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RouteDetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RouteMapActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.VanStockActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CustomersActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UpdateCustomerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ViewCustomerActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CreateCustomerActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.OperationsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SalesRouteActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
@@ -130,10 +143,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.DemoListActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.ResetPasswordActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 

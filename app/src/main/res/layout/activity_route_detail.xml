@@ -125,7 +125,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="40km"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -160,7 +160,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="1101"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -194,7 +194,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="1200"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
             </LinearLayout>
@@ -262,7 +262,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="12"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -296,7 +296,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="9"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -330,7 +330,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="10"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -363,7 +363,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="31"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -430,7 +430,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansbold"
                         android:text="/34"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -506,7 +506,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
                         android:text="$97248.00"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
             </LinearLayout>

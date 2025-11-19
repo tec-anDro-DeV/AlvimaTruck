@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <!--        <variable-->
+        <!--            name="detail"-->
+        <!--            type="String" />-->
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/input_bg"
+        android:orientation="vertical"
+        android:padding="@dimen/_9sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivStock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_stock" />
+
+            <TextView
+                android:id="@+id/tvOrderId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_11sdp"
+                android:layout_toEndOf="@id/ivStock"
+                android:fontFamily="@font/sansbold"
+                android:text="Order ID"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp" />
+
+            <TextView
+                android:id="@+id/tvContactName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvOrderId"
+                android:layout_marginStart="@dimen/_11sdp"
+                android:layout_toEndOf="@id/ivStock"
+                android:fontFamily="@font/sansregular"
+                android:text="John Doe"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp" />
+
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_status_green"
+                android:fontFamily="@font/sanssemibold"
+                android:padding="@dimen/_5sdp"
+                android:text="Delivered"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11ssp" />
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_9sdp"
+            android:background="@drawable/border_bg"
+            android:orientation="vertical"
+            android:padding="@dimen/_7sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:layout_toEndOf="@id/icRegularCustomers"
+                    android:fontFamily="@font/sansregular"
+                    android:text="Route Name"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/_12ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/sansbold"
+                    android:text="Route 1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_9sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:layout_toEndOf="@id/icRegularCustomers"
+                    android:fontFamily="@font/sansregular"
+                    android:text="Payment Mode"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/_12ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/sansbold"
+                    android:text="NEFT/RTGS"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_9sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:layout_toEndOf="@id/icRegularCustomers"
+                    android:fontFamily="@font/sansregular"
+                    android:text="Order Date"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/_12ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/sansbold"
+                    android:text="16 Dec 2025"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_7sdp"
+                android:layout_toEndOf="@id/icRegularCustomers"
+                android:fontFamily="@font/sansregular"
+                android:text="Sub Total"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/_12ssp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/sansbold"
+                android:text="$146.00"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/_12ssp" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</layout>
