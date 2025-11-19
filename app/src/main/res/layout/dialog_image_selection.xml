@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
@@ -18,10 +17,62 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/sanssemibold"
+            android:fontFamily="@font/sansbold"
+            android:text="Upload file or take photo"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12ssp"
-            tools:text="Choose Any One" />
+            android:textSize="@dimen/_14ssp" />
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/llGallery"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_106sdp"
+            android:layout_weight="1"
+            android:background="@drawable/border_bg"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_gallery"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Upload File"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llCamera"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_106sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:background="@drawable/border_bg"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_camera"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Take Photo"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -30,7 +81,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tvCamera"
+            android:id="@+id/tvCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,12 +89,12 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Camera"
+            android:text="Cancel"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
 
         <TextView
-            android:id="@+id/tvGallery"
+            android:id="@+id/tvContinue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -51,7 +102,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Gallery"
+            android:text="Continue"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>

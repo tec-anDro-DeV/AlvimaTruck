@@ -57,18 +57,16 @@
                 android:textSize="@dimen/_11ssp" />
 
 
-            <EditText
+            <TextView
                 android:id="@+id/etCustomerName"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_44sdp"
                 android:layout_marginTop="@dimen/_7sdp"
-                android:background="@drawable/input_bg"
-                android:fontFamily="@font/sansregular"
+                android:background="@drawable/gray_bg"
+                android:fontFamily="@font/sanssemibold"
                 android:gravity="center_vertical"
-                android:hint="Enter Customer Name"
-                android:imeOptions="actionNext"
-                android:inputType="text"
                 android:paddingHorizontal="@dimen/_10sdp"
+                android:text="John Doe"
                 android:textColor="@color/black"
                 android:textColorHint="@color/hintGary"
                 android:textSize="@dimen/_12ssp" />

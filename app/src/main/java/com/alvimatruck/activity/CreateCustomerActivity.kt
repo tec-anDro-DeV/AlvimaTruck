@@ -12,6 +12,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -129,23 +130,44 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_image_selection, null)
 
-        val btnCamera = alertLayout.findViewById<TextView>(R.id.tvCamera)
-        val btnGallery = alertLayout.findViewById<TextView>(R.id.tvGallery)
+        val btnCamera = alertLayout.findViewById<LinearLayout>(R.id.llCamera)
+        val btnGallery = alertLayout.findViewById<LinearLayout>(R.id.llGallery)
+
+        val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel)
+        val tvContinue = alertLayout.findViewById<TextView>(R.id.tvContinue)
 
         val dialog =
             AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
         dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
+        var isCamera = false
+
 
         btnCamera.setOnClickListener {
-            dialog.dismiss()
-            checkCameraPermissionAndOpenCamera()
-        }
-        btnGallery.setOnClickListener {
-            dialog.dismiss()
-            checkGalleryPermissionAndOpenGallery()
+            isCamera = true
+            btnCamera.setBackgroundResource(R.drawable.otp_box_focus_bg)
+            btnGallery.setBackgroundResource(R.drawable.border_bg)
 
         }
+        btnGallery.setOnClickListener {
+            isCamera = false
+            btnCamera.setBackgroundResource(R.drawable.border_bg)
+            btnGallery.setBackgroundResource(R.drawable.otp_box_focus_bg)
+
+        }
+
+        tvCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        tvContinue.setOnClickListener {
+            if (isCamera) {
+                checkCameraPermissionAndOpenCamera()
+            } else {
+                checkGalleryPermissionAndOpenGallery()
+            }
+            dialog.dismiss()
+        }
+
         dialog.show()
         val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
         dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
