@@ -1,17 +1,18 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alvimatruck.adapter.SellOrderListAdapter
+import com.alvimatruck.adapter.SalesOrderListAdapter
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
-import com.alvimatruck.databinding.ActivitySellOrderListBinding
+import com.alvimatruck.databinding.ActivitySalesOrderListBinding
 import com.alvimatruck.utils.Utils
 
-class SellOrderListActivity : BaseActivity<ActivitySellOrderListBinding>() {
-    private var sellOrderListAdapter: SellOrderListAdapter? = null
-    override fun inflateBinding(): ActivitySellOrderListBinding {
-        return ActivitySellOrderListBinding.inflate(layoutInflater)
+class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>() {
+    private var salesOrderListAdapter: SalesOrderListAdapter? = null
+    override fun inflateBinding(): ActivitySalesOrderListBinding {
+        return ActivitySalesOrderListBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,10 +33,15 @@ class SellOrderListActivity : BaseActivity<ActivitySellOrderListBinding>() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
 
-        sellOrderListAdapter = SellOrderListAdapter(
-            this@SellOrderListActivity, Utils.getDummyArrayList(5)
+        salesOrderListAdapter = SalesOrderListAdapter(
+            this@SalesOrderListActivity, Utils.getDummyArrayList(5)
         )
-        binding.rvOrderList.adapter = sellOrderListAdapter
+        binding.rvOrderList.adapter = salesOrderListAdapter
+
+
+        binding.ivAddOrder.setOnClickListener {
+            startActivity(Intent(this@SalesOrderListActivity, NewSalesActivity::class.java))
+        }
 
     }
 }

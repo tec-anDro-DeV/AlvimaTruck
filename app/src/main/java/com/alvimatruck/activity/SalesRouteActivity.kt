@@ -22,7 +22,7 @@ class SalesRouteActivity : BaseActivity<ActivitySalesRouteBinding>() {
         }
 
         binding.rlSales.setOnClickListener {
-            startActivity(Intent(this, SellOrderListActivity::class.java))
+            startActivity(Intent(this, SalesOrderListActivity::class.java))
         }
 
 

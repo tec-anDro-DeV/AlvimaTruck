@@ -38,10 +38,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activity.SellOrderListActivity"
+            android:name=".activity.NewSalesActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.SellOrderDetailActivity"
+            android:name=".activity.SalesOrderListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SalesOrderDetailActivity"
             android:exported="false" />
         <activity
             android:name=".activity.ImagePickerActivity"
