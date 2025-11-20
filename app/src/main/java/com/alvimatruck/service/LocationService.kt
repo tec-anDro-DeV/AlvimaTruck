@@ -15,6 +15,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.alvimatruck.R
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.Granularity
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -28,27 +29,22 @@ class LocationService : Service() {
     private lateinit var fusedClient: FusedLocationProviderClient
     private var locationCallback: ((Location) -> Unit)? = null
 
+    private var fusedLocationCallback: LocationCallback? = null
+
     fun setLocationCallback(callback: (Location) -> Unit) {
         locationCallback = callback
     }
 
     private val binder = LocalBinder()
 
-
     inner class LocalBinder : Binder() {
         fun getService(): LocationService = this@LocationService
     }
 
-
-    override fun onBind(intent: Intent?): IBinder {
-        return binder
-    }
+    override fun onBind(intent: Intent?): IBinder = binder
 
     override fun onCreate() {
-        Log.e(TAG, "onCreate")
-
-        // preferences = Preferences.getInstance(this@LocationService)
-        //  db = LexonDatabase(this@LocationService)
+        super.onCreate()
         startForegroundServiceNotification()
         fusedClient = LocationServices.getFusedLocationProviderClient(this)
         startLocationUpdates()
@@ -56,18 +52,17 @@ class LocationService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.e(TAG, "onStartCommand")
-        super.onStartCommand(intent, flags, startId)
         return START_STICKY
     }
 
-
     private fun startForegroundServiceNotification() {
         val channelId = "location_channel"
-        val channelName = "Location Tracking"
         val notificationManager = getSystemService(NotificationManager::class.java)
 
         val channel = NotificationChannel(
-            channelId, channelName, NotificationManager.IMPORTANCE_LOW
+            channelId,
+            "Location Tracking",
+            NotificationManager.IMPORTANCE_LOW
         )
         notificationManager.createNotificationChannel(channel)
 
@@ -78,10 +73,11 @@ class LocationService : Service() {
             .setOngoing(true)
             .build()
 
-        // ✅ Required for Android 14+ / targetSdk ≥ 34
         if (Build.VERSION.SDK_INT >= 34) {
             startForeground(
-                1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
+                1,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
             )
         } else {
             startForeground(1, notification)
@@ -94,24 +90,34 @@ class LocationService : Service() {
         val request = LocationRequest.Builder(
             Priority.PRIORITY_HIGH_ACCURACY,
             5000L
-        ).build()
+        )
+            .setGranularity(Granularity.GRANULARITY_FINE)
+            .setWaitForAccurateLocation(false)   // works offline
+            .build()
 
-        val fusedLocationCallback = object : LocationCallback() {
+        fusedLocationCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
                 val location = result.lastLocation ?: return
-                Log.d("LocationService", "Lat=${location.latitude}, Lon=${location.longitude}")
-
-                // ✅ Invoke callback for activity
+                Log.d(TAG, "Lat=${location.latitude}, Lon=${location.longitude}")
                 locationCallback?.invoke(location)
             }
         }
 
-        fusedClient.requestLocationUpdates(request, fusedLocationCallback, Looper.getMainLooper())
+        fusedClient.requestLocationUpdates(
+            request,
+            fusedLocationCallback!!,
+            Looper.getMainLooper()
+        )
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        fusedClient.removeLocationUpdates(object : LocationCallback() {})
+        fusedLocationCallback?.let {
+            fusedClient.removeLocationUpdates(it)
+        }
+
+        fusedLocationCallback = null
+        locationCallback = null
     }
 
 //

@@ -33,7 +33,7 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>() {
             locationService = localBinder.getService()
             isBound = true
 
-            locationService!!.setLocationCallback { location ->
+            locationService?.setLocationCallback { location ->
                 runOnUiThread {
                     binding.tvCurrentLocation.text =
                         "Lat: ${location.latitude}\nLon: ${location.longitude}"
@@ -142,6 +142,18 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>() {
                 intent.data = android.net.Uri.fromParts("package", packageName, null)
                 startActivity(intent)
             }.setNegativeButton("Cancel", null).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isBound) {
+            try {
+                unbindService(connection)
+                isBound = false
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }
 
