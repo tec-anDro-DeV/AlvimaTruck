@@ -14,6 +14,8 @@ class Constants {
         const val API_OTPVerify = "MobileLogin/verify-otp"
         const val API_ChangePassword = "MobileLogin/change-password"
 
+        const val API_Price_Group = "Dropdown/get-customer-price-group-dropdown"
+
 
         // Constants Key
         const val IS_LOGIN = "is_login"

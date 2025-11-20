@@ -84,11 +84,11 @@ class SingleItemSelectionAdapter(
         }
     }
 
-    val selected: String?
+    val selected: String
         get() {
             if (checkedPosition != -1) {
                 return van[checkedPosition]
             }
-            return null
+            return ""
         }
 }

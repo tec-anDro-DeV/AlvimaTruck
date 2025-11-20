@@ -81,8 +81,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_7sdp"
-                    android:layout_toEndOf="@id/icRegularCustomers"
                     android:fontFamily="@font/sansregular"
                     android:text="Route Name"
                     android:textColor="@color/darkgray"
@@ -101,13 +99,11 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_9sdp">
+                android:layout_marginTop="@dimen/_7sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_7sdp"
-                    android:layout_toEndOf="@id/icRegularCustomers"
                     android:fontFamily="@font/sansregular"
                     android:text="Payment Mode"
                     android:textColor="@color/darkgray"
@@ -126,13 +122,11 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_9sdp">
+                android:layout_marginTop="@dimen/_7sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_7sdp"
-                    android:layout_toEndOf="@id/icRegularCustomers"
                     android:fontFamily="@font/sansregular"
                     android:text="Order Date"
                     android:textColor="@color/darkgray"
@@ -157,9 +151,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_7sdp"
-                android:layout_toEndOf="@id/icRegularCustomers"
                 android:fontFamily="@font/sansregular"
-                android:text="Sub Total"
+                android:text="Subtotal"
                 android:textColor="@color/darkgray"
                 android:textSize="@dimen/_12ssp" />
 

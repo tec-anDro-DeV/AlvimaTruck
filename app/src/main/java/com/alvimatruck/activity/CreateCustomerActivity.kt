@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
@@ -26,18 +27,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.adapter.SingleItemSelectionAdapter
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityCreateCustomerBinding
+import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.Utils
+import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
-    var itemList: ArrayList<String>? = ArrayList()
+    var postItemList: ArrayList<String>? = ArrayList()
+    var priceItemList: ArrayList<String>? = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
-    var selectedGroup: String? = null
+    var selectedPostGroup = ""
+    var selectedPriceGroup = ""
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
@@ -66,17 +76,18 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
             handleBackPressed()
         }
         setupLaunchers()
+        getPriceList()
 
-        itemList!!.add("Group 1")
-        itemList!!.add("Group 2")
-        itemList!!.add("Group 3")
-        itemList!!.add("Group 4")
-        itemList!!.add("Group 5")
-        itemList!!.add("Group 6")
+        postItemList!!.add("DOMESTIC")
+        postItemList!!.add("Distributor")
+        postItemList!!.add("Whole-seller")
+        postItemList!!.add("Retailers")
+        postItemList!!.add("ABEDELLA")
+        postItemList!!.add("Foreign")
 
         binding.tvCustomerPriceGroup.setOnClickListener {
             dialogSingleSelection(
-                itemList!!,
+                priceItemList!!,
                 "Choose Price Group",
                 "Search Price Group",
                 binding.tvCustomerPriceGroup
@@ -85,7 +96,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
         binding.tvCustomerPostingGroup.setOnClickListener {
             dialogSingleSelection(
-                itemList!!,
+                postItemList!!,
                 "Choose Posting Group",
                 "Search Posting Group",
                 binding.tvCustomerPostingGroup
@@ -122,6 +133,56 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
             idProofImageUri = null // ✅ Reset the URI
             binding.rlIDProof.visibility = View.GONE
             binding.rlChooseID.visibility = View.VISIBLE
+        }
+
+    }
+
+    private fun getPriceList() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@CreateCustomerActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, ""
+            )!!.webservices.priceGroupList().enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            if (response.body() != null && response.body()!!.has("data")) {
+                                val dataArray = response.body()!!.getAsJsonArray("data")
+
+                                for (item in dataArray) {
+                                    val obj = item.asJsonObject
+                                    val code = obj.get("code").asString
+                                    priceItemList!!.add(code)
+                                }
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@CreateCustomerActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@CreateCustomerActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
         }
 
     }
@@ -179,10 +240,15 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         hint: String,
         textView: TextView
     ) {
+        filterList!!.clear()
         filterList!!.addAll(list)
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
-
+        var selectedGroup: String = if (textView == binding.tvCustomerPriceGroup) {
+            selectedPriceGroup
+        } else {
+            selectedPostGroup
+        }
         val singleItemSelectionAdapter =
             SingleItemSelectionAdapter(this, filterList!!, selectedGroup)
 
@@ -236,8 +302,12 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
         tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
         tvConfirm.setOnClickListener { view: View? ->
-            selectedGroup = singleItemSelectionAdapter.selected!!
-            textView.text = singleItemSelectionAdapter.selected!!
+            if (textView == binding.tvCustomerPriceGroup) {
+                selectedPriceGroup = singleItemSelectionAdapter.selected
+            } else {
+                selectedPostGroup = singleItemSelectionAdapter.selected
+            }
+            textView.text = singleItemSelectionAdapter.selected
             dialog.dismiss()
         }
     }

@@ -17,6 +17,10 @@ class SellOrderListActivity : BaseActivity<ActivitySellOrderListBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding.btnBack.setOnClickListener {
+            handleBackPressed()
+        }
+
 
         binding.rvOrderList.addItemDecoration(
             EqualSpacingItemDecoration(

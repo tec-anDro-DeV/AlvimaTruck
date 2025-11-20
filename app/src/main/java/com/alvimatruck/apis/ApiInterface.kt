@@ -33,5 +33,8 @@ interface ApiInterface {
     @POST(Constants.API_ChangePassword)
     fun changePassword(@Body changePasswordRequest: ChangePasswordRequest): Call<JsonObject>
 
+    @GET(Constants.API_Price_Group)
+    fun priceGroupList(): Call<JsonObject>
+
 
 }

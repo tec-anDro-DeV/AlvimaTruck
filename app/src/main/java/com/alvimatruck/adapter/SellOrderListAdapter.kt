@@ -6,7 +6,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.alvimatruck.activity.ViewCustomerActivity
+import com.alvimatruck.activity.SellOrderDetailActivity
 import com.alvimatruck.databinding.SingleOrderItemBinding
 
 
@@ -25,7 +25,7 @@ class SellOrderListAdapter(
         //   holder.binding.tvData.text = "Demo List Item " + (position + 1)
 
         holder.itemView.setOnClickListener {
-            mActivity.startActivity(Intent(mActivity, ViewCustomerActivity::class.java))
+            mActivity.startActivity(Intent(mActivity, SellOrderDetailActivity::class.java))
         }
 
     }
