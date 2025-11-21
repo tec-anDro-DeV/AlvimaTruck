@@ -26,7 +26,6 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -54,7 +53,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_118sdp"
                 android:layout_weight="1"
-                android:background="@drawable/ic_sale_route"
+                android:background="@drawable/ic_customer"
                 android:padding="@dimen/_14sdp">
 
                 <TextView
@@ -71,7 +70,7 @@
                 android:layout_height="@dimen/_118sdp"
                 android:layout_marginStart="@dimen/_13sdp"
                 android:layout_weight="1"
-                android:background="@drawable/ic_sale_route"
+                android:background="@drawable/ic_truck"
                 android:padding="@dimen/_14sdp">
 
                 <TextView
@@ -94,7 +93,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_118sdp"
                 android:layout_weight="1"
-                android:background="@drawable/ic_sale_route"
+                android:background="@drawable/ic_report"
                 android:padding="@dimen/_14sdp">
 
                 <TextView
@@ -107,11 +106,12 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rlTransfer"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_118sdp"
                 android:layout_marginStart="@dimen/_13sdp"
                 android:layout_weight="1"
-                android:background="@drawable/ic_sale_route"
+                android:background="@drawable/ic_truck"
                 android:padding="@dimen/_14sdp">
 
                 <TextView
@@ -134,7 +134,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_118sdp"
                 android:layout_weight="1"
-                android:background="@drawable/ic_sale_route"
+                android:background="@drawable/ic_report"
                 android:padding="@dimen/_14sdp">
 
                 <TextView

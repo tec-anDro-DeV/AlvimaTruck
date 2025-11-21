@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Operations"
+            android:text="Transfer Request"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -44,47 +43,39 @@
         android:orientation="vertical"
         android:padding="@dimen/_21sdp">
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rlCreateTransferRequest"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="@dimen/_73sdp"
+            android:background="@drawable/ic_transfer">
 
-            <RelativeLayout
-                android:id="@+id/rlSales"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_118sdp"
-                android:layout_weight="1"
-                android:background="@drawable/ic_customer"
-                android:padding="@dimen/_14sdp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_70sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Create transfer\nRequest"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp" />
+        </RelativeLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="Sales"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_16ssp" />
-            </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rlTransferRequestList"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_73sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:background="@drawable/ic_transfer2">
 
-            <RelativeLayout
-                android:id="@+id/rlRoute"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_118sdp"
-                android:layout_marginStart="@dimen/_13sdp"
-                android:layout_weight="1"
-                android:background="@drawable/ic_report"
-                android:padding="@dimen/_14sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="Route"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_16ssp" />
-            </RelativeLayout>
-        </LinearLayout>
-
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_70sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Transfer Request\nList"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp" />
+        </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

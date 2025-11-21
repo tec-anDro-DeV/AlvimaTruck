@@ -34,6 +34,7 @@ import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.Utils
 import com.google.gson.JsonObject
+import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -57,6 +58,8 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
     private var idProofImageUri: Uri? = null
 
     private var isUploadingCustomerPhoto: Boolean = true
+
+    private lateinit var cropLauncher: ActivityResultLauncher<Intent>
 
 
     companion object {
@@ -334,14 +337,66 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
                     }
                 }
             }
+
+        cropLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    result.data?.let {
+                        val resultUri = UCrop.getOutput(it)
+                        resultUri?.let { finalUri ->
+                            handleCroppedImage(finalUri)
+                        }
+                    }
+                }
+            }
     }
 
-    private fun handleImageResult(imageUri: Uri) {
+    private fun startCrop(sourceUri: Uri) {
+
+        val destinationUri = Uri.fromFile(
+            File(cacheDir, "crop_${System.currentTimeMillis()}.jpg")
+        )
+
+
+        val options = UCrop.Options()
+
+        // 🔒 Disable free-hand resizing
+        options.setFreeStyleCropEnabled(false)
+
+        // 🔒 Hide aspect ratio options (so user cannot change)
+        options.setShowCropGrid(true)
+        options.setShowCropFrame(true)
+        options.setHideBottomControls(true)
+
+        // Apply different aspect ratios
+        val cropIntent = if (isUploadingCustomerPhoto) {
+
+            // ⭐ CUSTOMER PHOTO = 1:1 fixed
+            UCrop.of(sourceUri, destinationUri)
+                .withAspectRatio(1f, 1f)
+                .withMaxResultSize(1080, 1080)
+                .withOptions(options)
+                .getIntent(this)
+
+        } else {
+
+            // ⭐ ID PROOF = 16:6 fixed
+            UCrop.of(sourceUri, destinationUri)
+                .withAspectRatio(16f, 9f)
+                .withMaxResultSize(1600, 600)
+                .withOptions(options)
+                .getIntent(this)
+        }
+
+        cropLauncher.launch(cropIntent)
+    }
+
+    private fun handleCroppedImage(uri: Uri) {
         lifecycleScope.launch(Dispatchers.Main) {
             // Show a loading indicator if you have one
             val compressedUri = withContext(Dispatchers.IO) {
                 // This runs the compression on a background thread
-                Utils.getCompressedUri(this@CreateCustomerActivity, imageUri)
+                Utils.getCompressedUri(this@CreateCustomerActivity, uri)
             }
 
             if (isUploadingCustomerPhoto) {
@@ -357,6 +412,12 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
             }
             // Hide loading indicator
         }
+    }
+
+    private fun handleImageResult(imageUri: Uri) {
+        startCrop(imageUri)
+
+
     }
 
 

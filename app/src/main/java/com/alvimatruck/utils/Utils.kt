@@ -89,7 +89,7 @@ object Utils {
 
     @SuppressLint("SimpleDateFormat")
     fun getFullDateWithTime(time: Long?): String {
-        return SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(time!!))
+        return SimpleDateFormat("MM/dd/yyyy HH:mm").format(Date(time!!))
     }
 
 

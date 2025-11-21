@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
@@ -30,9 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Update Customer"
+            android:text="New Transfer Request"
             android:textColor="@color/white"
-            android:textSize="@dimen/_16ssp" />
+            android:textSize="@dimen/_15ssp" />
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -51,23 +53,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Customer Name"
+                android:text="Transfer Request Number (Automatic)"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
-
             <TextView
-                android:id="@+id/etCustomerName"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_44sdp"
                 android:layout_marginTop="@dimen/_7sdp"
-                android:background="@drawable/gray_bg"
-                android:fontFamily="@font/sanssemibold"
+                android:background="@drawable/input_bg"
+                android:fontFamily="@font/sansregular"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="@dimen/_10sdp"
-                android:text="John Doe"
+                android:text="TRN-12566-5854"
                 android:textColor="@color/black"
-                android:textColorHint="@color/hintGary"
                 android:textSize="@dimen/_12ssp" />
 
             <TextView
@@ -75,27 +74,48 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Telephone Number"
+                android:text="Profit Center Code"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
 
-            <EditText
-                android:id="@+id/etTelephoneNumber"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_44sdp"
                 android:layout_marginTop="@dimen/_7sdp"
                 android:background="@drawable/input_bg"
                 android:fontFamily="@font/sansregular"
                 android:gravity="center_vertical"
-                android:hint="Enter Telephone Number"
-                android:imeOptions="actionNext"
-                android:inputType="phone"
-                android:maxEms="13"
+                android:hint="Choose"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/hintGary"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_12ssp"
+                app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Cost Center Code"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_44sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:background="@drawable/input_bg"
+                android:fontFamily="@font/sansregular"
+                android:gravity="center_vertical"
+                android:hint="Choose"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/hintGary"
+                android:textSize="@dimen/_12ssp"
+                app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -108,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="City"
+                    android:text="From"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -118,7 +138,93 @@
                     android:layout_marginStart="@dimen/_14sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Postal Code"
+                    android:text="To"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_44sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/input_bg"
+                    android:fontFamily="@font/sansregular"
+                    android:gravity="center_vertical"
+                    android:hint="Choose"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hintGary"
+                    android:textSize="@dimen/_12ssp"
+                    app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_44sdp"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/input_bg"
+                    android:fontFamily="@font/sansregular"
+                    android:gravity="center_vertical"
+                    android:hint="Choose"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hintGary"
+                    android:textSize="@dimen/_12ssp"
+                    app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Request Date and Time"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp" />
+
+            <TextView
+                android:id="@+id/tvDateTime"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_44sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:background="@drawable/input_bg"
+                android:fontFamily="@font/sansregular"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                tools:text="MM/dd/yyyy HH:mm" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="Request User ID"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="Quantity"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
             </LinearLayout>
@@ -130,7 +236,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/etCity"
+                    android:id="@+id/etUserId"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_44sdp"
                     android:layout_weight="1"
@@ -138,7 +244,7 @@
                     android:background="@drawable/input_bg"
                     android:fontFamily="@font/sansregular"
                     android:gravity="center_vertical"
-                    android:hint="Enter City"
+                    android:hint="Enter User ID"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:paddingHorizontal="@dimen/_10sdp"
@@ -147,7 +253,7 @@
                     android:textSize="@dimen/_12ssp" />
 
                 <EditText
-                    android:id="@+id/etPostalCode"
+                    android:id="@+id/etQty"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_44sdp"
                     android:layout_marginStart="@dimen/_14sdp"
@@ -155,7 +261,7 @@
                     android:background="@drawable/input_bg"
                     android:fontFamily="@font/sansregular"
                     android:gravity="center_vertical"
-                    android:hint="Enter Postal Code"
+                    android:hint="Enter Quantity"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:paddingHorizontal="@dimen/_10sdp"
@@ -165,37 +271,10 @@
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_14sdp"
-                android:fontFamily="@font/sanssemibold"
-                android:text="Address"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11ssp" />
-
-
-            <EditText
-                android:id="@+id/etAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@drawable/input_bg"
-                android:fontFamily="@font/sansregular"
-                android:gravity="top"
-                android:hint="Enter Address"
-                android:inputType="textMultiLine"
-                android:minLines="3"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:paddingVertical="@dimen/_7sdp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/hintGary"
-                android:textSize="@dimen/_12ssp" />
-
-
             <LinearLayout
                 android:id="@+id/llBottomButtons"
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_21sdp"
                 android:orientation="horizontal">
@@ -214,7 +293,7 @@
                     android:textSize="@dimen/_14ssp" />
 
                 <TextView
-                    android:id="@+id/tvUpdate"
+                    android:id="@+id/tvAdd"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_14sdp"
@@ -223,7 +302,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Update"
+                    android:text="Add"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
             </LinearLayout>

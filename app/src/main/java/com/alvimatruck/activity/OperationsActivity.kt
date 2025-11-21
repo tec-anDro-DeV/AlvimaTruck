@@ -29,5 +29,9 @@ class OperationsActivity : BaseActivity<ActivityOperationsBinding>() {
         binding.rlBottomTrip.setOnClickListener {
 
         }
+
+        binding.rlTransfer.setOnClickListener {
+            startActivity(Intent(this, TransferActivity::class.java))
+        }
     }
 }
