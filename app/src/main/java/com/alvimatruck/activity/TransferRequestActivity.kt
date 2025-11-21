@@ -18,5 +18,10 @@ class TransferRequestActivity : BaseActivity<ActivityTransferRequestBinding>() {
         binding.rlCreateTransferRequest.setOnClickListener {
             startActivity(Intent(this, CreateTransferRequestActivity::class.java))
         }
+        binding.rlTransferRequestList.setOnClickListener {
+            startActivity(Intent(this, TransferOrderListActivity::class.java))
+        }
+
+
     }
 }

@@ -17,5 +17,6 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
         }
 
         binding.tvDateTime.text = Utils.getFullDateWithTime(System.currentTimeMillis())
+        binding.tvTransferNumber.text = System.currentTimeMillis().toString()
     }
 }

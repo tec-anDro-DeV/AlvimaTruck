@@ -113,7 +113,7 @@
                 android:id="@+id/chkRemember"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/black"
+                android:buttonTint="@color/orange"
                 android:fontFamily="@font/sanssemibold"
                 android:text="Remember me"
                 android:textColor="@color/black"
