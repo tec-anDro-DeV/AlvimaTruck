@@ -1,5 +1,6 @@
 package com.alvimatruck.utils
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -35,6 +36,10 @@ object Utils {
 
 
     val MAX_FILE_SIZE_BYTES = 1 * 1024 * 1024
+
+    const val CAMERA_PERMISSION = Manifest.permission.CAMERA
+    const val READ_MEDIA_IMAGES = Manifest.permission.READ_MEDIA_IMAGES
+    const val READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
 
 
     fun getDummyArrayList(counter: Int): ArrayList<String> {

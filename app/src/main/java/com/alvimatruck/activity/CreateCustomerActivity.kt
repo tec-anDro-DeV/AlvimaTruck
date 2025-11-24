@@ -1,6 +1,5 @@
 package com.alvimatruck.activity
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -33,6 +32,9 @@ import com.alvimatruck.databinding.ActivityCreateCustomerBinding
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.Utils
+import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
+import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
+import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
 import com.google.gson.JsonObject
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
@@ -60,13 +62,6 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
     private var isUploadingCustomerPhoto: Boolean = true
 
     private lateinit var cropLauncher: ActivityResultLauncher<Intent>
-
-
-    companion object {
-        const val CAMERA_PERMISSION = Manifest.permission.CAMERA
-        const val READ_MEDIA_IMAGES = Manifest.permission.READ_MEDIA_IMAGES
-        const val READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
-    }
 
 
     override fun inflateBinding(): ActivityCreateCustomerBinding {
@@ -359,9 +354,12 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
 
         val options = UCrop.Options()
-
-        // 🔒 Disable free-hand resizing
-        options.setFreeStyleCropEnabled(false)
+        if (isUploadingCustomerPhoto) {
+            // 🔒 Disable free-hand resizing
+            options.setFreeStyleCropEnabled(false)
+        } else {
+            options.setFreeStyleCropEnabled(true)
+        }
 
         // 🔒 Hide aspect ratio options (so user cannot change)
         options.setShowCropGrid(true)
@@ -416,8 +414,6 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
     private fun handleImageResult(imageUri: Uri) {
         startCrop(imageUri)
-
-
     }
 
 

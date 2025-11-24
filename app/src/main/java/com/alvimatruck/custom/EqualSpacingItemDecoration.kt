@@ -59,14 +59,15 @@ class EqualSpacingItemDecoration @JvmOverloads constructor(
 
             GRID -> if (layoutManager is GridLayoutManager) {
                 val cols = layoutManager.spanCount
-                var rows = itemCount / cols
-                if (itemCount % 2 == 1) {
-                    rows += 1
-                }
-                outRect.left = spacing
-                outRect.right = if (position % cols == cols - 1) spacing else 0
+                val column = position % cols
+
+                outRect.left = spacing - column * spacing / cols
+                outRect.right = (column + 1) * spacing / cols
                 outRect.top = spacing
-                outRect.bottom = if (position / cols == rows - 1) spacing else 0
+
+                if (position >= itemCount - cols) {
+                    outRect.bottom = spacing
+                }
             }
         }
     }

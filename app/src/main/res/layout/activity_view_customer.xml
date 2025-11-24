@@ -313,25 +313,75 @@
                     android:text="000"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:background="@drawable/input_bg"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_11sdp"
+                android:paddingVertical="@dimen/_12sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_9sdp"
                     android:fontFamily="@font/sansbold"
-                    android:text="ID Proof"
+                    android:text="Credit Limit"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
 
-                <ImageView
-                    android:id="@+id/ivIDProof"
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_108sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:background="@color/lightOrange"
-                    android:scaleType="centerCrop" />
+                    android:layout_height="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_11sdp"
+                    android:backgroundTint="@color/white"
+                    android:indeterminateOnly="false"
+                    android:max="100"
+                    android:progress="80"
+                    android:progressDrawable="@drawable/progress_bar_drawable" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_11sdp">
+
+                    <TextView
+                        android:id="@+id/tvUsagesLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sansregular"
+                        android:text="Usage:"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <TextView
+                        android:id="@+id/tvUsages"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/tvUsagesLabel"
+                        android:fontFamily="@font/sansregular"
+                        android:text="$8000"
+                        android:textColor="@color/orange"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <TextView
+                        android:id="@+id/tvTotalLimit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/sansregular"
+                        android:text="Total: $10,000"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp" />
+                </RelativeLayout>
+
             </LinearLayout>
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

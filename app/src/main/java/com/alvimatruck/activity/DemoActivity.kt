@@ -74,10 +74,6 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>() {
         binding.btnOpenList.setOnClickListener {
             startActivity(Intent(this, DemoListActivity::class.java))
         }
-
-        binding.btnOpenImagePicker.setOnClickListener {
-            startActivity(Intent(this, ImagePickerActivity::class.java))
-        }
     }
 
     private fun checkAllPermissionsAndStartService() {

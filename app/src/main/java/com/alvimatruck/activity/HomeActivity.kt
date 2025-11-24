@@ -93,7 +93,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                     Constants.Status, binding.tvStatus.text.toString()
                 )
             )
-
+        }
+        binding.llFeetManagement.setOnClickListener {
+            startActivity(Intent(this, FleetManagementActivity::class.java))
         }
     }
 }
