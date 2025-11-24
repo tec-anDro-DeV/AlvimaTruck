@@ -497,6 +497,40 @@
                     android:layout_marginTop="@dimen/_7sdp">
 
                     <TextView
+                        android:id="@+id/tvDiscountLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sansbold"
+                        android:text="Discount"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toEndOf="@+id/tvDiscountLabel"
+                        android:fontFamily="@font/sansregular"
+                        android:text=" (30%)"
+                        android:textColor="@color/darkgray"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/sansregular"
+                        android:text="-$351.35"
+                        android:textColor="@color/darkgray"
+                        android:textSize="@dimen/_12ssp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp">
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansbold"
@@ -537,7 +571,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansbold"
-                        android:text="$1238.30"
+                        android:text="$936.95"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16ssp" />
                 </RelativeLayout>

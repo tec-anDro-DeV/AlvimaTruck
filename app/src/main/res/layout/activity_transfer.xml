@@ -73,7 +73,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Transfer\nShipped to Receive"
+                android:text="Transfer Shipped\nto Receive"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>

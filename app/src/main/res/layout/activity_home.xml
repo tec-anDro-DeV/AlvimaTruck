@@ -542,7 +542,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sansregular"
-                            android:text="Today’s"
+                            android:text="Credit"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11ssp" />
 
@@ -633,7 +633,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Today’s"
+                        android:text="Credit"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
@@ -643,7 +643,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/sansbold"
                         android:maxLines="1"
-                        android:text=" Payment"
+                        android:text=" Collection"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>

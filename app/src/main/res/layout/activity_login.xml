@@ -102,7 +102,6 @@
             android:textSize="@dimen/_12ssp" />
 
 
-
         <!-- Remember Me & Forgot Password -->
         <RelativeLayout
             android:layout_width="match_parent"
@@ -113,9 +112,10 @@
                 android:id="@+id/chkRemember"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/orange"
+                android:button="@drawable/checkbox_selector"
                 android:fontFamily="@font/sanssemibold"
                 android:text="Remember me"
+                android:paddingStart="@dimen/_5sdp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 

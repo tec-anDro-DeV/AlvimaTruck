@@ -157,7 +157,7 @@
             android:fillColor="#D8DEE8"
             android:pathData="M22.879,28.787L10.091,30.038L8.289,9.874L21.207,9.362L22.879,28.787Z" />
         <path
-            android:fillColor="#F58618"
+            android:fillColor="@color/orange"
             android:pathData="M21.157,8.781L8.235,9.27L7.696,3.24L20.658,2.973L21.157,8.781Z" />
         <path
             android:fillColor="#ffffff"
@@ -247,7 +247,7 @@
         </aapt:attr>
     </path>
     <path
-        android:fillColor="#F58618"
+        android:fillColor="@color/orange"
         android:pathData="M0.78,11.846C0.409,11.843 0.127,12.144 0.152,12.517L0.697,20.823C0.721,21.196 1.041,21.483 1.41,21.464L10.238,20.999C10.566,20.982 10.812,20.684 10.79,20.334L10.238,11.917L0.78,11.846Z" />
     <path android:pathData="M9.554,14.613L8.122,11.901L11.658,11.927L9.554,14.613Z">
         <aapt:attr name="android:fillColor">

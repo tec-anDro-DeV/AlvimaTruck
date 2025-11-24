@@ -8,15 +8,15 @@
         android:pathData="M56,16.5L56,16.5A39.5,39.5 0,0 1,95.5 56L95.5,56A39.5,39.5 0,0 1,56 95.5L56,95.5A39.5,39.5 0,0 1,16.5 56L16.5,56A39.5,39.5 0,0 1,56 16.5z"
         android:strokeWidth="5"
         android:strokeAlpha="0.1"
-        android:strokeColor="#121212" />
+        android:strokeColor="@color/black" />
     <path
         android:fillColor="#00000000"
         android:pathData="M56,21.5L56,21.5A34.5,34.5 0,0 1,90.5 56L90.5,56A34.5,34.5 0,0 1,56 90.5L56,90.5A34.5,34.5 0,0 1,21.5 56L21.5,56A34.5,34.5 0,0 1,56 21.5z"
         android:strokeWidth="5"
         android:strokeAlpha="0.3"
-        android:strokeColor="#121212" />
+        android:strokeColor="@color/black" />
     <path
-        android:fillColor="#121212"
+        android:fillColor="@color/black"
         android:pathData="M56,24L56,24A32,32 0,0 1,88 56L88,56A32,32 0,0 1,56 88L56,88A32,32 0,0 1,24 56L24,56A32,32 0,0 1,56 24z" />
     <path
         android:fillColor="#ffffff"

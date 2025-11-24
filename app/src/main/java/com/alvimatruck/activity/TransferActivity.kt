@@ -19,5 +19,14 @@ class TransferActivity : BaseActivity<ActivityTransferBinding>() {
             startActivity(Intent(this, TransferRequestActivity::class.java))
         }
 
+        binding.rlTransferShipToReceive.setOnClickListener {
+            startActivity(Intent(this, TransferShipToReceiveActivity::class.java))
+        }
+
+        binding.rlTransferListing.setOnClickListener {
+            startActivity(Intent(this, TransferShipAndReceiveActivity::class.java))
+
+        }
+
     }
 }

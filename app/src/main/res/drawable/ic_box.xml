@@ -31,6 +31,6 @@
             android:fillColor="#00000000"
             android:pathData="M0,93C5.44,88.54 19.58,81.1 32.63,86.98C48.95,94.34 63.35,92.33 74.86,85.64C86.38,78.96 122.02,49.42 156,58.83"
             android:strokeWidth="1"
-            android:strokeColor="#F58618" />
+            android:strokeColor="@color/orange" />
     </group>
 </vector>

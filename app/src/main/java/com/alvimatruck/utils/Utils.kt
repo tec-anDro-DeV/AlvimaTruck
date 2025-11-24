@@ -46,6 +46,17 @@ object Utils {
         return stringArrayList
     }
 
+    fun getDummyTransferList(counter: Int): ArrayList<TransferItem> {
+        val rawList = getDummyArrayList(5)
+        val transferList =
+            ArrayList<TransferItem>()
+        transferList.clear()
+        for (i in rawList) {
+            transferList.add(TransferItem(i))
+        }
+        return transferList
+    }
+
     fun parseErrorMessage(response: Response<*>): String {
         return try {
             JSONObject(response.errorBody()?.string() ?: "").optString(
@@ -259,3 +270,8 @@ object Utils {
         )
     }
 }
+
+data class TransferItem(
+    var name: String,
+    var isSelected: Boolean = false
+)
