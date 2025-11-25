@@ -18,13 +18,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
 import com.alvimatruck.R
-import com.alvimatruck.adapter.ImagesListAdapter
 import com.alvimatruck.custom.BaseActivity
-import com.alvimatruck.custom.EqualSpacingItemDecoration
-import com.alvimatruck.databinding.ActivityIncidentReportingBinding
-import com.alvimatruck.interfaces.DeletePhotoListener
+import com.alvimatruck.databinding.ActivityConfirmDeliveryBinding
 import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
@@ -35,60 +31,43 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>(),
-    DeletePhotoListener {
-    override fun inflateBinding(): ActivityIncidentReportingBinding {
-        return ActivityIncidentReportingBinding.inflate(layoutInflater)
-    }
-
-
+class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
 
-    private var proofImageUri: Uri? = null
+    private var deliveryProofImageUri: Uri? = null
     private lateinit var cropLauncher: ActivityResultLauncher<Intent>
 
-    private var imagesListAdapter: ImagesListAdapter? = null
-    private var listProofImageUri: ArrayList<Uri> = ArrayList()
+
+    override fun inflateBinding(): ActivityConfirmDeliveryBinding {
+        return ActivityConfirmDeliveryBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        listProofImageUri.clear()
-
-        binding.btnBack.setOnClickListener {
-            handleBackPressed()
-        }
-
         checkAndStartLocationService()
 
         setupLaunchers()
 
-        binding.tvCancel.setOnClickListener {
+
+        binding.btnBack.setOnClickListener {
             handleBackPressed()
+        }
+        binding.btnClearSignature.setOnClickListener {
+            binding.signature.clear()
         }
 
         binding.rlChoosePhoto.setOnClickListener {
-            if (listProofImageUri.size < 9) {
-                openImageChooseDailog()
-            }
+            openImageChooseDailog()
         }
 
-        binding.rvPhotos.addItemDecoration(
-            EqualSpacingItemDecoration(
-                resources.getDimension(com.intuit.sdp.R.dimen._7sdp).toInt(),
-                EqualSpacingItemDecoration.GRID
-            )
-        )
-        binding.rvPhotos.layoutManager =
-            GridLayoutManager(this, 3)
 
-
-        imagesListAdapter = ImagesListAdapter(
-            this@IncidentReportingActivity,
-            listProofImageUri, this
-        )
-        binding.rvPhotos.adapter = imagesListAdapter
-
+        binding.btnDeleteDeliveryProof.setOnClickListener {
+            binding.ivIDProof.setImageURI(null) // Clear the ImageView
+            deliveryProofImageUri = null // ✅ Reset the URI
+            binding.rlDeliveryPhoto.visibility = View.GONE
+            binding.rlChoosePhoto.visibility = View.VISIBLE
+        }
 
     }
 
@@ -142,7 +121,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
         cameraLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
-                    val currentUri = proofImageUri
+                    val currentUri = deliveryProofImageUri
 
                     currentUri?.let { uri ->
                         handleImageResult(uri)
@@ -182,7 +161,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
         val options = UCrop.Options()
 
         // 🔒 Disable free-hand resizing
-        options.setFreeStyleCropEnabled(false)
+        options.setFreeStyleCropEnabled(true)
 
         // 🔒 Hide aspect ratio options (so user cannot change)
         options.setShowCropGrid(true)
@@ -190,8 +169,8 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
         options.setHideBottomControls(true)
 
         // Apply different aspect ratios
-        val cropIntent = UCrop.of(sourceUri, destinationUri).withAspectRatio(1f, 1f)
-            .withMaxResultSize(1200, 1200).withOptions(options).getIntent(this)
+        val cropIntent = UCrop.of(sourceUri, destinationUri).withAspectRatio(16f, 9f)
+            .withMaxResultSize(1600, 1600).withOptions(options).getIntent(this)
 
 
         cropLauncher.launch(cropIntent)
@@ -202,20 +181,14 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
             // Show a loading indicator if you have one
             val compressedUri = withContext(Dispatchers.IO) {
                 // This runs the compression on a background thread
-                Utils.getCompressedUri(this@IncidentReportingActivity, uri)
+                Utils.getCompressedUri(this@ConfirmDeliveryActivity, uri)
             }
 
-            compressedUri.let {
-                if (listProofImageUri.size >= 9) return@let
-                listProofImageUri.add(it)
-                // Optimize: Only notify the item that was added, not the whole list
-                imagesListAdapter?.notifyItemInserted(listProofImageUri.size - 1)
-                if (listProofImageUri.size == 9) {
-                    binding.rlChoosePhoto.visibility = View.GONE
-                } else {
-                    binding.rlChoosePhoto.visibility = View.VISIBLE
-                }
-            }
+            deliveryProofImageUri = compressedUri
+            binding.ivIDProof.setImageURI(deliveryProofImageUri)
+            binding.rlDeliveryPhoto.visibility = View.VISIBLE
+            binding.rlChoosePhoto.visibility = View.GONE
+
             // Hide loading indicator
         }
     }
@@ -246,7 +219,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
         val photoFile = File(externalCacheDir, "photo_${System.currentTimeMillis()}.jpg")
         val currentUri = FileProvider.getUriForFile(this, "$packageName.provider", photoFile)
 
-        proofImageUri = currentUri
+        deliveryProofImageUri = currentUri
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, currentUri)
@@ -301,15 +274,5 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
         } else {
             Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    override fun onDeletePhoto(imageUri: Uri) {
-        listProofImageUri.remove(imageUri)
-        imagesListAdapter!!.notifyDataSetChanged()
-
-
-        binding.rlChoosePhoto.visibility = View.VISIBLE
-
-
     }
 }

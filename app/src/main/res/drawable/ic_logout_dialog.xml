@@ -4,7 +4,7 @@
     android:viewportWidth="241"
     android:viewportHeight="172">
     <path
-        android:fillColor="#ffffff"
+        android:fillColor="@color/white"
         android:pathData="M0,0h241v172h-241z" />
     <path
         android:fillAlpha="0.1"
@@ -51,14 +51,14 @@
         android:fillColor="@color/black"
         android:pathData="M82.21,66.01C82.21,65.59 82.55,65.25 82.97,65.25H83.42V78.58H82.97C82.55,78.58 82.21,78.24 82.21,77.83V66.01Z" />
     <path
-        android:fillColor="#ffffff"
+        android:fillColor="@color/white"
         android:pathData="M96.11,30.72L143.43,30.72A9.06,9.06 0,0 1,152.48 39.78L152.48,156.76A9.06,9.06 0,0 1,143.43 165.82L96.11,165.82A9.06,9.06 0,0 1,87.06 156.76L87.06,39.78A9.06,9.06 0,0 1,96.11 30.72z" />
     <path
         android:fillColor="#FDEDF1"
         android:fillType="evenOdd"
         android:pathData="M142.86,84.5C144.04,84.5 145,85.45 145,86.63C145,87.82 144.04,88.77 142.86,88.77H130.65C131.83,88.77 132.78,89.73 132.78,90.91C132.78,92.09 131.83,93.05 130.65,93.05H137.37C138.55,93.05 139.5,94.01 139.5,95.19C139.5,96.37 138.55,97.32 137.37,97.32H134.26C132.77,97.32 131.56,98.28 131.56,99.46C131.56,100.25 132.17,100.96 133.4,101.6C134.58,101.6 135.53,102.56 135.53,103.74C135.53,104.92 134.58,105.87 133.4,105.87H108.05C106.87,105.87 105.91,104.92 105.91,103.74C105.91,102.56 106.87,101.6 108.05,101.6H96.14C94.96,101.6 94,100.64 94,99.46C94,98.28 94.96,97.32 96.14,97.32H108.35C109.53,97.32 110.49,96.37 110.49,95.19C110.49,94.01 109.53,93.05 108.35,93.05H100.72C99.54,93.05 98.58,92.09 98.58,90.91C98.58,89.73 99.54,88.77 100.72,88.77H112.93C111.75,88.77 110.8,87.82 110.8,86.63C110.8,85.45 111.75,84.5 112.93,84.5H142.86ZM142.86,93.05C144.04,93.05 145,94.01 145,95.19C145,96.37 144.04,97.32 142.86,97.32C141.68,97.32 140.73,96.37 140.73,95.19C140.73,94.01 141.68,93.05 142.86,93.05Z" />
     <path
-        android:fillColor="#00000000"
+
         android:pathData="M100.15,109.54H102.25M134.96,109.54H135.84M128.81,109.54H133.52M104.08,109.54H109.41"
         android:strokeWidth="0.763473"
         android:strokeColor="#FDEDF1"
@@ -71,7 +71,7 @@
         android:fillColor="@color/orange"
         android:pathData="M101.51,94.75C100.94,94.75 100.46,95.22 100.46,95.8C100.46,96.37 100.94,96.85 101.51,96.85H110.26V94.75H101.51Z" />
     <path
-        android:fillColor="#00000000"
+
         android:pathData="M107.65,163.39H131.89"
         android:strokeWidth="1.50947"
         android:strokeColor="@color/orange"
@@ -89,7 +89,7 @@
         android:fillColor="#E8E8E8"
         android:pathData="M145.9,126.03H93.19C91.43,126.03 90,127.45 90,129.21V155.82C90,157.58 91.43,159 93.19,159H145.9C147.66,159 149.09,157.58 149.09,155.82V129.21C149.09,127.45 147.66,126.03 145.9,126.03Z" />
     <path
-        android:fillColor="#ffffff"
+        android:fillColor="@color/white"
         android:pathData="M94.71,150L96.33,150A1.71,1.71 0,0 1,98.04 151.71L98.04,153.33A1.71,1.71 0,0 1,96.33 155.04L94.71,155.04A1.71,1.71 0,0 1,93 153.33L93,151.71A1.71,1.71 0,0 1,94.71 150z" />
     <path
         android:fillColor="@color/orange"
@@ -104,16 +104,16 @@
         android:fillColor="@color/orange"
         android:pathData="M111.78,136.56H94.36C93.72,136.56 93.21,137.08 93.21,137.71C93.21,138.35 93.72,138.87 94.36,138.87H111.78C112.42,138.87 112.93,138.35 112.93,137.71C112.93,137.08 112.42,136.56 111.78,136.56Z" />
     <path
-        android:fillColor="#ffffff"
+        android:fillColor="@color/white"
         android:pathData="M102.14,152.82m-2.06,0a2.06,2.06 0,1 1,4.12 0a2.06,2.06 0,1 1,-4.12 0" />
     <path
-        android:fillColor="#ffffff"
+        android:fillColor="@color/white"
         android:pathData="M108.09,152.82m-2.06,0a2.06,2.06 0,1 1,4.12 0a2.06,2.06 0,1 1,-4.12 0" />
     <path
-        android:fillColor="#00000000"
+
         android:pathData="M88.17,45.87H151.38"
         android:strokeWidth="0.427989"
-        android:strokeColor="#000000"
+        android:strokeColor="@color/black"
         android:strokeLineCap="round" />
     <path
         android:fillColor="#E8E8E8"

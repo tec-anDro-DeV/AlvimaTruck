@@ -70,7 +70,7 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
         }
 
         binding.rlChoosePhoto.setOnClickListener {
-            if (listProofImageUri.size != 9) {
+            if (listProofImageUri.size < 9) {
                 openImageChooseDailog()
             }
         }
@@ -208,6 +208,7 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
             }
 
             compressedUri.let {
+                if (listProofImageUri.size >= 9) return@let
                 listProofImageUri.add(it)
                 // Optimize: Only notify the item that was added, not the whole list
                 imagesListAdapter?.notifyItemInserted(listProofImageUri.size - 1)

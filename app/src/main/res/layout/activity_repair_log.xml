@@ -154,7 +154,6 @@
                 android:id="@+id/llBottomButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_7sdp"
                 android:layout_marginTop="@dimen/_21sdp"
                 android:orientation="horizontal">
 
