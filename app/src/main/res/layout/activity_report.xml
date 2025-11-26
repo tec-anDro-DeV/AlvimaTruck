@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <RelativeLayout
+        android:id="@+id/rlTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_21sdp">
+
+        <RelativeLayout
+            android:id="@+id/btnBack"
+            android:layout_width="@dimen/_42sdp"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/transparent_circle">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_back" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/sanssemibold"
+            android:text="Reports"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16ssp" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rlTop"
+        android:background="@drawable/bg_white_top_curve"
+        android:orientation="vertical"
+        android:padding="@dimen/_21sdp">
+
+        <RelativeLayout
+            android:id="@+id/rlFuelRefillRequest"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_73sdp"
+            android:background="@drawable/ic_truck_2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_70sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Trip Report"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlRepairLog"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_73sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:background="@drawable/ic_stock_2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_70sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Stoke Report"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlIncidentReporting"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_73sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:background="@drawable/ic_store_2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_70sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Sales Report"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</RelativeLayout>

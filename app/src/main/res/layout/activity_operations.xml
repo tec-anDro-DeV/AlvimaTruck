@@ -54,7 +54,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_118sdp"
                 android:layout_weight="1"
-                android:background="@drawable/ic_customer"
+                android:background="@drawable/ic_deposite"
                 android:padding="@dimen/_14sdp">
 
                 <TextView
@@ -72,7 +72,7 @@
                 android:layout_height="@dimen/_118sdp"
                 android:layout_marginStart="@dimen/_13sdp"
                 android:layout_weight="1"
-                android:background="@drawable/ic_truck"
+                android:background="@drawable/ic_delivery_2"
                 android:padding="@dimen/_14sdp">
 
                 <TextView
@@ -95,7 +95,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_118sdp"
                 android:layout_weight="1"
-                android:background="@drawable/ic_report"
+                android:background="@drawable/ic_store_requ"
                 android:padding="@dimen/_14sdp">
 
                 <TextView
@@ -113,7 +113,7 @@
                 android:layout_height="@dimen/_118sdp"
                 android:layout_marginStart="@dimen/_13sdp"
                 android:layout_weight="1"
-                android:background="@drawable/ic_truck"
+                android:background="@drawable/ic_transfer_2"
                 android:padding="@dimen/_14sdp">
 
                 <TextView

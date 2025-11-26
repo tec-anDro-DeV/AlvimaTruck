@@ -30,10 +30,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
 
         binding.rlBottomTrip.setOnClickListener {
-            binding.rlBottomHome.setBackgroundResource(0)
-            binding.rlBottomTrip.setBackgroundResource(R.drawable.orange_circle)
-            binding.rlBottomVanStock.setBackgroundResource(0)
-            binding.rlBottomOpreation.setBackgroundResource(0)
+//            binding.rlBottomHome.setBackgroundResource(0)
+//            binding.rlBottomTrip.setBackgroundResource(R.drawable.orange_circle)
+//            binding.rlBottomVanStock.setBackgroundResource(0)
+//            binding.rlBottomOpreation.setBackgroundResource(0)
         }
 
 
@@ -96,6 +96,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
         binding.llFeetManagement.setOnClickListener {
             startActivity(Intent(this, FleetManagementActivity::class.java))
+        }
+        binding.llReport.setOnClickListener {
+            startActivity(Intent(this, ReportActivity::class.java))
         }
     }
 }
