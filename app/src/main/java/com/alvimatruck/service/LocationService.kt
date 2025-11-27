@@ -99,6 +99,8 @@ class LocationService : Service() {
             override fun onLocationResult(result: LocationResult) {
                 val location = result.lastLocation ?: return
                 Log.d(TAG, "Lat=${location.latitude}, Lon=${location.longitude}")
+                AlvimaTuckApplication.latitude = location.latitude
+                AlvimaTuckApplication.longitude = location.longitude
                 locationCallback?.invoke(location)
             }
         }

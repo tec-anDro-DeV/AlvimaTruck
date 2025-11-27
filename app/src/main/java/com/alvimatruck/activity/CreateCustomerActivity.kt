@@ -29,8 +29,10 @@ import com.alvimatruck.adapter.SingleItemSelectionAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityCreateCustomerBinding
+import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
@@ -40,6 +42,8 @@ import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -108,7 +112,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         }
 
         binding.tvCreate.setOnClickListener {
-            handleBackPressed()
+            validationAndSubmit()
         }
 
         binding.rlChoosePhoto.setOnClickListener {
@@ -133,6 +137,127 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
             idProofImageUri = null // ✅ Reset the URI
             binding.rlIDProof.visibility = View.GONE
             binding.rlChooseID.visibility = View.VISIBLE
+        }
+
+
+    }
+
+    private fun validationAndSubmit() {
+        if (binding.etCustomerName.text.toString().trim().isEmpty()) {
+            Toast.makeText(this, "Please enter customer name", Toast.LENGTH_SHORT).show()
+            return
+        } else if (binding.etContactName.text.toString().trim().isEmpty()) {
+            Toast.makeText(this, "Please enter contact name", Toast.LENGTH_SHORT).show()
+            return
+        } else if (customerPhotoUri == null) {
+            Toast.makeText(this, "Please upload customer photo", Toast.LENGTH_SHORT).show()
+            return
+        } else if (binding.etCustomerPhoneNumber.text.toString().trim().isEmpty()) {
+            Toast.makeText(this, "Please enter customer phone number", Toast.LENGTH_SHORT).show()
+            return
+        } else if (Utils.isValidEthiopiaMobile(
+                binding.etCustomerPhoneNumber.text.toString().trim()
+            )
+        ) {
+            Toast.makeText(this, "Please enter valid customer phone number", Toast.LENGTH_SHORT)
+                .show()
+            return
+        } else if (binding.etTelephoneNumber.text.toString().trim().isEmpty()) {
+            Toast.makeText(this, "Please enter telephone number", Toast.LENGTH_SHORT).show()
+            return
+        } else if (Utils.isValidEthiopiaLocalNumber(
+                binding.etTelephoneNumber.text.toString().trim()
+            )
+        ) {
+            Toast.makeText(this, "Please enter valid telephone number", Toast.LENGTH_SHORT).show()
+            return
+        } else if (binding.etCity.text.toString().trim().isEmpty()) {
+            Toast.makeText(this, "Please enter city", Toast.LENGTH_SHORT).show()
+            return
+        } else if (binding.etPostalCode.text.toString().trim().isEmpty()) {
+            Toast.makeText(this, "Please enter postal code", Toast.LENGTH_SHORT).show()
+            return
+        } else if (binding.etAddress.text.toString().trim().isEmpty()) {
+            Toast.makeText(this, "Please enter address", Toast.LENGTH_SHORT).show()
+            return
+        } else if (binding.etTINNumber.text.toString().trim().isEmpty()) {
+            Toast.makeText(this, "Please enter TIN number", Toast.LENGTH_SHORT).show()
+            return
+        } else if (idProofImageUri == null) {
+            Toast.makeText(this, "Please upload ID proof", Toast.LENGTH_SHORT).show()
+            return
+        } else if (binding.tvCustomerPostingGroup.text.toString().trim().isEmpty()) {
+            Toast.makeText(this, "Please select posting group", Toast.LENGTH_SHORT).show()
+            return
+        } else if (binding.tvCustomerPriceGroup.text.toString().trim().isEmpty()) {
+            Toast.makeText(this, "Please select price group", Toast.LENGTH_SHORT).show()
+            return
+        } else {
+            createUserApiCall()
+        }
+    }
+
+    private fun createUserApiCall() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@CreateCustomerActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.createCustomer(
+                binding.etCustomerName.text.toString().toRequestBody("text/plain".toMediaType()),
+                binding.etContactName.text.toString().toRequestBody("text/plain".toMediaType()),
+                binding.etCustomerPhoneNumber.text.toString()
+                    .toRequestBody("text/plain".toMediaType()),
+                binding.etTelephoneNumber.text.toString().toRequestBody("text/plain".toMediaType()),
+                binding.etCity.text.toString().toRequestBody("text/plain".toMediaType()),
+                binding.etPostalCode.text.toString().toRequestBody("text/plain".toMediaType()),
+                binding.etTINNumber.text.toString().toRequestBody("text/plain".toMediaType()),
+                binding.etAddress.text.toString().toRequestBody("text/plain".toMediaType()),
+                binding.tvCustomerPostingGroup.text.toString()
+                    .toRequestBody("text/plain".toMediaType()),
+                binding.tvCustomerPriceGroup.text.toString()
+                    .toRequestBody("text/plain".toMediaType()),
+                AlvimaTuckApplication.latitude.toString().toRequestBody("text/plain".toMediaType()),
+                AlvimaTuckApplication.longitude.toString()
+                    .toRequestBody("text/plain".toMediaType()),
+                Utils.createFilePart("CustomerImage", customerPhotoUri, this),
+                Utils.createFilePart("IdProof", idProofImageUri, this)
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@CreateCustomerActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@CreateCustomerActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@CreateCustomerActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
         }
 
     }

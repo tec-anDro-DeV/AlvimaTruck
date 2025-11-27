@@ -7,10 +7,14 @@ import com.alvimatruck.model.request.OTPVerifyRequest
 import com.alvimatruck.model.request.ResetPasswordRequest
 import com.alvimatruck.utils.Constants
 import com.google.gson.JsonObject
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 
 interface ApiInterface {
@@ -36,5 +40,22 @@ interface ApiInterface {
     @GET(Constants.API_Price_Group)
     fun priceGroupList(): Call<JsonObject>
 
-
+    @Multipart
+    @POST(Constants.API_Create_Customer)
+    fun createCustomer(
+        @Part("CustomerName") customerName: RequestBody,
+        @Part("ContactName") contactName: RequestBody,
+        @Part("CustomerPhoneNumber") customerPhoneNumber: RequestBody,
+        @Part("TeleNumber") teleNumber: RequestBody,
+        @Part("City") city: RequestBody,
+        @Part("PostalCode") postalCode: RequestBody,
+        @Part("TinNumber") tinNumber: RequestBody,
+        @Part("Address") address: RequestBody,
+        @Part("CustomerPostingGroup") customerPostingGroup: RequestBody,
+        @Part("CustomerPriceGroup") customerPriceGroup: RequestBody,
+        @Part("Latitude") latitude: RequestBody,
+        @Part("Longitude") longitude: RequestBody,
+        @Part customerImage: MultipartBody.Part? = null,   // optional
+        @Part idProof: MultipartBody.Part? = null          // optional
+    ): Call<JsonObject>
 }

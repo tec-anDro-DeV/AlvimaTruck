@@ -18,6 +18,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.FileProvider
 import com.alvimatruck.activity.LoginActivity
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.Response
 import java.io.File
@@ -34,12 +37,37 @@ object Utils {
     var token: String = ""
     var currentLocation: Location? = null
 
+    private val ETHIOPIA_MOBILE_REGEX = Regex("^0[79]\\d{8}$")
+    private val ETHIOPIA_ANY_LOCAL_REGEX = Regex("^0\\d{9}$")
+
 
     val MAX_FILE_SIZE_BYTES = 1 * 1024 * 1024
 
     const val CAMERA_PERMISSION = Manifest.permission.CAMERA
     const val READ_MEDIA_IMAGES = Manifest.permission.READ_MEDIA_IMAGES
     const val READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
+
+    fun isValidEthiopiaMobile(number: String): Boolean {
+        // remove spaces if user types "0912 345 678"
+        val cleaned = number.replace("\\s".toRegex(), "")
+        return ETHIOPIA_MOBILE_REGEX.matches(cleaned)
+    }
+
+    fun isValidEthiopiaLocalNumber(number: String): Boolean {
+        val cleaned = number.replace("\\s".toRegex(), "")
+        return ETHIOPIA_ANY_LOCAL_REGEX.matches(cleaned)
+    }
+
+    fun createFilePart(fieldName: String, uri: Uri?, context: Context): MultipartBody.Part? {
+        if (uri == null) return null
+
+        val inputStream = context.contentResolver.openInputStream(uri) ?: return null
+        val fileBytes = inputStream.readBytes()
+        inputStream.close()
+
+        val requestBody = fileBytes.toRequestBody("image/*".toMediaTypeOrNull())
+        return MultipartBody.Part.createFormData(fieldName, "image.jpg", requestBody)
+    }
 
 
     fun getDummyArrayList(counter: Int): ArrayList<String> {
@@ -62,17 +90,47 @@ object Utils {
         return transferList
     }
 
+//    fun parseErrorMessage(response: Response<*>): String {
+//        return try {
+//            JSONObject(response.errorBody()?.string() ?: "").optString(
+//                "message",
+//                "Something went wrong"
+//            )
+//        } catch (_: Exception) {
+//            "Something went wrong"
+//        }
+//    }
+
     fun parseErrorMessage(response: Response<*>): String {
         return try {
-            JSONObject(response.errorBody()?.string() ?: "").optString(
+            val errorBody = response.errorBody()?.string() ?: return "Something went wrong"
+            val errorJson = JSONObject(errorBody)
+
+            // 🔹NEW → First check for validation error block
+            if (errorJson.has("errors")) {
+                val errorsObj = errorJson.getJSONObject("errors")
+                val keys = errorsObj.keys()
+                val list = mutableListOf<String>()
+
+                while (keys.hasNext()) {
+                    val key = keys.next()
+                    val arr = errorsObj.getJSONArray(key)
+                    list.add(arr.getString(0)) // take first error only
+                }
+
+                return list.joinToString("\n") // multiple lines
+            }
+
+            // 🔹OLD Requirement → message key support
+            errorJson.optString(
                 "message",
-                "Something went wrong"
+                errorJson.optString("title", "Something went wrong") // fallback title
             )
+
         } catch (_: Exception) {
             "Something went wrong"
         }
     }
-
 
     @SuppressLint("SimpleDateFormat")
     fun getFullDate(time: Long?): String {

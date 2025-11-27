@@ -13,6 +13,9 @@ class AlvimaTuckApplication : Application() {
     companion object {
         var locationService: LocationService? = null
 
+        var latitude: Double = 0.0
+        var longitude: Double = 0.0
+
         fun startLocationService(context: Context) {
             if (locationService != null) return // already started
 

@@ -16,6 +16,8 @@ class Constants {
 
         const val API_Price_Group = "Dropdown/get-customer-price-group-dropdown"
 
+        const val API_Create_Customer = "Customer/create-customer"
+
 
         // Constants Key
         const val IS_LOGIN = "is_login"
