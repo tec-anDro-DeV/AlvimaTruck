@@ -62,6 +62,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
                     android:text="Sales"
+                    android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16ssp" />
             </RelativeLayout>
@@ -80,6 +81,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
                     android:text="Route"
+                    android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_16ssp" />
             </RelativeLayout>

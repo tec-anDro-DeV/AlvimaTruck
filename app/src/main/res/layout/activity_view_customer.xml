@@ -391,7 +391,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tvSkip"
+                    android:id="@+id/tvVisited"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -399,38 +399,24 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Skip"
+                    android:text="Visited"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
 
                 <TextView
-                    android:id="@+id/tvVisited"
+                    android:id="@+id/tvNewOrder"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_14sdp"
                     android:layout_weight="1"
-                    android:background="@drawable/rounded_button_gray"
+                    android:background="@drawable/rounded_button_orange"
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Visited"
-                    android:textColor="@color/black"
+                    android:text="New Order"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvNewOrder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_7sdp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_button_orange"
-                android:fontFamily="@font/sansbold"
-                android:gravity="center"
-                android:padding="@dimen/_14sdp"
-                android:text="New Order"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14ssp" />
 
 
         </LinearLayout>
