@@ -94,6 +94,7 @@
             android:orientation="horizontal">
 
             <RelativeLayout
+                android:id="@+id/rlStoreRequisition"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_118sdp"
                 android:layout_weight="1"

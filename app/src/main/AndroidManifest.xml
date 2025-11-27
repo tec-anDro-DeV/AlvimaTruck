@@ -38,9 +38,7 @@
         android:theme="@style/Theme.AlvimaTruck"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".activity.ReportActivity"
-            android:exported="false" />
+
         <activity
             android:name=".activity.DemoActivity"
             android:exported="false"
@@ -111,6 +109,14 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
             android:name=".activity.OperationsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -142,15 +148,6 @@
             android:name=".activity.CreateTransferRequestActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.journeyapps.barcodescanner.CaptureActivity"
-            android:screenOrientation="portrait"
-            tools:replace="screenOrientation" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/googlemapkey" />
-
         <activity
             android:name=".activity.MapPolygonActivity"
             android:exported="false"
@@ -204,10 +201,26 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name=".activity.StoreRequisitionListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.StoreRequisitionRequestActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.StoreRequisitionActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ReportActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/googlemapkey" />
         <service
             android:name=".service.LocationService"
             android:enabled="true"

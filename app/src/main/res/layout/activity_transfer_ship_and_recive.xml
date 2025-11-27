@@ -31,9 +31,9 @@
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
             android:gravity="center"
-            android:text="Transfer Ship and Receive"
+            android:text="Transfer\nShip and Receive"
             android:textColor="@color/white"
-            android:textSize="@dimen/_13ssp" />
+            android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
 
 

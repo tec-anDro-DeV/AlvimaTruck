@@ -32,7 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="New Transfer Request"
+            android:text="Store Requisition\nRequest"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -60,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Transfer Request Number (Automatic)"
+                    android:text="Request Number (Automatic)"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -413,7 +414,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sansbold"
-                            android:text="Van"
+                            android:text="Store 1"
                             android:textAlignment="center"
                             android:textAllCaps="true"
                             android:textColor="@color/black"
@@ -429,7 +430,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sansbold"
-                            android:text="Warehouse"
+                            android:text="Store 2"
                             android:textAlignment="center"
                             android:textAllCaps="true"
                             android:textColor="@color/orange"
@@ -511,7 +512,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sansbold"
-                            android:text="Van"
+                            android:text="Store 1"
                             android:textAlignment="center"
                             android:textAllCaps="true"
                             android:textColor="@color/black"
@@ -527,7 +528,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sansbold"
-                            android:text="Warehouse"
+                            android:text="Store 2"
                             android:textAlignment="center"
                             android:textAllCaps="true"
                             android:textColor="@color/orange"
@@ -553,7 +554,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tvCreateTransferRequest"
+                android:id="@+id/tvCreateStoreRequisition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
@@ -561,7 +562,7 @@
                 android:fontFamily="@font/sansbold"
                 android:gravity="center"
                 android:padding="@dimen/_14sdp"
-                android:text="Create Transfer Request"
+                android:text="Create Store Requisition"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp" />
 

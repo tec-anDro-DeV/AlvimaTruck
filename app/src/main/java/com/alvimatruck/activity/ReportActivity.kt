@@ -11,5 +11,9 @@ class ReportActivity : BaseActivity<ActivityReportBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding.btnBack.setOnClickListener {
+            handleBackPressed()
+        }
     }
 }

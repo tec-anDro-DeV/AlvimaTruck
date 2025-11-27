@@ -53,6 +53,7 @@
                 android:fontFamily="@font/sansbold"
                 android:text="Van"
                 android:textAlignment="center"
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp" />
 
@@ -68,6 +69,7 @@
                 android:fontFamily="@font/sansbold"
                 android:text="Warehouse"
                 android:textAlignment="center"
+                android:textAllCaps="true"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/_12ssp" />
         </LinearLayout>

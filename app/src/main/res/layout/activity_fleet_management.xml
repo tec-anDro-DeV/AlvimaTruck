@@ -47,7 +47,7 @@
             android:id="@+id/rlFuelRefillRequest"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_73sdp"
-            android:background="@drawable/ic_transfer">
+            android:background="@drawable/ic_fuel_refill">
 
             <TextView
                 android:layout_width="wrap_content"

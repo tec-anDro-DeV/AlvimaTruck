@@ -41,5 +41,9 @@ class OperationsActivity : BaseActivity<ActivityOperationsBinding>() {
         binding.rlDeposit.setOnClickListener {
             startActivity(Intent(this, DepositActivity::class.java))
         }
+        binding.rlStoreRequisition.setOnClickListener {
+            startActivity(Intent(this, StoreRequisitionActivity::class.java))
+        }
+
     }
 }
