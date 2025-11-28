@@ -77,7 +77,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>() {
                 itemList!!,
                 "Choose Item",
                 "Search Item",
-                binding.tvPaymentCode
+                binding.tvItem
             )
         }
 
@@ -99,7 +99,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>() {
                 selectedLocationCode
             }
 
-            binding.tvPaymentCode -> {
+            binding.tvItem -> {
                 selectedItem
             }
 

@@ -28,5 +28,9 @@ class FleetManagementActivity : BaseActivity<ActivityFleetManagementBinding>() {
             startActivity(Intent(this, IncidentReportingActivity::class.java))
         }
 
+        binding.tvSeeAll.setOnClickListener {
+            startActivity(Intent(this, RecentLogsActivity::class.java))
+        }
+
     }
 }
