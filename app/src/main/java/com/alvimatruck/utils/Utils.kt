@@ -15,8 +15,12 @@ import android.provider.OpenableColumns
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
+import com.alvimatruck.R
 import com.alvimatruck.activity.LoginActivity
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -71,8 +75,7 @@ object Utils {
 
 
     fun getDummyArrayList(counter: Int): ArrayList<String> {
-        val stringArrayList =
-            ArrayList<String>()
+        val stringArrayList = ArrayList<String>()
         for (i in 0 until counter) {
             stringArrayList.add("")
         }
@@ -81,8 +84,7 @@ object Utils {
 
     fun getDummyTransferList(counter: Int): ArrayList<TransferItem> {
         val rawList = getDummyArrayList(5)
-        val transferList =
-            ArrayList<TransferItem>()
+        val transferList = ArrayList<TransferItem>()
         transferList.clear()
         for (i in rawList) {
             transferList.add(TransferItem(i))
@@ -123,8 +125,7 @@ object Utils {
 
             // 🔹OLD Requirement → message key support
             errorJson.optString(
-                "message",
-                errorJson.optString("title", "Something went wrong") // fallback title
+                "message", errorJson.optString("title", "Something went wrong") // fallback title
             )
 
         } catch (_: Exception) {
@@ -170,8 +171,7 @@ object Utils {
     fun dateFormatChange(dateStr: String, input: String, output: String): String {
         return SimpleDateFormat(output, Locale.ENGLISH).format(
             SimpleDateFormat(
-                input,
-                Locale.ENGLISH
+                input, Locale.ENGLISH
             ).parse(dateStr)
         )
     }
@@ -220,37 +220,59 @@ object Utils {
     fun getMonth3LettersName(date: Date): String =
         SimpleDateFormat("MMM", Locale.getDefault()).format(date)
 
-    fun getDayNumber(date: Date): String =
-        SimpleDateFormat("dd", Locale.getDefault()).format(date)
+    fun getDayNumber(date: Date): String = SimpleDateFormat("dd", Locale.getDefault()).format(date)
 
 
     fun getDaysDifferent(time: Long): Int {
         return ((System.currentTimeMillis() - time) / (1000 * 60 * 60 * 24)).toInt()
     }
 
-    fun logout(activity: Activity) {
+    fun forceLogout(context: Context) {
+        if (context !is Activity) {
+            logout(context) // fallback directly
+            return
+        }
+
+
+        val inflater = context.layoutInflater
+        val alertLayout = inflater.inflate(R.layout.dialog_logout2, null)
+
+        val btnYes = alertLayout.findViewById<TextView>(R.id.btnYes)
+
+
+        val dialog = AlertDialog.Builder(context).setView(alertLayout).setCancelable(false).create()
+
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+        btnYes.setOnClickListener {
+            dialog.dismiss()
+            logout(context) // <-- perform logout
+        }
+
+        dialog.show()
+
+        val width = (context.resources.displayMetrics.widthPixels * 0.9).toInt()
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+    }
+
+
+    fun logout(context: Context) {
         SharedHelper.putKey(
-            activity,
-            Constants.IS_LOGIN,
-            false
+            context, Constants.IS_LOGIN, false
         )
         //SharedHelper.clearSharedPreferences(this)
 
         SharedHelper.putKey(
-            activity,
-            Constants.Token,
-            ""
+            context, Constants.Token, ""
         )
 
         SharedHelper.putKey(
-            activity,
-            Constants.UserDetail,
-            ""
+            context, Constants.UserDetail, ""
         )
-        val intent = Intent(activity, LoginActivity::class.java)
+        val intent = Intent(context, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        activity.startActivity(intent)
-        activity.finishAffinity()
+        context.startActivity(intent)
+        // activity.finishAffinity()
     }
 
     fun getTimeAgo(mTime: Long): String {
@@ -313,9 +335,7 @@ object Utils {
                     // Decode and compress the bitmap
                     val bitmap = BitmapFactory.decodeStream(inputStream)
                     bitmap.compress(
-                        Bitmap.CompressFormat.JPEG,
-                        80,
-                        outputStream
+                        Bitmap.CompressFormat.JPEG, 80, outputStream
                     ) // Adjust quality (0-100)
                 }
             }
@@ -327,14 +347,11 @@ object Utils {
 
         // Return the content URI for the newly created compressed file
         return FileProvider.getUriForFile(
-            context,
-            "${context.packageName}.provider",
-            compressedFile
+            context, "${context.packageName}.provider", compressedFile
         )
     }
 }
 
 data class TransferItem(
-    var name: String,
-    var isSelected: Boolean = false
+    var name: String, var isSelected: Boolean = false
 )

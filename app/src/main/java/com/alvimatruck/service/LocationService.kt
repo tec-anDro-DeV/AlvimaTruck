@@ -3,14 +3,18 @@ package com.alvimatruck.service
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
-import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Binder
 import android.os.Build
-import android.os.IBinder
+import android.os.Handler
+import android.os.HandlerThread
 import android.os.Looper
+import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.alvimatruck.R
@@ -24,179 +28,123 @@ import com.google.android.gms.location.Priority
 
 class LocationService : Service() {
 
-    private val TAG = LocationService::class.java.name
-
     private lateinit var fusedClient: FusedLocationProviderClient
-    private var locationCallback: ((Location) -> Unit)? = null
+    private lateinit var locationManager: LocationManager
+    private lateinit var wakeLock: PowerManager.WakeLock
 
-    private var fusedLocationCallback: LocationCallback? = null
+    private var fusedCallback: LocationCallback? = null
+    private var gpsListener: LocationListener? = null
 
-    fun setLocationCallback(callback: (Location) -> Unit) {
-        locationCallback = callback
+    private var serviceLooper: Looper? = null
+    private var handler: Handler? = null
+
+    private var liveCallback: ((Double, Double) -> Unit)? = null
+    fun setLocationCallback(cb: (Double, Double) -> Unit) {
+        liveCallback = cb
     }
 
-    private val binder = LocalBinder()
-
+    override fun onBind(i: Intent?) = LocalBinder()
     inner class LocalBinder : Binder() {
-        fun getService(): LocationService = this@LocationService
+        fun getService() = this@LocationService
     }
-
-    override fun onBind(intent: Intent?): IBinder = binder
 
     override fun onCreate() {
         super.onCreate()
-        startForegroundServiceNotification()
+
+        // Background processing thread (ESSENTIAL for Android 14+)
+        val thread = HandlerThread("GPS_THREAD")
+        thread.start()
+        serviceLooper = thread.looper
+        handler = Handler(serviceLooper!!)
+
+        // Keep CPU awake even if screen OFF (offline tracking)
+        wakeLock = (getSystemService(POWER_SERVICE) as PowerManager)
+            .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Alvima:GPS_LOCK")
+        wakeLock.acquire()
+
+        startNotification()
         fusedClient = LocationServices.getFusedLocationProviderClient(this)
-        startLocationUpdates()
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+
+        startHybridUpdates()
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.e(TAG, "onStartCommand")
-        return START_STICKY
-    }
+    override fun onStartCommand(i: Intent?, f: Int, id: Int) = START_STICKY
 
-    private fun startForegroundServiceNotification() {
-        val channelId = "location_channel"
-        val notificationManager = getSystemService(NotificationManager::class.java)
-
-        val channel = NotificationChannel(
-            channelId,
-            "Location Tracking",
-            NotificationManager.IMPORTANCE_LOW
-        )
-        notificationManager.createNotificationChannel(channel)
-
-        val notification = NotificationCompat.Builder(this, channelId)
-            .setContentTitle("Location Service Active")
-            .setContentText("Tracking your location in background")
-            .setSmallIcon(R.drawable.logo)
-            .setOngoing(true)
-            .build()
-
-        if (Build.VERSION.SDK_INT >= 34) {
-            startForeground(
-                1,
-                notification,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
-            )
-        } else {
-            startForeground(1, notification)
-        }
-    }
-
-
+    // Hybrid = Fused + GPS with automatic fallback
     @SuppressLint("MissingPermission")
-    private fun startLocationUpdates() {
-        val request = LocationRequest.Builder(
-            Priority.PRIORITY_HIGH_ACCURACY,
-            5000L
-        )
+    private fun startHybridUpdates() {
+
+        // 1️⃣ Last Known First (Instant indoor response)
+        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)?.let {
+            update(it.latitude, it.longitude)
+        }
+        locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)?.let {
+            update(it.latitude, it.longitude)
+        }
+
+        // 2️⃣ Fused Provider (Fast when internet/wifi available)
+        val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000L)
+            .setMinUpdateIntervalMillis(2500L)
             .setGranularity(Granularity.GRANULARITY_FINE)
-            .setWaitForAccurateLocation(false)   // works offline
+            .setWaitForAccurateLocation(false)
             .build()
 
-        fusedLocationCallback = object : LocationCallback() {
+        fusedCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
-                val location = result.lastLocation ?: return
-                Log.d(TAG, "Lat=${location.latitude}, Lon=${location.longitude}")
-                AlvimaTuckApplication.latitude = location.latitude
-                AlvimaTuckApplication.longitude = location.longitude
-                locationCallback?.invoke(location)
+                result.lastLocation?.let {
+                    update(it.latitude, it.longitude)
+                }
             }
         }
+        fusedClient.requestLocationUpdates(request, fusedCallback!!, Looper.getMainLooper())
 
-        fusedClient.requestLocationUpdates(
-            request,
-            fusedLocationCallback!!,
-            Looper.getMainLooper()
+        // 3️⃣ Raw GPS — the KEY for OFFLINE success
+        gpsListener = LocationListener { loc ->
+            update(loc.latitude, loc.longitude)
+        }
+        locationManager.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER, 3000L, 0f, gpsListener!!, serviceLooper
         )
+    }
+
+    private fun update(lat: Double, lon: Double) {
+        Log.d("GPS", "Lat=$lat  Lon=$lon")
+
+        AlvimaTuckApplication.latitude = lat
+        AlvimaTuckApplication.longitude = lon
+
+        Handler(Looper.getMainLooper()).post { liveCallback?.invoke(lat, lon) }
+    }
+
+    private fun startNotification() {
+        val id = "gps_channel"
+        val nm = getSystemService(NotificationManager::class.java)
+        if (Build.VERSION.SDK_INT >= 26) nm.createNotificationChannel(
+            NotificationChannel(id, "GPS Tracking", NotificationManager.IMPORTANCE_HIGH)
+        )
+
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        val pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        val n = NotificationCompat.Builder(this, id)
+            .setSmallIcon(R.drawable.logo)
+            .setContentTitle("GPS Active")
+            .setContentText("Tracking offline/online…")
+            .setOngoing(true)
+            .setContentIntent(pi)
+            .build()
+
+        if (Build.VERSION.SDK_INT >= 34)
+            startForeground(1, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION)
+        else startForeground(1, n)
     }
 
     override fun onDestroy() {
+        fusedCallback?.let { fusedClient.removeLocationUpdates(it) }
+        gpsListener?.let { locationManager.removeUpdates(it) }
+        if (wakeLock.isHeld) wakeLock.release()
+        serviceLooper?.quit()
         super.onDestroy()
-        fusedLocationCallback?.let {
-            fusedClient.removeLocationUpdates(it)
-        }
-
-        fusedLocationCallback = null
-        locationCallback = null
     }
-
-//
-//    private fun updateUI() {
-//        val currentDate = Date()
-//        latitude = mLastLocation!!.latitude
-//        longitude = mLastLocation!!.longitude
-//        if (checkNetworkConnection(applicationContext)) {
-//            try {
-//                val locationData = JSONObject()
-//                locationData.put("lat", latitude.toString())
-//                locationData.put("longs", longitude.toString())
-//                locationData.put("loginDate", SimpleDateFormat("dd/MM/yyyy").format(currentDate))
-//                locationData.put("loginTime", SimpleDateFormat("HH:mm:ss").format(currentDate))
-//                postLocationData(locationData)
-//
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                db!!.insertTrackedLocation(
-//                    preferences!!.getString(ConstantKeys.KEY_USER_ID),
-//                    latitude.toString(),
-//                    longitude.toString(),
-//                    SimpleDateFormat("dd/MM/yyyy").format(currentDate),
-//                    SimpleDateFormat("HH:mm:ss").format(currentDate)
-//                )
-//                db!!.closeDatabase()
-//            }
-//        } else {
-//            db!!.insertTrackedLocation(
-//                preferences!!.getString(ConstantKeys.KEY_USER_ID),
-//                latitude.toString(),
-//                longitude.toString(),
-//                SimpleDateFormat("dd/MM/yyyy").format(currentDate),
-//                SimpleDateFormat("HH:mm:ss").format(currentDate)
-//            )
-//            db!!.closeDatabase()
-//        }
-//    }
-//
-//    private fun postLocationData(locationData: JSONObject) {
-//        try {
-//            val imeistring: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//                "0"
-//            } else {
-//                try {
-//                    val telephonyManager = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
-//                    if (ActivityCompat.checkSelfPermission(
-//                            this,
-//                            Manifest.permission.READ_PHONE_STATE
-//                        ) != PackageManager.PERMISSION_GRANTED
-//                    ) {
-//                        return
-//                    }
-//                    telephonyManager.deviceId
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                    "0"
-//                }
-//            }
-//            val locObj = JSONObject()
-//            locObj.put("driverCode", preferences!!.getString(ConstantKeys.KEY_USER_ID))
-//            locObj.put("deviceCode", imeistring)
-//            val jsonArray = JSONArray()
-//            jsonArray.put(locationData)
-//            locObj.put("latlong", jsonArray)
-//            Log.i(TAG, locObj.toString())
-//            if (jsonArray.length() > 0) {
-//                val webServiceHandlers = WebServiceHandler.getInstance(this, false)
-//                webServiceHandlers.init(
-//                    "postLatlongs",
-//                    WebServiceHandler.RequestType.POST,
-//                    locObj,
-//                    latLongPostCallBackListener
-//                )
-//            }
-//        } catch (e: JSONException) {
-//            e.printStackTrace()
-//        }
-//    }
 }

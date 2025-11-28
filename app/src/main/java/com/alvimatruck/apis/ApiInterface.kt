@@ -6,6 +6,7 @@ import com.alvimatruck.model.request.OTPRequest
 import com.alvimatruck.model.request.OTPVerifyRequest
 import com.alvimatruck.model.request.ResetPasswordRequest
 import com.alvimatruck.utils.Constants
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -39,6 +40,15 @@ interface ApiInterface {
 
     @GET(Constants.API_Price_Group)
     fun priceGroupList(): Call<JsonObject>
+
+    @GET(Constants.API_Location_Code)
+    fun locationCodeList(): Call<JsonObject>
+
+    @GET(Constants.API_Payment_Code)
+    fun paymentCodeList(): Call<JsonObject>
+
+    @GET(Constants.API_Item_List)
+    fun itemList(): Call<JsonArray>
 
     @Multipart
     @POST(Constants.API_Create_Customer)

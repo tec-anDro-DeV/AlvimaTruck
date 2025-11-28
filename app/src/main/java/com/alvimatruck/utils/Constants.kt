@@ -15,6 +15,9 @@ class Constants {
         const val API_ChangePassword = "MobileLogin/change-password"
 
         const val API_Price_Group = "Dropdown/get-customer-price-group-dropdown"
+        const val API_Location_Code = "Dropdown/get-locations-dropdown"
+        const val API_Payment_Code = "Dropdown/get-payment-methods-dropdown"
+        const val API_Item_List = "Dropdown/items"
 
         const val API_Create_Customer = "Customer/create-customer"
 

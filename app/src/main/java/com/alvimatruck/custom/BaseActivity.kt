@@ -1,14 +1,20 @@
 package com.alvimatruck.custom
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -62,6 +68,8 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     }
 
     fun checkAndStartLocationService() {
+
+        // 1️⃣ Location permission not granted → Ask
         if (!hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
             !hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
         ) {
@@ -71,20 +79,64 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ), 100
             )
-        } else if (Build.VERSION.SDK_INT >= 29 &&
-            !hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            return
+        }
+
+        // 2️⃣ Background permission (Android 10+)
+        if (!hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
         ) {
             requestPermissions(
                 arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION), 101
             )
-        } else if (Build.VERSION.SDK_INT >= 34 &&
+            return
+        }
+
+        // 3️⃣ Special foreground location service permission (Android 14+)
+        if (Build.VERSION.SDK_INT >= 34 &&
             !hasPermission(Manifest.permission.FOREGROUND_SERVICE_LOCATION)
         ) {
             requestPermissions(
                 arrayOf(Manifest.permission.FOREGROUND_SERVICE_LOCATION), 102
             )
-        } else {
-            AlvimaTuckApplication.startLocationService(this)   // ✔ start only once
+            return
+        }
+
+        // 4️⃣ All location permissions granted → Now check battery optimization
+        checkBatteryOptimization()  // 🔥 CRITICAL FOR ANDROID 14+
+
+
+        // 5️⃣ Finally start tracking service only once
+        AlvimaTuckApplication.startLocationService(this)
+    }
+
+    private fun checkBatteryOptimization() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
+
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                showBatteryOptimizationDialog()
+            }
+        }
+    }
+
+    private fun showBatteryOptimizationDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Allow Background Location Access")
+            .setMessage("To track location offline, set Battery → Unrestricted for this app.")
+            .setPositiveButton("Open Settings") { _, _ ->
+                openBatterySettings()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun openBatterySettings() {
+        try {
+            val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+            intent.data = Uri.parse("package:$packageName")
+            startActivity(intent)
+        } catch (e: Exception) {
+            startActivity(Intent(Settings.ACTION_SETTINGS)) // fallback
         }
     }
 

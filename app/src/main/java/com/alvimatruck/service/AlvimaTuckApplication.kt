@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 class AlvimaTuckApplication : Application() {
 
     companion object {
+        lateinit var instance: AlvimaTuckApplication
         var locationService: LocationService? = null
 
         var latitude: Double = 0.0
@@ -24,6 +25,7 @@ class AlvimaTuckApplication : Application() {
             context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
 
+
         private val connection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
                 val binder = service as LocationService.LocalBinder
@@ -34,5 +36,10 @@ class AlvimaTuckApplication : Application() {
                 locationService = null
             }
         }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        instance = this   // <-- MAKE INSTANCE AVAILABLE GLOBALLY
     }
 }

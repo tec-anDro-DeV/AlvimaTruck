@@ -224,6 +224,10 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@CreateCustomerActivity)  // show dialog before logout
+                        return
+                    }
                     if (response.isSuccessful) {
                         try {
                             Log.d("TAG", "onResponse: " + response.body().toString())
@@ -233,6 +237,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
                                     .trim(),
                                 Toast.LENGTH_SHORT
                             ).show()
+                            handleBackPressed()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

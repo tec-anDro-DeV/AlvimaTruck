@@ -14,18 +14,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Current Location:"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/tvCurrentLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            tools:text="23.68458548, 72.58455455" />
 
         <Button
             android:id="@+id/btnOpenMap"
