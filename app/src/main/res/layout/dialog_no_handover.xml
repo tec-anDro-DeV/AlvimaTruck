@@ -31,69 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:background="@drawable/input_bg2"
-        android:orientation="vertical">
-
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_11sdp"
-            android:buttonTint="@color/orange"
-            android:checked="true"
-            android:fontFamily="@font/sansregular"
-            android:padding="@dimen/_11sdp"
-            android:text="Customer not available / Store closed"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_11ssp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:background="@color/gray" />
-
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_11sdp"
-            android:buttonTint="@color/orange"
-            android:fontFamily="@font/sansregular"
-            android:padding="@dimen/_11sdp"
-            android:text="Wrong address / Location not found"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_12ssp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:background="@color/gray" />
-
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_11sdp"
-            android:buttonTint="@color/orange"
-            android:fontFamily="@font/sansregular"
-            android:padding="@dimen/_11sdp"
-            android:text="Customer refused to accept"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_12ssp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:background="@color/gray" />
-
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_11sdp"
-            android:buttonTint="@color/orange"
-            android:fontFamily="@font/sansregular"
-            android:padding="@dimen/_11sdp"
-            android:text="Delivery cancelled"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_12ssp" />
-
-    </RadioGroup>
+        android:orientation="vertical" />
 
     <TextView
         android:layout_width="wrap_content"
