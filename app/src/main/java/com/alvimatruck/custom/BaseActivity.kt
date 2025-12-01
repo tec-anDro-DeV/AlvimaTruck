@@ -91,6 +91,15 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
             return
         }
 
+        if (Build.VERSION.SDK_INT >= 33 &&
+            !hasPermission(Manifest.permission.POST_NOTIFICATIONS)
+        ) {
+            requestPermissions(
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS), 103
+            )
+            return
+        }
+
         // 3️⃣ Special foreground location service permission (Android 14+)
         if (Build.VERSION.SDK_INT >= 34 &&
             !hasPermission(Manifest.permission.FOREGROUND_SERVICE_LOCATION)
@@ -110,12 +119,10 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     }
 
     private fun checkBatteryOptimization() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
+        val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
 
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                showBatteryOptimizationDialog()
-            }
+        if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+            showBatteryOptimizationDialog()
         }
     }
 
@@ -150,7 +157,9 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-            checkAndStartLocationService()
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                checkAndStartLocationService()
+            }, 1000) // Wait 1 second after user clicks "Allow"
         } else {
             Toast.makeText(this, "Location permission required", Toast.LENGTH_LONG).show()
         }

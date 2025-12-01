@@ -62,11 +62,30 @@ class LocationService : Service() {
             .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Alvima:GPS_LOCK")
         wakeLock.acquire()
 
-        startNotification()
+        //startNotification()
         fusedClient = LocationServices.getFusedLocationProviderClient(this)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
-        startHybridUpdates()
+        try {
+            startHybridUpdates()
+        } catch (e: SecurityException) {
+            // If we crash here, it means permission isn't ready yet.
+            Log.e("GPS", "Permission not active yet: ${e.message}")
+            stopSelf() // Stop service to prevent crash
+            return
+        }
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            try {
+                startNotification()
+            } catch (e: Exception) {
+                // Android 14 specific safety catch
+                if (Build.VERSION.SDK_INT >= 34) {
+                    stopSelf() // Fail gracefully instead of crashing
+                }
+            }
+        }, 500) // 500ms delay
+
     }
 
     override fun onStartCommand(i: Intent?, f: Int, id: Int) = START_STICKY

@@ -123,11 +123,18 @@
                 </RelativeLayout>
 
 
-                <View
+                <TextView
+                    android:id="@+id/tvViewMap"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/_9sdp"
-                    android:background="@color/gray" />
+                    android:background="@drawable/bg_status_blue"
+                    android:fontFamily="@font/sansbold"
+                    android:padding="@dimen/_5sdp"
+                    android:text="View Customer Map"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

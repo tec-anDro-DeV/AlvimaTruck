@@ -6,7 +6,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.alvimatruck.activity.ConfirmDeliveryActivity
+import com.alvimatruck.activity.DeliveryOrderDetailActivity
 import com.alvimatruck.databinding.SingleDeliveryItemBinding
 
 
@@ -22,7 +22,7 @@ class DeliveryListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.itemView.setOnClickListener {
-            mActivity.startActivity(Intent(mActivity, ConfirmDeliveryActivity::class.java))
+            mActivity.startActivity(Intent(mActivity, DeliveryOrderDetailActivity::class.java))
         }
     }
 
