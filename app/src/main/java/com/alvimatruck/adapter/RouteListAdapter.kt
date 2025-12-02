@@ -29,19 +29,16 @@ class RouteListAdapter(
         holder.binding.detail = list[position]
         //   holder.binding.tvData.text = "Demo List Item " + (position + 1)
 
-        when (position) {
-            0 -> {
-                holder.binding.tvStatus.text = "In Progress"
+        when (list[position].status) {
+            "In Progress" -> {
                 holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
             }
 
-            2 -> {
-                holder.binding.tvStatus.text = "Completed"
+            "Completed" -> {
                 holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
             }
 
             else -> {
-                holder.binding.tvStatus.text = "Pending"
                 holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
             }
         }

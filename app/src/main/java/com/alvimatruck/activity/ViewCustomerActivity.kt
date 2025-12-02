@@ -18,14 +18,45 @@ import androidx.core.content.res.ResourcesCompat
 import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityViewCustomerBinding
+import com.alvimatruck.model.responses.CustomerDetail
+import com.alvimatruck.utils.Constants
+import com.google.gson.Gson
 
 class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
+    var customerDetail: CustomerDetail? = null
     override fun inflateBinding(): ActivityViewCustomerBinding {
         return ActivityViewCustomerBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (intent != null) {
+            customerDetail = Gson().fromJson(
+                intent.getStringExtra(Constants.CustomerDetail).toString(),
+                CustomerDetail::class.java
+            )
+            binding.tvCustomerName.text = customerDetail!!.searchName
+            binding.tvContactNumber.text = customerDetail!!.getFormattedContactNo()
+            binding.tvContactName.text = customerDetail!!.contact
+            binding.tvTelephoneNumber.text = customerDetail!!.getFormattedTelephoneNo()
+            binding.tvAddress.text = customerDetail!!.address + " " + customerDetail!!.address2
+            binding.tvCity.text = customerDetail!!.city
+            binding.tvPostalCode.text = ""
+            binding.tvTINNumber.text = customerDetail!!.tinNo
+            binding.tvCustomerPostingGroup.text = customerDetail!!.customerPostingGroup
+            binding.tvCustomerPricingGroup.text = customerDetail!!.customerPriceGroup
+
+        }
+
+        binding.tvViewMap.setOnClickListener {
+            startActivity(
+                Intent(this, MapRouteActivity::class.java).putExtra(
+                    Constants.LATITUDE, customerDetail!!.latitude
+                ).putExtra(Constants.LONGITUDE, customerDetail!!.longitude)
+                    .putExtra(Constants.CustomerDetail, customerDetail!!.searchName)
+            )
+        }
 
         binding.btnBack.setOnClickListener {
             handleBackPressed()

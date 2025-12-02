@@ -73,10 +73,10 @@
                     android:background="@drawable/bg_status_green"
                     android:fontFamily="@font/sanssemibold"
                     android:paddingVertical="@dimen/_5sdp"
-                    android:text="In Progress"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_11ssp" />
+                    android:textSize="@dimen/_11ssp"
+                    tools:text="In Progress" />
             </RelativeLayout>
 
             <LinearLayout
@@ -194,9 +194,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
-                        android:text="1200"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="1200" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -471,7 +471,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
-                        android:text="$97248.00"
+                        tools:text="$97248.00"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>

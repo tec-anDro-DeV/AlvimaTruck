@@ -42,10 +42,11 @@
                 android:background="@drawable/bg_status_orange"
                 android:fontFamily="@font/sanssemibold"
                 android:paddingVertical="@dimen/_5sdp"
-                android:text="In Progress"
+                android:text="@{detail.status}"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_11ssp"
+                tools:text="In Progress" />
         </RelativeLayout>
 
         <!-- Divider -->
@@ -196,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="40km"
+                    android:text="@{detail.distance+` Km`}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
             </RelativeLayout>

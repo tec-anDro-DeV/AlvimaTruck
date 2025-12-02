@@ -49,10 +49,7 @@
             android:name=".activity.RecentLogsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.DemoActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true"
@@ -166,10 +163,7 @@
             android:name=".activity.MapRouteActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.DemoListActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.TransferOrderListActivity"
             android:exported="false"

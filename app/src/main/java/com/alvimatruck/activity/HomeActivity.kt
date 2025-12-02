@@ -8,10 +8,14 @@ import androidx.appcompat.app.AlertDialog
 import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityHomeBinding
+import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.google.gson.Gson
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
+    var userDetail: UserDetail? = null
     override fun inflateBinding(): ActivityHomeBinding {
         return ActivityHomeBinding.inflate(layoutInflater)
     }
@@ -21,7 +25,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         binding.tvDate.text = Utils.getFullDate(System.currentTimeMillis())
 
-
+        userDetail =
+            Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
+        binding.tvUsername.text = userDetail?.firstName + " " + userDetail?.lastName
         binding.rlBottomHome.setOnClickListener {
 //            binding.rlBottomHome.setBackgroundResource(R.drawable.orange_circle)
 //            binding.rlBottomTrip.setBackgroundResource(0)
@@ -88,11 +94,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
 
         binding.llProgressRoute.setOnClickListener {
-            startActivity(
-                Intent(this, RouteDetailActivity::class.java).putExtra(
-                    Constants.Status, binding.tvStatus.text.toString()
-                )
-            )
+//            startActivity(
+//                Intent(this, RouteDetailActivity::class.java).putExtra(
+//                    Constants.Status, binding.tvStatus.text.toString()
+//                )
+//            )
         }
         binding.llFeetManagement.setOnClickListener {
             startActivity(Intent(this, FleetManagementActivity::class.java))

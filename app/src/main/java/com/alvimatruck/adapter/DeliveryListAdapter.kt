@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.activity.DeliveryOrderDetailActivity
+import com.alvimatruck.activity.MapRouteActivity
 import com.alvimatruck.databinding.SingleDeliveryItemBinding
 
 
@@ -24,6 +25,10 @@ class DeliveryListAdapter(
         holder.itemView.setOnClickListener {
             mActivity.startActivity(Intent(mActivity, DeliveryOrderDetailActivity::class.java))
         }
+        holder.binding.tvViewMap.setOnClickListener {
+            mActivity.startActivity(Intent(mActivity, MapRouteActivity::class.java))
+        }
+
     }
 
     override fun getItemCount(): Int {

@@ -16,6 +16,7 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 
 interface ApiInterface {
@@ -52,6 +53,9 @@ interface ApiInterface {
 
     @GET(Constants.API_Today_Routes)
     fun getTodayRoutes(): Call<JsonObject>
+
+    @GET(Constants.API_Customer_List)
+    fun customerList(@Query("page") page: Int, @Query("pageSize") pageSize: Int): Call<JsonObject>
 
     @Multipart
     @POST(Constants.API_Create_Customer)

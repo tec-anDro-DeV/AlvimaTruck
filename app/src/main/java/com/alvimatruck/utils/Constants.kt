@@ -21,6 +21,7 @@ class Constants {
 
         const val API_Create_Customer = "Customer/create-customer"
         const val API_Today_Routes = "MobileRoutes/today-routes"
+        const val API_Customer_List = "Customer/get-all"
 
 
         // Constants Key
@@ -40,7 +41,9 @@ class Constants {
         const val Status = "status"
 
         const val RouteDetail = "route_detail"
-
+        const val LATITUDE = "latitude"
+        const val LONGITUDE = "longitude"
+        const val CustomerDetail = "customer_detail"
     }
 
 

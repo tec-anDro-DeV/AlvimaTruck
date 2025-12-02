@@ -46,13 +46,18 @@ class TripRouteListActivity : BaseActivity<ActivityTripRouteListBinding>() {
             handleBackPressed()
         }
 
+        binding.swipeRefresh.setOnRefreshListener {
+            //  binding.swipeRefresh.isRefreshing = true
+            routesListAPI()
+        }
+
         routesListAPI()
 
 
     }
 
     private fun routesListAPI() {
-
+        binding.swipeRefresh.isRefreshing = false
         if (Utils.isOnline(this)) {
             ProgressDialog.start(this@TripRouteListActivity)
             ApiClient.getRestClient(

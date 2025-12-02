@@ -5,7 +5,9 @@ import android.util.Log
 import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityMapRouteBinding
-import com.alvimatruck.utils.Utils
+import com.alvimatruck.service.AlvimaTuckApplication
+import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.Utils.bitmapDescriptorFromVector
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -27,11 +29,21 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
     private val client = OkHttpClient()
 
     // Example points (Ahmedabad)
-    private val origin = LatLng(
-        Utils.currentLocation!!.latitude,
-        Utils.currentLocation!!.longitude
-    )   // Starting point
-    private val destination = LatLng(23.00154667352913, 72.55099309477606)// Ending point
+    var origin: LatLng? = null // Starting point
+    private var destination = LatLng(23.071593, 72.5869836)// Ending point
+    var customerName: String? = null
+
+    private val updateHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    private val updateRunnable = object : Runnable {
+        override fun run() {
+            updateLocationAndRoute()
+            updateHandler.postDelayed(this, 10000) // Repeat every 10 seconds
+        }
+    }
+
+    // Track the current marker so we can remove/move it
+    private var originMarker: com.google.android.gms.maps.model.Marker? = null
+    private var currentPolyline: com.google.android.gms.maps.model.Polyline? = null
 
 
     override fun inflateBinding(): ActivityMapRouteBinding {
@@ -40,29 +52,87 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        checkAndStartLocationService()
+        binding.btnBack.setOnClickListener {
+            handleBackPressed()
+        }
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        if (intent != null) {
+            destination = LatLng(
+                intent.getDoubleExtra(Constants.LATITUDE, 0.0),
+                intent.getDoubleExtra(Constants.LONGITUDE, 0.0)
+            )
+            customerName = intent.getStringExtra(Constants.CustomerDetail)
+        }
 
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add markers
-        mMap.addMarker(MarkerOptions().position(origin).title("Start"))
-        mMap.addMarker(MarkerOptions().position(destination).title("Destination"))
+        // Add static destination marker once
+        mMap.addMarker(MarkerOptions().position(destination).title(customerName))
 
-        // Move camera to show both points
-        val bounds = LatLngBounds.builder()
-            .include(origin)
-            .include(destination)
-            .build()
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+        // Start the update loop immediately
+        updateHandler.post(updateRunnable)
+    }
 
-        // Fetch and draw the route
-        getRoute(origin, destination)
+    private fun updateLocationAndRoute() {
+        // 1. Get latest location
+        val lat = AlvimaTuckApplication.latitude
+        val lng = AlvimaTuckApplication.longitude
+
+        // If location is still 0,0, skip this update
+        if (lat == 0.0 || lng == 0.0) return
+
+        val newOrigin = LatLng(lat, lng)
+        origin = newOrigin
+
+        // 2. Update the "Start" Marker
+        if (originMarker == null) {
+            // Create marker if it doesn't exist
+            originMarker = mMap.addMarker(
+                MarkerOptions().position(newOrigin).title("Start")
+                    .icon(bitmapDescriptorFromVector(this, R.drawable.ic_truck_marker))
+                    .anchor(0.5f, 0.5f)
+            )
+        } else {
+            // Move existing marker to new location
+            originMarker?.position = newOrigin
+        }
+
+        // 3. Update Camera (Every time, but with a limit)
+        try {
+            val bounds = LatLngBounds.builder()
+                .include(newOrigin)
+                .include(destination)
+                .build()
+
+            // Calculate the camera update for these bounds with padding
+            val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 150)
+
+            // Move the camera
+            mMap.animateCamera(cameraUpdate, object : GoogleMap.CancelableCallback {
+                override fun onFinish() {
+                    // Once animation finishes, check if we are zoomed in too far
+                    if (mMap.cameraPosition.zoom > 18f) {
+                        // If zoom is 16, 17, 18+, force it back to 15
+                        mMap.animateCamera(CameraUpdateFactory.zoomTo(18f))
+                    }
+                }
+
+                override fun onCancel() {}
+            })
+
+        } catch (e: Exception) {
+            Log.e("MapRoute", "Camera update failed: ${e.message}")
+        }
+
+        // 4. Recalculate Route
+        getRoute(newOrigin, destination)
     }
 
     private fun getRoute(origin: LatLng, dest: LatLng) {
@@ -135,6 +205,7 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
     }
 
     private fun drawRoute(points: List<LatLng>) {
+        currentPolyline?.remove()
         val polylineOptions = PolylineOptions()
             .addAll(points)
             .width(8f)
@@ -142,5 +213,11 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
             .geodesic(true)
         mMap.addPolyline(polylineOptions)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()    // Stop the 10-second timer when leaving the screen
+        updateHandler.removeCallbacks(updateRunnable)
+    }
+
 
 }

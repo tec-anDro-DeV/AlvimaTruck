@@ -58,17 +58,21 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
 
             binding.progressBar.progress =
                 (routeDetail!!.visited + routeDetail!!.skipped) * 100 / routeDetail!!.regularCustomerCount
+            binding.tvStatus.text = routeDetail!!.status
+            binding.tvDistanceValue.text = routeDetail!!.distance.toString() + " Km"
+            binding.tvVanStartKilometer.text = routeDetail!!.startKm.toString()
+            binding.tvEndKilometer.text = routeDetail!!.endKm.toString()
+            binding.tvTotalSaleValue.text = "$" + routeDetail!!.totalSalesValues.toString()
+
 
             if (status.equals("Pending")) {
                 binding.tvStartEndTrip.text = "Start Trip"
-                binding.tvStatus.text = "Pending"
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
                 binding.rlStartKilometer.visibility = View.GONE
                 binding.rlEndKilometer.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.VISIBLE
 
             } else if (status.equals("In Progress")) {
-                binding.tvStatus.text = "In Progress"
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
                 binding.tvStartEndTrip.text = "End Trip"
                 binding.rlStartKilometer.visibility = View.VISIBLE
@@ -76,7 +80,6 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 binding.llBottomButtons.visibility = View.VISIBLE
 
             } else {
-                binding.tvStatus.text = "Completed"
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
                 binding.rlStartKilometer.visibility = View.VISIBLE
                 binding.rlEndKilometer.visibility = View.VISIBLE

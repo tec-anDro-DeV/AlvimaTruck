@@ -5,6 +5,11 @@ data class RouteDetail(
     val regularCustomerCount: Int,
     val visited: Int,
     val skipped: Int,
+    val distance: Double,
+    val startKm: Double,
+    val endKm: Double,
     val routeName: String,
-    val territory: String
+    val totalSalesValues: Double,
+    val territory: String,
+    val status: String
 )

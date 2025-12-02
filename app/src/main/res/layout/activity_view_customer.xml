@@ -35,7 +35,7 @@
             android:autoSizeTextType="uniform"
             android:fontFamily="@font/sanssemibold"
             android:maxLines="2"
-            android:text="Customer Name"
+            android:text="Customer Detail"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
