@@ -19,10 +19,15 @@ import androidx.core.content.res.ResourcesCompat
 import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityRouteDetailBinding
+import com.alvimatruck.model.responses.RouteDetail
 import com.alvimatruck.utils.Constants
+import com.google.gson.Gson
 
 class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
     var status: String? = ""
+
+    var routeDetail: RouteDetail? = null
+
     override fun inflateBinding(): ActivityRouteDetailBinding {
         return ActivityRouteDetailBinding.inflate(layoutInflater)
     }
@@ -36,14 +41,28 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
 
         if (intent != null) {
             status = intent.getStringExtra(Constants.Status).toString()
+            routeDetail = Gson().fromJson(
+                intent.getStringExtra(Constants.RouteDetail).toString(),
+                RouteDetail::class.java
+            )
+
+            binding.tvRouteId.text = routeDetail!!.routeName
+            binding.tvRegularCustomersValue.text = routeDetail!!.regularCustomerCount.toString()
+            binding.tvVisitedCustomersValue.text = routeDetail!!.visited.toString()
+            binding.tvSkippedCustomersValue.text = routeDetail!!.skipped.toString()
+            binding.tvTotalVisitedCustomer.text =
+                (routeDetail!!.visited + routeDetail!!.skipped).toString()
+            binding.tvTotalCustomer.text = "/" + routeDetail!!.regularCustomerCount.toString()
+            binding.tvPendingCustomer.text =
+                (routeDetail!!.regularCustomerCount - routeDetail!!.visited + routeDetail!!.skipped).toString()
+
+            binding.progressBar.progress =
+                (routeDetail!!.visited + routeDetail!!.skipped) * 100 / routeDetail!!.regularCustomerCount
 
             if (status.equals("Pending")) {
                 binding.tvStartEndTrip.text = "Start Trip"
                 binding.tvStatus.text = "Pending"
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
-                binding.tvPendingCustomer.text = "34"
-                binding.tvTotalVisitedCustomer.text = "0"
-                binding.progressBar.progress = 0
                 binding.rlStartKilometer.visibility = View.GONE
                 binding.rlEndKilometer.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.VISIBLE
@@ -52,9 +71,6 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 binding.tvStatus.text = "In Progress"
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
                 binding.tvStartEndTrip.text = "End Trip"
-                binding.tvPendingCustomer.text = "4"
-                binding.tvTotalVisitedCustomer.text = "30"
-                binding.progressBar.progress = 88
                 binding.rlStartKilometer.visibility = View.VISIBLE
                 binding.rlEndKilometer.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.VISIBLE
@@ -62,14 +78,19 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             } else {
                 binding.tvStatus.text = "Completed"
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
-                binding.tvPendingCustomer.text = "4"
-                binding.tvTotalVisitedCustomer.text = "30"
-                binding.progressBar.progress = 88
                 binding.rlStartKilometer.visibility = View.VISIBLE
                 binding.rlEndKilometer.visibility = View.VISIBLE
                 binding.llBottomButtons.visibility = View.GONE
 
             }
+        }
+
+        binding.tvViewMap.setOnClickListener {
+            startActivity(
+                Intent(this, RouteMapActivity::class.java).putExtra(
+                    Constants.RouteDetail, Gson().toJson(routeDetail)
+                )
+            )
         }
 
         binding.tvStartEndTrip.setOnClickListener {

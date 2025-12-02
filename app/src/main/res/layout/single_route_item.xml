@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <!--        <variable-->
-        <!--            name="detail"-->
-        <!--            type="String" />-->
+        <variable
+            name="detail"
+            type="com.alvimatruck.model.responses.RouteDetail" />
     </data>
 
     <LinearLayout
@@ -27,9 +28,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/sansbold"
-                android:text="549SD0X87"
+                android:text="@{detail.routeName}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp" />
+                android:textSize="@dimen/_14ssp"
+                tools:text="5855555555" />
 
             <TextView
                 android:id="@+id/tvStatus"
@@ -89,9 +91,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="12"
+                    android:text="@{detail.regularCustomerCount+``}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="0" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -123,9 +126,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="9"
+                    android:text="@{detail.visited+``}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="0" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -157,43 +161,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="10"
+                    android:text="@{detail.skipped+``}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_12sdp">
-
-                <ImageView
-                    android:id="@+id/icTotalCustomers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:src="@drawable/ic_people" />
-
-                <TextView
-                    android:id="@+id/tvTotalCustomersLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_7sdp"
-                    android:layout_toEndOf="@id/icTotalCustomers"
-                    android:fontFamily="@font/sansregular"
-                    android:text="Total Customers Assigned"
-                    android:textColor="@color/darkgray"
-                    android:textSize="@dimen/_11ssp" />
-
-                <TextView
-                    android:id="@+id/tvTotalCustomersValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="31"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="0" />
             </RelativeLayout>
 
             <!-- Distance -->

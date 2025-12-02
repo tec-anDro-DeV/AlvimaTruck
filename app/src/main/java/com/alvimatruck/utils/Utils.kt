@@ -38,7 +38,6 @@ import java.util.TimeZone
 @SuppressLint("SimpleDateFormat")
 object Utils {
     var mLastClickTime: Long = 0
-    var token: String = ""
     var currentLocation: Location? = null
 
     private val ETHIOPIA_MOBILE_REGEX = Regex("^0[79]\\d{8}$")

@@ -50,6 +50,9 @@ interface ApiInterface {
     @GET(Constants.API_Item_List)
     fun itemList(): Call<JsonArray>
 
+    @GET(Constants.API_Today_Routes)
+    fun getTodayRoutes(): Call<JsonObject>
+
     @Multipart
     @POST(Constants.API_Create_Customer)
     fun createCustomer(

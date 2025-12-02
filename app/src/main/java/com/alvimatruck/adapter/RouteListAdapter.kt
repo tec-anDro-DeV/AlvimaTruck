@@ -10,12 +10,14 @@ import com.alvimatruck.R
 import com.alvimatruck.activity.RouteDetailActivity
 import com.alvimatruck.activity.RouteMapActivity
 import com.alvimatruck.databinding.SingleRouteItemBinding
+import com.alvimatruck.model.responses.RouteDetail
 import com.alvimatruck.utils.Constants
+import com.google.gson.Gson
 
 
 class RouteListAdapter(
     private val mActivity: Activity,
-    private val list: ArrayList<String>,
+    private val list: ArrayList<RouteDetail>,
 ) : RecyclerView.Adapter<RouteListAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = mActivity.layoutInflater
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,7 +26,7 @@ class RouteListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        //   holder.binding.detail = list[position]
+        holder.binding.detail = list[position]
         //   holder.binding.tvData.text = "Demo List Item " + (position + 1)
 
         when (position) {
@@ -46,14 +48,18 @@ class RouteListAdapter(
 
         holder.itemView.setOnClickListener {
             mActivity.startActivity(
-                Intent(
-                    mActivity, RouteDetailActivity::class.java
-                ).putExtra(Constants.Status, holder.binding.tvStatus.text.toString())
+                Intent(mActivity, RouteDetailActivity::class.java).putExtra(
+                    Constants.Status, holder.binding.tvStatus.text.toString()
+                ).putExtra(Constants.RouteDetail, Gson().toJson(list[position]))
             )
         }
 
         holder.binding.tvViewMap.setOnClickListener {
-            mActivity.startActivity(Intent(mActivity, RouteMapActivity::class.java))
+            mActivity.startActivity(
+                Intent(mActivity, RouteMapActivity::class.java).putExtra(
+                    Constants.RouteDetail, Gson().toJson(list[position])
+                )
+            )
         }
 
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
@@ -59,9 +60,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="549SD0X87"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_14ssp"
+                    tools:text="549SD0X87" />
 
                 <TextView
                     android:id="@+id/tvStatus"
@@ -261,9 +262,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
-                        android:text="12"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="12" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -302,8 +303,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_12sdp">
+                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/icSkippedCustomers"
@@ -333,40 +333,6 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/icTotalCustomers"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:src="@drawable/ic_people" />
-
-                    <TextView
-                        android:id="@+id/tvTotalCustomersLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        android:layout_toEndOf="@id/icTotalCustomers"
-                        android:fontFamily="@font/sansregular"
-                        android:text="Total Customers Assigned"
-                        android:textColor="@color/darkgray"
-                        android:textSize="@dimen/_11ssp" />
-
-                    <TextView
-                        android:id="@+id/tvTotalCustomersValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:fontFamily="@font/sanssemibold"
-                        android:text="31"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
-                </RelativeLayout>
-
             </LinearLayout>
 
             <LinearLayout

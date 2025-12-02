@@ -449,40 +449,6 @@
                             android:textSize="@dimen/_12ssp" />
                     </RelativeLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_12sdp">
-
-                        <ImageView
-                            android:id="@+id/icTotalCustomers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:src="@drawable/ic_people" />
-
-                        <TextView
-                            android:id="@+id/tvTotalCustomersLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_7sdp"
-                            android:layout_toEndOf="@id/icTotalCustomers"
-                            android:fontFamily="@font/sansregular"
-                            android:text="Total Customers Assigned"
-                            android:textColor="@color/darkgray"
-                            android:textSize="@dimen/_11ssp" />
-
-                        <TextView
-                            android:id="@+id/tvTotalCustomersValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:fontFamily="@font/sanssemibold"
-                            android:text="31"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_12ssp" />
-                    </RelativeLayout>
-
                     <!-- Distance -->
                     <RelativeLayout
                         android:layout_width="match_parent"

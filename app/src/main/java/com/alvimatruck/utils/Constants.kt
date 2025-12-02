@@ -20,6 +20,7 @@ class Constants {
         const val API_Item_List = "Dropdown/items"
 
         const val API_Create_Customer = "Customer/create-customer"
+        const val API_Today_Routes = "MobileRoutes/today-routes"
 
 
         // Constants Key
@@ -37,6 +38,8 @@ class Constants {
         const val FingerPrintEnabled = "fingerprint_enabled"
 
         const val Status = "status"
+
+        const val RouteDetail = "route_detail"
 
     }
 
