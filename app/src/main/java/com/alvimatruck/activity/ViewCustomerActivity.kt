@@ -20,6 +20,7 @@ import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityViewCustomerBinding
 import com.alvimatruck.model.responses.CustomerDetail
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.Utils
 import com.google.gson.Gson
 
 class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
@@ -46,6 +47,25 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
             binding.tvTINNumber.text = customerDetail!!.tinNo
             binding.tvCustomerPostingGroup.text = customerDetail!!.customerPostingGroup
             binding.tvCustomerPricingGroup.text = customerDetail!!.customerPriceGroup
+            binding.tvUsages.text = customerDetail!!.balanceLcy.toString()
+            binding.tvTotalLimit.text = "Total: " + customerDetail!!.creditLimitLcy.toString()
+            val progress = if (customerDetail!!.creditLimitLcy == 0.0) {
+                0
+            } else {
+                ((customerDetail!!.balanceLcy / customerDetail!!.creditLimitLcy) * 100).toInt()
+                    .coerceIn(0, 100)
+            }
+
+            binding.progressBar.progress = progress
+
+
+
+            Utils.loadProfileWithPlaceholder(
+                this,
+                binding.ivCustomer,
+                customerDetail!!.searchName,
+                customerDetail!!.customerImage
+            )
 
         }
 
@@ -101,25 +121,21 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                     id = View.generateViewId() // Generate unique ID
                     setTextColor(
                         ContextCompat.getColor(
-                            this@ViewCustomerActivity,
-                            R.color.black
+                            this@ViewCustomerActivity, R.color.black
                         )
                     )
                     buttonTintList = ColorStateList.valueOf(
                         ContextCompat.getColor(
-                            this@ViewCustomerActivity,
-                            R.color.orange
+                            this@ViewCustomerActivity, R.color.orange
                         )
                     )
                     setPadding(padding, padding, padding, padding)
                     typeface = typefaceRegular
                     setTextSize(
-                        TypedValue.COMPLEX_UNIT_PX,
-                        textSize
+                        TypedValue.COMPLEX_UNIT_PX, textSize
                     ) // Uncomment if you want exact SSP sizing logic
                     layoutParams = RadioGroup.LayoutParams(
-                        RadioGroup.LayoutParams.MATCH_PARENT,
-                        RadioGroup.LayoutParams.WRAP_CONTENT
+                        RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT
                     ).apply {
                         marginStart = padding
                     }
@@ -136,8 +152,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                         )
                         setBackgroundColor(
                             ContextCompat.getColor(
-                                this@ViewCustomerActivity,
-                                R.color.gray
+                                this@ViewCustomerActivity, R.color.gray
                             )
                         )
                     }
@@ -151,10 +166,8 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
             }
 
 
-            val dialog = AlertDialog.Builder(this)
-                .setView(alertLayout)
-                .setCancelable(false)
-                .create()
+            val dialog =
+                AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
             dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
 
@@ -169,8 +182,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 Log.d("TAG", "Selected: $selectedReason")
             }
             dialog.show()
-            val width =
-                (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+            val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
     }

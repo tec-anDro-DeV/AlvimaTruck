@@ -2,6 +2,8 @@ package com.alvimatruck.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +27,9 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>() {
     private var customerListAdapter: CustomerListAdapter? = null
     var page: Int = 1
     var pageSize: Int = 50
+    var routeName = ""
     var customerList: ArrayList<CustomerDetail>? = ArrayList()
+    var filterList: ArrayList<CustomerDetail>? = ArrayList()
 
 
     override fun inflateBinding(): ActivityCustomersBinding {
@@ -37,6 +41,11 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+
+        if (intent != null) {
+            routeName = intent.getStringExtra(Constants.RouteDetail).toString()
+        }
+
 
         binding.rvCustomerList.addItemDecoration(
             EqualSpacingItemDecoration(
@@ -51,6 +60,27 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>() {
         binding.ivAddCustomer.setOnClickListener {
             startActivity(Intent(this@CustomersActivity, CreateCustomerActivity::class.java))
         }
+
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+
+                filterList!!.clear()
+                if (s.toString().trim().isEmpty()) {
+                    filterList!!.addAll(customerList!!)
+                } else {
+                    for (item in customerList!!) {
+                        if (item.searchName.lowercase().contains(s.toString().lowercase())) {
+                            filterList!!.add(item)
+                        }
+                    }
+                }
+                customerListAdapter!!.notifyDataSetChanged()
+            }
+        })
     }
 
     private fun customerListAPI() {
@@ -59,61 +89,65 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>() {
             ProgressDialog.start(this@CustomersActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.customerList(page, pageSize).enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@CustomersActivity)  // show dialog before logout
-                        return
-                    }
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-
-                            customerList = response.body()!!.getAsJsonArray("items").map {
-                                Gson().fromJson(it, CustomerDetail::class.java)
-                            } as ArrayList<CustomerDetail>
-
-                            if (customerList!!.isNotEmpty()) {
-                                binding.rvCustomerList.layoutManager =
-                                    LinearLayoutManager(
-                                        this@CustomersActivity,
-                                        LinearLayoutManager.VERTICAL,
-                                        false
-                                    )
-
-
-                                customerListAdapter = CustomerListAdapter(
-                                    this@CustomersActivity, customerList!!
-                                )
-                                binding.rvCustomerList.adapter = customerListAdapter
-
-                            } else {
-
-                            }
-
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+            )!!.webservices.customerList(routeName = routeName)
+                .enqueue(object : Callback<JsonObject> {
+                    override fun onResponse(
+                        call: Call<JsonObject>,
+                        response: Response<JsonObject>
+                    ) {
+                        ProgressDialog.dismiss()
+                        if (response.code() == 401) {
+                            Utils.forceLogout(this@CustomersActivity)  // show dialog before logout
+                            return
                         }
-                    } else {
+                        if (response.isSuccessful) {
+                            try {
+                                Log.d("TAG", "onResponse: " + response.body().toString())
+
+                                customerList = response.body()!!.getAsJsonArray("items").map {
+                                    Gson().fromJson(it, CustomerDetail::class.java)
+                                } as ArrayList<CustomerDetail>
+                                filterList = ArrayList(customerList!!)
+                                if (filterList!!.isNotEmpty()) {
+                                    binding.rvCustomerList.layoutManager =
+                                        LinearLayoutManager(
+                                            this@CustomersActivity,
+                                            LinearLayoutManager.VERTICAL,
+                                            false
+                                        )
+
+
+                                    customerListAdapter = CustomerListAdapter(
+                                        this@CustomersActivity, filterList!!
+                                    )
+                                    binding.rvCustomerList.adapter = customerListAdapter
+
+                                } else {
+
+                                }
+
+
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        } else {
+                            Toast.makeText(
+                                this@CustomersActivity,
+                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                         Toast.makeText(
                             this@CustomersActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            getString(com.alvimatruck.R.string.api_fail_message),
                             Toast.LENGTH_SHORT
                         ).show()
+                        ProgressDialog.dismiss()
                     }
-                }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@CustomersActivity,
-                        getString(com.alvimatruck.R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
+                })
         } else {
             Toast.makeText(
                 this,

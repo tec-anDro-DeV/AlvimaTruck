@@ -11,6 +11,7 @@ import com.alvimatruck.activity.ViewCustomerActivity
 import com.alvimatruck.databinding.SingleCustomerItemBinding
 import com.alvimatruck.model.responses.CustomerDetail
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.Utils
 import com.google.gson.Gson
 
 
@@ -43,6 +44,13 @@ class CustomerListAdapter(
                     .putExtra(Constants.CustomerDetail, list[position].searchName)
             )
         }
+
+        Utils.loadProfileWithPlaceholder(
+            holder.itemView.context,
+            holder.binding.ivCustomer,
+            list[position].searchName,
+            list[position].customerImage
+        )
     }
 
     override fun getItemCount(): Int {

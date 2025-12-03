@@ -8,6 +8,10 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
+import android.graphics.drawable.BitmapDrawable
 import android.location.Location
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -18,12 +22,14 @@ import android.util.Patterns
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.alvimatruck.R
 import com.alvimatruck.activity.LoginActivity
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -371,6 +377,57 @@ object Utils {
         return FileProvider.getUriForFile(
             context, "${context.packageName}.provider", compressedFile
         )
+    }
+
+    fun loadProfileWithPlaceholder(
+        context: Context,
+        imageView: ImageView,
+        name: String,
+        imageUrl: String?
+    ) {
+        val firstChar = name.firstOrNull()?.let { (it.uppercaseChar()).toString() }
+
+        if (!imageUrl.isNullOrEmpty()) {
+            Glide.with(context)
+                .load(imageUrl)
+                .circleCrop()
+                .error(
+                    BitmapDrawable(
+                        context.resources,
+                        generateCircleLetterBitmap(context, firstChar.toString())
+                    )
+                )
+                .into(imageView)
+        } else {
+            imageView.setImageBitmap(generateCircleLetterBitmap(context, firstChar.toString()))
+        }
+    }
+
+    fun generateCircleLetterBitmap(context: Context, letter: String, size: Int = 120): Bitmap {
+        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+
+        val paintCircle = Paint().apply {
+            color = ContextCompat.getColor(context, R.color.orange)
+            isAntiAlias = true
+        }
+
+        val paintText = Paint().apply {
+            color = Color.WHITE
+            textSize = size / 2.5f
+            textAlign = Paint.Align.CENTER
+            isAntiAlias = true
+            typeface = Typeface.DEFAULT_BOLD
+        }
+
+        // Draw circle
+        canvas.drawCircle(size / 2f, size / 2f, size / 2f, paintCircle)
+
+        // Draw letter in center
+        val textY = size / 2f - (paintText.descent() + paintText.ascent()) / 2
+        canvas.drawText(letter, size / 2f, textY, paintText)
+
+        return bitmap
     }
 }
 

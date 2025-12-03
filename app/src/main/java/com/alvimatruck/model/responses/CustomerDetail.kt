@@ -5,7 +5,7 @@ data class CustomerDetail(
     val address2: String?,
     val city: String,
     val contact: String,
-    val creditLimitLcy: Int,
+    val creditLimitLcy: Double,
     val customerImage: String?,
     val customerPostingGroup: String?,
     val customerPriceGroup: String?,
@@ -19,7 +19,8 @@ data class CustomerDetail(
     val searchName: String,
     val status: String,
     val telexNo: String?,
-    val tinNo: String?
+    val tinNo: String?,
+    val balanceLcy: Double
 ) {
     fun getFormattedContactNo(): String {
         val number = phoneNo ?: return ""

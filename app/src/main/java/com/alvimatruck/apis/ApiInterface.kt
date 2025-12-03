@@ -55,7 +55,11 @@ interface ApiInterface {
     fun getTodayRoutes(): Call<JsonObject>
 
     @GET(Constants.API_Customer_List)
-    fun customerList(@Query("page") page: Int, @Query("pageSize") pageSize: Int): Call<JsonObject>
+    fun customerList(
+        @Query("page") page: Int? = null,
+        @Query("pageSize") pageSize: Int? = null,
+        @Query("routeName") routeName: String
+    ): Call<JsonObject>
 
     @Multipart
     @POST(Constants.API_Create_Customer)
