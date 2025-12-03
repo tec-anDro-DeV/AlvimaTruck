@@ -389,7 +389,7 @@ object Utils {
 
         if (!imageUrl.isNullOrEmpty()) {
             Glide.with(context)
-                .load(imageUrl)
+                .load(Constants.IMAGE_URL + imageUrl)
                 .circleCrop()
                 .error(
                     BitmapDrawable(

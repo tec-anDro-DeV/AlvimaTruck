@@ -58,7 +58,7 @@ interface ApiInterface {
     fun customerList(
         @Query("page") page: Int? = null,
         @Query("pageSize") pageSize: Int? = null,
-        @Query("routeName") routeName: String
+        @Query("routeName") routeName: String? = null
     ): Call<JsonObject>
 
     @Multipart

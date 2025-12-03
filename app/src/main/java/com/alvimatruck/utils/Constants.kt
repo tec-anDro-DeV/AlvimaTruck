@@ -4,8 +4,8 @@ class Constants {
     companion object {
 
         // Base URL
-        const val BASE_URL =
-            "http://192.168.1.148:8696/api/" //Sandbox
+        const val BASE_URL = "http://192.168.1.148:8696/api/" //Sandbox
+        const val IMAGE_URL = "http://192.168.1.148:8696/" //Sandbox
 
         const val API_SignIn = "MobileLogin/mobilelogin"
         const val API_VanList = "Dropdown/get-van-sales-dropdown"

@@ -237,7 +237,9 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
                                     .trim(),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            handleBackPressed()
+                            val intent = Intent()
+                            setResult(RESULT_OK, intent)
+                            finish()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

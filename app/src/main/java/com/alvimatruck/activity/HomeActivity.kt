@@ -65,7 +65,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
 
         binding.llCustomer.setOnClickListener {
-            startActivity(Intent(this, CustomersActivity::class.java))
+            startActivity(
+                Intent(
+                    this,
+                    CustomersActivity::class.java
+                ).putExtra(Constants.RouteDetail, "")
+            )
         }
 
         binding.rlLogout.setOnClickListener {

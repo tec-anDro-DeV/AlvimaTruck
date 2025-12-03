@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.CustomerListAdapter
 import com.alvimatruck.apis.ApiClient
@@ -58,7 +59,9 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>() {
 
 
         binding.ivAddCustomer.setOnClickListener {
-            startActivity(Intent(this@CustomersActivity, CreateCustomerActivity::class.java))
+            // startActivity(Intent(this@CustomersActivity, CreateCustomerActivity::class.java))
+            val intent = Intent(this, CreateCustomerActivity::class.java)
+            startForResult.launch(intent)
         }
 
         binding.etSearch.addTextChangedListener(object : TextWatcher {
@@ -81,6 +84,15 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>() {
                 customerListAdapter!!.notifyDataSetChanged()
             }
         })
+    }
+
+    private val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            // NEW CUSTOMER ADDED → Refresh list
+            customerListAPI()
+        }
     }
 
     private fun customerListAPI() {
