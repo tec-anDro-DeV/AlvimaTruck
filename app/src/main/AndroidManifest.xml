@@ -41,14 +41,6 @@
         android:theme="@style/Theme.AlvimaTruck"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".activity.DeliveryOrderDetailActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.RecentLogsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.SplashActivity"
@@ -163,7 +155,6 @@
             android:name=".activity.MapRouteActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activity.TransferOrderListActivity"
             android:exported="false"
@@ -218,6 +209,18 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ReportActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.DriverHomeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.DeliveryOrderDetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RecentLogsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 

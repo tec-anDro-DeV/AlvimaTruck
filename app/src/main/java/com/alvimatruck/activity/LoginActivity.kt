@@ -37,7 +37,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
-    var itemList: ArrayList<VanDetail>? = ArrayList()
+    var itemList: ArrayList<VanDetail> = ArrayList()
     var filterList: ArrayList<VanDetail>? = ArrayList()
     var selectedVan: VanDetail? = null
 
@@ -332,6 +332,19 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         biometricPrompt.authenticate(promptInfo)
     }
 
+    private fun navigateToNextScreen() {
+        // Ensure userDetail is not null before proceeding
+        userDetail?.let { user ->
+            val intent = if (user.roleName == "Driver") {
+                Intent(this@LoginActivity, DriverHomeActivity::class.java)
+            } else {
+                Intent(this@LoginActivity, HomeActivity::class.java)
+            }
+            startActivity(intent)
+            finishAffinity() // Clear the activity stack
+        }
+    }
+
 
     fun login(username: String, password: String, vannumber: String) {
 
@@ -388,11 +401,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                             val fingerprintEnabled = SharedHelper.getBoolKey(
                                 this@LoginActivity, Constants.FingerPrintEnabled
                             )
-                            startActivity(
-                                Intent(
-                                    this@LoginActivity, HomeActivity::class.java
+//                            startActivity(
+//                                Intent(
+//                                    this@LoginActivity, HomeActivity::class.java
+//                                )
+//                            )
+                            if (userDetail!!.roleName == "Driver") {
+                                SharedHelper.putKey(
+                                    this@LoginActivity, Constants.IS_Salesperson, false
                                 )
-                            )
+                            } else {
+                                SharedHelper.putKey(
+                                    this@LoginActivity, Constants.IS_Salesperson, true
+                                )
+                            }
                             if (!fingerprintEnabled && canAuthenticate == BiometricManager.BIOMETRIC_SUCCESS) {
                                 // First-time login and hardware supports fingerprint → ask user
                                 askEnableFingerprint(username, password, vannumber)
@@ -400,8 +422,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                                 SharedHelper.putKey(
                                     this@LoginActivity, Constants.IS_LOGIN, true
                                 )
-
-                                finishAffinity()
+                                navigateToNextScreen()
                             }
 
                         }
@@ -450,12 +471,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
             btnNo.setOnClickListener {
                 dialog.dismiss()
-                startActivity(
-                    Intent(
-                        this@LoginActivity, HomeActivity::class.java
-                    )
-                )
-                finishAffinity()
+                navigateToNextScreen()
             }
             btnYes.setOnClickListener {
                 dialog.dismiss()
@@ -463,12 +479,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 SharedHelper.putKey(this, Constants.Username, username)
                 SharedHelper.putKey(this, Constants.Password, password)
                 SharedHelper.putKey(this, Constants.VanNo, vannumber)
-                startActivity(
-                    Intent(
-                        this@LoginActivity, HomeActivity::class.java
-                    )
-                )
-                finishAffinity()
+                navigateToNextScreen()
             }
 
             dialog.show()

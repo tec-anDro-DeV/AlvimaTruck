@@ -73,6 +73,7 @@
                 android:layout_height="@dimen/_118sdp"
                 android:layout_marginStart="@dimen/_13sdp"
                 android:layout_weight="1"
+                android:alpha="0.5"
                 android:background="@drawable/ic_delivery_2"
                 android:padding="@dimen/_14sdp">
 

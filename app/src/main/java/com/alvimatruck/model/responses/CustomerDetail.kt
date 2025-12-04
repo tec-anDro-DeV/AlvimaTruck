@@ -17,6 +17,7 @@ data class CustomerDetail(
     val phoneNo: String?,
     val routeName: String,
     val searchName: String,
+    var postCode: String,
     val status: String,
     var telexNo: String?,
     val tinNo: String?,

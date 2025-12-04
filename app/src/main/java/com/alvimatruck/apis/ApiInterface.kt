@@ -44,6 +44,9 @@ interface ApiInterface {
     @GET(Constants.API_Price_Group)
     fun priceGroupList(): Call<JsonObject>
 
+    @GET(Constants.API_City)
+    fun cityList(): Call<JsonObject>
+
     @GET(Constants.API_Location_Code)
     fun locationCodeList(): Call<JsonObject>
 

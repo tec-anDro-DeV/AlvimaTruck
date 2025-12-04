@@ -19,12 +19,17 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         super.onCreate(savedInstanceState)
 
         val isLogin = SharedHelper.getBoolKey(this, Constants.IS_LOGIN)
+        val isSalesPerson = SharedHelper.getBoolKey(this, Constants.IS_Salesperson)
         Handler(Looper.getMainLooper()).postDelayed({
             if (!isLogin) {
                 startActivity(Intent(this, OnBoardingActivity::class.java))
                 finish()
             } else {
-                startActivity(Intent(this, HomeActivity::class.java))
+                if (isSalesPerson) {
+                    startActivity(Intent(this, HomeActivity::class.java))
+                } else {
+                    startActivity(Intent(this, DriverHomeActivity::class.java))
+                }
                 finish()
             }
 

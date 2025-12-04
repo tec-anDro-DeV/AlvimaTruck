@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.alvimatruck.R
 import com.alvimatruck.activity.MapRouteActivity
 import com.alvimatruck.databinding.SingleCustomerItemBinding
 import com.alvimatruck.interfaces.CustomerClickListener
@@ -48,6 +51,16 @@ class CustomerListAdapter(
             list[position].searchName,
             list[position].customerImage
         )
+
+        if (list[position].status == "Pending") {
+            holder.binding.tvStatus.visibility = View.VISIBLE
+            holder.binding.tvStatus.text = list[position].status
+            holder.binding.tvStatus.background =
+                ContextCompat.getDrawable(holder.itemView.context, R.drawable.bg_status_red)
+        } else {
+            holder.binding.tvStatus.visibility = View.GONE
+        }
+
     }
 
     override fun getItemCount(): Int {

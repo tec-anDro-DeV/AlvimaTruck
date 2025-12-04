@@ -29,6 +29,7 @@ import com.alvimatruck.adapter.SingleItemSelectionAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityCreateCustomerBinding
+import com.alvimatruck.model.responses.CityDetail
 import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
@@ -37,6 +38,7 @@ import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
@@ -52,9 +54,12 @@ import java.io.File
 class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
     var postItemList: ArrayList<String>? = ArrayList()
     var priceItemList: ArrayList<String>? = ArrayList()
+    var cityList: ArrayList<String>? = ArrayList()
+    var postalCodeList: ArrayList<CityDetail>? = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
     var selectedPostGroup = ""
     var selectedPriceGroup = ""
+    var selectedCity = ""
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
@@ -81,6 +86,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
         setupLaunchers()
         getPriceList()
+        getCityList()
 
         postItemList!!.add("DOMESTIC")
         postItemList!!.add("Distributor")
@@ -104,6 +110,16 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
                 "Choose Posting Group",
                 "Search Posting Group",
                 binding.tvCustomerPostingGroup
+            )
+        }
+
+        binding.tvCity.setOnClickListener {
+            dialogSingleSelection(
+                cityList!!,
+                "Choose City",
+                "Search City",
+                binding.tvCity,
+                binding.tvPostalCode
             )
         }
 
@@ -171,10 +187,10 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         ) {
             Toast.makeText(this, "Please enter valid telephone number", Toast.LENGTH_SHORT).show()
             return
-        } else if (binding.etCity.text.toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please enter city", Toast.LENGTH_SHORT).show()
+        } else if (binding.tvCity.text.toString().trim().isEmpty()) {
+            Toast.makeText(this, "Please select city", Toast.LENGTH_SHORT).show()
             return
-        } else if (binding.etPostalCode.text.toString().trim().isEmpty()) {
+        } else if (binding.tvPostalCode.text.toString().trim().isEmpty()) {
             Toast.makeText(this, "Please enter postal code", Toast.LENGTH_SHORT).show()
             return
         } else if (binding.etAddress.text.toString().trim().isEmpty()) {
@@ -208,8 +224,8 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
                 binding.etCustomerPhoneNumber.text.toString()
                     .toRequestBody("text/plain".toMediaType()),
                 binding.etTelephoneNumber.text.toString().toRequestBody("text/plain".toMediaType()),
-                binding.etCity.text.toString().toRequestBody("text/plain".toMediaType()),
-                binding.etPostalCode.text.toString().toRequestBody("text/plain".toMediaType()),
+                binding.tvCity.text.toString().toRequestBody("text/plain".toMediaType()),
+                binding.tvPostalCode.text.toString().toRequestBody("text/plain".toMediaType()),
                 binding.etTINNumber.text.toString().toRequestBody("text/plain".toMediaType()),
                 binding.etAddress.text.toString().toRequestBody("text/plain".toMediaType()),
                 binding.tvCustomerPostingGroup.text.toString()
@@ -268,6 +284,57 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         }
 
     }
+
+    private fun getCityList() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@CreateCustomerActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, ""
+            )!!.webservices.cityList().enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            if (response.body() != null && response.body()!!.has("data")) {
+                                postalCodeList = response.body()!!.getAsJsonArray("data").map {
+                                    Gson().fromJson(it, CityDetail::class.java)
+                                } as ArrayList<CityDetail>
+                                for (item in postalCodeList!!) {
+                                    val code = item.city
+                                    cityList!!.add(code)
+                                }
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@CreateCustomerActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@CreateCustomerActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
+
 
     private fun getPriceList() {
         if (Utils.isOnline(this)) {
@@ -370,16 +437,25 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         list: ArrayList<String>,
         title: String,
         hint: String,
-        textView: TextView
+        textView: TextView,
+        textView2: TextView? = null
     ) {
         filterList!!.clear()
         filterList!!.addAll(list)
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
-        var selectedGroup: String = if (textView == binding.tvCustomerPriceGroup) {
-            selectedPriceGroup
-        } else {
-            selectedPostGroup
+        val selectedGroup: String = when (textView) {
+            binding.tvCustomerPriceGroup -> {
+                selectedPriceGroup
+            }
+
+            binding.tvCity -> {
+                selectedCity
+            }
+
+            else -> {
+                selectedPostGroup
+            }
         }
         val singleItemSelectionAdapter =
             SingleItemSelectionAdapter(this, filterList!!, selectedGroup)
@@ -434,10 +510,24 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
         tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
         tvConfirm.setOnClickListener { view: View? ->
-            if (textView == binding.tvCustomerPriceGroup) {
-                selectedPriceGroup = singleItemSelectionAdapter.selected
-            } else {
-                selectedPostGroup = singleItemSelectionAdapter.selected
+            when (textView) {
+                binding.tvCustomerPriceGroup -> {
+                    selectedPriceGroup = singleItemSelectionAdapter.selected
+                }
+
+                binding.tvCity -> {
+                    selectedCity = singleItemSelectionAdapter.selected
+
+                    for (item in postalCodeList!!) {
+                        if (item.city == singleItemSelectionAdapter.selected) {
+                            textView2?.text = item.code
+                        }
+                    }
+                }
+
+                else -> {
+                    selectedPostGroup = singleItemSelectionAdapter.selected
+                }
             }
             textView.text = singleItemSelectionAdapter.selected
             dialog.dismiss()

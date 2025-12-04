@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -52,9 +53,9 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         binding.tvContactNumber.text = customerDetail!!.getFormattedContactNo()
         binding.tvContactName.text = customerDetail!!.contact
         binding.tvTelephoneNumber.text = customerDetail!!.getFormattedTelephoneNo()
-        binding.tvAddress.text = customerDetail!!.address + " " + customerDetail!!.address2
+        binding.tvAddress.text = customerDetail!!.address
         binding.tvCity.text = customerDetail!!.city
-        binding.tvPostalCode.text = ""
+        binding.tvPostalCode.text = customerDetail!!.postCode
         binding.tvTINNumber.text = customerDetail!!.tinNo
         binding.tvCustomerPostingGroup.text = customerDetail!!.customerPostingGroup
         binding.tvCustomerPricingGroup.text = customerDetail!!.customerPriceGroup
@@ -89,6 +90,13 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 CustomerDetail::class.java
             )
             showUpdatedData()
+            if (customerDetail!!.status == "Pending") {
+                binding.llCreditLimit.visibility = View.GONE
+                binding.llBottomButtons.visibility = View.GONE
+            } else {
+                binding.llCreditLimit.visibility = View.VISIBLE
+                binding.llBottomButtons.visibility = View.VISIBLE
+            }
 
 
         }
@@ -103,10 +111,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         }
 
         binding.btnBack.setOnClickListener {
-            val intent = Intent()
-            intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
-            setResult(RESULT_OK, intent)
-            finish()
+            handleBackPressed()
         }
 
         binding.btnEdit.setOnClickListener {
@@ -217,4 +222,13 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
     }
+
+    override fun handleBackPressed(callback: OnBackPressedCallback?) {
+        val intent = Intent()
+        intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
+        setResult(RESULT_OK, intent)
+        finish()
+        super.handleBackPressed(callback) // This will call finish()
+    }
+
 }
