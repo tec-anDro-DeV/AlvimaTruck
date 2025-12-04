@@ -1,6 +1,7 @@
 package com.alvimatruck.apis
 
 import com.alvimatruck.model.request.ChangePasswordRequest
+import com.alvimatruck.model.request.CustomerUpdate
 import com.alvimatruck.model.request.LoginRequest
 import com.alvimatruck.model.request.OTPRequest
 import com.alvimatruck.model.request.OTPVerifyRequest
@@ -15,6 +16,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Query
 
@@ -79,4 +81,7 @@ interface ApiInterface {
         @Part customerImage: MultipartBody.Part? = null,   // optional
         @Part idProof: MultipartBody.Part? = null          // optional
     ): Call<JsonObject>
+
+    @PUT(Constants.API_Update_Customer)
+    fun updateCustomer(@Body updateCustomerRequest: CustomerUpdate): Call<JsonObject>
 }

@@ -1,24 +1,24 @@
 package com.alvimatruck.model.responses
 
 data class CustomerDetail(
-    val address: String,
+    var address: String,
     val address2: String?,
-    val city: String,
+    var city: String,
     val contact: String,
     val creditLimitLcy: Double,
     val customerImage: String?,
     val customerPostingGroup: String?,
     val customerPriceGroup: String?,
     val idProof: String?,
-    val latitude: Double,
+    var latitude: Double,
     val locationCode: String?,
-    val longitude: Double,
+    var longitude: Double,
     val no: String,
     val phoneNo: String?,
     val routeName: String,
     val searchName: String,
     val status: String,
-    val telexNo: String?,
+    var telexNo: String?,
     val tinNo: String?,
     val balanceLcy: Double
 ) {

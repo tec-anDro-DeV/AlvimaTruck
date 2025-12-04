@@ -13,6 +13,7 @@ import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityCustomersBinding
+import com.alvimatruck.interfaces.CustomerClickListener
 import com.alvimatruck.model.responses.CustomerDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
@@ -24,13 +25,33 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CustomersActivity : BaseActivity<ActivityCustomersBinding>() {
+class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClickListener {
     private var customerListAdapter: CustomerListAdapter? = null
     var page: Int = 1
     var pageSize: Int = 50
     var routeName = ""
     var customerList: ArrayList<CustomerDetail>? = ArrayList()
     var filterList: ArrayList<CustomerDetail>? = ArrayList()
+
+    private val openUpdateCustomer =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val updatedCustomer =
+                    Gson().fromJson(
+                        result.data?.getStringExtra(Constants.CustomerDetail).toString(),
+                        CustomerDetail::class.java
+                    )
+
+                if (updatedCustomer != null) {
+                    val index =
+                        filterList!!.indexOfFirst { it.no == updatedCustomer.no }  // match customerId
+                    if (index != -1) {
+                        filterList!![index] = updatedCustomer
+                        customerListAdapter!!.notifyItemChanged(index)
+                    }
+                }
+            }
+        }
 
 
     override fun inflateBinding(): ActivityCustomersBinding {
@@ -130,7 +151,7 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>() {
 
 
                                     customerListAdapter = CustomerListAdapter(
-                                        this@CustomersActivity, filterList!!
+                                        this@CustomersActivity, filterList!!, this@CustomersActivity
                                     )
                                     binding.rvCustomerList.adapter = customerListAdapter
 
@@ -168,6 +189,12 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>() {
             ).show()
         }
 
+    }
+
+    override fun onCustomerClick(customerDetail: CustomerDetail) {
+        val intent = Intent(this, ViewCustomerActivity::class.java)
+            .putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
+        openUpdateCustomer.launch(intent)
     }
 
 

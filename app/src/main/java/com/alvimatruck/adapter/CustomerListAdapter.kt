@@ -7,17 +7,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.activity.MapRouteActivity
-import com.alvimatruck.activity.ViewCustomerActivity
 import com.alvimatruck.databinding.SingleCustomerItemBinding
+import com.alvimatruck.interfaces.CustomerClickListener
 import com.alvimatruck.model.responses.CustomerDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.Utils
-import com.google.gson.Gson
 
 
 class CustomerListAdapter(
     private val mActivity: Activity,
     private val list: ArrayList<CustomerDetail>,
+    private val customerClickListener: CustomerClickListener,
 ) : RecyclerView.Adapter<CustomerListAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = mActivity.layoutInflater
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,10 +30,7 @@ class CustomerListAdapter(
         //   holder.binding.tvData.text = "Demo List Item " + (position + 1)
 
         holder.itemView.setOnClickListener {
-            mActivity.startActivity(
-                Intent(mActivity, ViewCustomerActivity::class.java)
-                    .putExtra(Constants.CustomerDetail, Gson().toJson(list[position]))
-            )
+            customerClickListener.onCustomerClick(list[position])
         }
 
         holder.binding.tvViewMap.setOnClickListener {

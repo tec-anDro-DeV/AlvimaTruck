@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -29,6 +30,56 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         return ActivityViewCustomerBinding.inflate(layoutInflater)
     }
 
+
+    private val openUpdateCustomer =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val updatedCustomer =
+                    Gson().fromJson(
+                        result.data?.getStringExtra(Constants.CustomerDetail).toString(),
+                        CustomerDetail::class.java
+                    )
+
+                if (updatedCustomer != null) {
+                    customerDetail = updatedCustomer
+                    showUpdatedData() // refresh UI
+                }
+            }
+        }
+
+    private fun showUpdatedData() {
+        binding.tvCustomerName.text = customerDetail!!.searchName
+        binding.tvContactNumber.text = customerDetail!!.getFormattedContactNo()
+        binding.tvContactName.text = customerDetail!!.contact
+        binding.tvTelephoneNumber.text = customerDetail!!.getFormattedTelephoneNo()
+        binding.tvAddress.text = customerDetail!!.address + " " + customerDetail!!.address2
+        binding.tvCity.text = customerDetail!!.city
+        binding.tvPostalCode.text = ""
+        binding.tvTINNumber.text = customerDetail!!.tinNo
+        binding.tvCustomerPostingGroup.text = customerDetail!!.customerPostingGroup
+        binding.tvCustomerPricingGroup.text = customerDetail!!.customerPriceGroup
+        binding.tvUsages.text = customerDetail!!.balanceLcy.toString()
+        binding.tvTotalLimit.text = "Total: " + customerDetail!!.creditLimitLcy.toString()
+        val progress =
+            if (customerDetail!!.creditLimitLcy == 0.0 || customerDetail!!.balanceLcy <= 0) {
+                0
+            } else {
+                ((customerDetail!!.creditLimitLcy - customerDetail!!.balanceLcy / customerDetail!!.creditLimitLcy) * 100).toInt()
+                    .coerceIn(0, 100)
+            }
+
+        binding.progressBar.progress = progress
+
+
+
+        Utils.loadProfileWithPlaceholder(
+            this,
+            binding.ivCustomer,
+            customerDetail!!.searchName,
+            customerDetail!!.customerImage
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,35 +88,8 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 intent.getStringExtra(Constants.CustomerDetail).toString(),
                 CustomerDetail::class.java
             )
-            binding.tvCustomerName.text = customerDetail!!.searchName
-            binding.tvContactNumber.text = customerDetail!!.getFormattedContactNo()
-            binding.tvContactName.text = customerDetail!!.contact
-            binding.tvTelephoneNumber.text = customerDetail!!.getFormattedTelephoneNo()
-            binding.tvAddress.text = customerDetail!!.address + " " + customerDetail!!.address2
-            binding.tvCity.text = customerDetail!!.city
-            binding.tvPostalCode.text = ""
-            binding.tvTINNumber.text = customerDetail!!.tinNo
-            binding.tvCustomerPostingGroup.text = customerDetail!!.customerPostingGroup
-            binding.tvCustomerPricingGroup.text = customerDetail!!.customerPriceGroup
-            binding.tvUsages.text = customerDetail!!.balanceLcy.toString()
-            binding.tvTotalLimit.text = "Total: " + customerDetail!!.creditLimitLcy.toString()
-            val progress = if (customerDetail!!.creditLimitLcy == 0.0) {
-                0
-            } else {
-                ((customerDetail!!.balanceLcy / customerDetail!!.creditLimitLcy) * 100).toInt()
-                    .coerceIn(0, 100)
-            }
+            showUpdatedData()
 
-            binding.progressBar.progress = progress
-
-
-
-            Utils.loadProfileWithPlaceholder(
-                this,
-                binding.ivCustomer,
-                customerDetail!!.searchName,
-                customerDetail!!.customerImage
-            )
 
         }
 
@@ -79,11 +103,18 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         }
 
         binding.btnBack.setOnClickListener {
-            handleBackPressed()
+            val intent = Intent()
+            intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
+            setResult(RESULT_OK, intent)
+            finish()
         }
 
         binding.btnEdit.setOnClickListener {
-            startActivity(Intent(this, UpdateCustomerActivity::class.java))
+            val intent = Intent(
+                this,
+                UpdateCustomerActivity::class.java
+            ).putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
+            openUpdateCustomer.launch(intent)
         }
 
         binding.tvNewOrder.setOnClickListener {
