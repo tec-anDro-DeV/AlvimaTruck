@@ -79,97 +79,89 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/llDelivery"
+            <RelativeLayout
+                android:id="@+id/rlDelivery"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_88sdp"
+                android:layout_height="@dimen/_105sdp"
                 android:layout_weight="1"
-                android:background="@drawable/home_btn_bg"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:padding="@dimen/_8sdp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_new_sales_route" />
+                android:background="@drawable/ic_delivery_2"
+                android:padding="@dimen/_14sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:autoSizeMinTextSize="@dimen/_1sdp"
-                    android:autoSizeTextType="uniform"
                     android:fontFamily="@font/sanssemibold"
-                    android:gravity="center"
-                    android:maxLines="2"
                     android:text="Delivery"
+                    android:textAllCaps="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_11ssp" />
-            </LinearLayout>
+                    android:textSize="@dimen/_13ssp" />
+            </RelativeLayout>
 
-
-            <LinearLayout
-                android:id="@+id/llFeetManagement"
+            <RelativeLayout
+                android:id="@+id/rlFeetManagement"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_88sdp"
-                android:layout_marginStart="@dimen/_6sdp"
+                android:layout_height="@dimen/_105sdp"
+                android:layout_marginStart="@dimen/_13sdp"
                 android:layout_weight="1"
-                android:background="@drawable/home_btn_bg"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:padding="@dimen/_8sdp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_new_van_break" />
+                android:background="@drawable/ic_transfer_3"
+                android:padding="@dimen/_14sdp">
 
                 <TextView
-                    android:id="@+id/tvVehicleBreakdown"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:autoSizeMinTextSize="@dimen/_1sdp"
-                    android:autoSizeTextType="uniform"
                     android:fontFamily="@font/sanssemibold"
-                    android:gravity="center"
-                    android:maxLines="2"
                     android:text="Fleet Management"
+                    android:textAllCaps="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_11ssp" />
-            </LinearLayout>
+                    android:textSize="@dimen/_13ssp" />
+            </RelativeLayout>
+        </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/llReport"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_13sdp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/rlReport"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_88sdp"
-                android:layout_marginStart="@dimen/_6sdp"
+                android:layout_height="@dimen/_105sdp"
                 android:layout_weight="1"
-                android:background="@drawable/home_btn_bg"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:padding="@dimen/_8sdp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_new_report" />
+                android:background="@drawable/ic_report_2"
+                android:padding="@dimen/_14sdp">
 
                 <TextView
-                    android:id="@+id/tvReportModules"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
                     android:autoSizeMinTextSize="@dimen/_1sdp"
                     android:autoSizeTextType="uniform"
                     android:fontFamily="@font/sanssemibold"
-                    android:gravity="center"
                     android:maxLines="2"
-                    android:text="Trip\nReport"
+                    android:text="Trip Report"
+                    android:textAllCaps="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_11ssp" />
-            </LinearLayout>
+                    android:textSize="@dimen/_13ssp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlTransfer"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_105sdp"
+                android:layout_marginStart="@dimen/_13sdp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_transfer_2"
+                android:padding="@dimen/_14sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="Transfer"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp" />
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -311,7 +303,7 @@
             android:id="@+id/tvStartEndTrip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_21sdp"
+            android:layout_marginTop="@dimen/_14sdp"
             android:background="@drawable/rounded_button_orange"
             android:fontFamily="@font/sansbold"
             android:gravity="center"

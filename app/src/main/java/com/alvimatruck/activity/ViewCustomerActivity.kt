@@ -12,18 +12,28 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isNotEmpty
 import com.alvimatruck.R
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityViewCustomerBinding
+import com.alvimatruck.model.request.VisitedTripRequest
 import com.alvimatruck.model.responses.CustomerDetail
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.google.gson.Gson
+import com.google.gson.JsonObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
     var customerDetail: CustomerDetail? = null
@@ -197,7 +207,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
             }
 
             // Select the first item by default
-            if (rgReason.childCount > 0) {
+            if (rgReason.isNotEmpty()) {
                 (rgReason.getChildAt(0) as? RadioButton)?.isChecked = true
             }
 
@@ -216,10 +226,69 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 val selectedRb = alertLayout.findViewById<RadioButton>(selectedId)
                 val selectedReason = selectedRb.text.toString()
                 Log.d("TAG", "Selected: $selectedReason")
+                visitTripAPI(selectedReason)
             }
             dialog.show()
             val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+        }
+    }
+
+    private fun visitTripAPI(reason: String) {
+        if (Utils.isOnline(this)) {
+
+            ProgressDialog.start(this@ViewCustomerActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.visitTrip(
+                VisitedTripRequest(
+                    customerDetail!!.no, reason
+
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@ViewCustomerActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@ViewCustomerActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            handleBackPressed()
+
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@ViewCustomerActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@ViewCustomerActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

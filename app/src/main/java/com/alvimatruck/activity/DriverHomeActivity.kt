@@ -31,8 +31,12 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
             Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
         binding.tvUsername.text = userDetail?.firstName + " " + userDetail?.lastName
 
-        binding.llDelivery.setOnClickListener {
+        binding.rlDelivery.setOnClickListener {
             startActivity(Intent(this, DeliveryListActivity::class.java))
+        }
+
+        binding.rlTransfer.setOnClickListener {
+            startActivity(Intent(this, TransferRequestActivity::class.java))
         }
 
         binding.rlLogout.setOnClickListener {
@@ -60,7 +64,7 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
 
-        binding.llFeetManagement.setOnClickListener {
+        binding.rlFeetManagement.setOnClickListener {
             startActivity(Intent(this, FleetManagementActivity::class.java))
         }
 

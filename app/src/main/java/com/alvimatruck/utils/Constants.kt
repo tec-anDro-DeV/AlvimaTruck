@@ -23,6 +23,8 @@ class Constants {
         const val API_Create_Customer = "Customer/create-customer"
         const val API_Update_Customer = "Customer/update"
         const val API_Today_Routes = "MobileRoutes/today-routes"
+        const val API_Start_Trip = "Trip/start"
+        const val API_Visit_Trip = "Trip/visit"
         const val API_Customer_List = "Customer/getallmobile"
 
 

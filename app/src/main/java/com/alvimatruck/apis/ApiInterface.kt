@@ -6,6 +6,8 @@ import com.alvimatruck.model.request.LoginRequest
 import com.alvimatruck.model.request.OTPRequest
 import com.alvimatruck.model.request.OTPVerifyRequest
 import com.alvimatruck.model.request.ResetPasswordRequest
+import com.alvimatruck.model.request.StartTripRequest
+import com.alvimatruck.model.request.VisitedTripRequest
 import com.alvimatruck.utils.Constants
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -58,6 +60,12 @@ interface ApiInterface {
 
     @GET(Constants.API_Today_Routes)
     fun getTodayRoutes(): Call<JsonObject>
+
+    @POST(Constants.API_Start_Trip)
+    fun startTrip(@Body startTripRequest: StartTripRequest): Call<JsonObject>
+
+    @POST(Constants.API_Visit_Trip)
+    fun visitTrip(@Body visitedTripRequest: VisitedTripRequest): Call<JsonObject>
 
     @GET(Constants.API_Customer_List)
     fun customerList(

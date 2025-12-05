@@ -83,8 +83,8 @@
 
                     <ImageView
                         android:id="@+id/ivCustomer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
                         android:src="@drawable/ic_user" />
 
                     <TextView
@@ -106,7 +106,7 @@
                         android:layout_marginStart="@dimen/_11sdp"
                         android:layout_toEndOf="@id/ivCustomer"
                         android:fontFamily="@font/sansregular"
-                        tools:text="Contact Number : "
+                        android:text="Contact Number : "
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
