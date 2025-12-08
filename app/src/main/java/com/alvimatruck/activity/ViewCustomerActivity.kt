@@ -8,6 +8,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -142,7 +143,8 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
 
             val btnCancel = alertLayout.findViewById<TextView>(R.id.btnCancel)
             val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
-
+            val tvReasonLabel = alertLayout.findViewById<TextView>(R.id.tvReasonLabel)
+            val etAddReason = alertLayout.findViewById<EditText>(R.id.etAddReason)
             val rgReason = alertLayout.findViewById<RadioGroup>(R.id.rgReason)
 
             val reasonsList = listOf(
@@ -153,6 +155,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 "Store closed",
                 "Payment/Credit issue",
                 "Next order after few days",
+                "Other"
 
                 )
             rgReason.removeAllViews()
@@ -205,6 +208,19 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                     rgReason.addView(divider)
                 }
             }
+            rgReason.setOnCheckedChangeListener { group, checkedId ->
+                val selectedRb = group.findViewById<RadioButton>(checkedId)
+                if (selectedRb != null && selectedRb.text == "Other") {
+                    tvReasonLabel.visibility = View.VISIBLE
+                    etAddReason.visibility = View.VISIBLE
+                    etAddReason.requestFocus()
+                } else {
+                    tvReasonLabel.visibility = View.GONE
+                    etAddReason.visibility = View.GONE
+                    // Hide keyboard if needed, or just clear focus
+                    etAddReason.clearFocus()
+                }
+            }
 
             // Select the first item by default
             if (rgReason.isNotEmpty()) {
@@ -221,12 +237,28 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 dialog.dismiss()
             }
             btnSubmit.setOnClickListener {
-                dialog.dismiss()
                 val selectedId = rgReason.checkedRadioButtonId
-                val selectedRb = alertLayout.findViewById<RadioButton>(selectedId)
-                val selectedReason = selectedRb.text.toString()
-                Log.d("TAG", "Selected: $selectedReason")
-                visitTripAPI(selectedReason)
+                if (selectedId != -1) {
+                    val selectedRb = alertLayout.findViewById<RadioButton>(selectedId)
+                    val selectedOption = selectedRb.text.toString()
+                    var finalReason = selectedOption
+
+                    // If "Other" is selected, validate and use the EditText value
+                    if (selectedOption == "Other") {
+                        val writtenReason = etAddReason.text.toString().trim()
+                        if (writtenReason.isEmpty()) {
+                            Toast.makeText(this, "Please write a reason", Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener // Stop execution, don't dismiss dialog
+                        }
+                        finalReason = writtenReason
+                    }
+
+                    Log.d("TAG", "Selected/Written Reason: $finalReason")
+                    dialog.dismiss()
+                    visitTripAPI(finalReason)
+                } else {
+                    Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show()
+                }
             }
             dialog.show()
             val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width

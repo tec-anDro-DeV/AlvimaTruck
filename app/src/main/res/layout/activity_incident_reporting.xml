@@ -124,7 +124,7 @@
                     android:layout_marginHorizontal="@dimen/_7sdp"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sansregular"
-                    android:text="Max 9 Photo"
+                    android:text="Max 5 Photo"
                     android:textColor="@color/orange"
                     android:textSize="@dimen/_9ssp" />
             </RelativeLayout>

@@ -6,8 +6,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -19,8 +22,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.adapter.ImagesListAdapter
+import com.alvimatruck.adapter.SingleItemSelectionAdapter
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityIncidentReportingBinding
@@ -51,6 +57,11 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
     private var imagesListAdapter: ImagesListAdapter? = null
     private var listProofImageUri: ArrayList<Uri> = ArrayList()
 
+    var selectedType = ""
+    var typeList: ArrayList<String>? = ArrayList()
+    var filterList: ArrayList<String>? = ArrayList()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         listProofImageUri.clear()
@@ -68,7 +79,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
         }
 
         binding.rlChoosePhoto.setOnClickListener {
-            if (listProofImageUri.size < 9) {
+            if (listProofImageUri.size < 5) {
                 openImageChooseDailog()
             }
         }
@@ -89,8 +100,96 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
         )
         binding.rvPhotos.adapter = imagesListAdapter
 
+        binding.tvIncidentType.setOnClickListener {
+            typeList!!.clear()
+            typeList!!.add("Accident / Collision")
+            typeList!!.add("Vehicle Damage")
+            typeList!!.add("Breakdown / Mechanical Issue")
+            typeList!!.add("Tyre or Wheel Damage")
+            typeList!!.add("Load Damage / Spillage")
+            typeList!!.add("Fuel Issue")
+            typeList!!.add("Delay / Route Issue")
+            typeList!!.add("Other")
 
+            dialogSingleSelection(
+                typeList!!,
+                "Choose Incident Type",
+                "Search Incident Type",
+                binding.tvIncidentType,
+            )
+        }
     }
+
+    private fun dialogSingleSelection(
+        list: ArrayList<String>,
+        title: String,
+        hint: String,
+        textView: TextView
+    ) {
+        filterList!!.clear()
+        filterList!!.addAll(list)
+        val inflater = layoutInflater
+        val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
+        val selectedGroup: String = selectedType
+        val singleItemSelectionAdapter =
+            SingleItemSelectionAdapter(this, filterList!!, selectedGroup)
+
+        val lLayout = LinearLayoutManager(this)
+        val rvBinList = alertLayout.findViewById<RecyclerView>(R.id.rvItemList)
+        rvBinList.layoutManager = lLayout
+        rvBinList.adapter = singleItemSelectionAdapter
+        val etBinSearch = alertLayout.findViewById<EditText>(R.id.etItemSearch)
+        etBinSearch.hint = hint
+
+
+
+        etBinSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                //filter(s.toString())
+                filterList!!.clear()
+                if (s.toString().trim().isEmpty()) {
+                    filterList!!.addAll(list)
+                } else {
+                    for (item in list) {
+                        if (item.lowercase().contains(s.toString().lowercase())) {
+                            filterList!!.add(item)
+                        }
+                    }
+                }
+                singleItemSelectionAdapter.notifyDataSetChanged()
+            }
+        })
+
+        val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel2)
+        val tvConfirm = alertLayout.findViewById<TextView>(R.id.tvConfirm2)
+        val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
+        tvTitle.text = title
+
+
+        val alert = AlertDialog.Builder(this)
+        alert.setView(alertLayout)
+        alert.setCancelable(false)
+
+        val dialog = alert.create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+        dialog.show()
+
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { view: View? ->
+            selectedType = singleItemSelectionAdapter.selected
+            textView.text = singleItemSelectionAdapter.selected
+            dialog.dismiss()
+        }
+    }
+
 
     private fun openImageChooseDailog() {
         val inflater = layoutInflater
@@ -206,11 +305,11 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
             }
 
             compressedUri.let {
-                if (listProofImageUri.size >= 9) return@let
+                if (listProofImageUri.size >= 5) return@let
                 listProofImageUri.add(it)
                 // Optimize: Only notify the item that was added, not the whole list
                 imagesListAdapter?.notifyItemInserted(listProofImageUri.size - 1)
-                if (listProofImageUri.size == 9) {
+                if (listProofImageUri.size == 5) {
                     binding.rlChoosePhoto.visibility = View.GONE
                 } else {
                     binding.rlChoosePhoto.visibility = View.VISIBLE

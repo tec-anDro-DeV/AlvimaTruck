@@ -216,7 +216,7 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
         if (binding.etTelephoneNumber.text.toString().trim().isEmpty()) {
             Toast.makeText(this, "Please enter telephone number", Toast.LENGTH_SHORT).show()
             return
-        } else if (Utils.isValidEthiopiaLocalNumber(
+        } else if (!Utils.isValidEthiopiaLocalNumber(
                 binding.etTelephoneNumber.text.toString().trim()
             )
         ) {

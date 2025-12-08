@@ -171,7 +171,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         } else if (binding.etCustomerPhoneNumber.text.toString().trim().isEmpty()) {
             Toast.makeText(this, "Please enter customer phone number", Toast.LENGTH_SHORT).show()
             return
-        } else if (Utils.isValidEthiopiaMobile(
+        } else if (!Utils.isValidEthiopiaMobile(
                 binding.etCustomerPhoneNumber.text.toString().trim()
             )
         ) {
@@ -181,7 +181,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         } else if (binding.etTelephoneNumber.text.toString().trim().isEmpty()) {
             Toast.makeText(this, "Please enter telephone number", Toast.LENGTH_SHORT).show()
             return
-        } else if (Utils.isValidEthiopiaLocalNumber(
+        } else if (!Utils.isValidEthiopiaLocalNumber(
                 binding.etTelephoneNumber.text.toString().trim()
             )
         ) {
