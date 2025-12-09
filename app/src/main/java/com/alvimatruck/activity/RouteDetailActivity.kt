@@ -14,6 +14,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -22,6 +23,8 @@ import com.alvimatruck.R
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityRouteDetailBinding
+import com.alvimatruck.model.request.CancelTripRequest
+import com.alvimatruck.model.request.EndTripRequest
 import com.alvimatruck.model.request.StartTripRequest
 import com.alvimatruck.model.responses.RouteDetail
 import com.alvimatruck.utils.Constants
@@ -38,6 +41,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
     var status: String? = ""
 
     var routeDetail: RouteDetail? = null
+    var isChange: Boolean = false
 
     override fun inflateBinding(): ActivityRouteDetailBinding {
         return ActivityRouteDetailBinding.inflate(layoutInflater)
@@ -61,14 +65,13 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             binding.tvRegularCustomersValue.text = routeDetail!!.regularCustomerCount.toString()
             binding.tvVisitedCustomersValue.text = routeDetail!!.visited.toString()
             binding.tvSkippedCustomersValue.text = routeDetail!!.skipped.toString()
-            binding.tvTotalVisitedCustomer.text =
-                (routeDetail!!.visited + routeDetail!!.skipped).toString()
+            binding.tvTotalVisitedCustomer.text = routeDetail!!.visited.toString()
             binding.tvTotalCustomer.text = "/" + routeDetail!!.regularCustomerCount.toString()
             binding.tvPendingCustomer.text =
-                (routeDetail!!.regularCustomerCount - routeDetail!!.visited + routeDetail!!.skipped).toString()
+                (routeDetail!!.regularCustomerCount - routeDetail!!.visited).toString()
 
             binding.progressBar.progress =
-                (routeDetail!!.visited + routeDetail!!.skipped) * 100 / routeDetail!!.regularCustomerCount
+                routeDetail!!.visited * 100 / routeDetail!!.regularCustomerCount
             binding.tvStatus.text = routeDetail!!.status
             binding.tvDistanceValue.text = routeDetail!!.distance.toString() + " Km"
             binding.tvVanStartKilometer.text = routeDetail!!.startKm.toString()
@@ -83,7 +86,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 binding.rlEndKilometer.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.VISIBLE
 
-            } else if (status.equals("In Progress")) {
+            } else if (status.equals("InProgress")) {
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
                 binding.tvStartEndTrip.text = "End Trip"
                 binding.rlStartKilometer.visibility = View.VISIBLE
@@ -128,8 +131,12 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                     dialog.dismiss()
                 }
                 btnSubmit.setOnClickListener {
-                    dialog.dismiss()
-                    startTripAPI(etStartKm.text.toString())
+                    if (etStartKm.text.toString().isEmpty()) {
+                        Toast.makeText(this, "Please enter start km", Toast.LENGTH_SHORT).show()
+                    } else {
+                        dialog.dismiss()
+                        startTripAPI(etStartKm.text.toString())
+                    }
 
                 }
                 dialog.show()
@@ -156,7 +163,20 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                     dialog.dismiss()
                 }
                 btnSubmit.setOnClickListener {
-                    dialog.dismiss()
+                    if (etEndKm.text.toString().isEmpty()) {
+                        Toast.makeText(this, "Please enter end km", Toast.LENGTH_SHORT)
+                    } else if (etEndKm.text.toString()
+                            .toInt() <= binding.tvVanStartKilometer.text.toString().toInt()
+                    ) {
+                        Toast.makeText(
+                            this,
+                            "End km should be greater than start km",
+                            Toast.LENGTH_SHORT
+                        )
+                    } else {
+                        dialog.dismiss()
+                        endTripAPI(etEndKm.text.toString())
+                    }
 
                 }
                 dialog.show()
@@ -173,6 +193,8 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
 
             val btnCancel = alertLayout.findViewById<TextView>(R.id.btnCancel)
             val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
+            val tvReasonLabel = alertLayout.findViewById<TextView>(R.id.tvReasonLabel)
+            val etAddReason = alertLayout.findViewById<EditText>(R.id.etAddReason)
 
             val rgReason = alertLayout.findViewById<RadioGroup>(R.id.rgReason)
 
@@ -183,7 +205,8 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 "Route Blocked",
                 "Unexpected Delay",
                 "Health/Medical Issue",
-                "Fuel/Technical Issue"
+                "Fuel/Technical Issue",
+                "Other"
             )
             rgReason.removeAllViews()
 
@@ -241,6 +264,20 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 }
             }
 
+            rgReason.setOnCheckedChangeListener { group, checkedId ->
+                val selectedRb = group.findViewById<RadioButton>(checkedId)
+                if (selectedRb != null && selectedRb.text == "Other") {
+                    tvReasonLabel.visibility = View.VISIBLE
+                    etAddReason.visibility = View.VISIBLE
+                    etAddReason.requestFocus()
+                } else {
+                    tvReasonLabel.visibility = View.GONE
+                    etAddReason.visibility = View.GONE
+                    // Hide keyboard if needed, or just clear focus
+                    etAddReason.clearFocus()
+                }
+            }
+
             // Select the first item by default
             if (rgReason.isNotEmpty()) {
                 (rgReason.getChildAt(0) as? RadioButton)?.isChecked = true
@@ -258,11 +295,28 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 dialog.dismiss()
             }
             btnSubmit.setOnClickListener {
-                dialog.dismiss()
                 val selectedId = rgReason.checkedRadioButtonId
-                val selectedRb = alertLayout.findViewById<RadioButton>(selectedId)
-                val selectedReason = selectedRb.text.toString()
-                Log.d("TAG", "Selected: $selectedReason")
+                if (selectedId != -1) {
+                    val selectedRb = alertLayout.findViewById<RadioButton>(selectedId)
+                    val selectedOption = selectedRb.text.toString()
+                    var finalReason = selectedOption
+
+                    // If "Other" is selected, validate and use the EditText value
+                    if (selectedOption == "Other") {
+                        val writtenReason = etAddReason.text.toString().trim()
+                        if (writtenReason.isEmpty()) {
+                            Toast.makeText(this, "Please write a reason", Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener // Stop execution, don't dismiss dialog
+                        }
+                        finalReason = writtenReason
+                    }
+
+                    Log.d("TAG", "Selected/Written Reason: $finalReason")
+                    dialog.dismiss()
+                    cancelTripAPI(finalReason)
+                } else {
+                    Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show()
+                }
             }
             dialog.show()
             val width =
@@ -291,15 +345,14 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
         }
     }
 
-    private fun startTripAPI(startKm: String) {
+    private fun cancelTripAPI(reason: String) {
         if (Utils.isOnline(this)) {
-
             ProgressDialog.start(this@RouteDetailActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.startTrip(
-                StartTripRequest(
-                    routeDetail!!.routeName, startKm.toInt()
+            )!!.webservices.cancelTrip(
+                CancelTripRequest(
+                    routeDetail!!.routeName, reason
 
                 )
             ).enqueue(object : Callback<JsonObject> {
@@ -318,8 +371,67 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                                     .trim(),
                                 Toast.LENGTH_SHORT
                             ).show()
+                            isChange = true
+                            handleBackPressed()
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@RouteDetailActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@RouteDetailActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+
+    private fun startTripAPI(startKm: String) {
+        if (Utils.isOnline(this)) {
+
+            ProgressDialog.start(this@RouteDetailActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.startTrip(
+                StartTripRequest(
+                    routeDetail!!.routeName, startKm.toInt()
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@RouteDetailActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@RouteDetailActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            isChange = true
                             binding.tvVanStartKilometer.text = startKm
-                            binding.tvStatus.text = "In Progress"
+                            binding.tvStatus.text = "InProgress"
                             binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
                             binding.tvStartEndTrip.text = "End Trip"
                             binding.rlStartKilometer.visibility = View.VISIBLE
@@ -354,5 +466,70 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             ).show()
         }
 
+    }
+
+    private fun endTripAPI(endKm: String) {
+        if (Utils.isOnline(this)) {
+
+            ProgressDialog.start(this@RouteDetailActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.endTrip(
+                EndTripRequest(
+                    routeDetail!!.routeName, endKm.toInt()
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@RouteDetailActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@RouteDetailActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            isChange = true
+                            handleBackPressed()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@RouteDetailActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@RouteDetailActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
+
+    override fun handleBackPressed(callback: OnBackPressedCallback?) {
+        if (isChange) {
+            setResult(RESULT_OK)
+        }
+        finish()
+        super.handleBackPressed(callback)
     }
 }

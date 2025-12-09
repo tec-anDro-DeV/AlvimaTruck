@@ -2,6 +2,7 @@ package com.alvimatruck.activity
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityFleetManagementBinding
 
@@ -17,20 +18,32 @@ class FleetManagementActivity : BaseActivity<ActivityFleetManagementBinding>() {
         }
 
         binding.rlFuelRefillRequest.setOnClickListener {
-            startActivity(Intent(this, FuelRefillRequestActivity::class.java))
+            val intent = Intent(this, FuelRefillRequestActivity::class.java)
+            startForResult.launch(intent)
         }
 
         binding.rlRepairLog.setOnClickListener {
-            startActivity(Intent(this, RepairLogActivity::class.java))
+            val intent = Intent(this, RepairLogActivity::class.java)
+            startForResult.launch(intent)
         }
 
         binding.rlIncidentReporting.setOnClickListener {
-            startActivity(Intent(this, IncidentReportingActivity::class.java))
+            val intent = Intent(this, IncidentReportingActivity::class.java)
+            startForResult.launch(intent)
         }
 
         binding.tvSeeAll.setOnClickListener {
             startActivity(Intent(this, RecentLogsActivity::class.java))
+
         }
 
+    }
+
+    private val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+
+        }
     }
 }

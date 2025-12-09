@@ -1,14 +1,17 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.RouteListAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityTripRouteListBinding
+import com.alvimatruck.interfaces.RouteClickListener
 import com.alvimatruck.model.responses.RouteDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
@@ -21,7 +24,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TripRouteListActivity : BaseActivity<ActivityTripRouteListBinding>() {
+class TripRouteListActivity : BaseActivity<ActivityTripRouteListBinding>(), RouteClickListener {
     private var routeListAdapter: RouteListAdapter? = null
 
     var routeList: ArrayList<RouteDetail>? = ArrayList()
@@ -88,7 +91,9 @@ class TripRouteListActivity : BaseActivity<ActivityTripRouteListBinding>() {
 
 
                                 routeListAdapter = RouteListAdapter(
-                                    this@TripRouteListActivity, routeList!!
+                                    this@TripRouteListActivity,
+                                    routeList!!,
+                                    this@TripRouteListActivity
                                 )
                                 binding.rvRouteList.adapter = routeListAdapter
                             } else {
@@ -125,5 +130,20 @@ class TripRouteListActivity : BaseActivity<ActivityTripRouteListBinding>() {
             ).show()
         }
 
+    }
+
+    override fun onRouteClick(routeDetail: RouteDetail) {
+        val intent = Intent(this, RouteDetailActivity::class.java).putExtra(
+            Constants.Status, routeDetail.status
+        ).putExtra(Constants.RouteDetail, Gson().toJson(routeDetail))
+        startForResult.launch(intent)
+    }
+
+    private val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            routesListAPI()
+        }
     }
 }

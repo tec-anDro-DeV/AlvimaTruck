@@ -79,7 +79,11 @@ object Utils {
         inputStream.close()
 
         val requestBody = fileBytes.toRequestBody("image/*".toMediaTypeOrNull())
-        return MultipartBody.Part.createFormData(fieldName, "image.jpg", requestBody)
+        return MultipartBody.Part.createFormData(
+            fieldName,
+            "file_${System.currentTimeMillis()}.jpg",
+            requestBody
+        )
     }
 
     fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {

@@ -23,13 +23,15 @@
         android:orientation="vertical" />
 
     <TextView
+        android:id="@+id/tvReasonLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/sanssemibold"
         android:padding="@dimen/_10sdp"
-        android:text="Add Reason"
+        android:text="Write Reason"
         android:textColor="@color/black"
-        android:textSize="@dimen/_12ssp" />
+        android:textSize="@dimen/_12ssp"
+        android:visibility="gone" />
 
 
     <EditText
@@ -45,7 +47,8 @@
         android:minLines="3"
         android:padding="@dimen/_10sdp"
         android:textColor="@color/black"
-        android:textSize="@dimen/_12ssp" />
+        android:textSize="@dimen/_12ssp"
+        android:visibility="gone" />
 
 
     <LinearLayout

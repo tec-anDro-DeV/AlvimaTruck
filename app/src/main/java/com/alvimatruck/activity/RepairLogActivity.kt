@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
@@ -21,18 +22,30 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alvimatruck.R
 import com.alvimatruck.adapter.ImagesListAdapter
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityRepairLogBinding
 import com.alvimatruck.interfaces.DeletePhotoListener
+import com.alvimatruck.service.AlvimaTuckApplication
+import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
+import com.google.gson.JsonObject
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoListener {
@@ -91,6 +104,88 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
         )
         binding.rvPhotos.adapter = imagesListAdapter
 
+
+        binding.tvSubmit.setOnClickListener {
+            if (binding.tvVendorDetails.text.toString().trim().isEmpty()) {
+                Toast.makeText(this, "Please select vendor", Toast.LENGTH_SHORT).show()
+            } else if (binding.etRepairCost.text.toString().trim().isEmpty()) {
+                Toast.makeText(this, "Please enter repair cost", Toast.LENGTH_SHORT).show()
+            } else if (listProofImageUri.isEmpty()) {
+                Toast.makeText(this, "Please upload repair images", Toast.LENGTH_SHORT).show()
+            } else {
+                apiRepairLogRequest()
+            }
+        }
+
+
+    }
+
+    private fun apiRepairLogRequest() {
+        val partsList = ArrayList<MultipartBody.Part>()
+
+        listProofImageUri.forEachIndexed { index, file ->
+            val part = Utils.createFilePart("RepairLogReplacePart", listProofImageUri[index], this)
+            partsList.add(part!!)
+        }
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@RepairLogActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.repairLogRequest(
+                "1".toRequestBody("text/plain".toMediaType()),
+                AlvimaTuckApplication.latitude.toString().toRequestBody("text/plain".toMediaType()),
+                AlvimaTuckApplication.longitude.toString()
+                    .toRequestBody("text/plain".toMediaType()),
+                binding.tvVendorDetails.text.toString().trim()
+                    .toRequestBody("text/plain".toMediaType()),
+                binding.etRepairCost.text.toString().trim()
+                    .toRequestBody("text/plain".toMediaType()),
+                partsList
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@RepairLogActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@RepairLogActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            val intent = Intent()
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@RepairLogActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@RepairLogActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
 
     }
 

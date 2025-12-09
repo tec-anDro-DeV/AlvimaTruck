@@ -328,7 +328,7 @@
                         android:fontFamily="@font/sanssemibold"
                         android:gravity="center"
                         android:paddingVertical="@dimen/_5sdp"
-                        android:text="In Progress"
+                        android:text="InProgress"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_11ssp" />
                 </RelativeLayout>

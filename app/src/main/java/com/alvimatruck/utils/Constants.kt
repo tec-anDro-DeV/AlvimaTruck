@@ -24,8 +24,11 @@ class Constants {
         const val API_Update_Customer = "Customer/update"
         const val API_Today_Routes = "MobileRoutes/today-routes"
         const val API_Start_Trip = "Trip/start"
+        const val API_End_Trip = "Trip/end"
         const val API_Visit_Trip = "Trip/visit"
+        const val API_Cancel_Trip = "Trip/cancel"
         const val API_Customer_List = "Customer/getallmobile"
+        const val API_Fleet = "FleetManagement/create-fleat"
 
 
         // Constants Key

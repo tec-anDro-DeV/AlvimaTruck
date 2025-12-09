@@ -1,7 +1,9 @@
 package com.alvimatruck.apis
 
+import com.alvimatruck.model.request.CancelTripRequest
 import com.alvimatruck.model.request.ChangePasswordRequest
 import com.alvimatruck.model.request.CustomerUpdate
+import com.alvimatruck.model.request.EndTripRequest
 import com.alvimatruck.model.request.LoginRequest
 import com.alvimatruck.model.request.OTPRequest
 import com.alvimatruck.model.request.OTPVerifyRequest
@@ -64,8 +66,14 @@ interface ApiInterface {
     @POST(Constants.API_Start_Trip)
     fun startTrip(@Body startTripRequest: StartTripRequest): Call<JsonObject>
 
+    @POST(Constants.API_End_Trip)
+    fun endTrip(@Body endTripRequest: EndTripRequest): Call<JsonObject>
+
     @POST(Constants.API_Visit_Trip)
     fun visitTrip(@Body visitedTripRequest: VisitedTripRequest): Call<JsonObject>
+
+    @POST(Constants.API_Cancel_Trip)
+    fun cancelTrip(@Body cancelTripRequest: CancelTripRequest): Call<JsonObject>
 
     @GET(Constants.API_Customer_List)
     fun customerList(
@@ -95,4 +103,39 @@ interface ApiInterface {
 
     @PUT(Constants.API_Update_Customer)
     fun updateCustomer(@Body updateCustomerRequest: CustomerUpdate): Call<JsonObject>
+
+    @Multipart
+    @POST(Constants.API_Fleet)
+    fun fuelRequest(
+        @Part("FleetType") FleetType: RequestBody,
+        @Part("FuelRefillAmount") fuelRefillAmount: RequestBody,
+        @Part("Latitude") latitude: RequestBody,
+        @Part("Longitude") longitude: RequestBody,
+        @Part fuelRefillMeter: MultipartBody.Part? = null
+    ): Call<JsonObject>
+
+    @Multipart
+    @POST(Constants.API_Fleet)
+    fun repairLogRequest(
+        @Part("FleetType") FleetType: RequestBody,
+        @Part("Latitude") latitude: RequestBody,
+        @Part("Longitude") longitude: RequestBody,
+        @Part("RepairLogVendorDetail") vendorDetail: RequestBody,
+        @Part("RepairLogRepairCost") repairCost: RequestBody,
+        @Part repairLogReplacePart: List<MultipartBody.Part> // <-- multiple files
+    ): Call<JsonObject>
+
+
+    @Multipart
+    @POST(Constants.API_Fleet)
+    fun incidentReportRequest(
+        @Part("FleetType") FleetType: RequestBody,
+        @Part("Latitude") latitude: RequestBody,
+        @Part("Longitude") longitude: RequestBody,
+        @Part("IncidentReportType") incidentReportType: RequestBody,
+        @Part("IncidentReportDescription") incidentReportDescription: RequestBody,
+        @Part repairLogReplacePart: List<MultipartBody.Part> // <-- multiple files
+    ): Call<JsonObject>
+
+
 }

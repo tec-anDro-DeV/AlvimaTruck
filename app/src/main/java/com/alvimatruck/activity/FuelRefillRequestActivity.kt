@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
@@ -19,16 +20,27 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.alvimatruck.R
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityFuelRefillRequestBinding
+import com.alvimatruck.service.AlvimaTuckApplication
+import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
+import com.google.gson.JsonObject
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>() {
@@ -64,12 +76,83 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
             openImageChooseDailog()
         }
 
+        binding.tvSubmit.setOnClickListener {
+            if (binding.etFuelAmount.text.toString().trim().isEmpty()) {
+                Toast.makeText(this, "Please enter fuel amount", Toast.LENGTH_SHORT).show()
+            } else if (meterProofImageUri == null) {
+                Toast.makeText(this, "Please upload meter/receipt photo", Toast.LENGTH_SHORT).show()
+            } else {
+                apiFuelRequest()
+            }
+        }
+
 
         binding.btnDeleteMeterProof.setOnClickListener {
             binding.ivIDProof.setImageURI(null) // Clear the ImageView
             meterProofImageUri = null // ✅ Reset the URI
             binding.rlMeterPhoto.visibility = View.GONE
             binding.rlChoosePhoto.visibility = View.VISIBLE
+        }
+
+    }
+
+    private fun apiFuelRequest() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@FuelRefillRequestActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.fuelRequest(
+                "0".toRequestBody("text/plain".toMediaType()),
+                binding.etFuelAmount.text.toString().trim()
+                    .toRequestBody("text/plain".toMediaType()),
+                AlvimaTuckApplication.latitude.toString().toRequestBody("text/plain".toMediaType()),
+                AlvimaTuckApplication.longitude.toString()
+                    .toRequestBody("text/plain".toMediaType()),
+                Utils.createFilePart("FuelRefillMeter", meterProofImageUri, this)
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@FuelRefillRequestActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@FuelRefillRequestActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            val intent = Intent()
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@FuelRefillRequestActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@FuelRefillRequestActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
         }
 
     }

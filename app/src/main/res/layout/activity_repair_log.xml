@@ -66,6 +66,7 @@
                 android:fontFamily="@font/sansregular"
                 android:gravity="center_vertical"
                 android:hint="Choose"
+                android:text="Vendor 1"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/hintGary"

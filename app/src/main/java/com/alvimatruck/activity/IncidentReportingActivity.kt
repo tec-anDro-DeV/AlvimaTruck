@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
@@ -27,18 +28,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.adapter.ImagesListAdapter
 import com.alvimatruck.adapter.SingleItemSelectionAdapter
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityIncidentReportingBinding
 import com.alvimatruck.interfaces.DeletePhotoListener
+import com.alvimatruck.service.AlvimaTuckApplication
+import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
+import com.google.gson.JsonObject
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>(),
@@ -117,6 +130,87 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
                 "Search Incident Type",
                 binding.tvIncidentType,
             )
+        }
+
+        binding.tvSubmit.setOnClickListener {
+            if (binding.tvIncidentType.text.toString().trim().isEmpty()) {
+                Toast.makeText(this, "Please select incident type", Toast.LENGTH_SHORT).show()
+            } else if (binding.etDescription.text.toString().trim().isEmpty()) {
+                Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show()
+            } else if (listProofImageUri.isEmpty()) {
+                Toast.makeText(this, "Please upload incident images", Toast.LENGTH_SHORT).show()
+            } else {
+                apiIncidentRequest()
+            }
+        }
+    }
+
+    private fun apiIncidentRequest() {
+
+        val partsList = ArrayList<MultipartBody.Part>()
+
+        listProofImageUri.forEachIndexed { index, file ->
+            val part = Utils.createFilePart("IncidentImage", listProofImageUri[index], this)
+            partsList.add(part!!)
+        }
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@IncidentReportingActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.incidentReportRequest(
+                "2".toRequestBody("text/plain".toMediaType()),
+                AlvimaTuckApplication.latitude.toString().toRequestBody("text/plain".toMediaType()),
+                AlvimaTuckApplication.longitude.toString()
+                    .toRequestBody("text/plain".toMediaType()),
+                binding.tvIncidentType.text.toString().trim()
+                    .toRequestBody("text/plain".toMediaType()),
+                binding.etDescription.text.toString().trim()
+                    .toRequestBody("text/plain".toMediaType()),
+                partsList
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@IncidentReportingActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@IncidentReportingActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            val intent = Intent()
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@IncidentReportingActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@IncidentReportingActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

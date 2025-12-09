@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
-import com.alvimatruck.activity.RouteDetailActivity
 import com.alvimatruck.activity.RouteMapActivity
 import com.alvimatruck.databinding.SingleRouteItemBinding
+import com.alvimatruck.interfaces.RouteClickListener
 import com.alvimatruck.model.responses.RouteDetail
 import com.alvimatruck.utils.Constants
 import com.google.gson.Gson
@@ -18,6 +18,7 @@ import com.google.gson.Gson
 class RouteListAdapter(
     private val mActivity: Activity,
     private val list: ArrayList<RouteDetail>,
+    private val routeClickListener: RouteClickListener
 ) : RecyclerView.Adapter<RouteListAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = mActivity.layoutInflater
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,7 +31,7 @@ class RouteListAdapter(
         //   holder.binding.tvData.text = "Demo List Item " + (position + 1)
 
         when (list[position].status) {
-            "In Progress" -> {
+            "InProgress" -> {
                 holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
             }
 
@@ -44,11 +45,7 @@ class RouteListAdapter(
         }
 
         holder.itemView.setOnClickListener {
-            mActivity.startActivity(
-                Intent(mActivity, RouteDetailActivity::class.java).putExtra(
-                    Constants.Status, holder.binding.tvStatus.text.toString()
-                ).putExtra(Constants.RouteDetail, Gson().toJson(list[position]))
-            )
+            routeClickListener.onRouteClick(list[position])
         }
 
         holder.binding.tvViewMap.setOnClickListener {
