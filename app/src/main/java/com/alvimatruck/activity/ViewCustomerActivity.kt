@@ -271,7 +271,6 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
 
     private fun visitTripAPI(reason: String) {
         if (Utils.isOnline(this)) {
-
             ProgressDialog.start(this@ViewCustomerActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
@@ -296,6 +295,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                                     .trim(),
                                 Toast.LENGTH_SHORT
                             ).show()
+                            customerDetail!!.visitedToday = true
                             handleBackPressed()
 
 

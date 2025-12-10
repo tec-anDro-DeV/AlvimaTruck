@@ -238,10 +238,7 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
 
     private fun updateCustomerApiCall() {
         if (Utils.isOnline(this)) {
-            customerDetail!!.telexNo = binding.etTelephoneNumber.text.toString().trim()
-            customerDetail!!.city = binding.tvCity.text.toString().trim()
-            customerDetail!!.address = binding.etAddress.text.toString().trim()
-            customerDetail!!.postCode = binding.tvPostalCode.text.toString().trim()
+
             ProgressDialog.start(this@UpdateCustomerActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
@@ -272,6 +269,12 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
                                     .trim(),
                                 Toast.LENGTH_SHORT
                             ).show()
+
+                            customerDetail!!.telexNo =
+                                binding.etTelephoneNumber.text.toString().trim()
+                            customerDetail!!.city = binding.tvCity.text.toString().trim()
+                            customerDetail!!.address = binding.etAddress.text.toString().trim()
+                            customerDetail!!.postCode = binding.tvPostalCode.text.toString().trim()
 
 
                             val intent = Intent()

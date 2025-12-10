@@ -46,6 +46,7 @@ class Constants {
         const val FingerPrintEnabled = "fingerprint_enabled"
 
         const val Status = "status"
+        const val IS_HIDE = "is_hide"
 
         const val RouteDetail = "route_detail"
         const val TripStart = "trip_start"

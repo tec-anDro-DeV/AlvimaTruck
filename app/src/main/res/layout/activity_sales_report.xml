@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Deposit"
+            android:text="Sales Report"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -42,45 +42,31 @@
         android:layout_below="@+id/rlTop"
         android:background="@drawable/bg_white_top_curve"
         android:orientation="vertical"
-        android:padding="@dimen/_21sdp">
+        android:padding="@dimen/_15sdp">
 
-        <RelativeLayout
-            android:id="@+id/rlDeposit"
+        <TextView
+            android:id="@+id/tvDateRangePicker"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_73sdp"
-            android:background="@drawable/ic_fuel_refill">
+            android:layout_height="@dimen/_44sdp"
+            android:layout_marginHorizontal="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@drawable/input_bg"
+            android:fontFamily="@font/sansregular"
+            android:gravity="center_vertical"
+            android:hint="Custom Date"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/hintGary"
+            android:textSize="@dimen/_12ssp"
+            app:drawableEndCompat="@drawable/ic_calendar" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_70sdp"
-                android:fontFamily="@font/sanssemibold"
-                android:text="Deposits"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_16ssp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rlPaymentLogs"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvItems"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_73sdp"
-            android:layout_marginTop="@dimen/_14sdp"
-            android:background="@drawable/ic_transfer2">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_70sdp"
-                android:fontFamily="@font/sanssemibold"
-                android:text="PAYMENT LOGS"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_16ssp" />
-        </RelativeLayout>
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>
+
+
 </RelativeLayout>

@@ -35,7 +35,7 @@ class OperationsActivity : BaseActivity<ActivityOperationsBinding>() {
         }
 
         binding.rlDelivery.setOnClickListener {
-            startActivity(Intent(this, DeliveryListActivity::class.java))
+            // startActivity(Intent(this, DeliveryListActivity::class.java))
         }
 
         binding.rlDeposit.setOnClickListener {
