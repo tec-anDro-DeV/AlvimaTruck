@@ -93,6 +93,11 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 binding.rlEndKilometer.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.VISIBLE
 
+            } else if (status.equals("Cancelled")) {
+                binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
+                binding.rlStartKilometer.visibility = View.VISIBLE
+                binding.rlEndKilometer.visibility = View.VISIBLE
+                binding.llBottomButtons.visibility = View.GONE
             } else {
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
                 binding.rlStartKilometer.visibility = View.VISIBLE
@@ -325,12 +330,15 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
         }
 
         binding.llCustomer.setOnClickListener {
+            var tripStart = false
+            tripStart = status == "InProgress"
 
             startActivity(
                 Intent(
                     this,
                     CustomersActivity::class.java
                 ).putExtra(Constants.RouteDetail, routeDetail!!.routeName)
+                    .putExtra(Constants.TripStart, tripStart)
             )
 
         }

@@ -21,10 +21,13 @@ data class CustomerDetail(
     val status: String,
     var telexNo: String?,
     val tinNo: String?,
-    val balanceLcy: Double
+    val balanceLcy: Double,
+    val visitedToday: Boolean
 ) {
     fun getFormattedContactNo(): String {
-        val number = phoneNo ?: return ""
+        val number = phoneNo?.trim()
+        if (number.isNullOrEmpty()) return "-"
+
         return if (number.startsWith("0")) {
             "+251 " + number.substring(1)
         } else {
@@ -33,7 +36,9 @@ data class CustomerDetail(
     }
 
     fun getFormattedTelephoneNo(): String {
-        val number = telexNo ?: return ""
+        val number = telexNo?.trim()
+        if (number.isNullOrEmpty()) return "-"
+
         return if (number.startsWith("0")) {
             "+251 " + number.substring(1)
         } else {

@@ -38,6 +38,7 @@ import retrofit2.Response
 
 class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
     var customerDetail: CustomerDetail? = null
+    var tripStart: Boolean = false
     override fun inflateBinding(): ActivityViewCustomerBinding {
         return ActivityViewCustomerBinding.inflate(layoutInflater)
     }
@@ -67,6 +68,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         binding.tvAddress.text = customerDetail!!.address
         binding.tvCity.text = customerDetail!!.city
         binding.tvPostalCode.text = customerDetail!!.postCode
+        binding.tvRouteName.text = customerDetail!!.routeName
         binding.tvTINNumber.text = customerDetail!!.tinNo
         binding.tvCustomerPostingGroup.text = customerDetail!!.customerPostingGroup
         binding.tvCustomerPricingGroup.text = customerDetail!!.customerPriceGroup
@@ -100,8 +102,9 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 intent.getStringExtra(Constants.CustomerDetail).toString(),
                 CustomerDetail::class.java
             )
+            tripStart = intent.getBooleanExtra(Constants.TripStart, false)
             showUpdatedData()
-            if (customerDetail!!.status == "Pending") {
+            if (customerDetail!!.status == "Pending" || !tripStart) {
                 binding.llCreditLimit.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.GONE
             } else {
@@ -157,7 +160,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 "Next order after few days",
                 "Other"
 
-                )
+            )
             rgReason.removeAllViews()
 
             val typefaceRegular = ResourcesCompat.getFont(this, R.font.sansregular)

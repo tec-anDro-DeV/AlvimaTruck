@@ -57,6 +57,11 @@ class CustomerListAdapter(
             holder.binding.tvStatus.text = list[position].status
             holder.binding.tvStatus.background =
                 ContextCompat.getDrawable(holder.itemView.context, R.drawable.bg_status_red)
+        } else if (list[position].visitedToday) {
+            holder.binding.tvStatus.visibility = View.VISIBLE
+            holder.binding.tvStatus.text = "Visited"
+            holder.binding.tvStatus.background =
+                ContextCompat.getDrawable(holder.itemView.context, R.drawable.bg_status_green)
         } else {
             holder.binding.tvStatus.visibility = View.GONE
         }

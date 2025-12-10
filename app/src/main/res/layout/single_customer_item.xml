@@ -81,9 +81,35 @@
             android:layout_marginVertical="@dimen/_9sdp"
             android:background="@color/gray" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sansbold"
+                android:text="Route Name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp" />
+
+            <TextView
+                android:id="@+id/tvRoutename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:fontFamily="@font/sansregular"
+                android:text="@{detail.routeName}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                tools:text="A4" />
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_9sdp"
             android:fontFamily="@font/sansbold"
             android:text="Address"
             android:textColor="@color/black"

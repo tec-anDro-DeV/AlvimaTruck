@@ -55,10 +55,19 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/tvRouteLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sansregular"
+                    android:text="Route Name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp" />
+
+                <TextView
                     android:id="@+id/tvRouteId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_below="@+id/tvRouteLabel"
                     android:fontFamily="@font/sansbold"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14ssp"
@@ -471,9 +480,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
-                        tools:text="$97248.00"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="$97248.00" />
                 </RelativeLayout>
             </LinearLayout>
 
