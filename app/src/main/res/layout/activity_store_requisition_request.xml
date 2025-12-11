@@ -89,6 +89,7 @@
 
 
                 <TextView
+                    android:id="@+id/tvProfitCenter"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_44sdp"
                     android:layout_marginTop="@dimen/_7sdp"
@@ -113,6 +114,7 @@
 
 
                 <TextView
+                    android:id="@+id/tvCostCenter"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_44sdp"
                     android:layout_marginTop="@dimen/_7sdp"
@@ -194,12 +196,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="In Trinsist Code"
+                    android:text="In Transit Code"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
 
                 <TextView
+                    android:id="@+id/tvInTransit"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_44sdp"
                     android:layout_marginTop="@dimen/_7sdp"

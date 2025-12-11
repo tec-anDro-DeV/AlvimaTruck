@@ -20,6 +20,12 @@ class Constants {
         const val API_Payment_Code = "Dropdown/get-payment-methods-dropdown"
         const val API_Item_List = "Dropdown/items"
 
+        const val API_CostCenter_Code = "Dropdown/get-costcenter-dropdown"
+
+        const val API_ProfitCenter_Code = "Dropdown/get-profitcenter-dropdown"
+
+        const val API_Intransit_Code = "Dropdown/get-intransit-dropdown"
+
         const val API_Create_Customer = "Customer/create-customer"
         const val API_Update_Customer = "Customer/update"
         const val API_Today_Routes = "MobileRoutes/today-routes"

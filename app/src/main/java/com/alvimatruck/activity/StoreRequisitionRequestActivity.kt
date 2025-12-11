@@ -21,14 +21,21 @@ import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.Utils
 import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionRequestBinding>() {
     var itemList: ArrayList<String>? = ArrayList()
+    var costCenterList: ArrayList<String>? = ArrayList()
+    var profitCenterList: ArrayList<String>? = ArrayList()
+    var inTransitList: ArrayList<String>? = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
     var selectedItem = ""
+    var selectedCostCenter = ""
+    var selectedProfitCenter = ""
+    var selectedInTransit = ""
 
     override fun inflateBinding(): ActivityStoreRequisitionRequestBinding {
         return ActivityStoreRequisitionRequestBinding.inflate(layoutInflater)
@@ -44,41 +51,62 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
         binding.tvTransferNumber.text = System.currentTimeMillis().toString()
 
         getItemList()
+        getCostCenterList()
+        getProfitCenterList()
+        getInTransitList()
 
         binding.tvItem.setOnClickListener {
             dialogSingleSelection(
-                itemList!!,
-                "Choose Item",
-                "Search Item",
-                binding.tvItem
+                itemList!!, "Choose Item", "Search Item", binding.tvItem
+            )
+        }
+
+        binding.tvCostCenter.setOnClickListener {
+            dialogSingleSelection(
+                costCenterList!!, "Choose Cost Center", "Search Cost Center", binding.tvCostCenter
+            )
+        }
+
+        binding.tvProfitCenter.setOnClickListener {
+            dialogSingleSelection(
+                profitCenterList!!,
+                "Choose Profit Center",
+                "Search Profit Center",
+                binding.tvProfitCenter
+            )
+        }
+
+        binding.tvInTransit.setOnClickListener {
+            dialogSingleSelection(
+                inTransitList!!, "Choose In Transit", "Search In Transit", binding.tvInTransit
             )
         }
     }
 
     private fun dialogSingleSelection(
-        list: ArrayList<String>,
-        title: String,
-        hint: String,
-        textView: TextView
+        list: ArrayList<String>, title: String, hint: String, textView: TextView
     ) {
         filterList!!.clear()
         filterList!!.addAll(list)
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
-//        val selectedGroup: String = when (textView) {
-//            binding.tvLocationCode -> {
-//                selectedLocationCode
-//            }
-//
-//            binding.tvItem -> {
-//                selectedItem
-//            }
-//
-//            else -> {
-//                selectedPaymentCode
-//            }
-//        }
-        val selectedGroup = selectedItem
+        val selectedGroup: String = when (textView) {
+            binding.tvCostCenter -> {
+                selectedCostCenter
+            }
+
+            binding.tvProfitCenter -> {
+                selectedProfitCenter
+            }
+
+            binding.tvItem -> {
+                selectedItem
+            }
+
+            else -> {
+                selectedInTransit
+            }
+        }
         val singleItemSelectionAdapter =
             SingleItemSelectionAdapter(this, filterList!!, selectedGroup)
 
@@ -132,20 +160,23 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
 
         tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
         tvConfirm.setOnClickListener { view: View? ->
-//            when (textView) {
-//                binding.tvLocationCode -> {
-//                    selectedLocationCode = singleItemSelectionAdapter.selected
-//                }
-//
-//                binding.tvItem -> {
-//                    selectedItem = singleItemSelectionAdapter.selected
-//                }
-//
-//                else -> {
-//                    selectedPaymentCode = singleItemSelectionAdapter.selected
-//                }
-//            }
-            selectedItem = singleItemSelectionAdapter.selected
+            when (textView) {
+                binding.tvCostCenter -> {
+                    selectedCostCenter = singleItemSelectionAdapter.selected
+                }
+
+                binding.tvProfitCenter -> {
+                    selectedProfitCenter = singleItemSelectionAdapter.selected
+                }
+
+                binding.tvItem -> {
+                    selectedItem = singleItemSelectionAdapter.selected
+                }
+
+                else -> {
+                    selectedInTransit = singleItemSelectionAdapter.selected
+                }
+            }
             textView.text = singleItemSelectionAdapter.selected
             dialog.dismiss()
         }
@@ -200,4 +231,152 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
         }
 
     }
+
+    private fun getCostCenterList() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@StoreRequisitionRequestActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, ""
+            )!!.webservices.costCenterCodeList().enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            if (response.body() != null && response.body()!!.has("data")) {
+                                val dataArray = response.body()!!.getAsJsonArray("data")
+
+                                for (item in dataArray) {
+                                    val obj = item.asJsonObject
+                                    val code = obj.get("code").asString
+                                    costCenterList!!.add(code)
+                                }
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@StoreRequisitionRequestActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@StoreRequisitionRequestActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun getProfitCenterList() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@StoreRequisitionRequestActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, ""
+            )!!.webservices.profitCenterCodeList().enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            if (response.body() != null && response.body()!!.has("data")) {
+                                val dataArray = response.body()!!.getAsJsonArray("data")
+
+                                for (item in dataArray) {
+                                    val obj = item.asJsonObject
+                                    val code = obj.get("code").asString
+                                    profitCenterList!!.add(code)
+                                }
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@StoreRequisitionRequestActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@StoreRequisitionRequestActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun getInTransitList() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@StoreRequisitionRequestActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, ""
+            )!!.webservices.inTransitCodeList().enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            if (response.body() != null && response.body()!!.has("data")) {
+                                val dataArray = response.body()!!.getAsJsonArray("data")
+
+                                for (item in dataArray) {
+                                    val obj = item.asJsonObject
+                                    val code = obj.get("code").asString
+                                    inTransitList!!.add(code)
+                                }
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@StoreRequisitionRequestActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@StoreRequisitionRequestActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
 }

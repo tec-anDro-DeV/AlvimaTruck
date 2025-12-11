@@ -57,6 +57,15 @@ interface ApiInterface {
     @GET(Constants.API_Payment_Code)
     fun paymentCodeList(): Call<JsonObject>
 
+    @GET(Constants.API_CostCenter_Code)
+    fun costCenterCodeList(): Call<JsonObject>
+
+    @GET(Constants.API_ProfitCenter_Code)
+    fun profitCenterCodeList(): Call<JsonObject>
+
+    @GET(Constants.API_Intransit_Code)
+    fun inTransitCodeList(): Call<JsonObject>
+
     @GET(Constants.API_Item_List)
     fun itemList(): Call<JsonArray>
 

@@ -38,6 +38,10 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
             startActivity(Intent(this, DeliveryTripRouteActivity::class.java))
         }
 
+        binding.rlReport.setOnClickListener {
+            startActivity(Intent(this, DeliveryTripReportActivity::class.java))
+        }
+
 
         binding.rlLogout.setOnClickListener {
             val inflater = layoutInflater
