@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
@@ -30,44 +30,31 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Sales Report"
+            android:text="Trip / Route List"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rlTop"
         android:background="@drawable/bg_white_top_curve"
-        android:orientation="vertical"
         android:padding="@dimen/_9sdp">
 
-        <TextView
-            android:id="@+id/tvDateRangePicker"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_44sdp"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:background="@drawable/input_bg"
-            android:fontFamily="@font/sansregular"
-            android:gravity="center_vertical"
-            android:hint="Custom Date"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/hintGary"
-            android:textSize="@dimen/_12ssp"
-            app:drawableEndCompat="@drawable/ic_calendar" />
+            android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvItems"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_9sdp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRouteList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-    </LinearLayout>
-
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -3,7 +3,6 @@ package com.alvimatruck.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.alvimatruck.R
@@ -35,9 +34,10 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
             startActivity(Intent(this, DeliveryListActivity::class.java))
         }
 
-        binding.rlTransfer.setOnClickListener {
-            startActivity(Intent(this, TransferRequestActivity::class.java))
+        binding.rlRoute.setOnClickListener {
+            startActivity(Intent(this, DeliveryTripRouteActivity::class.java))
         }
+
 
         binding.rlLogout.setOnClickListener {
             val inflater = layoutInflater
@@ -67,67 +67,5 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
         binding.rlFeetManagement.setOnClickListener {
             startActivity(Intent(this, FleetManagementActivity::class.java))
         }
-
-        binding.tvStartEndTrip.setOnClickListener {
-            if (binding.tvStartEndTrip.text.equals("Start Trip")) {
-                val inflater = layoutInflater
-                val alertLayout = inflater.inflate(R.layout.dialog_start_trip, null)
-
-                val etStartKm = alertLayout.findViewById<EditText>(R.id.etStartKm)
-                val btnCancel = alertLayout.findViewById<TextView>(R.id.btnCancel)
-                val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
-
-
-                val dialog = AlertDialog.Builder(this)
-                    .setView(alertLayout)
-                    .setCancelable(false)
-                    .create()
-                dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
-
-
-                btnCancel.setOnClickListener {
-                    dialog.dismiss()
-                }
-                btnSubmit.setOnClickListener {
-                    dialog.dismiss()
-                    binding.tvStartEndTrip.text = "End Trip"
-
-                }
-                dialog.show()
-                val width =
-                    (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
-                dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
-            } else {
-                val inflater = layoutInflater
-                val alertLayout = inflater.inflate(R.layout.dialog_end_trip, null)
-
-                val etEndKm = alertLayout.findViewById<EditText>(R.id.etEndKm)
-                val btnCancel = alertLayout.findViewById<TextView>(R.id.btnCancel)
-                val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
-
-
-                val dialog = AlertDialog.Builder(this)
-                    .setView(alertLayout)
-                    .setCancelable(false)
-                    .create()
-                dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
-
-
-                btnCancel.setOnClickListener {
-                    dialog.dismiss()
-                }
-                btnSubmit.setOnClickListener {
-                    dialog.dismiss()
-                    binding.tvStartEndTrip.text = "Start Trip"
-
-                }
-                dialog.show()
-                val width =
-                    (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
-                dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
-            }
-        }
-
-
     }
 }

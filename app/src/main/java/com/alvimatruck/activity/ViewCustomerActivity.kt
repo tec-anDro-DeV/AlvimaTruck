@@ -111,6 +111,11 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 binding.llCreditLimit.visibility = View.VISIBLE
                 binding.llBottomButtons.visibility = View.VISIBLE
             }
+            if (customerDetail!!.visitedToday) {
+                binding.tvVisited.visibility = View.GONE
+            } else {
+                binding.tvVisited.visibility = View.VISIBLE
+            }
 
 
         }

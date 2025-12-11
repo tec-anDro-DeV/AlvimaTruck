@@ -171,7 +171,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                     if (etEndKm.text.toString().isEmpty()) {
                         Toast.makeText(this, "Please enter end km", Toast.LENGTH_SHORT)
                     } else if (etEndKm.text.toString()
-                            .toInt() <= binding.tvVanStartKilometer.text.toString().toInt()
+                            .toInt() < binding.tvVanStartKilometer.text.toString().toInt()
                     ) {
                         Toast.makeText(
                             this,
@@ -200,6 +200,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
             val tvReasonLabel = alertLayout.findViewById<TextView>(R.id.tvReasonLabel)
             val etAddReason = alertLayout.findViewById<EditText>(R.id.etAddReason)
+            val etEndKm = alertLayout.findViewById<EditText>(R.id.etEndKm)
 
             val rgReason = alertLayout.findViewById<RadioGroup>(R.id.rgReason)
 
@@ -314,11 +315,21 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                             return@setOnClickListener // Stop execution, don't dismiss dialog
                         }
                         finalReason = writtenReason
+                    } else if (etEndKm.text.toString().isEmpty()) {
+                        Toast.makeText(this, "Please enter end km", Toast.LENGTH_SHORT)
+                    } else if (etEndKm.text.toString()
+                            .toInt() < binding.tvVanStartKilometer.text.toString().toInt()
+                    ) {
+                        Toast.makeText(
+                            this,
+                            "End km should be greater than start km",
+                            Toast.LENGTH_SHORT
+                        )
                     }
 
                     Log.d("TAG", "Selected/Written Reason: $finalReason")
                     dialog.dismiss()
-                    cancelTripAPI(finalReason)
+                    cancelTripAPI(finalReason, etEndKm.text.toString().toInt())
                 } else {
                     Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show()
                 }
@@ -330,8 +341,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
         }
 
         binding.llCustomer.setOnClickListener {
-            var tripStart = false
-            tripStart = status == "InProgress"
+            var tripStart: Boolean = status == "InProgress"
 
             startActivity(
                 Intent(
@@ -342,25 +352,16 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             )
 
         }
-
-        binding.tvViewMap.setOnClickListener {
-            startActivity(
-                Intent(this, RouteMapActivity::class.java).putExtra(
-                    Constants.RouteDetail,
-                    Gson().toJson(routeDetail)
-                )
-            )
-        }
     }
 
-    private fun cancelTripAPI(reason: String) {
+    private fun cancelTripAPI(reason: String, endKm: Int) {
         if (Utils.isOnline(this)) {
             ProgressDialog.start(this@RouteDetailActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.cancelTrip(
                 CancelTripRequest(
-                    routeDetail!!.routeName, reason
+                    routeDetail!!.routeName, reason, endKm
 
                 )
             ).enqueue(object : Callback<JsonObject> {
@@ -440,6 +441,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                             isChange = true
                             binding.tvVanStartKilometer.text = startKm
                             binding.tvStatus.text = "InProgress"
+                            status = "InProgress"
                             binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
                             binding.tvStartEndTrip.text = "End Trip"
                             binding.rlStartKilometer.visibility = View.VISIBLE
