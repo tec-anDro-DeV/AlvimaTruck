@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
@@ -99,91 +100,202 @@
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>
 
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_14sdp"
-                android:fontFamily="@font/sansregular"
-                android:text="Recent Logs"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
-
-            <TextView
-                android:id="@+id/tvSeeAll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="@dimen/_14sdp"
-                android:fontFamily="@font/sansregular"
-                android:text="See all"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/_12ssp" />
-        </RelativeLayout>
-
-
         <LinearLayout
+            android:id="@+id/llLogs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_9sdp"
-            android:background="@drawable/input_bg"
             android:orientation="vertical"
-            android:padding="@dimen/_9sdp">
+            android:visibility="gone">
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/ivStock"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_transfer_small" />
-
                 <TextView
-                    android:id="@+id/tvOrderId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_11sdp"
-                    android:layout_toEndOf="@id/ivStock"
-                    android:fontFamily="@font/sansbold"
-                    android:text="Request ID - 13456"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:fontFamily="@font/sansregular"
+                    android:text="Recent Logs"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
-
                 <TextView
-                    android:id="@+id/tvStatus"
-                    android:layout_width="@dimen/_72sdp"
+                    android:id="@+id/tvSeeAll"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/bg_status_red"
-                    android:fontFamily="@font/sanssemibold"
-                    android:paddingVertical="@dimen/_5sdp"
-                    android:text="Pending"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_11ssp" />
-
-
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:fontFamily="@font/sansregular"
+                    android:text="See all"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_12ssp" />
             </RelativeLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_9sdp"
-                android:background="@drawable/border_bg"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:background="@drawable/input_bg"
                 android:orientation="vertical"
-                android:padding="@dimen/_7sdp">
+                android:padding="@dimen/_9sdp">
 
                 <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ivStock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_transfer_small" />
+
+                    <TextView
+                        android:id="@+id/tvOrderId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_11sdp"
+                        android:layout_toEndOf="@id/ivStock"
+                        android:fontFamily="@font/sansbold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="Req No. - 13456" />
+
+
+                    <TextView
+                        android:id="@+id/tvStatus"
+                        android:layout_width="@dimen/_72sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_status_red"
+                        android:fontFamily="@font/sanssemibold"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_11ssp"
+                        tools:text="Pending" />
+
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_9sdp"
+                    android:background="@drawable/border_bg"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_7sdp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/sansregular"
+                            android:text="Request type"
+                            android:textColor="@color/darkgray"
+                            android:textSize="@dimen/_12ssp" />
+
+                        <TextView
+                            android:id="@+id/tvFleetType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/sansbold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12ssp"
+                            tools:text="Fuel Refill" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlVendor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/sansregular"
+                            android:text="Vendor"
+                            android:textColor="@color/darkgray"
+                            android:textSize="@dimen/_12ssp" />
+
+                        <TextView
+                            android:id="@+id/tvVendorDetails"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/sansbold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12ssp"
+                            tools:text="ABCD" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/rlDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/sansregular"
+                            android:text="Description"
+                            android:textColor="@color/darkgray"
+                            android:textSize="@dimen/_12ssp" />
+
+                        <TextView
+                            android:id="@+id/tvDescription"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/sansbold"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12ssp"
+                            tools:text="ABCD" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/sansregular"
+                            android:text="Requested Date"
+                            android:textColor="@color/darkgray"
+                            android:textSize="@dimen/_12ssp" />
+
+                        <TextView
+                            android:id="@+id/tvRequestDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/sansbold"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12ssp"
+                            tools:text="12 Dec 2025" />
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlCost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -191,94 +303,53 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Request type"
+                        android:text="Total Cost"
                         android:textColor="@color/darkgray"
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
+                        android:id="@+id/tvCost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansbold"
-                        android:text="Fuel Refill"
-                        android:textAllCaps="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textColor="@color/orange"
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="$200.00" />
                 </RelativeLayout>
 
-                <RelativeLayout
+
+                <LinearLayout
+                    android:id="@+id/llType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_7sdp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="VAN No."
+                        android:text="Incident Type"
                         android:textColor="@color/darkgray"
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tvIncidentType"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:autoSizeMinTextSize="@dimen/_1sdp"
+                        android:autoSizeTextType="uniform"
                         android:fontFamily="@font/sansbold"
-                        android:text="GJZ889790"
-                        android:textAllCaps="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_7sdp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sansregular"
-                        android:text="Requested Date"
-                        android:textColor="@color/darkgray"
-                        android:textSize="@dimen/_12ssp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:fontFamily="@font/sansbold"
-                        android:text="16 Dec 2025"
-                        android:textAllCaps="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
-                </RelativeLayout>
-
+                        android:maxLines="2"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/orange"
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="Breakdown / Mechanical Issue" />
+                </LinearLayout>
 
             </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sansregular"
-                    android:text="Total Cost"
-                    android:textColor="@color/darkgray"
-                    android:textSize="@dimen/_12ssp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:fontFamily="@font/sansbold"
-                    android:text="$200.00"
-                    android:textColor="@color/orange"
-                    android:textSize="@dimen/_12ssp" />
-            </RelativeLayout>
-
         </LinearLayout>
 
 

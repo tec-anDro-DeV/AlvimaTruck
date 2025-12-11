@@ -91,6 +91,12 @@ interface ApiInterface {
         @Query("routeName") routeName: String? = null
     ): Call<JsonObject>
 
+    @GET(Constants.API_Fleet_Log_List)
+    fun fleetLogList(
+        @Query("page") page: Int? = null,
+        @Query("pageSize") pageSize: Int? = null,
+    ): Call<JsonObject>
+
     @Multipart
     @POST(Constants.API_Create_Customer)
     fun createCustomer(

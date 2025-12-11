@@ -41,9 +41,10 @@
         android:layout_below="@+id/rlTop"
         android:background="@drawable/bg_white_top_curve"
         android:orientation="vertical"
-        android:padding="@dimen/_15sdp">
+        android:padding="@dimen/_9sdp">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/_9sdp"
             android:id="@+id/rvLogs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
