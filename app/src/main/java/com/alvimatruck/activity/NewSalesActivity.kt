@@ -45,6 +45,8 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
     var customerDetail: CustomerDetail? = null
     var userDetail: UserDetail? = null
 
+    var minQty = 0
+
     var newSalesItemListAdapter: NewSalesItemListAdapter? = null
 
     var orderList: ArrayList<String> = ArrayList()
@@ -129,6 +131,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             selectedLocationCode = ""
             selectedPaymentCode = ""
             selectedProduct = null
+            minQty = 0
             newSalesItemListAdapter!!.notifyDataSetChanged()
             binding.nestedScrollView.post {
                 binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
@@ -234,6 +237,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                             selectedProduct = item
                         }
                     }
+                    customerPriceAPI()
                 }
 
                 else -> {
@@ -242,6 +246,59 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             }
             textView.text = singleItemSelectionAdapter.selected
             dialog.dismiss()
+        }
+    }
+
+    private fun customerPriceAPI() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@NewSalesActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, ""
+            )!!.webservices.customerPrice(customerDetail!!.customerPriceGroup, selectedProduct!!.no)
+                .enqueue(object : Callback<JsonObject> {
+                    override fun onResponse(
+                        call: Call<JsonObject>,
+                        response: Response<JsonObject>
+                    ) {
+                        ProgressDialog.dismiss()
+                        if (response.isSuccessful) {
+                            try {
+                                Log.d("TAG", "onResponse: " + response.body().toString())
+//                                if (response.body() != null && response.body()!!.has("data")) {
+//                                    val dataArray = response.body()!!.getAsJsonArray("data")
+//
+//                                    for (item in dataArray) {
+//                                        val obj = item.asJsonObject
+//                                        val code = obj.get("code").asString
+//                                        locationCodeList!!.add(code)
+//                                    }
+//                                }
+
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        } else {
+                            Toast.makeText(
+                                this@NewSalesActivity,
+                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                        Toast.makeText(
+                            this@NewSalesActivity,
+                            getString(R.string.api_fail_message),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        ProgressDialog.dismiss()
+                    }
+                })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

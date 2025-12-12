@@ -97,6 +97,12 @@ interface ApiInterface {
         @Query("pageSize") pageSize: Int? = null,
     ): Call<JsonObject>
 
+    @GET(Constants.API_Customer_Price)
+    fun customerPrice(
+        @Query("salesCode") salesCode: String? = null,
+        @Query("itemNo") itemNo: String? = null,
+    ): Call<JsonObject>
+
     @Multipart
     @POST(Constants.API_Create_Customer)
     fun createCustomer(
