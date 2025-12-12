@@ -14,25 +14,41 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.adapter.SingleItemSelectionAdapter
+import com.alvimatruck.adapter.TransferRequestItemListAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityCreateTransferRequestBinding
+import com.alvimatruck.interfaces.DeleteOrderListener
+import com.alvimatruck.model.responses.ItemDetail
+import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequestBinding>() {
+class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequestBinding>(),
+    DeleteOrderListener {
     var itemList: ArrayList<String>? = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
 
     var costCenterList: ArrayList<String>? = ArrayList()
     var profitCenterList: ArrayList<String>? = ArrayList()
     var inTransitList: ArrayList<String>? = ArrayList()
+
+    var selectedProduct: ItemDetail? = null
+    var userDetail: UserDetail? = null
+
+    var transferRequestItemListAdapter: TransferRequestItemListAdapter? = null
+
+    var requestList: ArrayList<String> = ArrayList()
+
+    var productList: ArrayList<ItemDetail>? = ArrayList()
 
 
     var selectedItem = ""
@@ -50,8 +66,11 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
             handleBackPressed()
         }
 
+        userDetail =
+            Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
+
         binding.tvDateTime.text = Utils.getFullDateWithTime(System.currentTimeMillis())
-        binding.tvTransferNumber.text = System.currentTimeMillis().toString()
+        //  binding.tvTransferNumber.text = System.currentTimeMillis().toString()
 
         getItemList()
         getCostCenterList()
@@ -83,6 +102,34 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
                 inTransitList!!, "Choose In Transit", "Search In Transit", binding.tvInTransit
             )
         }
+
+        binding.tvAdd.setOnClickListener {
+            requestList.add("")
+            binding.llRequestList.visibility = View.VISIBLE
+            binding.tvCreateTransferRequest.visibility = View.VISIBLE
+            binding.tvItem.text = ""
+            binding.tvCostCenter.text = ""
+            binding.tvProfitCenter.text = ""
+            binding.tvInTransit.text = ""
+            selectedItem = ""
+            selectedCostCenter = ""
+            selectedProfitCenter = ""
+            selectedInTransit = ""
+            selectedProduct = null
+            transferRequestItemListAdapter!!.notifyDataSetChanged()
+            binding.nestedScrollView.post {
+                binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
+            }
+        }
+
+        binding.rvTransferList.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+
+        transferRequestItemListAdapter = TransferRequestItemListAdapter(
+            this@CreateTransferRequestActivity, requestList, this@CreateTransferRequestActivity
+        )
+        binding.rvTransferList.adapter = transferRequestItemListAdapter
 
     }
 
@@ -174,6 +221,11 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
 
                 binding.tvItem -> {
                     selectedItem = singleItemSelectionAdapter.selected
+                    for (item in productList!!) {
+                        if (item.description == singleItemSelectionAdapter.selected) {
+                            selectedProduct = item
+                        }
+                    }
                 }
 
                 else -> {
@@ -197,12 +249,12 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
                         try {
                             Log.d("TAG", "onResponse Item: " + response.body().toString())
                             if (response.body() != null) {
-                                val dataArray = response.body()
-
-                                for (item in dataArray!!) {
-                                    val obj = item.asJsonObject
-                                    val desc = obj.get("description")?.asString ?: ""
-                                    itemList?.add(desc)
+                                productList = response.body()!!.getAsJsonArray().map {
+                                    Gson().fromJson(it, ItemDetail::class.java)
+                                } as ArrayList<ItemDetail>
+                                for (item in productList!!) {
+                                    val code = item.description
+                                    itemList!!.add(code)
                                 }
                             }
 
@@ -380,5 +432,15 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
                 this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    override fun onDeleteOrder(orderDetail: String) {
+        requestList.remove(orderDetail)
+        transferRequestItemListAdapter!!.notifyDataSetChanged()
+        if (requestList.isEmpty()) {
+            binding.llRequestList.visibility = View.GONE
+            binding.tvCreateTransferRequest.visibility = View.GONE
+        }
+
     }
 }

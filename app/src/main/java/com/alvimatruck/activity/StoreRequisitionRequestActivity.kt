@@ -14,19 +14,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.adapter.SingleItemSelectionAdapter
+import com.alvimatruck.adapter.StoreRequisitionRequestItemListAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityStoreRequisitionRequestBinding
+import com.alvimatruck.interfaces.DeleteOrderListener
+import com.alvimatruck.model.responses.ItemDetail
+import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionRequestBinding>() {
+class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionRequestBinding>(),
+    DeleteOrderListener {
     var itemList: ArrayList<String>? = ArrayList()
     var costCenterList: ArrayList<String>? = ArrayList()
     var profitCenterList: ArrayList<String>? = ArrayList()
@@ -36,6 +43,15 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
     var selectedCostCenter = ""
     var selectedProfitCenter = ""
     var selectedInTransit = ""
+
+    var selectedProduct: ItemDetail? = null
+    var userDetail: UserDetail? = null
+
+    var storeRequisitionRequestItemListAdapter: StoreRequisitionRequestItemListAdapter? = null
+
+    var requestList: ArrayList<String> = ArrayList()
+
+    var productList: ArrayList<ItemDetail>? = ArrayList()
 
     override fun inflateBinding(): ActivityStoreRequisitionRequestBinding {
         return ActivityStoreRequisitionRequestBinding.inflate(layoutInflater)
@@ -48,7 +64,10 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
         }
 
         binding.tvDateTime.text = Utils.getFullDateWithTime(System.currentTimeMillis())
-        binding.tvTransferNumber.text = System.currentTimeMillis().toString()
+        //  binding.tvTransferNumber.text = System.currentTimeMillis().toString()
+
+        userDetail =
+            Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
 
         getItemList()
         getCostCenterList()
@@ -81,6 +100,34 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
                 inTransitList!!, "Choose In Transit", "Search In Transit", binding.tvInTransit
             )
         }
+
+        binding.tvAdd.setOnClickListener {
+            requestList.add("")
+            binding.llRequestList.visibility = View.VISIBLE
+            binding.tvCreateStoreRequisition.visibility = View.VISIBLE
+            binding.tvItem.text = ""
+            binding.tvCostCenter.text = ""
+            binding.tvProfitCenter.text = ""
+            binding.tvInTransit.text = ""
+            selectedItem = ""
+            selectedCostCenter = ""
+            selectedProfitCenter = ""
+            selectedInTransit = ""
+            selectedProduct = null
+            storeRequisitionRequestItemListAdapter!!.notifyDataSetChanged()
+            binding.nestedScrollView.post {
+                binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
+            }
+        }
+
+        binding.rvTransferList.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+
+        storeRequisitionRequestItemListAdapter = StoreRequisitionRequestItemListAdapter(
+            this@StoreRequisitionRequestActivity, requestList, this@StoreRequisitionRequestActivity
+        )
+        binding.rvTransferList.adapter = storeRequisitionRequestItemListAdapter
     }
 
     private fun dialogSingleSelection(
@@ -171,6 +218,11 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
 
                 binding.tvItem -> {
                     selectedItem = singleItemSelectionAdapter.selected
+                    for (item in productList!!) {
+                        if (item.description == singleItemSelectionAdapter.selected) {
+                            selectedProduct = item
+                        }
+                    }
                 }
 
                 else -> {
@@ -194,12 +246,12 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
                         try {
                             Log.d("TAG", "onResponse Item: " + response.body().toString())
                             if (response.body() != null) {
-                                val dataArray = response.body()
-
-                                for (item in dataArray!!) {
-                                    val obj = item.asJsonObject
-                                    val desc = obj.get("description")?.asString ?: ""
-                                    itemList?.add(desc)
+                                productList = response.body()!!.getAsJsonArray().map {
+                                    Gson().fromJson(it, ItemDetail::class.java)
+                                } as ArrayList<ItemDetail>
+                                for (item in productList!!) {
+                                    val code = item.description
+                                    itemList!!.add(code)
                                 }
                             }
 
@@ -376,6 +428,16 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
             Toast.makeText(
                 this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
+        }
+    }
+
+    override fun onDeleteOrder(orderDetail: String) {
+
+        requestList.remove(orderDetail)
+        storeRequisitionRequestItemListAdapter!!.notifyDataSetChanged()
+        if (requestList.isEmpty()) {
+            binding.llRequestList.visibility = View.GONE
+            binding.tvCreateStoreRequisition.visibility = View.GONE
         }
     }
 

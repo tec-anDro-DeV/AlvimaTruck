@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_7sdp">
+
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:layout_toStartOf="@+id/tvTId"
+            android:ellipsize="end"
+            android:fontFamily="@font/sansbold"
+            android:maxLines="1"
+            android:text="1. Chinese Noodles 1Kg"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:id="@+id/tvTId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@font/sansbold"
+            android:text="ID:8521479630125"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/_11ssp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sansregular"
+        android:text="Qty: 3 Packets • SKU: N209-8529"
+        android:textColor="@color/darkgray"
+        android:textSize="@dimen/_11ssp" />
+
+    <TextView
+        android:id="@+id/tvDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_9sdp"
+        android:background="@drawable/bg_delete_lightred"
+        android:fontFamily="@font/sansbold"
+        android:padding="@dimen/_5sdp"
+        android:text="Delete"
+        android:textAlignment="center"
+        android:textColor="#D0385A"
+        android:textSize="@dimen/_12ssp" />
+
+    <!--                <LinearLayout-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_marginTop="@dimen/_9sdp"-->
+    <!--                    android:orientation="horizontal">-->
+
+    <!--                    <LinearLayout-->
+    <!--                        android:layout_width="0dp"-->
+    <!--                        android:layout_height="@dimen/_33sdp"-->
+    <!--                        android:layout_weight="1"-->
+    <!--                        android:background="@drawable/light_orange_bg"-->
+    <!--                        android:gravity="center">-->
+
+    <!--                        <TextView-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:fontFamily="@font/sansbold"-->
+    <!--                            android:text="Store 1"-->
+    <!--                            android:textAlignment="center"-->
+    <!--                            android:textAllCaps="true"-->
+    <!--                            android:textColor="@color/black"-->
+    <!--                            android:textSize="@dimen/_12ssp" />-->
+
+    <!--                        <ImageView-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_marginHorizontal="@dimen/_6sdp"-->
+    <!--                            android:src="@drawable/ic_arrow" />-->
+
+    <!--                        <TextView-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:fontFamily="@font/sansbold"-->
+    <!--                            android:text="Store 2"-->
+    <!--                            android:textAlignment="center"-->
+    <!--                            android:textAllCaps="true"-->
+    <!--                            android:textColor="@color/orange"-->
+    <!--                            android:textSize="@dimen/_12ssp" />-->
+    <!--                    </LinearLayout>-->
+
+    <!--                    <RelativeLayout-->
+    <!--                        android:layout_width="@dimen/_33sdp"-->
+    <!--                        android:layout_height="@dimen/_33sdp"-->
+    <!--                        android:layout_marginStart="@dimen/_12sdp"-->
+    <!--                        android:background="@drawable/bg_delete_lightred">-->
+
+    <!--                        <ImageView-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_centerInParent="true"-->
+    <!--                            android:src="@drawable/ic_delete2" />-->
+    <!--                    </RelativeLayout>-->
+
+
+    <!--                </LinearLayout>-->
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginVertical="@dimen/_7sdp"
+        android:background="@color/gray" />
+
+
+</LinearLayout>
