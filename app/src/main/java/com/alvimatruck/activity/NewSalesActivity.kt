@@ -13,20 +13,27 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
+import com.alvimatruck.adapter.NewSalesItemListAdapter
 import com.alvimatruck.adapter.SingleItemSelectionAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityNewSalesBinding
+import com.alvimatruck.interfaces.DeleteOrderListener
+import com.alvimatruck.model.responses.CustomerDetail
+import com.alvimatruck.model.responses.ItemDetail
+import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>() {
+class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderListener {
     var locationCodeList: ArrayList<String>? = ArrayList()
     var paymentCodeList: ArrayList<String>? = ArrayList()
     var itemList: ArrayList<String>? = ArrayList()
@@ -34,6 +41,15 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>() {
     var selectedLocationCode = ""
     var selectedPaymentCode = ""
     var selectedItem = ""
+    var selectedProduct: ItemDetail? = null
+    var customerDetail: CustomerDetail? = null
+    var userDetail: UserDetail? = null
+
+    var newSalesItemListAdapter: NewSalesItemListAdapter? = null
+
+    var orderList: ArrayList<String> = ArrayList()
+
+    var productList: ArrayList<ItemDetail>? = ArrayList()
 
 
     override fun inflateBinding(): ActivityNewSalesBinding {
@@ -46,9 +62,28 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        userDetail =
+            Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
+
+        if (intent != null) {
+            customerDetail = Gson().fromJson(
+                intent.getStringExtra(Constants.CustomerDetail).toString(),
+                CustomerDetail::class.java
+            )
+            binding.tvCustomer.text = customerDetail!!.searchName
+            val number = if (!customerDetail?.getFormattedContactNo().isNullOrBlank()) {
+                customerDetail?.getFormattedContactNo()
+            } else {
+                customerDetail?.getFormattedTelephoneNo()
+            }
+
+            binding.tvTelephoneNumber.text = number ?: ""
+            binding.tvSalesperson.text = userDetail?.firstName + " " + userDetail?.lastName
+        }
 
         binding.tvPostingDate.text = Utils.getFullDateWithTime(System.currentTimeMillis())
-        binding.tvToken.text = System.currentTimeMillis().toString()
+        binding.tvOrderDate.text = Utils.getFullDate(System.currentTimeMillis())
+        //     binding.tvToken.text = System.currentTimeMillis().toString()
 
         getLocationCodeList()
         getPaymentCodeList()
@@ -74,21 +109,48 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>() {
 
         binding.tvItem.setOnClickListener {
             dialogSingleSelection(
-                itemList!!,
-                "Choose Item",
-                "Search Item",
-                binding.tvItem
+                itemList!!, "Choose Item", "Search Item", binding.tvItem
             )
         }
+
+        binding.tvCancel.setOnClickListener {
+            handleBackPressed()
+        }
+
+        binding.tvAdd.setOnClickListener {
+            orderList.add("")
+            binding.llOrderList.visibility = View.VISIBLE
+            binding.llBottomButtons.visibility = View.VISIBLE
+            binding.llOrderTotal.visibility = View.VISIBLE
+            binding.tvItem.text = ""
+            binding.tvLocationCode.text = ""
+            binding.tvPaymentCode.text = ""
+            selectedItem = ""
+            selectedLocationCode = ""
+            selectedPaymentCode = ""
+            selectedProduct = null
+            newSalesItemListAdapter!!.notifyDataSetChanged()
+            binding.nestedScrollView.post {
+                binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
+            }
+        }
+
+
+
+        binding.rvProducts.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+
+        newSalesItemListAdapter = NewSalesItemListAdapter(
+            this@NewSalesActivity, orderList, this@NewSalesActivity
+        )
+        binding.rvProducts.adapter = newSalesItemListAdapter
 
 
     }
 
     private fun dialogSingleSelection(
-        list: ArrayList<String>,
-        title: String,
-        hint: String,
-        textView: TextView
+        list: ArrayList<String>, title: String, hint: String, textView: TextView
     ) {
         filterList!!.clear()
         filterList!!.addAll(list)
@@ -167,6 +229,11 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>() {
 
                 binding.tvItem -> {
                     selectedItem = singleItemSelectionAdapter.selected
+                    for (item in productList!!) {
+                        if (item.description == singleItemSelectionAdapter.selected) {
+                            selectedProduct = item
+                        }
+                    }
                 }
 
                 else -> {
@@ -290,12 +357,13 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>() {
                         try {
                             Log.d("TAG", "onResponse Item: " + response.body().toString())
                             if (response.body() != null) {
-                                val dataArray = response.body()
 
-                                for (item in dataArray!!) {
-                                    val obj = item.asJsonObject
-                                    val desc = obj.get("description")?.asString ?: ""
-                                    itemList?.add(desc)
+                                productList = response.body()!!.getAsJsonArray().map {
+                                    Gson().fromJson(it, ItemDetail::class.java)
+                                } as ArrayList<ItemDetail>
+                                for (item in productList!!) {
+                                    val code = item.description
+                                    itemList!!.add(code)
                                 }
                             }
 
@@ -324,6 +392,17 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>() {
             Toast.makeText(
                 this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
+        }
+
+    }
+
+    override fun onDeleteOrder(orderDetail: String) {
+        orderList.remove(orderDetail)
+        newSalesItemListAdapter!!.notifyDataSetChanged()
+        if (orderList.isEmpty()) {
+            binding.llOrderList.visibility = View.GONE
+            binding.llBottomButtons.visibility = View.GONE
+            binding.llOrderTotal.visibility = View.GONE
         }
 
     }

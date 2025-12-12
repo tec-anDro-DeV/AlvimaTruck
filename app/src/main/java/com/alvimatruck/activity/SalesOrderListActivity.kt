@@ -1,6 +1,5 @@
 package com.alvimatruck.activity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.SalesOrderListAdapter
@@ -39,9 +38,9 @@ class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>() {
         binding.rvOrderList.adapter = salesOrderListAdapter
 
 
-        binding.ivAddOrder.setOnClickListener {
-            startActivity(Intent(this@SalesOrderListActivity, NewSalesActivity::class.java))
-        }
+//        binding.ivAddOrder.setOnClickListener {
+//            startActivity(Intent(this@SalesOrderListActivity, NewSalesActivity::class.java))
+//        }
 
     }
 }
