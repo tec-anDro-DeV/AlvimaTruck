@@ -1,5 +1,6 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,8 +20,10 @@ import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityNewSalesBinding
 import com.alvimatruck.interfaces.DeleteOrderListener
+import com.alvimatruck.model.request.NewOrderRequest
 import com.alvimatruck.model.responses.CustomerDetail
 import com.alvimatruck.model.responses.ItemDetail
+import com.alvimatruck.model.responses.SingleOrder
 import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
@@ -46,10 +49,12 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
     var userDetail: UserDetail? = null
 
     var minQty = 0
+    var tempVat = 0.0
+    var tempUnitPrice = 0.0
 
     var newSalesItemListAdapter: NewSalesItemListAdapter? = null
 
-    var orderList: ArrayList<String> = ArrayList()
+    var orderList: ArrayList<SingleOrder> = ArrayList()
 
     var productList: ArrayList<ItemDetail>? = ArrayList()
 
@@ -119,23 +124,61 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             handleBackPressed()
         }
 
-        binding.tvAdd.setOnClickListener {
-            orderList.add("")
-            binding.llOrderList.visibility = View.VISIBLE
-            binding.llBottomButtons.visibility = View.VISIBLE
-            binding.llOrderTotal.visibility = View.VISIBLE
-            binding.tvItem.text = ""
-            binding.tvLocationCode.text = ""
-            binding.tvPaymentCode.text = ""
-            selectedItem = ""
-            selectedLocationCode = ""
-            selectedPaymentCode = ""
-            selectedProduct = null
-            minQty = 0
-            newSalesItemListAdapter!!.notifyDataSetChanged()
-            binding.nestedScrollView.post {
-                binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
+        binding.tvConfirmOrder.setOnClickListener {
+            if (binding.tvLocationCode.text.toString().isEmpty()) {
+                Toast.makeText(this, "Select Location Code", Toast.LENGTH_SHORT).show()
+            } else if (binding.tvPaymentCode.text.toString().isEmpty()) {
+                Toast.makeText(this, "Select Payment Code", Toast.LENGTH_SHORT).show()
+            } else {
+                newOrderAPI()
             }
+        }
+
+        binding.tvAdd.setOnClickListener {
+            if (binding.etSalesPrice.text.toString().isEmpty()) {
+                Toast.makeText(this, "Enter Sales Price", Toast.LENGTH_SHORT).show()
+            } else if (binding.etQuantity.text.toString().isEmpty()) {
+                Toast.makeText(this, "Enter Quantity", Toast.LENGTH_SHORT).show()
+            } else {
+                var singleOrder: SingleOrder?
+                if (tempVat == 0.0) {
+                    tempUnitPrice = binding.etSalesPrice.text.toString().toDouble()
+                    singleOrder = SingleOrder(
+                        (tempUnitPrice + tempVat) * binding.etQuantity.text.toString().toDouble(),
+                        selectedItem, selectedProduct!!.no,
+                        binding.etQuantity.text.toString().toInt(),
+                        tempUnitPrice,
+                        tempVat,
+                        selectedProduct!!.baseUnitOfMeasure
+                    )
+                } else {
+                    singleOrder = SingleOrder(
+                        (tempUnitPrice + tempVat) * binding.etQuantity.text.toString().toDouble(),
+                        selectedItem, selectedProduct!!.no,
+                        binding.etQuantity.text.toString().toInt(),
+                        tempUnitPrice, tempVat, selectedProduct!!.baseUnitOfMeasure
+                    )
+                }
+
+                orderList.add(singleOrder)
+                binding.llOrderList.visibility = View.VISIBLE
+                binding.llBottomButtons.visibility = View.VISIBLE
+                binding.llOrderTotal.visibility = View.VISIBLE
+                binding.tvItem.text = ""
+                selectedItem = ""
+                selectedProduct = null
+                minQty = 0
+                binding.etQuantity.setText("")
+                binding.etSalesPrice.setText("")
+                tempUnitPrice = 0.0
+                tempVat = 0.0
+                newSalesItemListAdapter!!.notifyDataSetChanged()
+                binding.nestedScrollView.post {
+                    binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
+                }
+                calculateFinalTotal()
+            }
+
         }
 
 
@@ -149,6 +192,88 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
         )
         binding.rvProducts.adapter = newSalesItemListAdapter
 
+
+    }
+
+    private fun newOrderAPI() {
+
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@NewSalesActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.newOrder(
+                NewOrderRequest(
+                    binding.tvCustomer.text.toString(),
+                    customerDetail!!.no,
+                    binding.tvTotal.text.toString().toDouble(),
+                    orderList,
+                    selectedLocationCode,
+                    selectedPaymentCode,
+                    binding.tvSubTotal.text.toString().toDouble(),
+                    binding.tvVat.text.toString().replace("+", "").toDouble()
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@NewSalesActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@NewSalesActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            customerDetail!!.visitedToday = true
+                            val intent = Intent()
+                            intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
+                            setResult(RESULT_OK, intent)
+                            finish()
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@NewSalesActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@NewSalesActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    fun calculateFinalTotal() {
+        var subtotal = 0.0
+        var vat = 0.0
+        var total = 0.0
+        for (item in orderList) {
+            subtotal += (item.unitPrice * item.quantity)
+            vat += (item.vat * item.quantity)
+            total += item.finalPrice
+        }
+        binding.tvSubTotal.text = subtotal.toString()
+        binding.tvVat.text = "+ $vat"
+        binding.tvTotal.text = total.toString()
 
     }
 
@@ -250,6 +375,8 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
     }
 
     private fun customerPriceAPI() {
+        binding.etQuantity.setText("")
+        binding.etSalesPrice.setText("")
         if (Utils.isOnline(this)) {
             ProgressDialog.start(this@NewSalesActivity)
             ApiClient.getRestClient(
@@ -261,18 +388,30 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                         response: Response<JsonObject>
                     ) {
                         ProgressDialog.dismiss()
+                        if (response.code() == 204) {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            minQty = 1
+                            binding.etQuantity.setText(minQty.toString())
+                            tempVat = 0.0
+                            binding.etSalesPrice.isEnabled = true
+                            return
+                        }
                         if (response.isSuccessful) {
                             try {
-                                Log.d("TAG", "onResponse: " + response.body().toString())
-//                                if (response.body() != null && response.body()!!.has("data")) {
-//                                    val dataArray = response.body()!!.getAsJsonArray("data")
-//
-//                                    for (item in dataArray) {
-//                                        val obj = item.asJsonObject
-//                                        val code = obj.get("code").asString
-//                                        locationCodeList!!.add(code)
-//                                    }
-//                                }
+                                Log.d("TAG", "onCustomerItemPrice: " + response.body().toString())
+
+                                if (response.body() != null) {
+                                    minQty =
+                                        response.body()!!.asJsonObject.get("minimumQuantity").asInt
+                                    binding.etQuantity.setText(minQty.toString())
+                                    tempUnitPrice =
+                                        response.body()!!.asJsonObject.get("unitPrice").asDouble
+                                    tempVat =
+                                        response.body()!!.asJsonObject.get("unitPriceInclVAT").asDouble
+                                    val finalPrice = tempUnitPrice + tempVat
+                                    binding.etSalesPrice.setText(finalPrice.toString())
+                                    binding.etSalesPrice.isEnabled = false
+                                }
 
                             } catch (e: Exception) {
                                 e.printStackTrace()
@@ -297,7 +436,9 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 })
         } else {
             Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+                this,
+                getString(R.string.please_check_your_internet_connection),
+                Toast.LENGTH_SHORT
             ).show()
         }
     }
@@ -308,7 +449,10 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             ApiClient.getRestClient(
                 Constants.BASE_URL, ""
             )!!.webservices.locationCodeList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                override fun onResponse(
+                    call: Call<JsonObject>,
+                    response: Response<JsonObject>
+                ) {
                     ProgressDialog.dismiss()
                     if (response.isSuccessful) {
                         try {
@@ -346,7 +490,9 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             })
         } else {
             Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+                this,
+                getString(R.string.please_check_your_internet_connection),
+                Toast.LENGTH_SHORT
             ).show()
         }
 
@@ -358,7 +504,10 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             ApiClient.getRestClient(
                 Constants.BASE_URL, ""
             )!!.webservices.paymentCodeList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                override fun onResponse(
+                    call: Call<JsonObject>,
+                    response: Response<JsonObject>
+                ) {
                     ProgressDialog.dismiss()
                     if (response.isSuccessful) {
                         try {
@@ -396,7 +545,9 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             })
         } else {
             Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+                this,
+                getString(R.string.please_check_your_internet_connection),
+                Toast.LENGTH_SHORT
             ).show()
         }
 
@@ -447,21 +598,25 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             })
         } else {
             Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+                this,
+                getString(R.string.please_check_your_internet_connection),
+                Toast.LENGTH_SHORT
             ).show()
         }
 
     }
 
-    override fun onDeleteOrder(orderDetail: String) {
+
+    override fun onDeleteOrder(orderDetail: SingleOrder) {
         orderList.remove(orderDetail)
         newSalesItemListAdapter!!.notifyDataSetChanged()
         if (orderList.isEmpty()) {
             binding.llOrderList.visibility = View.GONE
             binding.llBottomButtons.visibility = View.GONE
             binding.llOrderTotal.visibility = View.GONE
+        } else {
+            calculateFinalTotal()
         }
-
     }
 
 

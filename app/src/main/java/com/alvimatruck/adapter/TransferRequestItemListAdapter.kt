@@ -11,13 +11,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.databinding.SingleTransferRequestBinding
-import com.alvimatruck.interfaces.DeleteOrderListener
+import com.alvimatruck.interfaces.DeleteRequestListener
 
 
 class TransferRequestItemListAdapter(
     private val mActivity: Activity,
     private val list: ArrayList<String>,
-    val deleteOrderListener: DeleteOrderListener
+    val deleteOrderListener: DeleteRequestListener
 ) : RecyclerView.Adapter<TransferRequestItemListAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = mActivity.layoutInflater
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

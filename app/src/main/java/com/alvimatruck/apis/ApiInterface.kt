@@ -5,6 +5,7 @@ import com.alvimatruck.model.request.ChangePasswordRequest
 import com.alvimatruck.model.request.CustomerUpdate
 import com.alvimatruck.model.request.EndTripRequest
 import com.alvimatruck.model.request.LoginRequest
+import com.alvimatruck.model.request.NewOrderRequest
 import com.alvimatruck.model.request.OTPRequest
 import com.alvimatruck.model.request.OTPVerifyRequest
 import com.alvimatruck.model.request.ResetPasswordRequest
@@ -83,6 +84,9 @@ interface ApiInterface {
 
     @POST(Constants.API_Cancel_Trip)
     fun cancelTrip(@Body cancelTripRequest: CancelTripRequest): Call<JsonObject>
+
+    @POST(Constants.API_New_Order)
+    fun newOrder(@Body newOrderRequest: NewOrderRequest): Call<JsonObject>
 
     @GET(Constants.API_Customer_List)
     fun customerList(

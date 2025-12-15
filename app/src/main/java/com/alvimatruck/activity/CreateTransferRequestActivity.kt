@@ -18,7 +18,7 @@ import com.alvimatruck.adapter.TransferRequestItemListAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityCreateTransferRequestBinding
-import com.alvimatruck.interfaces.DeleteOrderListener
+import com.alvimatruck.interfaces.DeleteRequestListener
 import com.alvimatruck.model.responses.ItemDetail
 import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
@@ -33,7 +33,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequestBinding>(),
-    DeleteOrderListener {
+    DeleteRequestListener {
     var itemList: ArrayList<String>? = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
 

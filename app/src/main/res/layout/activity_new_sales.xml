@@ -412,11 +412,12 @@
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
+                        android:id="@+id/tvSubTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansregular"
-                        android:text="$1,171.19"
+                        tools:text="$1,171.19"
                         android:textColor="@color/darkgray"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
@@ -470,11 +471,12 @@
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
+                        android:id="@+id/tvVat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansregular"
-                        android:text="+ $117.11"
+                        tools:text="+ $117.11"
                         android:textColor="@color/darkgray"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
@@ -498,11 +500,12 @@
                         android:textSize="@dimen/_16ssp" />
 
                     <TextView
+                        android:id="@+id/tvTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansbold"
-                        android:text="$936.95"
+                        tools:text="$936.95"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16ssp" />
                 </RelativeLayout>

@@ -33,6 +33,7 @@ class Constants {
         const val API_End_Trip = "Trip/end"
         const val API_Visit_Trip = "Trip/visit"
         const val API_Cancel_Trip = "Trip/cancel"
+        const val API_New_Order = "create"
         const val API_Customer_List = "Customer/getallmobile"
         const val API_Fleet_Log_List = "FleetManagement/get-all-fleet-mobile"
         const val API_Customer_Price = "Customer/get-price"

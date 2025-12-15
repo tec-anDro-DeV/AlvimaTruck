@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.databinding.SingleNewSalesItemBinding
 import com.alvimatruck.interfaces.DeleteOrderListener
+import com.alvimatruck.model.responses.SingleOrder
 
 
 class NewSalesItemListAdapter(
     private val mActivity: Activity,
-    private val list: ArrayList<String>,
+    private val list: ArrayList<SingleOrder>,
     val deleteOrderListener: DeleteOrderListener
 ) : RecyclerView.Adapter<NewSalesItemListAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = mActivity.layoutInflater
@@ -26,7 +27,7 @@ class NewSalesItemListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-
+        holder.binding.detail = list[position]
         if (position == list.size - 1)
             holder.binding.divider.visibility = View.GONE
         else
@@ -60,7 +61,7 @@ class NewSalesItemListAdapter(
             }
             btnYes.setOnClickListener {
                 dialog.dismiss()
-                deleteOrderListener.onDeleteOrder("")
+                deleteOrderListener.onDeleteOrder(list[position])
             }
 
             dialog.show()

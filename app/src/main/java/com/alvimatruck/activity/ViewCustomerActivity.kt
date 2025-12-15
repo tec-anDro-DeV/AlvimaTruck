@@ -92,6 +92,14 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
             customerDetail!!.searchName,
             customerDetail!!.customerImage
         )
+
+        if (customerDetail!!.status == "Pending" || !tripStart || customerDetail!!.visitedToday) {
+            binding.llCreditLimit.visibility = View.GONE
+            binding.llBottomButtons.visibility = View.GONE
+        } else {
+            binding.llCreditLimit.visibility = View.VISIBLE
+            binding.llBottomButtons.visibility = View.VISIBLE
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,18 +112,12 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
             )
             tripStart = intent.getBooleanExtra(Constants.TripStart, false)
             showUpdatedData()
-            if (customerDetail!!.status == "Pending" || !tripStart) {
-                binding.llCreditLimit.visibility = View.GONE
-                binding.llBottomButtons.visibility = View.GONE
-            } else {
-                binding.llCreditLimit.visibility = View.VISIBLE
-                binding.llBottomButtons.visibility = View.VISIBLE
-            }
-            if (customerDetail!!.visitedToday) {
-                binding.tvVisited.visibility = View.GONE
-            } else {
-                binding.tvVisited.visibility = View.VISIBLE
-            }
+
+//            if (customerDetail!!.visitedToday) {
+//                binding.tvVisited.visibility = View.GONE
+//            } else {
+//                binding.tvVisited.visibility = View.VISIBLE
+//            }
 
 
         }
