@@ -144,12 +144,13 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         }
 
         binding.tvNewOrder.setOnClickListener {
-            startActivity(
+            val intent =
                 Intent(
                     this,
                     NewSalesActivity::class.java
                 ).putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
-            )
+
+            openUpdateCustomer.launch(intent)
         }
 
         binding.tvVisited.setOnClickListener {

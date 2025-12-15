@@ -5,29 +5,17 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
 
-data class FleetLog(
-    val createdDate: String,
-    val fleetType: String,
-    val fuelRefillAmount: Double,
-    val incidentReportDescription: String,
-    val incidentReportType: String,
-    val reason: String,
-    val repairLogRepairCost: Double,
-    val repairLogVendorDetail: String,
+data class OrderDetail(
+    val customerName: String,
+    val orderDate: String,
+    val orderId: String,
+    val routeName: String,
     val status: String,
-    val uniqueId: Int
+    val subTotal: Double
 ) {
-    fun getCost(): String {
-        return if (fleetType == "FuleRefill") {
-            fuelRefillAmount.toString()
-        } else {
-            repairLogRepairCost.toString()
-        }
-    }
-
     fun getRequestDate(): String {
         return LocalDateTime.parse(
-            createdDate, DateTimeFormatterBuilder()
+            orderDate, DateTimeFormatterBuilder()
                 .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
                 .optionalStart()
                 .appendFraction(ChronoField.NANO_OF_SECOND, 1, 9, true)

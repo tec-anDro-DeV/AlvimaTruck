@@ -73,6 +73,9 @@ interface ApiInterface {
     @GET(Constants.API_Today_Routes)
     fun getTodayRoutes(): Call<JsonObject>
 
+    @GET(Constants.API_Sales_Orders)
+    fun getSalesOrder(): Call<JsonObject>
+
     @POST(Constants.API_Start_Trip)
     fun startTrip(@Body startTripRequest: StartTripRequest): Call<JsonObject>
 

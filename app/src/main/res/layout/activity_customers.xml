@@ -77,7 +77,8 @@
                     android:layout_marginStart="@dimen/_11sdp"
                     android:background="@drawable/input_bg3"
                     android:padding="@dimen/_11sdp"
-                    android:src="@drawable/ic_filter" />
+                    android:src="@drawable/ic_filter"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
