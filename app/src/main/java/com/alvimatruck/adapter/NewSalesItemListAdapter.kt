@@ -28,10 +28,17 @@ class NewSalesItemListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.binding.detail = list[position]
-        if (position == list.size - 1)
+        if (position == list.size - 1) {
             holder.binding.divider.visibility = View.GONE
-        else
+        } else {
             holder.binding.divider.visibility = View.VISIBLE
+        }
+
+        if (deleteOrderListener == null) {
+            holder.binding.tvDelete.visibility = View.GONE
+        } else {
+            holder.binding.tvDelete.visibility = View.VISIBLE
+        }
 
         holder.binding.tvDelete.setOnClickListener {
 

@@ -135,35 +135,57 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
         }
 
         binding.tvAdd.setOnClickListener {
-            if (binding.etSalesPrice.text.toString().isEmpty()) {
+            if (binding.tvItem.text.toString().isEmpty()) {
+                Toast.makeText(this, "Please select Item", Toast.LENGTH_SHORT).show()
+            } else if (binding.etSalesPrice.text.toString().isEmpty()) {
                 Toast.makeText(this, "Enter Sales Price", Toast.LENGTH_SHORT).show()
             } else if (binding.etQuantity.text.toString().isEmpty()) {
                 Toast.makeText(this, "Enter Quantity", Toast.LENGTH_SHORT).show()
+            } else if (binding.etQuantity.text.toString().toInt() < minQty) {
+                Toast.makeText(
+                    this,
+                    "Quantity must be greater than or equal to $minQty",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-                var singleOrder: SingleOrder?
-                if (tempVat == 0.0) {
-                    tempUnitPrice = binding.etSalesPrice.text.toString().toDouble()
-                    singleOrder = SingleOrder(
-                        (tempUnitPrice + tempVat) * binding.etQuantity.text.toString().toDouble(),
-                        selectedItem, selectedProduct!!.no,
-                        binding.etQuantity.text.toString().toInt(),
+                // Get current values
+                tempUnitPrice = binding.etSalesPrice.text.toString().toDouble()
+                val qty = binding.etQuantity.text.toString().toInt()
+                val finalTotal = (tempUnitPrice + tempVat) * qty.toDouble()
+
+                // Check if item exists in the list
+                // Assumes 'itemNo' is the property holding the product ID in SingleOrder
+                val existingIndex = orderList.indexOfFirst { it.itemNo == selectedProduct!!.no }
+
+                if (existingIndex != -1) {
+                    // --- UPDATE EXISTING ORDER ---
+                    val existingOrder = orderList[existingIndex]
+                    existingOrder.quantity = qty
+                    existingOrder.unitPrice = tempUnitPrice
+                    existingOrder.finalPrice = finalTotal
+                    existingOrder.vat = tempVat // Update VAT in case it changed
+
+                    newSalesItemListAdapter!!.notifyItemChanged(existingIndex)
+                } else {
+                    // --- ADD NEW ORDER ---
+                    val singleOrder = SingleOrder(
+                        finalTotal,
+                        selectedItem,
+                        selectedProduct!!.no,
+                        qty,
                         tempUnitPrice,
                         tempVat,
                         selectedProduct!!.baseUnitOfMeasure
                     )
-                } else {
-                    singleOrder = SingleOrder(
-                        (tempUnitPrice + tempVat) * binding.etQuantity.text.toString().toDouble(),
-                        selectedItem, selectedProduct!!.no,
-                        binding.etQuantity.text.toString().toInt(),
-                        tempUnitPrice, tempVat, selectedProduct!!.baseUnitOfMeasure
-                    )
+                    orderList.add(singleOrder)
+                    newSalesItemListAdapter!!.notifyDataSetChanged() // Or notifyItemInserted
                 }
 
-                orderList.add(singleOrder)
+                // Reset UI
                 binding.llOrderList.visibility = View.VISIBLE
                 binding.llBottomButtons.visibility = View.VISIBLE
                 binding.llOrderTotal.visibility = View.VISIBLE
+
                 binding.tvItem.text = ""
                 selectedItem = ""
                 selectedProduct = null
@@ -172,7 +194,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 binding.etSalesPrice.setText("")
                 tempUnitPrice = 0.0
                 tempVat = 0.0
-                newSalesItemListAdapter!!.notifyDataSetChanged()
+
                 binding.nestedScrollView.post {
                     binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
                 }
@@ -362,7 +384,9 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                             selectedProduct = item
                         }
                     }
-                    customerPriceAPI()
+                    // Check if item exists in orderList
+                    val existingOrder = orderList.find { it.itemNo == selectedProduct?.no }
+                    customerPriceAPI(existingOrder)
                 }
 
                 else -> {
@@ -374,9 +398,12 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
         }
     }
 
-    private fun customerPriceAPI() {
-        binding.etQuantity.setText("")
-        binding.etSalesPrice.setText("")
+    private fun customerPriceAPI(existingOrder: SingleOrder? = null) {
+        // Only clear fields if this is a NEW item
+        if (existingOrder == null) {
+            binding.etQuantity.setText("")
+            binding.etSalesPrice.setText("")
+        }
         if (Utils.isOnline(this)) {
             ProgressDialog.start(this@NewSalesActivity)
             ApiClient.getRestClient(
@@ -391,9 +418,19 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                         if (response.code() == 204) {
                             Log.d("TAG", "onResponse: " + response.body().toString())
                             minQty = 1
-                            binding.etQuantity.setText(minQty.toString())
                             tempVat = 0.0
+
+                            // API says price is not fixed -> Enable editing
                             binding.etSalesPrice.isEnabled = true
+
+                            if (existingOrder != null) {
+                                // Restore User's values from Order List
+                                binding.etQuantity.setText(existingOrder.quantity.toString())
+                                binding.etSalesPrice.setText(existingOrder.unitPrice.toString())
+                                tempUnitPrice = existingOrder.unitPrice
+                            } else {
+                                binding.etQuantity.setText(minQty.toString())
+                            }
                             return
                         }
                         if (response.isSuccessful) {
@@ -403,14 +440,21 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                                 if (response.body() != null) {
                                     minQty =
                                         response.body()!!.asJsonObject.get("minimumQuantity").asInt
-                                    binding.etQuantity.setText(minQty.toString())
+                                    binding.etSalesPrice.isEnabled = false
                                     tempUnitPrice =
                                         response.body()!!.asJsonObject.get("unitPrice").asDouble
                                     tempVat =
                                         response.body()!!.asJsonObject.get("unitPriceInclVAT").asDouble
                                     val finalPrice = tempUnitPrice + tempVat
                                     binding.etSalesPrice.setText(finalPrice.toString())
-                                    binding.etSalesPrice.isEnabled = false
+
+                                    if (existingOrder != null) {
+                                        binding.etQuantity.setText(existingOrder.quantity.toString())
+                                    } else {
+                                        binding.etQuantity.setText(minQty.toString())
+                                    }
+
+
                                 }
 
                             } catch (e: Exception) {
