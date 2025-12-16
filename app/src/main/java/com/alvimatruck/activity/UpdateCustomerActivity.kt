@@ -60,7 +60,7 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
             binding.etCustomerName.text = customerDetail!!.searchName
             binding.etTelephoneNumber.setText(customerDetail!!.telexNo)
             binding.tvCity.text = customerDetail!!.city
-            selectedCity = customerDetail!!.city
+            selectedCity = customerDetail!!.city!!
             binding.tvPostalCode.text = customerDetail!!.postCode
             binding.etAddress.setText(customerDetail!!.address)
         }

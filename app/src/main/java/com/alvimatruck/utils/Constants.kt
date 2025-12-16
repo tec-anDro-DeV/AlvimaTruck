@@ -20,6 +20,9 @@ class Constants {
         const val API_Payment_Code = "Dropdown/get-payment-methods-dropdown"
         const val API_Item_List = "Dropdown/items"
 
+        const val API_Route_Cancel_Reason_List = "Dropdown/get-cancel-reasons"
+        const val API_Visit_Reason_List = "Dropdown/get-visit-reasons"
+
         const val API_CostCenter_Code = "Dropdown/get-costcenter-dropdown"
 
         const val API_ProfitCenter_Code = "Dropdown/get-profitcenter-dropdown"
@@ -36,6 +39,7 @@ class Constants {
         const val API_Cancel_Trip = "Trip/cancel"
         const val API_New_Order = "SalesOrder/create"
         const val API_Customer_List = "Customer/getallmobile"
+        const val API_Order_Detail = "SalesOrder/get-by-id"
         const val API_Fleet_Log_List = "FleetManagement/get-all-fleet-mobile"
         const val API_Customer_Price = "Customer/get-price"
         const val API_Fleet = "FleetManagement/create-fleat"
@@ -63,6 +67,8 @@ class Constants {
         const val LATITUDE = "latitude"
         const val LONGITUDE = "longitude"
         const val CustomerDetail = "customer_detail"
+        const val OrderID = "order_id"
+
     }
 
 

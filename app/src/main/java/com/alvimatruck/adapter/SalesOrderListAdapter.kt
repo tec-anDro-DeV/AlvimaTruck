@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.activity.SalesOrderDetailActivity
 import com.alvimatruck.databinding.SingleOrderItemBinding
 import com.alvimatruck.model.responses.OrderDetail
+import com.alvimatruck.utils.Constants
 
 
 class SalesOrderListAdapter(
@@ -26,7 +27,10 @@ class SalesOrderListAdapter(
         //   holder.binding.tvData.text = "Demo List Item " + (position + 1)
 
         holder.itemView.setOnClickListener {
-            mActivity.startActivity(Intent(mActivity, SalesOrderDetailActivity::class.java))
+            mActivity.startActivity(
+                Intent(mActivity, SalesOrderDetailActivity::class.java)
+                    .putExtra(Constants.OrderID, list[position].orderId)
+            )
         }
 
     }

@@ -18,7 +18,7 @@ import com.alvimatruck.model.responses.SingleOrder
 class NewSalesItemListAdapter(
     private val mActivity: Activity,
     private val list: ArrayList<SingleOrder>,
-    val deleteOrderListener: DeleteOrderListener
+    val deleteOrderListener: DeleteOrderListener?
 ) : RecyclerView.Adapter<NewSalesItemListAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = mActivity.layoutInflater
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -61,7 +61,7 @@ class NewSalesItemListAdapter(
             }
             btnYes.setOnClickListener {
                 dialog.dismiss()
-                deleteOrderListener.onDeleteOrder(list[position])
+                deleteOrderListener!!.onDeleteOrder(list[position])
             }
 
             dialog.show()

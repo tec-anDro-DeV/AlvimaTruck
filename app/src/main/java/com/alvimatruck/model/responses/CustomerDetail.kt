@@ -3,7 +3,7 @@ package com.alvimatruck.model.responses
 data class CustomerDetail(
     var address: String,
     val address2: String?,
-    var city: String,
+    var city: String?,
     val contact: String,
     val creditLimitLcy: Double,
     val customerImage: String?,
@@ -17,7 +17,7 @@ data class CustomerDetail(
     val phoneNo: String?,
     val routeName: String,
     val searchName: String,
-    var postCode: String,
+    var postCode: String?,
     val status: String,
     var telexNo: String?,
     val tinNo: String?,
@@ -44,6 +44,17 @@ data class CustomerDetail(
         } else {
             "+251 $number"
         }
+    }
+
+    fun getFullAddress(): String {
+        var fullAddress = address
+        if (!city.isNullOrEmpty()) {
+            fullAddress += ", $city"
+        }
+        if (!postCode.isNullOrEmpty()) {
+            fullAddress += ", $postCode"
+        }
+        return fullAddress
     }
 
 

@@ -43,6 +43,8 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
     var routeDetail: RouteDetail? = null
     var isChange: Boolean = false
 
+    var reasonList: ArrayList<String>? = ArrayList()
+
     override fun inflateBinding(): ActivityRouteDetailBinding {
         return ActivityRouteDetailBinding.inflate(layoutInflater)
     }
@@ -204,23 +206,13 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
 
             val rgReason = alertLayout.findViewById<RadioGroup>(R.id.rgReason)
 
-            val reasonsList = listOf(
-                "Vehicle Breakdown",
-                "Emergency",
-                "Adverse Weather",
-                "Route Blocked",
-                "Unexpected Delay",
-                "Health/Medical Issue",
-                "Fuel/Technical Issue",
-                "Other"
-            )
             rgReason.removeAllViews()
 
             val typefaceRegular = ResourcesCompat.getFont(this, R.font.sansregular)
             val padding = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._11sdp)
             val textSize = resources.getDimension(com.intuit.ssp.R.dimen._11ssp)
 
-            reasonsList.forEachIndexed { index, reason ->
+            reasonList!!.forEachIndexed { index, reason ->
                 val radioButton = RadioButton(this).apply {
                     text = reason
                     id = View.generateViewId() // Generate unique ID
@@ -253,7 +245,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 rgReason.addView(radioButton)
 
                 // Add Divider Line (except for the last item)
-                if (index < reasonsList.size - 1) {
+                if (index < reasonList!!.size - 1) {
                     val divider = View(this).apply {
                         layoutParams = LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -352,7 +344,66 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             )
 
         }
+
+        getCancelRouteReasonAPI()
     }
+
+    private fun getCancelRouteReasonAPI() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@RouteDetailActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, ""
+            )!!.webservices.cancelReasonList().enqueue(object : Callback<JsonObject> {
+                override fun onResponse(
+                    call: Call<JsonObject>,
+                    response: Response<JsonObject>
+                ) {
+                    ProgressDialog.dismiss()
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            if (response.body() != null && response.body()!!.has("data")) {
+                                val dataArray = response.body()!!.getAsJsonArray("data")
+
+                                for (item in dataArray) {
+                                    val obj = item.asJsonObject
+                                    val reasonText = obj.get("reasonText").asString
+                                    reasonList!!.add(reasonText)
+                                }
+                                reasonList!!.add("Other")
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@RouteDetailActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@RouteDetailActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this,
+                getString(R.string.please_check_your_internet_connection),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
+
 
     private fun cancelTripAPI(reason: String, endKm: Int) {
         if (Utils.isOnline(this)) {

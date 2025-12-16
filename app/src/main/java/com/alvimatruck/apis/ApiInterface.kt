@@ -23,6 +23,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 
@@ -70,6 +71,12 @@ interface ApiInterface {
     @GET(Constants.API_Item_List)
     fun itemList(): Call<JsonArray>
 
+    @GET(Constants.API_Route_Cancel_Reason_List)
+    fun cancelReasonList(): Call<JsonObject>
+
+    @GET(Constants.API_Visit_Reason_List)
+    fun visitReasonList(): Call<JsonObject>
+
     @GET(Constants.API_Today_Routes)
     fun getTodayRoutes(): Call<JsonObject>
 
@@ -96,6 +103,11 @@ interface ApiInterface {
         @Query("page") page: Int? = null,
         @Query("pageSize") pageSize: Int? = null,
         @Query("routeName") routeName: String? = null
+    ): Call<JsonObject>
+
+    @GET(Constants.API_Order_Detail + "/{orderId}")
+    fun orderDetail(
+        @Path("orderId") orderId: String
     ): Call<JsonObject>
 
     @GET(Constants.API_Fleet_Log_List)
