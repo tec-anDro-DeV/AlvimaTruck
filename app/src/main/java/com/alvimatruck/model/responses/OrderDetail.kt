@@ -1,5 +1,6 @@
 package com.alvimatruck.model.responses
 
+import com.alvimatruck.utils.Utils.to2Decimal
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
@@ -13,6 +14,10 @@ data class OrderDetail(
     val status: String,
     val subTotal: Double
 ) {
+    fun subTotal(): String {
+        return "ETB " + subTotal.to2Decimal()
+    }
+
     fun getRequestDate(): String {
         return LocalDateTime.parse(
             orderDate, DateTimeFormatterBuilder()

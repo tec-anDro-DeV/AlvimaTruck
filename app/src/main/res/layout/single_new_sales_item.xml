@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/sansbold"
-                android:text="@{detail.finalPrice+``}"
+                android:text="@{detail.finalPrice()}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp"
                 tools:text="$1025.27" />
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/sansregular"
-                android:text="@{(detail.unitPrice+detail.vat)+``}"
+                android:text="@{detail.singleUnitPriceWithTax}"
                 android:textColor="@color/darkgray"
                 android:textSize="@dimen/_11ssp"
                 tools:text="$341.76" />

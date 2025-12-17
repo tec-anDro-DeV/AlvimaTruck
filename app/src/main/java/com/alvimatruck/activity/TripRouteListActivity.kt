@@ -81,7 +81,12 @@ class TripRouteListActivity : BaseActivity<ActivityTripRouteListBinding>(), Rout
                             } as ArrayList<RouteDetail>
 
                             if (routeList!!.isNotEmpty()) {
-
+                                Utils.isTripInProgress = routeList!!.any {
+                                    it.status.equals(
+                                        "InProgress",
+                                        ignoreCase = true
+                                    )
+                                }
                                 binding.rvRouteList.layoutManager =
                                     LinearLayoutManager(
                                         this@TripRouteListActivity,

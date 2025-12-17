@@ -29,6 +29,7 @@ import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.alvimatruck.utils.Utils.to2Decimal
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -227,12 +228,12 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 NewOrderRequest(
                     binding.tvCustomer.text.toString(),
                     customerDetail!!.no,
-                    binding.tvTotal.text.toString().toDouble(),
+                    binding.tvTotal.text.toString().replace("ETB", "").toDouble(),
                     orderList,
                     selectedLocationCode,
                     selectedPaymentCode,
-                    binding.tvSubTotal.text.toString().toDouble(),
-                    binding.tvVat.text.toString().replace("+", "").toDouble()
+                    binding.tvSubTotal.text.toString().replace("ETB", "").toDouble(),
+                    binding.tvVat.text.toString().replace("+ ETB", "").toDouble()
                 )
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -293,9 +294,9 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             vat += (item.vat * item.quantity)
             total += item.finalPrice
         }
-        binding.tvSubTotal.text = subtotal.toString()
-        binding.tvVat.text = "+ $vat"
-        binding.tvTotal.text = total.toString()
+        binding.tvSubTotal.text = "ETB " + subtotal.to2Decimal()
+        binding.tvVat.text = "+ ETB " + vat.to2Decimal()
+        binding.tvTotal.text = "ETB " + total.to2Decimal()
 
     }
 

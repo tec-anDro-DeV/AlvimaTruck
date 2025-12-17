@@ -39,6 +39,8 @@ import org.json.JSONObject
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -49,6 +51,7 @@ import java.util.TimeZone
 object Utils {
     var mLastClickTime: Long = 0
     var currentLocation: Location? = null
+    var isTripInProgress: Boolean = false
 
     private val ETHIOPIA_MOBILE_REGEX = Regex("^0[79]\\d{8}$")
     private val ETHIOPIA_ANY_LOCAL_REGEX = Regex("^0\\d{9}$")
@@ -432,6 +435,10 @@ object Utils {
         canvas.drawText(letter, size / 2f, textY, paintText)
 
         return bitmap
+    }
+
+    fun Double.to2Decimal(): String {
+        return BigDecimal(this).setScale(2, RoundingMode.HALF_UP).toDouble().toString()
     }
 }
 

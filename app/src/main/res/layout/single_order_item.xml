@@ -176,7 +176,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/sansbold"
-                android:text="@{detail.subTotal+``}"
+                android:text="@{detail.subTotal()}"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/_12ssp"
                 tools:text="$146.00" />

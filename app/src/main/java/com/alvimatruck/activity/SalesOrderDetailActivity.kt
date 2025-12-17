@@ -15,6 +15,7 @@ import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.alvimatruck.utils.Utils.to2Decimal
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import retrofit2.Call
@@ -89,9 +90,9 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
                             binding.tvDeliveryDate.text =
                                 "Delivered on " + orderDetail!!.getRequestDate()
                             binding.tvOrderDate.text = orderDetail!!.getRequestDate()
-                            binding.tvSubTotal.text = orderDetail!!.subtotal.toString()
-                            binding.tvVat.text = "+ " + orderDetail!!.vat.toString()
-                            binding.tvTotal.text = orderDetail!!.total.toString()
+                            binding.tvSubTotal.text = "ETB " + orderDetail!!.subtotal.to2Decimal()
+                            binding.tvVat.text = "+ " + "ETB " + orderDetail!!.vat.to2Decimal()
+                            binding.tvTotal.text = "ETB " + orderDetail!!.total.to2Decimal()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

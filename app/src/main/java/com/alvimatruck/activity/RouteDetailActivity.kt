@@ -78,7 +78,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             binding.tvDistanceValue.text = routeDetail!!.distance.toString() + " Km"
             binding.tvVanStartKilometer.text = routeDetail!!.startKm.toString()
             binding.tvEndKilometer.text = routeDetail!!.endKm.toString()
-            binding.tvTotalSaleValue.text = "$" + routeDetail!!.totalSalesValues.toString()
+            binding.tvTotalSaleValue.text = "ETB " + routeDetail!!.totalSalesValues.toString()
 
 
             if (status.equals("Pending")) {
@@ -119,37 +119,45 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
 
         binding.tvStartEndTrip.setOnClickListener {
             if (status.equals("Pending")) {
-                val inflater = layoutInflater
-                val alertLayout = inflater.inflate(R.layout.dialog_start_trip, null)
+                if (Utils.isTripInProgress) {
+                    Toast.makeText(
+                        this,
+                        "You can’t start a new trip while another trip is in progress.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    val inflater = layoutInflater
+                    val alertLayout = inflater.inflate(R.layout.dialog_start_trip, null)
 
-                val etStartKm = alertLayout.findViewById<EditText>(R.id.etStartKm)
-                val btnCancel = alertLayout.findViewById<TextView>(R.id.btnCancel)
-                val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
+                    val etStartKm = alertLayout.findViewById<EditText>(R.id.etStartKm)
+                    val btnCancel = alertLayout.findViewById<TextView>(R.id.btnCancel)
+                    val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
 
 
-                val dialog = AlertDialog.Builder(this)
-                    .setView(alertLayout)
-                    .setCancelable(false)
-                    .create()
-                dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+                    val dialog = AlertDialog.Builder(this)
+                        .setView(alertLayout)
+                        .setCancelable(false)
+                        .create()
+                    dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
 
-                btnCancel.setOnClickListener {
-                    dialog.dismiss()
-                }
-                btnSubmit.setOnClickListener {
-                    if (etStartKm.text.toString().isEmpty()) {
-                        Toast.makeText(this, "Please enter start km", Toast.LENGTH_SHORT).show()
-                    } else {
+                    btnCancel.setOnClickListener {
                         dialog.dismiss()
-                        startTripAPI(etStartKm.text.toString())
                     }
+                    btnSubmit.setOnClickListener {
+                        if (etStartKm.text.toString().isEmpty()) {
+                            Toast.makeText(this, "Please enter start km", Toast.LENGTH_SHORT).show()
+                        } else {
+                            dialog.dismiss()
+                            startTripAPI(etStartKm.text.toString())
+                        }
 
+                    }
+                    dialog.show()
+                    val width =
+                        (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+                    dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
                 }
-                dialog.show()
-                val width =
-                    (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
-                dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
             } else {
                 val inflater = layoutInflater
                 val alertLayout = inflater.inflate(R.layout.dialog_end_trip, null)
@@ -493,6 +501,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                             binding.tvVanStartKilometer.text = startKm
                             binding.tvStatus.text = "InProgress"
                             status = "InProgress"
+                            Utils.isTripInProgress = true
                             binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
                             binding.tvStartEndTrip.text = "End Trip"
                             binding.rlStartKilometer.visibility = View.VISIBLE
@@ -556,6 +565,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                                 Toast.LENGTH_SHORT
                             ).show()
                             isChange = true
+                            Utils.isTripInProgress = false
                             handleBackPressed()
                         } catch (e: Exception) {
                             e.printStackTrace()

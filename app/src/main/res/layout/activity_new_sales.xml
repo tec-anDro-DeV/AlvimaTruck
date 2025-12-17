@@ -377,7 +377,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansregular"
-                        android:text="Price"
+                        android:text="Price (ETB)"
                         android:textColor="@color/darkgray"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>

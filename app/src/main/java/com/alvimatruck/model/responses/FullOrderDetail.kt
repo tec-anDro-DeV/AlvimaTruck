@@ -14,7 +14,7 @@ data class FullOrderDetail(
     val lines: ArrayList<SingleOrder>,
     val orderDate: String,
     val orderId: String,
-    val postCode: String?,
+    val postalCode: String?,
     val status: String,
     val subtotal: Double,
     val total: Double,
@@ -36,8 +36,8 @@ data class FullOrderDetail(
         if (!city.isNullOrEmpty()) {
             fullAddress += ", $city"
         }
-        if (!postCode.isNullOrEmpty()) {
-            fullAddress += ", $postCode"
+        if (!postalCode.isNullOrEmpty()) {
+            fullAddress += ", $postalCode"
         }
         return fullAddress
     }
