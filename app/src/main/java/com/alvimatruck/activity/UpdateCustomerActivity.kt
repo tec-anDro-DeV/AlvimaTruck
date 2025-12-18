@@ -28,6 +28,7 @@ import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,10 +36,10 @@ import retrofit2.Response
 class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
     var customerDetail: CustomerDetail? = null
     var selectedCity = ""
-    var cityList: ArrayList<String>? = ArrayList()
+    var cityList: ArrayList<String> = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
 
-    var postalCodeList: ArrayList<CityDetail>? = ArrayList()
+    var postalCodeList: ArrayList<CityDetail> = ArrayList()
     override fun inflateBinding(): ActivityUpdateCustomerBinding {
         return ActivityUpdateCustomerBinding.inflate(layoutInflater)
     }
@@ -162,55 +163,20 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
     }
 
     private fun getCityList() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@UpdateCustomerActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, ""
-            )!!.webservices.cityList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    ProgressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            if (response.body() != null && response.body()!!.has("data")) {
-                                postalCodeList = response.body()!!.getAsJsonArray("data").map {
-                                    Gson().fromJson(it, CityDetail::class.java)
-                                } as ArrayList<CityDetail>
-                                for (item in postalCodeList!!) {
-                                    val code = item.city
-                                    cityList!!.add(code)
-                                }
-                            }
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@UpdateCustomerActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@UpdateCustomerActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-            ).show()
+        val jsonString = SharedHelper.getKey(this, Constants.API_City)
+        if (jsonString.isNotEmpty()) {
+            postalCodeList.clear()
+            postalCodeList =
+                JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data").map {
+                    Gson().fromJson(it, CityDetail::class.java)
+                } as ArrayList<CityDetail>
+            cityList.clear()
+            for (item in postalCodeList) {
+                val code = item.city
+                cityList.add(code)
+            }
         }
-
     }
-
 
     private fun validationAndSubmit() {
         if (binding.etTelephoneNumber.text.toString().trim().isEmpty()) {

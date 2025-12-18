@@ -3,41 +3,33 @@ package com.alvimatruck.activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.adapter.SingleItemSelectionAdapter
 import com.alvimatruck.adapter.StoreRequisitionRequestItemListAdapter
-import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityStoreRequisitionRequestBinding
 import com.alvimatruck.interfaces.DeleteRequestListener
 import com.alvimatruck.model.responses.ItemDetail
 import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
-import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.google.gson.JsonParser
 
 class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionRequestBinding>(),
     DeleteRequestListener {
-    var itemList: ArrayList<String>? = ArrayList()
-    var costCenterList: ArrayList<String>? = ArrayList()
-    var profitCenterList: ArrayList<String>? = ArrayList()
-    var inTransitList: ArrayList<String>? = ArrayList()
+    var itemList: ArrayList<String> = ArrayList()
+    var costCenterList: ArrayList<String> = ArrayList()
+    var profitCenterList: ArrayList<String> = ArrayList()
+    var inTransitList: ArrayList<String> = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
     var selectedItem = ""
     var selectedCostCenter = ""
@@ -76,19 +68,19 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
 
         binding.tvItem.setOnClickListener {
             dialogSingleSelection(
-                itemList!!, "Choose Item", "Search Item", binding.tvItem
+                itemList, "Choose Item", "Search Item", binding.tvItem
             )
         }
 
         binding.tvCostCenter.setOnClickListener {
             dialogSingleSelection(
-                costCenterList!!, "Choose Cost Center", "Search Cost Center", binding.tvCostCenter
+                costCenterList, "Choose Cost Center", "Search Cost Center", binding.tvCostCenter
             )
         }
 
         binding.tvProfitCenter.setOnClickListener {
             dialogSingleSelection(
-                profitCenterList!!,
+                profitCenterList,
                 "Choose Profit Center",
                 "Search Profit Center",
                 binding.tvProfitCenter
@@ -97,7 +89,7 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
 
         binding.tvInTransit.setOnClickListener {
             dialogSingleSelection(
-                inTransitList!!, "Choose In Transit", "Search In Transit", binding.tvInTransit
+                inTransitList, "Choose In Transit", "Search In Transit", binding.tvInTransit
             )
         }
 
@@ -235,199 +227,67 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
     }
 
     private fun getItemList() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@StoreRequisitionRequestActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, ""
-            )!!.webservices.itemList().enqueue(object : Callback<JsonArray> {
-                override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                    ProgressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse Item: " + response.body().toString())
-                            if (response.body() != null) {
-                                productList = response.body()!!.getAsJsonArray().map {
-                                    Gson().fromJson(it, ItemDetail::class.java)
-                                } as ArrayList<ItemDetail>
-                                for (item in productList!!) {
-                                    val code = item.description
-                                    itemList!!.add(code)
-                                }
-                            }
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@StoreRequisitionRequestActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<JsonArray?>, t: Throwable) {
-                    Toast.makeText(
-                        this@StoreRequisitionRequestActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-            ).show()
+        val jsonString = SharedHelper.getKey(this, Constants.API_Item_List)
+        if (jsonString.isNotEmpty()) {
+            productList = JsonParser.parseString(jsonString).asJsonArray.map {
+                Gson().fromJson(it, ItemDetail::class.java)
+            } as ArrayList<ItemDetail>
+            itemList.clear()
+            for (item in productList!!) {
+                val code = item.description
+                itemList.add(code)
+            }
         }
-
     }
 
     private fun getCostCenterList() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@StoreRequisitionRequestActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, ""
-            )!!.webservices.costCenterCodeList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    ProgressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            if (response.body() != null && response.body()!!.has("data")) {
-                                val dataArray = response.body()!!.getAsJsonArray("data")
+        costCenterList.clear()
 
-                                for (item in dataArray) {
-                                    val obj = item.asJsonObject
-                                    val code = obj.get("code").asString
-                                    costCenterList!!.add(code)
-                                }
-                            }
+        val jsonString = SharedHelper.getKey(this, Constants.API_CostCenter_Code)
 
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@StoreRequisitionRequestActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        if (jsonString.isNotEmpty()) {
+            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
+
+            for (item in dataArray) {
+                val code = item.asJsonObject.get("code")?.asString
+                if (!code.isNullOrEmpty()) {
+                    costCenterList.add(code)
                 }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@StoreRequisitionRequestActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-            ).show()
+            }
         }
     }
 
     private fun getProfitCenterList() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@StoreRequisitionRequestActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, ""
-            )!!.webservices.profitCenterCodeList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    ProgressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            if (response.body() != null && response.body()!!.has("data")) {
-                                val dataArray = response.body()!!.getAsJsonArray("data")
+        profitCenterList.clear()
 
-                                for (item in dataArray) {
-                                    val obj = item.asJsonObject
-                                    val code = obj.get("code").asString
-                                    profitCenterList!!.add(code)
-                                }
-                            }
+        val jsonString = SharedHelper.getKey(this, Constants.API_ProfitCenter_Code)
 
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@StoreRequisitionRequestActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        if (jsonString.isNotEmpty()) {
+            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
+
+            for (item in dataArray) {
+                val code = item.asJsonObject.get("code")?.asString
+                if (!code.isNullOrEmpty()) {
+                    profitCenterList.add(code)
                 }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@StoreRequisitionRequestActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-            ).show()
+            }
         }
     }
 
     private fun getInTransitList() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@StoreRequisitionRequestActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, ""
-            )!!.webservices.inTransitCodeList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    ProgressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            if (response.body() != null && response.body()!!.has("data")) {
-                                val dataArray = response.body()!!.getAsJsonArray("data")
+        inTransitList.clear()
 
-                                for (item in dataArray) {
-                                    val obj = item.asJsonObject
-                                    val code = obj.get("code").asString
-                                    inTransitList!!.add(code)
-                                }
-                            }
+        val jsonString = SharedHelper.getKey(this, Constants.API_Intransit_Code)
 
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@StoreRequisitionRequestActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        if (jsonString.isNotEmpty()) {
+            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
+
+            for (item in dataArray) {
+                val code = item.asJsonObject.get("code")?.asString
+                if (!code.isNullOrEmpty()) {
+                    inTransitList.add(code)
                 }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@StoreRequisitionRequestActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-            ).show()
+            }
         }
     }
 

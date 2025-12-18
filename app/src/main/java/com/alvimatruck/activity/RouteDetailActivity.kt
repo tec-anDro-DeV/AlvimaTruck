@@ -33,6 +33,7 @@ import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,7 +44,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
     var routeDetail: RouteDetail? = null
     var isChange: Boolean = false
 
-    var reasonList: ArrayList<String>? = ArrayList()
+    var reasonList: ArrayList<String> = ArrayList()
 
     override fun inflateBinding(): ActivityRouteDetailBinding {
         return ActivityRouteDetailBinding.inflate(layoutInflater)
@@ -220,7 +221,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             val padding = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._11sdp)
             val textSize = resources.getDimension(com.intuit.ssp.R.dimen._11ssp)
 
-            reasonList!!.forEachIndexed { index, reason ->
+            reasonList.forEachIndexed { index, reason ->
                 val radioButton = RadioButton(this).apply {
                     text = reason
                     id = View.generateViewId() // Generate unique ID
@@ -341,7 +342,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
         }
 
         binding.llCustomer.setOnClickListener {
-            var tripStart: Boolean = status == "InProgress"
+            val tripStart: Boolean = status == "InProgress"
 
             startActivity(
                 Intent(
@@ -357,59 +358,21 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
     }
 
     private fun getCancelRouteReasonAPI() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@RouteDetailActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, ""
-            )!!.webservices.cancelReasonList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(
-                    call: Call<JsonObject>,
-                    response: Response<JsonObject>
-                ) {
-                    ProgressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            if (response.body() != null && response.body()!!.has("data")) {
-                                val dataArray = response.body()!!.getAsJsonArray("data")
+        reasonList.clear()
 
-                                for (item in dataArray) {
-                                    val obj = item.asJsonObject
-                                    val reasonText = obj.get("reasonText").asString
-                                    reasonList!!.add(reasonText)
-                                }
-                                reasonList!!.add("Other")
-                            }
+        val jsonString = SharedHelper.getKey(this, Constants.API_Route_Cancel_Reason_List)
 
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@RouteDetailActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        if (jsonString.isNotEmpty()) {
+            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
+
+            for (item in dataArray) {
+                val code = item.asJsonObject.get("reasonText")?.asString
+                if (!code.isNullOrEmpty()) {
+                    reasonList.add(code)
                 }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@RouteDetailActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this,
-                getString(R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
-            ).show()
+            }
+            reasonList.add("Other")
         }
-
     }
 
 

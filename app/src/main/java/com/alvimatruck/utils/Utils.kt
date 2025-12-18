@@ -295,15 +295,28 @@ object Utils {
         SharedHelper.putKey(
             context, Constants.IS_LOGIN, false
         )
-        //SharedHelper.clearSharedPreferences(this)
 
-        SharedHelper.putKey(
-            context, Constants.Token, ""
+        val points = listOf(
+            Constants.Token,
+            Constants.UserDetail,
+            Constants.API_Price_Group,
+            Constants.API_City,
+            Constants.API_Location_Code,
+            Constants.API_Payment_Code,
+            Constants.API_Item_List,
+            Constants.API_Route_Cancel_Reason_List,
+            Constants.API_Visit_Reason_List,
+            Constants.API_CostCenter_Code,
+            Constants.API_ProfitCenter_Code,
+            Constants.API_Intransit_Code
         )
+        points.forEach { point ->
+            SharedHelper.putKey(
+                context, point, ""
+            )
+        }
 
-        SharedHelper.putKey(
-            context, Constants.UserDetail, ""
-        )
+
         val intent = Intent(context, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         context.startActivity(intent)

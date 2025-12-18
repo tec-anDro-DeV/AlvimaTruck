@@ -40,6 +40,7 @@ import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,9 +54,9 @@ import java.io.File
 
 class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
     var postItemList: ArrayList<String>? = ArrayList()
-    var priceItemList: ArrayList<String>? = ArrayList()
-    var cityList: ArrayList<String>? = ArrayList()
-    var postalCodeList: ArrayList<CityDetail>? = ArrayList()
+    var priceItemList: ArrayList<String> = ArrayList()
+    var cityList: ArrayList<String> = ArrayList()
+    var postalCodeList: ArrayList<CityDetail> = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
     var selectedPostGroup = ""
     var selectedPriceGroup = ""
@@ -97,7 +98,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
         binding.tvCustomerPriceGroup.setOnClickListener {
             dialogSingleSelection(
-                priceItemList!!,
+                priceItemList,
                 "Choose Price Group",
                 "Search Price Group",
                 binding.tvCustomerPriceGroup
@@ -115,11 +116,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
         binding.tvCity.setOnClickListener {
             dialogSingleSelection(
-                cityList!!,
-                "Choose City",
-                "Search City",
-                binding.tvCity,
-                binding.tvPostalCode
+                cityList!!, "Choose City", "Search City", binding.tvCity, binding.tvPostalCode
             )
         }
 
@@ -286,104 +283,37 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
     }
 
     private fun getCityList() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@CreateCustomerActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, ""
-            )!!.webservices.cityList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    ProgressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            if (response.body() != null && response.body()!!.has("data")) {
-                                postalCodeList = response.body()!!.getAsJsonArray("data").map {
-                                    Gson().fromJson(it, CityDetail::class.java)
-                                } as ArrayList<CityDetail>
-                                for (item in postalCodeList!!) {
-                                    val code = item.city
-                                    cityList!!.add(code)
-                                }
-                            }
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@CreateCustomerActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@CreateCustomerActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-            ).show()
+        val jsonString = SharedHelper.getKey(this, Constants.API_City)
+        if (jsonString.isNotEmpty()) {
+            postalCodeList.clear()
+            postalCodeList =
+                JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data").map {
+                    Gson().fromJson(it, CityDetail::class.java)
+                } as ArrayList<CityDetail>
+            cityList.clear()
+            for (item in postalCodeList) {
+                val code = item.city
+                cityList.add(code)
+            }
         }
-
     }
 
 
     private fun getPriceList() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@CreateCustomerActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, ""
-            )!!.webservices.priceGroupList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    ProgressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            if (response.body() != null && response.body()!!.has("data")) {
-                                val dataArray = response.body()!!.getAsJsonArray("data")
+        priceItemList.clear()
 
-                                for (item in dataArray) {
-                                    val obj = item.asJsonObject
-                                    val code = obj.get("code").asString
-                                    priceItemList!!.add(code)
-                                }
-                            }
+        val jsonString = SharedHelper.getKey(this, Constants.API_Price_Group)
 
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@CreateCustomerActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        if (jsonString.isNotEmpty()) {
+            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
+
+            for (item in dataArray) {
+                val code = item.asJsonObject.get("code")?.asString
+                if (!code.isNullOrEmpty()) {
+                    priceItemList.add(code)
                 }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@CreateCustomerActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-            ).show()
+            }
         }
-
     }
 
     private fun openImageChooseDailog() {
@@ -396,8 +326,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel)
         val tvContinue = alertLayout.findViewById<TextView>(R.id.tvContinue)
 
-        val dialog =
-            AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
+        val dialog = AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
         dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
         var isCamera = false
@@ -592,20 +521,14 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         val cropIntent = if (isUploadingCustomerPhoto) {
 
             // ⭐ CUSTOMER PHOTO = 1:1 fixed
-            UCrop.of(sourceUri, destinationUri)
-                .withAspectRatio(1f, 1f)
-                .withMaxResultSize(1080, 1080)
-                .withOptions(options)
-                .getIntent(this)
+            UCrop.of(sourceUri, destinationUri).withAspectRatio(1f, 1f)
+                .withMaxResultSize(1080, 1080).withOptions(options).getIntent(this)
 
         } else {
 
             // ⭐ ID PROOF = 16:6 fixed
-            UCrop.of(sourceUri, destinationUri)
-                .withAspectRatio(16f, 9f)
-                .withMaxResultSize(1600, 600)
-                .withOptions(options)
-                .getIntent(this)
+            UCrop.of(sourceUri, destinationUri).withAspectRatio(16f, 9f)
+                .withMaxResultSize(1600, 600).withOptions(options).getIntent(this)
         }
 
         cropLauncher.launch(cropIntent)
@@ -644,11 +567,9 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
         // For Android 13+ (API 33+), no need for WRITE_EXTERNAL_STORAGE
         if (ContextCompat.checkSelfPermission(
-                this,
-                CAMERA_PERMISSION
+                this, CAMERA_PERMISSION
             ) != PackageManager.PERMISSION_GRANTED
-        )
-            permissionsNeeded.add(CAMERA_PERMISSION)
+        ) permissionsNeeded.add(CAMERA_PERMISSION)
 
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, permissionsNeeded.toTypedArray(), 101)
@@ -678,19 +599,15 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // Android 13+
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    READ_MEDIA_IMAGES
+                    this, READ_MEDIA_IMAGES
                 ) != PackageManager.PERMISSION_GRANTED
-            )
-                permissionsNeeded.add(READ_MEDIA_IMAGES)
+            ) permissionsNeeded.add(READ_MEDIA_IMAGES)
         } else {
             // Android 12 and below
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    READ_EXTERNAL_STORAGE
+                    this, READ_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED
-            )
-                permissionsNeeded.add(READ_EXTERNAL_STORAGE)
+            ) permissionsNeeded.add(READ_EXTERNAL_STORAGE)
         }
 
         if (permissionsNeeded.isNotEmpty()) {
@@ -708,9 +625,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
     // region === Permissions Callback ===
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 

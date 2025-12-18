@@ -12,11 +12,12 @@ import com.alvimatruck.model.request.ResetPasswordRequest
 import com.alvimatruck.model.request.StartTripRequest
 import com.alvimatruck.model.request.VisitedTripRequest
 import com.alvimatruck.utils.Constants
-import com.google.gson.JsonArray
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
@@ -25,6 +26,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 
 interface ApiInterface {
@@ -46,36 +48,6 @@ interface ApiInterface {
 
     @POST(Constants.API_ChangePassword)
     fun changePassword(@Body changePasswordRequest: ChangePasswordRequest): Call<JsonObject>
-
-    @GET(Constants.API_Price_Group)
-    fun priceGroupList(): Call<JsonObject>
-
-    @GET(Constants.API_City)
-    fun cityList(): Call<JsonObject>
-
-    @GET(Constants.API_Location_Code)
-    fun locationCodeList(): Call<JsonObject>
-
-    @GET(Constants.API_Payment_Code)
-    fun paymentCodeList(): Call<JsonObject>
-
-    @GET(Constants.API_CostCenter_Code)
-    fun costCenterCodeList(): Call<JsonObject>
-
-    @GET(Constants.API_ProfitCenter_Code)
-    fun profitCenterCodeList(): Call<JsonObject>
-
-    @GET(Constants.API_Intransit_Code)
-    fun inTransitCodeList(): Call<JsonObject>
-
-    @GET(Constants.API_Item_List)
-    fun itemList(): Call<JsonArray>
-
-    @GET(Constants.API_Route_Cancel_Reason_List)
-    fun cancelReasonList(): Call<JsonObject>
-
-    @GET(Constants.API_Visit_Reason_List)
-    fun visitReasonList(): Call<JsonObject>
 
     @GET(Constants.API_Today_Routes)
     fun getTodayRoutes(): Call<JsonObject>
@@ -176,6 +148,9 @@ interface ApiInterface {
         @Part("IncidentReportDescription") incidentReportDescription: RequestBody,
         @Part repairLogReplacePart: List<MultipartBody.Part> // <-- multiple files
     ): Call<JsonObject>
+
+    @GET
+    suspend fun getDropdownData(@Url url: String): Response<JsonElement>
 
 
 }

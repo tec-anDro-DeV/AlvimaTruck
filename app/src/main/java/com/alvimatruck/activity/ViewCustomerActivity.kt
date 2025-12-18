@@ -32,6 +32,7 @@ import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,7 +40,7 @@ import retrofit2.Response
 class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
     var customerDetail: CustomerDetail? = null
 
-    var reasonList: ArrayList<String>? = ArrayList()
+    var reasonList: ArrayList<String> = ArrayList()
 
     var tripStart: Boolean = false
     override fun inflateBinding(): ActivityViewCustomerBinding {
@@ -50,11 +51,10 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
     private val openUpdateCustomer =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                val updatedCustomer =
-                    Gson().fromJson(
-                        result.data?.getStringExtra(Constants.CustomerDetail).toString(),
-                        CustomerDetail::class.java
-                    )
+                val updatedCustomer = Gson().fromJson(
+                    result.data?.getStringExtra(Constants.CustomerDetail).toString(),
+                    CustomerDetail::class.java
+                )
 
                 if (updatedCustomer != null) {
                     customerDetail = updatedCustomer
@@ -76,7 +76,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         binding.tvCustomerPostingGroup.text = customerDetail!!.customerPostingGroup
         binding.tvCustomerPricingGroup.text = customerDetail!!.customerPriceGroup
         binding.tvUsages.text = customerDetail!!.balanceLcy.toString()
-        binding.tvTotalLimit.text = "Total: " + customerDetail!!.creditLimitLcy.toString()
+        binding.tvTotalLimit.text = "Total: ETB " + customerDetail!!.creditLimitLcy.toString()
         val progress =
             if (customerDetail!!.creditLimitLcy == 0.0 || customerDetail!!.balanceLcy <= 0) {
                 0
@@ -90,10 +90,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
 
 
         Utils.loadProfileWithPlaceholder(
-            this,
-            binding.ivCustomer,
-            customerDetail!!.searchName,
-            customerDetail!!.customerImage
+            this, binding.ivCustomer, customerDetail!!.searchName, customerDetail!!.customerImage
         )
 
         if (customerDetail!!.status == "Pending" || !tripStart || customerDetail!!.visitedToday) {
@@ -142,18 +139,15 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
 
         binding.btnEdit.setOnClickListener {
             val intent = Intent(
-                this,
-                UpdateCustomerActivity::class.java
+                this, UpdateCustomerActivity::class.java
             ).putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
             openUpdateCustomer.launch(intent)
         }
 
         binding.tvNewOrder.setOnClickListener {
-            val intent =
-                Intent(
-                    this,
-                    NewSalesActivity::class.java
-                ).putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
+            val intent = Intent(
+                this, NewSalesActivity::class.java
+            ).putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
 
             openUpdateCustomer.launch(intent)
         }
@@ -174,7 +168,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
             val padding = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._11sdp)
             val textSize = resources.getDimension(com.intuit.ssp.R.dimen._11ssp)
 
-            reasonList!!.forEachIndexed { index, reason ->
+            reasonList.forEachIndexed { index, reason ->
                 val radioButton = RadioButton(this).apply {
                     text = reason
                     id = View.generateViewId() // Generate unique ID
@@ -277,59 +271,21 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
     }
 
     private fun getVisitReasonAPI() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@ViewCustomerActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, ""
-            )!!.webservices.visitReasonList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(
-                    call: Call<JsonObject>,
-                    response: Response<JsonObject>
-                ) {
-                    ProgressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            if (response.body() != null && response.body()!!.has("data")) {
-                                val dataArray = response.body()!!.getAsJsonArray("data")
+        reasonList.clear()
 
-                                for (item in dataArray) {
-                                    val obj = item.asJsonObject
-                                    val reasonText = obj.get("reasonText").asString
-                                    reasonList!!.add(reasonText)
-                                }
-                                reasonList!!.add("Other")
-                            }
+        val jsonString = SharedHelper.getKey(this, Constants.API_Visit_Reason_List)
 
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@ViewCustomerActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        if (jsonString.isNotEmpty()) {
+            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
+
+            for (item in dataArray) {
+                val code = item.asJsonObject.get("reasonText")?.asString
+                if (!code.isNullOrEmpty()) {
+                    reasonList.add(code)
                 }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@ViewCustomerActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this,
-                getString(R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
-            ).show()
+            }
+            reasonList.add("Other")
         }
-
     }
 
 

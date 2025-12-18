@@ -2,17 +2,25 @@ package com.alvimatruck.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import com.alvimatruck.R
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityHomeBinding
 import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     var userDetail: UserDetail? = null
@@ -111,5 +119,86 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         binding.llReport.setOnClickListener {
             startActivity(Intent(this, ReportActivity::class.java))
         }
+
+        binding.rlSync.setOnClickListener {
+            fetchAndCacheAllDropdowns(isManualSync = false)
+        }
+
+        fetchAndCacheAllDropdowns(isManualSync = false)
+
     }
+
+    private fun isDropdownDataCached(): Boolean {
+        // Check if a key for one of the dropdowns exists.
+        // If it exists, we assume all are cached.
+        return SharedHelper.getKey(this, Constants.API_Price_Group).isNotEmpty()
+    }
+
+    private fun fetchAndCacheAllDropdowns(isManualSync: Boolean) {
+        // If it's not a manual sync and data is already cached, do nothing.
+        if (!isManualSync && isDropdownDataCached()) {
+            return
+        }
+        if (Utils.isOnline(this)) {
+
+            // Show a progress bar to the user
+            ProgressDialog.start(this)
+
+            // Use lifecycleScope to launch a coroutine tied to this activity's lifecycle.
+            lifecycleScope.launch(Dispatchers.IO) { // Use IO dispatcher for network calls
+                try {
+                    // List of all dropdown endpoints from your Constants file
+                    val dropdownEndpoints = listOf(
+                        Constants.API_Price_Group,
+                        Constants.API_City,
+                        Constants.API_Location_Code,
+                        Constants.API_Payment_Code,
+                        Constants.API_Item_List,
+                        Constants.API_Route_Cancel_Reason_List,
+                        Constants.API_Visit_Reason_List,
+                        Constants.API_CostCenter_Code,
+                        Constants.API_ProfitCenter_Code,
+                        Constants.API_Intransit_Code
+                    )
+
+                    // This assumes your ApiClient and ApiService are set up correctly
+                    val apiService = ApiClient.getRestClient(Constants.BASE_URL, "")?.webservices
+                    dropdownEndpoints.forEach { endpoint ->
+                        // Assuming a generic suspend function in your ApiService interface
+                        // like: suspend fun getDropdownData(@Url url: String): Response<JsonElement>
+                        val response = apiService!!.getDropdownData(endpoint)
+                        if (response.isSuccessful && response.body() != null) {
+                            val jsonString = Gson().toJson(response.body())
+                            SharedHelper.putKey(this@HomeActivity, endpoint, jsonString)
+                        }
+                    }
+
+                    // After the loop finishes, switch back to the main thread to update the UI
+                    withContext(Dispatchers.Main) {
+                        ProgressDialog.dismiss()
+                        // Only show toast on manual sync
+                        if (isManualSync) {
+                            Log.d("TAG", "fetchAndCacheAllDropdowns: " + "Data successfully synced")
+                        }
+                    }
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    withContext(Dispatchers.Main) {
+                        ProgressDialog.dismiss()
+                        Toast.makeText(
+                            this@HomeActivity,
+                            "Failed to sync data",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
 }

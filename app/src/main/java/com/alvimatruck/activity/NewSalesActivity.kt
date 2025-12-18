@@ -31,16 +31,16 @@ import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.to2Decimal
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderListener {
-    var locationCodeList: ArrayList<String>? = ArrayList()
-    var paymentCodeList: ArrayList<String>? = ArrayList()
-    var itemList: ArrayList<String>? = ArrayList()
+    var locationCodeList: ArrayList<String> = ArrayList()
+    var paymentCodeList: ArrayList<String> = ArrayList()
+    var itemList: ArrayList<String> = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
     var selectedLocationCode = ""
     var selectedPaymentCode = ""
@@ -99,7 +99,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
 
         binding.tvLocationCode.setOnClickListener {
             dialogSingleSelection(
-                locationCodeList!!,
+                locationCodeList,
                 "Choose Location Code",
                 "Search Location Code",
                 binding.tvLocationCode
@@ -108,7 +108,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
 
         binding.tvPaymentCode.setOnClickListener {
             dialogSingleSelection(
-                paymentCodeList!!,
+                paymentCodeList,
                 "Choose Payment Code",
                 "Search Payment Code",
                 binding.tvPaymentCode
@@ -117,7 +117,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
 
         binding.tvItem.setOnClickListener {
             dialogSingleSelection(
-                itemList!!, "Choose Item", "Search Item", binding.tvItem
+                itemList, "Choose Item", "Search Item", binding.tvItem
             )
         }
 
@@ -144,13 +144,13 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 Toast.makeText(this, "Enter Quantity", Toast.LENGTH_SHORT).show()
             } else if (binding.etQuantity.text.toString().toInt() < minQty) {
                 Toast.makeText(
-                    this,
-                    "Quantity must be greater than or equal to $minQty",
-                    Toast.LENGTH_SHORT
+                    this, "Quantity must be greater than or equal to $minQty", Toast.LENGTH_SHORT
                 ).show()
             } else {
                 // Get current values
-                tempUnitPrice = binding.etSalesPrice.text.toString().toDouble()
+                if (tempVat == 0.0) {
+                    tempUnitPrice = binding.etSalesPrice.text.toString().toDouble()
+                }
                 val qty = binding.etQuantity.text.toString().toInt()
                 val finalTotal = (tempUnitPrice + tempVat) * qty.toDouble()
 
@@ -412,8 +412,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             )!!.webservices.customerPrice(customerDetail!!.customerPriceGroup, selectedProduct!!.no)
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
-                        call: Call<JsonObject>,
-                        response: Response<JsonObject>
+                        call: Call<JsonObject>, response: Response<JsonObject>
                     ) {
                         ProgressDialog.dismiss()
                         if (response.code() == 204) {
@@ -481,174 +480,57 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 })
         } else {
             Toast.makeText(
-                this,
-                getString(R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
     }
 
     private fun getLocationCodeList() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@NewSalesActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, ""
-            )!!.webservices.locationCodeList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(
-                    call: Call<JsonObject>,
-                    response: Response<JsonObject>
-                ) {
-                    ProgressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            if (response.body() != null && response.body()!!.has("data")) {
-                                val dataArray = response.body()!!.getAsJsonArray("data")
+        locationCodeList.clear()
 
-                                for (item in dataArray) {
-                                    val obj = item.asJsonObject
-                                    val code = obj.get("code").asString
-                                    locationCodeList!!.add(code)
-                                }
-                            }
+        val jsonString = SharedHelper.getKey(this, Constants.API_Location_Code)
 
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@NewSalesActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        if (jsonString.isNotEmpty()) {
+            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
+
+            for (item in dataArray) {
+                val code = item.asJsonObject.get("code")?.asString
+                if (!code.isNullOrEmpty()) {
+                    locationCodeList.add(code)
                 }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@NewSalesActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this,
-                getString(R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
-            ).show()
+            }
         }
-
     }
 
     private fun getPaymentCodeList() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@NewSalesActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, ""
-            )!!.webservices.paymentCodeList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(
-                    call: Call<JsonObject>,
-                    response: Response<JsonObject>
-                ) {
-                    ProgressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            if (response.body() != null && response.body()!!.has("data")) {
-                                val dataArray = response.body()!!.getAsJsonArray("data")
+        paymentCodeList.clear()
 
-                                for (item in dataArray) {
-                                    val obj = item.asJsonObject
-                                    val code = obj.get("code").asString
-                                    paymentCodeList!!.add(code)
-                                }
-                            }
+        val jsonString = SharedHelper.getKey(this, Constants.API_Payment_Code)
 
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@NewSalesActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        if (jsonString.isNotEmpty()) {
+            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
+
+            for (item in dataArray) {
+                val code = item.asJsonObject.get("code")?.asString
+                if (!code.isNullOrEmpty()) {
+                    paymentCodeList.add(code)
                 }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@NewSalesActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this,
-                getString(R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
-            ).show()
+            }
         }
-
     }
 
     private fun getItemList() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@NewSalesActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, ""
-            )!!.webservices.itemList().enqueue(object : Callback<JsonArray> {
-                override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                    ProgressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse Item: " + response.body().toString())
-                            if (response.body() != null) {
-
-                                productList = response.body()!!.getAsJsonArray().map {
-                                    Gson().fromJson(it, ItemDetail::class.java)
-                                } as ArrayList<ItemDetail>
-                                for (item in productList!!) {
-                                    val code = item.description
-                                    itemList!!.add(code)
-                                }
-                            }
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@NewSalesActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<JsonArray?>, t: Throwable) {
-                    Toast.makeText(
-                        this@NewSalesActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this,
-                getString(R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
-            ).show()
+        val jsonString = SharedHelper.getKey(this, Constants.API_Item_List)
+        if (jsonString.isNotEmpty()) {
+            productList = JsonParser.parseString(jsonString).asJsonArray.map {
+                Gson().fromJson(it, ItemDetail::class.java)
+            } as ArrayList<ItemDetail>
+            itemList.clear()
+            for (item in productList!!) {
+                val code = item.description
+                itemList.add(code)
+            }
         }
-
     }
 
 

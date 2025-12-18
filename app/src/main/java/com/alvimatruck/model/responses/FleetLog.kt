@@ -19,9 +19,9 @@ data class FleetLog(
 ) {
     fun getCost(): String {
         return if (fleetType == "FuleRefill") {
-            fuelRefillAmount.toString()
+            "ETB $fuelRefillAmount"
         } else {
-            repairLogRepairCost.toString()
+            "ETB $repairLogRepairCost"
         }
     }
 
