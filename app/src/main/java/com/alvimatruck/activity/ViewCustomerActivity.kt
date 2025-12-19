@@ -92,12 +92,13 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         Utils.loadProfileWithPlaceholder(
             this, binding.ivCustomer, customerDetail!!.searchName, customerDetail!!.customerImage
         )
+        binding.llCreditLimit.visibility = View.VISIBLE
 
         if (customerDetail!!.status == "Pending" || !tripStart || customerDetail!!.visitedToday) {
-            binding.llCreditLimit.visibility = View.GONE
+            //  binding.llCreditLimit.visibility = View.GONE
             binding.llBottomButtons.visibility = View.GONE
         } else {
-            binding.llCreditLimit.visibility = View.VISIBLE
+            //   binding.llCreditLimit.visibility = View.VISIBLE
             binding.llBottomButtons.visibility = View.VISIBLE
         }
     }

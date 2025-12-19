@@ -17,5 +17,6 @@ data class UserDetail(
     val roleName: String,
     val supervisor: String,
     val token: String,
-    val userAlias: String
+    val userAlias: String,
+    val salesPersonCode: String
 )

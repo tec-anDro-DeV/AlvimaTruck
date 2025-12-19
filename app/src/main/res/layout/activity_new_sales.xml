@@ -141,12 +141,11 @@
                 android:background="@drawable/input_bg"
                 android:fontFamily="@font/sansregular"
                 android:gravity="center_vertical"
-                android:hint="Select Code"
+
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/hintGary"
-                android:textSize="@dimen/_12ssp"
-                app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />
+                android:textSize="@dimen/_12ssp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -166,12 +165,11 @@
                 android:background="@drawable/input_bg"
                 android:fontFamily="@font/sansregular"
                 android:gravity="center_vertical"
-                android:hint="Select Code"
+
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/hintGary"
-                android:textSize="@dimen/_12ssp"
-                app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />
+                android:textSize="@dimen/_12ssp" />
 
 
             <TextView
@@ -417,9 +415,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansregular"
-                        tools:text="$1,171.19"
                         android:textColor="@color/darkgray"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="$1,171.19" />
                 </RelativeLayout>
 
 
@@ -476,9 +474,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansregular"
-                        tools:text="+ $117.11"
                         android:textColor="@color/darkgray"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="+ $117.11" />
                 </RelativeLayout>
 
                 <View
@@ -505,9 +503,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansbold"
-                        tools:text="$936.95"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_16ssp" />
+                        android:textSize="@dimen/_16ssp"
+                        tools:text="$936.95" />
                 </RelativeLayout>
             </LinearLayout>
 

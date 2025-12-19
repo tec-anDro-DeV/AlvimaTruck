@@ -87,33 +87,35 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
 
             binding.tvTelephoneNumber.text = number ?: ""
             binding.tvSalesperson.text = userDetail?.firstName + " " + userDetail?.lastName
+            binding.tvLocationCode.text = userDetail?.salesPersonCode
+            binding.tvPaymentCode.text = userDetail?.salesPersonCode
         }
 
         binding.tvPostingDate.text = Utils.getFullDateWithTime(System.currentTimeMillis())
         binding.tvOrderDate.text = Utils.getFullDate(System.currentTimeMillis())
         //     binding.tvToken.text = System.currentTimeMillis().toString()
 
-        getLocationCodeList()
-        getPaymentCodeList()
+        //  getLocationCodeList()
+        //   getPaymentCodeList()
         getItemList()
 
-        binding.tvLocationCode.setOnClickListener {
-            dialogSingleSelection(
-                locationCodeList,
-                "Choose Location Code",
-                "Search Location Code",
-                binding.tvLocationCode
-            )
-        }
-
-        binding.tvPaymentCode.setOnClickListener {
-            dialogSingleSelection(
-                paymentCodeList,
-                "Choose Payment Code",
-                "Search Payment Code",
-                binding.tvPaymentCode
-            )
-        }
+//        binding.tvLocationCode.setOnClickListener {
+//            dialogSingleSelection(
+//                locationCodeList,
+//                "Choose Location Code",
+//                "Search Location Code",
+//                binding.tvLocationCode
+//            )
+//        }
+//
+//        binding.tvPaymentCode.setOnClickListener {
+//            dialogSingleSelection(
+//                paymentCodeList,
+//                "Choose Payment Code",
+//                "Search Payment Code",
+//                binding.tvPaymentCode
+//            )
+//        }
 
         binding.tvItem.setOnClickListener {
             dialogSingleSelection(
@@ -126,13 +128,14 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
         }
 
         binding.tvConfirmOrder.setOnClickListener {
-            if (binding.tvLocationCode.text.toString().isEmpty()) {
-                Toast.makeText(this, "Select Location Code", Toast.LENGTH_SHORT).show()
-            } else if (binding.tvPaymentCode.text.toString().isEmpty()) {
-                Toast.makeText(this, "Select Payment Code", Toast.LENGTH_SHORT).show()
-            } else {
-                newOrderAPI()
-            }
+            newOrderAPI()
+//            if (binding.tvLocationCode.text.toString().isEmpty()) {
+//                Toast.makeText(this, "Select Location Code", Toast.LENGTH_SHORT).show()
+//            } else if (binding.tvPaymentCode.text.toString().isEmpty()) {
+//                Toast.makeText(this, "Select Payment Code", Toast.LENGTH_SHORT).show()
+//            } else {
+//                newOrderAPI()
+//            }
         }
 
         binding.tvAdd.setOnClickListener {
@@ -307,19 +310,20 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
         filterList!!.addAll(list)
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
-        val selectedGroup: String = when (textView) {
-            binding.tvLocationCode -> {
-                selectedLocationCode
-            }
-
-            binding.tvItem -> {
-                selectedItem
-            }
-
-            else -> {
-                selectedPaymentCode
-            }
-        }
+        val selectedGroup: String = selectedItem
+//        val selectedGroup: String = when (textView) {
+//            binding.tvLocationCode -> {
+//                selectedLocationCode
+//            }
+//
+//            binding.tvItem -> {
+//                selectedItem
+//            }
+//
+//            else -> {
+//                selectedPaymentCode
+//            }
+//        }
         val singleItemSelectionAdapter =
             SingleItemSelectionAdapter(this, filterList!!, selectedGroup)
 
@@ -373,27 +377,36 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
 
         tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
         tvConfirm.setOnClickListener { view: View? ->
-            when (textView) {
-                binding.tvLocationCode -> {
-                    selectedLocationCode = singleItemSelectionAdapter.selected
-                }
-
-                binding.tvItem -> {
-                    selectedItem = singleItemSelectionAdapter.selected
-                    for (item in productList!!) {
-                        if (item.description == singleItemSelectionAdapter.selected) {
-                            selectedProduct = item
-                        }
-                    }
-                    // Check if item exists in orderList
-                    val existingOrder = orderList.find { it.itemNo == selectedProduct?.no }
-                    customerPriceAPI(existingOrder)
-                }
-
-                else -> {
-                    selectedPaymentCode = singleItemSelectionAdapter.selected
+            selectedItem = singleItemSelectionAdapter.selected
+            for (item in productList!!) {
+                if (item.description == singleItemSelectionAdapter.selected) {
+                    selectedProduct = item
                 }
             }
+            // Check if item exists in orderList
+            val existingOrder = orderList.find { it.itemNo == selectedProduct?.no }
+            customerPriceAPI(existingOrder)
+//            when (textView) {
+//                binding.tvLocationCode -> {
+//                    selectedLocationCode = singleItemSelectionAdapter.selected
+//                }
+//
+//                binding.tvItem -> {
+//                    selectedItem = singleItemSelectionAdapter.selected
+//                    for (item in productList!!) {
+//                        if (item.description == singleItemSelectionAdapter.selected) {
+//                            selectedProduct = item
+//                        }
+//                    }
+//                    // Check if item exists in orderList
+//                    val existingOrder = orderList.find { it.itemNo == selectedProduct?.no }
+//                    customerPriceAPI(existingOrder)
+//                }
+//
+//                else -> {
+//                    selectedPaymentCode = singleItemSelectionAdapter.selected
+//                }
+//            }
             textView.text = singleItemSelectionAdapter.selected
             dialog.dismiss()
         }

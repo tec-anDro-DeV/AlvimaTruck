@@ -121,7 +121,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
 
         binding.rlSync.setOnClickListener {
-            fetchAndCacheAllDropdowns(isManualSync = false)
+            fetchAndCacheAllDropdowns(isManualSync = true)
         }
 
         fetchAndCacheAllDropdowns(isManualSync = false)
