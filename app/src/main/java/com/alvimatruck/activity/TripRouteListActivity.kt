@@ -3,6 +3,7 @@ package com.alvimatruck.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,8 +40,7 @@ class TripRouteListActivity : BaseActivity<ActivityTripRouteListBinding>(), Rout
 
         binding.rvRouteList.addItemDecoration(
             EqualSpacingItemDecoration(
-                resources.getDimension(R.dimen._12sdp).toInt(),
-                EqualSpacingItemDecoration.VERTICAL
+                resources.getDimension(R.dimen._12sdp).toInt(), EqualSpacingItemDecoration.VERTICAL
             )
         )
 
@@ -83,16 +83,12 @@ class TripRouteListActivity : BaseActivity<ActivityTripRouteListBinding>(), Rout
                             if (routeList!!.isNotEmpty()) {
                                 Utils.isTripInProgress = routeList!!.any {
                                     it.status.equals(
-                                        "InProgress",
-                                        ignoreCase = true
+                                        "InProgress", ignoreCase = true
                                     )
                                 }
-                                binding.rvRouteList.layoutManager =
-                                    LinearLayoutManager(
-                                        this@TripRouteListActivity,
-                                        LinearLayoutManager.VERTICAL,
-                                        false
-                                    )
+                                binding.rvRouteList.layoutManager = LinearLayoutManager(
+                                    this@TripRouteListActivity, LinearLayoutManager.VERTICAL, false
+                                )
 
 
                                 routeListAdapter = RouteListAdapter(
@@ -101,8 +97,12 @@ class TripRouteListActivity : BaseActivity<ActivityTripRouteListBinding>(), Rout
                                     this@TripRouteListActivity
                                 )
                                 binding.rvRouteList.adapter = routeListAdapter
-                            } else {
+                                binding.llData.visibility = View.VISIBLE
+                                binding.llNoData.root.visibility = View.GONE
 
+                            } else {
+                                binding.llData.visibility = View.GONE
+                                binding.llNoData.root.visibility = View.VISIBLE
                             }
 
 

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <!--        <variable-->
-        <!--            name="detail"-->
-        <!--            type="String" />-->
+        <variable
+            name="detail"
+            type="com.alvimatruck.model.responses.VanStockDetail" />
     </data>
 
     <LinearLayout
@@ -32,9 +33,10 @@
                 android:layout_marginStart="@dimen/_11sdp"
                 android:layout_toEndOf="@id/ivStock"
                 android:fontFamily="@font/sansregular"
-                android:text="Product Name"
+                android:text="@{detail.itemName}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_12ssp"
+                tools:text="Product Name" />
 
             <TextView
                 android:id="@+id/tvSKU"
@@ -55,9 +57,10 @@
                 android:layout_below="@+id/tvProductName"
                 android:layout_toEndOf="@id/tvSKU"
                 android:fontFamily="@font/sansbold"
-                android:text="N209-7635-8529"
+                android:text="@{detail.itemNo}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_11ssp"
+                tools:text="N209-7635-8529" />
         </RelativeLayout>
 
 
@@ -71,8 +74,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_12sdp">
+                android:layout_height="wrap_content">
 
 
                 <TextView
@@ -89,21 +91,23 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="34"
+                    android:text="@{detail.qtyOnHand + ``}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_11ssp" />
+                    android:textSize="@dimen/_11ssp"
+                    tools:text="34" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp">
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Unit Price"
+                    android:text="Unit of Measure"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -113,10 +117,12 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="$135"
+                    android:text="@{detail.unitOfMeasure}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_11ssp" />
+                    android:textSize="@dimen/_11ssp"
+                    tools:text="Cartoon" />
             </RelativeLayout>
+
         </LinearLayout>
 
 

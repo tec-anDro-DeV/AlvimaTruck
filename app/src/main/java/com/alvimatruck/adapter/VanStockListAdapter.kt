@@ -6,11 +6,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.databinding.SingleStockItemBinding
+import com.alvimatruck.model.responses.VanStockDetail
 
 
 class VanStockListAdapter(
     private val mActivity: Activity,
-    private val list: ArrayList<String>,
+    private val list: ArrayList<VanStockDetail>,
 ) : RecyclerView.Adapter<VanStockListAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = mActivity.layoutInflater
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,7 +20,7 @@ class VanStockListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        //   holder.binding.detail = list[position]
+        holder.binding.detail = list[position]
         //   holder.binding.tvData.text = "Demo List Item " + (position + 1)
 
     }

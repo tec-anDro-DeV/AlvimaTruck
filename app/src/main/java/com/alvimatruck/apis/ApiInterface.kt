@@ -94,6 +94,11 @@ interface ApiInterface {
         @Query("itemNo") itemNo: String? = null,
     ): Call<JsonObject>
 
+    @GET(Constants.API_Van_Stock)
+    fun vanStock(
+        @Query("salespersonCode") salespersonCode: String? = null,
+    ): Call<JsonObject>
+
     @Multipart
     @POST(Constants.API_Create_Customer)
     fun createCustomer(

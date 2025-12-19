@@ -37,6 +37,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/llData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rlTop"
@@ -56,5 +57,9 @@
 
 
     </RelativeLayout>
+
+    <include
+        android:id="@+id/llNoData"
+        layout="@layout/no_data" />
 
 </RelativeLayout>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.SalesOrderListAdapter
@@ -105,20 +106,21 @@ class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>() {
                             filterList = ArrayList(orderList!!)
                             if (filterList!!.isNotEmpty()) {
 
-                                binding.rvOrderList.layoutManager =
-                                    LinearLayoutManager(
-                                        this@SalesOrderListActivity,
-                                        LinearLayoutManager.VERTICAL,
-                                        false
-                                    )
+                                binding.rvOrderList.layoutManager = LinearLayoutManager(
+                                    this@SalesOrderListActivity, LinearLayoutManager.VERTICAL, false
+                                )
 
 
                                 salesOrderListAdapter = SalesOrderListAdapter(
                                     this@SalesOrderListActivity, filterList!!
                                 )
                                 binding.rvOrderList.adapter = salesOrderListAdapter
-                            } else {
+                                binding.llData.visibility = View.VISIBLE
+                                binding.llNoData.root.visibility = View.GONE
 
+                            } else {
+                                binding.llData.visibility = View.GONE
+                                binding.llNoData.root.visibility = View.VISIBLE
                             }
 
 

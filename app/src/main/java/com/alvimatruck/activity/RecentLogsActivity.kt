@@ -79,8 +79,6 @@ class RecentLogsActivity : BaseActivity<ActivityRecentLogsBinding>() {
                                     )
                                     binding.rvLogs.adapter = recentLogsListAdapter
 
-                                } else {
-
                                 }
 
 

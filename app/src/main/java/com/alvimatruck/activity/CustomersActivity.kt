@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -157,9 +158,12 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
                                         this@CustomersActivity, filterList!!, this@CustomersActivity
                                     )
                                     binding.rvCustomerList.adapter = customerListAdapter
+                                    binding.llData.visibility = View.VISIBLE
+                                    binding.llNoData.root.visibility = View.GONE
 
                                 } else {
-
+                                    binding.llData.visibility = View.GONE
+                                    binding.llNoData.root.visibility = View.VISIBLE
                                 }
 
 

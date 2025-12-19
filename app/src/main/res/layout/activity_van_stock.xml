@@ -36,107 +36,65 @@
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
+        android:id="@+id/llData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rlTop"
-        android:background="@drawable/bg_white_top_curve">
+        android:background="@drawable/bg_white_top_curve"
+        android:orientation="vertical"
+        android:padding="@dimen/_9sdp"
+        android:visibility="visible">
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="@dimen/_9sdp">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_98sdp"
-                android:layout_marginHorizontal="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@drawable/ic_box2"
-                android:orientation="vertical"
-                android:padding="@dimen/_14sdp"
-                android:visibility="gone">
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_42sdp"
+                android:layout_weight="1"
+                android:background="@drawable/input_bg3"
+                android:drawableStart="@drawable/search"
+                android:drawablePadding="@dimen/_7sdp"
+                android:fontFamily="@font/sansregular"
+                android:hint="Search here..."
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingHorizontal="@dimen/_14sdp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/_12ssp" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sansregular"
-                        android:text="Total"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_11ssp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/sansbold"
-                        android:maxLines="1"
-                        android:text=" Inventory Value"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_11ssp" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tvTotalInventoryValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="$165451"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_21ssp" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/etSearch"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_42sdp"
-                    android:layout_weight="1"
-                    android:background="@drawable/input_bg3"
-                    android:drawableStart="@drawable/search"
-                    android:drawablePadding="@dimen/_7sdp"
-                    android:fontFamily="@font/sansregular"
-                    android:hint="Search here..."
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:paddingHorizontal="@dimen/_14sdp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-
-                <ImageView
-                    android:layout_width="@dimen/_42sdp"
-                    android:layout_height="@dimen/_42sdp"
-                    android:layout_marginStart="@dimen/_11sdp"
-                    android:background="@drawable/input_bg3"
-                    android:padding="@dimen/_11sdp"
-                    android:src="@drawable/ic_filter" />
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvStockList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_80sdp" />
-
-
+            <ImageView
+                android:layout_width="@dimen/_42sdp"
+                android:layout_height="@dimen/_42sdp"
+                android:layout_marginStart="@dimen/_11sdp"
+                android:background="@drawable/input_bg3"
+                android:padding="@dimen/_11sdp"
+                android:src="@drawable/ic_filter"
+                android:visibility="gone" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvStockList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_80sdp" />
+
+
+    </LinearLayout>
+
+
+    <include
+        android:id="@+id/llNoData"
+        layout="@layout/no_data" />
 
 
     <LinearLayout
