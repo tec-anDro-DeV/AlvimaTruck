@@ -151,14 +151,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                     val dropdownEndpoints = listOf(
                         Constants.API_Price_Group,
                         Constants.API_City,
-                        Constants.API_Location_Code,
-                        Constants.API_Payment_Code,
+//                        Constants.API_Location_Code,
+//                        Constants.API_Payment_Code,
                         Constants.API_Item_List,
                         Constants.API_Route_Cancel_Reason_List,
                         Constants.API_Visit_Reason_List,
                         Constants.API_CostCenter_Code,
                         Constants.API_ProfitCenter_Code,
-                        Constants.API_Intransit_Code
+                        Constants.API_Intransit_Code,
+                        Constants.API_To_Location
                     )
 
                     // This assumes your ApiClient and ApiService are set up correctly

@@ -10,6 +10,7 @@ import com.alvimatruck.model.request.OTPRequest
 import com.alvimatruck.model.request.OTPVerifyRequest
 import com.alvimatruck.model.request.ResetPasswordRequest
 import com.alvimatruck.model.request.StartTripRequest
+import com.alvimatruck.model.request.TransferRequest
 import com.alvimatruck.model.request.VisitedTripRequest
 import com.alvimatruck.utils.Constants
 import com.google.gson.JsonElement
@@ -69,6 +70,9 @@ interface ApiInterface {
 
     @POST(Constants.API_New_Order)
     fun newOrder(@Body newOrderRequest: NewOrderRequest): Call<JsonObject>
+
+    @POST(Constants.API_Create_Transfer)
+    fun newTransferRequest(@Body transferRequest: TransferRequest): Call<JsonObject>
 
     @GET(Constants.API_Customer_List)
     fun customerList(

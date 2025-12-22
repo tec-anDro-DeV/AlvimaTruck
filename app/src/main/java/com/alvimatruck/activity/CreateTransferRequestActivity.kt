@@ -3,50 +3,66 @@ package com.alvimatruck.activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.adapter.SingleItemSelectionAdapter
 import com.alvimatruck.adapter.TransferRequestItemListAdapter
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityCreateTransferRequestBinding
-import com.alvimatruck.interfaces.DeleteRequestListener
-import com.alvimatruck.model.responses.ItemDetail
+import com.alvimatruck.interfaces.DeleteTransferRequestListener
+import com.alvimatruck.model.request.TransferRequest
+import com.alvimatruck.model.responses.LocationDetail
+import com.alvimatruck.model.responses.SingleTransfer
 import com.alvimatruck.model.responses.UserDetail
+import com.alvimatruck.model.responses.VanStockDetail
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequestBinding>(),
-    DeleteRequestListener {
+    DeleteTransferRequestListener {
     var itemList: ArrayList<String> = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
 
     var costCenterList: ArrayList<String> = ArrayList()
     var profitCenterList: ArrayList<String> = ArrayList()
     var inTransitList: ArrayList<String> = ArrayList()
+    var toLocationList: ArrayList<String> = ArrayList()
 
-    var selectedProduct: ItemDetail? = null
+    var selectedProduct: VanStockDetail? = null
+    var selectedLocation: LocationDetail? = null
     var userDetail: UserDetail? = null
 
     var transferRequestItemListAdapter: TransferRequestItemListAdapter? = null
 
-    var requestList: ArrayList<String> = ArrayList()
+    var requestList: ArrayList<SingleTransfer> = ArrayList()
 
-    var productList: ArrayList<ItemDetail>? = ArrayList()
+    var productList: ArrayList<VanStockDetail>? = ArrayList()
+    var locationList: ArrayList<LocationDetail>? = ArrayList()
 
 
     var selectedItem = ""
     var selectedCostCenter = ""
     var selectedProfitCenter = ""
     var selectedInTransit = ""
+    var selectedToLocation = ""
+
 
     override fun inflateBinding(): ActivityCreateTransferRequestBinding {
         return ActivityCreateTransferRequestBinding.inflate(layoutInflater)
@@ -62,12 +78,14 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
             Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
 
         binding.tvDateTime.text = Utils.getFullDateWithTime(System.currentTimeMillis())
-        //  binding.tvTransferNumber.text = System.currentTimeMillis().toString()
+        binding.tvFrom.text = "VAN (" + userDetail?.salesPersonCode + ")"
+
 
         getItemList()
         getCostCenterList()
         getProfitCenterList()
         getInTransitList()
+        getToLocationList()
 
         binding.tvItem.setOnClickListener {
             dialogSingleSelection(
@@ -95,22 +113,56 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
             )
         }
 
+        binding.tvTo.setOnClickListener {
+            dialogSingleSelection(
+                toLocationList, "Choose To Location", "Search To Location", binding.tvTo
+            )
+
+        }
+
         binding.tvAdd.setOnClickListener {
-            requestList.add("")
-            binding.llRequestList.visibility = View.VISIBLE
-            binding.tvCreateTransferRequest.visibility = View.VISIBLE
-            binding.tvItem.text = ""
-            binding.tvCostCenter.text = ""
-            binding.tvProfitCenter.text = ""
-            binding.tvInTransit.text = ""
-            selectedItem = ""
-            selectedCostCenter = ""
-            selectedProfitCenter = ""
-            selectedInTransit = ""
-            selectedProduct = null
-            transferRequestItemListAdapter!!.notifyDataSetChanged()
-            binding.nestedScrollView.post {
-                binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
+            if (binding.tvItem.text.toString().isEmpty()) {
+                Toast.makeText(this, "Please select Item", Toast.LENGTH_SHORT).show()
+            } else if (binding.etQuantity.text.toString().isEmpty()) {
+                Toast.makeText(this, "Enter Quantity", Toast.LENGTH_SHORT).show()
+            } else if (binding.etQuantity.text.toString().toInt() > selectedProduct!!.qtyOnHand) {
+                Toast.makeText(
+                    this,
+                    "Only up to ${selectedProduct!!.qtyOnHand} units are available for transfer",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                val qty = binding.etQuantity.text.toString().toInt()
+                val existingIndex =
+                    requestList.indexOfFirst { it.itemNo == selectedProduct!!.itemNo }
+                if (existingIndex != -1) {
+                    val existingOrder = requestList[existingIndex]
+                    existingOrder.quantity = qty
+                    transferRequestItemListAdapter!!.notifyDataSetChanged()
+
+                } else {
+                    val singleRequest = SingleTransfer(
+                        selectedItem,
+                        selectedProduct!!.itemNo,
+                        qty,
+                        selectedProduct!!.unitOfMeasure,
+                    )
+                    requestList.add(singleRequest)
+                    transferRequestItemListAdapter!!.notifyDataSetChanged()
+
+                }
+
+                binding.llRequestList.visibility = View.VISIBLE
+                binding.tvCreateTransferRequest.visibility = View.VISIBLE
+                binding.tvItem.text = ""
+
+                selectedItem = ""
+
+                selectedProduct = null
+                binding.etQuantity.setText("")
+                binding.nestedScrollView.post {
+                    binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
+                }
             }
         }
 
@@ -122,6 +174,96 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
             this@CreateTransferRequestActivity, requestList, this@CreateTransferRequestActivity
         )
         binding.rvTransferList.adapter = transferRequestItemListAdapter
+
+        binding.tvCreateTransferRequest.setOnClickListener {
+            if (binding.tvProfitCenter.text.toString().isEmpty()) {
+                Toast.makeText(this, "Please select Profit Center", Toast.LENGTH_SHORT).show()
+            } else if (binding.tvCostCenter.text.toString().isEmpty()) {
+                Toast.makeText(this, "Please select Cost Center", Toast.LENGTH_SHORT).show()
+            } else if (binding.tvTo.text.toString().isEmpty()) {
+                Toast.makeText(this, "Please select To Location", Toast.LENGTH_SHORT).show()
+            } else if (binding.tvInTransit.text.toString().isEmpty()) {
+                Toast.makeText(this, "Please select In Transit", Toast.LENGTH_SHORT).show()
+            } else {
+                transferRequestAPI()
+            }
+        }
+
+    }
+
+    private fun transferRequestAPI() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@CreateTransferRequestActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.newTransferRequest(
+                TransferRequest(
+                    selectedCostCenter,
+                    selectedInTransit,
+                    requestList,
+                    selectedProfitCenter,
+                    userDetail?.salesPersonCode!!,
+                    selectedLocation!!.code
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@CreateTransferRequestActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@CreateTransferRequestActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            handleBackPressed()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@CreateTransferRequestActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@CreateTransferRequestActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun getToLocationList() {
+        val jsonString = SharedHelper.getKey(this, Constants.API_To_Location)
+        if (jsonString.isNotEmpty()) {
+            locationList =
+                JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data").map {
+                    Gson().fromJson(it, LocationDetail::class.java)
+                } as ArrayList<LocationDetail>
+            toLocationList.clear()
+            for (item in locationList!!) {
+                val name = item.name
+                toLocationList.add(name)
+            }
+        }
 
     }
 
@@ -143,6 +285,10 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
 
             binding.tvItem -> {
                 selectedItem
+            }
+
+            binding.tvTo -> {
+                selectedToLocation
             }
 
             else -> {
@@ -214,8 +360,24 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
                 binding.tvItem -> {
                     selectedItem = singleItemSelectionAdapter.selected
                     for (item in productList!!) {
-                        if (item.description == singleItemSelectionAdapter.selected) {
+                        if (item.itemName == singleItemSelectionAdapter.selected) {
                             selectedProduct = item
+                        }
+                    }
+                    val existingOrder = requestList.find { it.itemNo == selectedProduct?.itemNo }
+                    if (existingOrder != null) {
+                        binding.etQuantity.setText(existingOrder.quantity.toString())
+                    } else {
+                        binding.etQuantity.setText("")
+                    }
+                }
+
+
+                binding.tvTo -> {
+                    selectedToLocation = singleItemSelectionAdapter.selected
+                    for (item in locationList!!) {
+                        if (item.name == singleItemSelectionAdapter.selected) {
+                            selectedLocation = item
                         }
                     }
                 }
@@ -230,16 +392,57 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
     }
 
     private fun getItemList() {
-        val jsonString = SharedHelper.getKey(this, Constants.API_Item_List)
-        if (jsonString.isNotEmpty()) {
-            productList = JsonParser.parseString(jsonString).asJsonArray.map {
-                Gson().fromJson(it, ItemDetail::class.java)
-            } as ArrayList<ItemDetail>
-            itemList.clear()
-            for (item in productList!!) {
-                val code = item.description
-                itemList.add(code)
-            }
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@CreateTransferRequestActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, ""
+            )!!.webservices.vanStock(userDetail?.salesPersonCode)
+                .enqueue(object : Callback<JsonObject> {
+                    override fun onResponse(
+                        call: Call<JsonObject>,
+                        response: Response<JsonObject>
+                    ) {
+                        ProgressDialog.dismiss()
+                        if (response.isSuccessful) {
+                            try {
+                                Log.d("TAG", "onResponse Item: " + response.body().toString())
+                                productList = response.body()!!.getAsJsonArray("data").map {
+                                    Gson().fromJson(it, VanStockDetail::class.java)
+                                } as ArrayList<VanStockDetail>
+                                itemList.clear()
+                                for (item in productList!!) {
+                                    val code = item.itemName
+                                    itemList.add(code)
+                                }
+
+
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        } else {
+                            Toast.makeText(
+                                this@CreateTransferRequestActivity,
+                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                        Toast.makeText(
+                            this@CreateTransferRequestActivity,
+                            getString(R.string.api_fail_message),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        ProgressDialog.dismiss()
+                    }
+                })
+        } else {
+            Toast.makeText(
+                this,
+                getString(R.string.please_check_your_internet_connection),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -294,13 +497,12 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
         }
     }
 
-    override fun onDeleteOrder(orderDetail: String) {
-        requestList.remove(orderDetail)
+    override fun onDeleteRequest(request: SingleTransfer) {
+        requestList.remove(request)
         transferRequestItemListAdapter!!.notifyDataSetChanged()
         if (requestList.isEmpty()) {
             binding.llRequestList.visibility = View.GONE
             binding.tvCreateTransferRequest.visibility = View.GONE
         }
-
     }
 }
