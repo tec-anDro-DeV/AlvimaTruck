@@ -6,8 +6,15 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -18,17 +25,31 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
+import com.alvimatruck.adapter.SingleItemSelectionAdapter
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivitySendDepositBinding
+import com.alvimatruck.model.responses.CustomerDetail
+import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.InvoiceItem
+import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
@@ -36,6 +57,15 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
 
     private var paymentProofImageUri: Uri? = null
+
+    var customerList: ArrayList<CustomerDetail>? = ArrayList()
+
+    var selectedItem = ""
+    var selectedCustomer: CustomerDetail? = null
+    var filterList: ArrayList<String>? = ArrayList()
+    var itemList: ArrayList<String>? = ArrayList()
+    var invoiceList: ArrayList<InvoiceItem>? = ArrayList()
+
     private lateinit var cropLauncher: ActivityResultLauncher<Intent>
     override fun inflateBinding(): ActivitySendDepositBinding {
         return ActivitySendDepositBinding.inflate(layoutInflater)
@@ -46,6 +76,13 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
         checkAndStartLocationService()
 
         setupLaunchers()
+
+        invoiceList!!.add(InvoiceItem("Invoice 1", 521.0))
+        invoiceList!!.add(InvoiceItem("Invoice 2", 1521.0))
+        invoiceList!!.add(InvoiceItem("Invoice 3", 5211.0))
+        invoiceList!!.add(InvoiceItem("Invoice 4", 11521.0))
+        invoiceList!!.add(InvoiceItem("Invoice 5", 5121.0))
+
 
 
 
@@ -62,6 +99,210 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             paymentProofImageUri = null // ✅ Reset the URI
             binding.rlPaymentPhoto.visibility = View.GONE
             binding.rlChoosePhoto.visibility = View.VISIBLE
+        }
+
+        binding.tvCustomer.setOnClickListener {
+            dialogSingleSelection(
+                itemList!!, "Choose Customer", "Search Customer", binding.tvCustomer
+            )
+        }
+
+        customerListAPI()
+        setupInvoiceCheckboxes()
+        updateTotal()
+
+    }
+
+    private fun setupInvoiceCheckboxes() {
+        binding.llInvoice.removeAllViews() // Clear any existing views
+        invoiceList?.forEachIndexed { index, invoice ->
+            val checkBox = CheckBox(this).apply {
+                text = "${invoice.no}: ETB ${invoice.price}"
+                setTextColor(ContextCompat.getColor(this@SendDepositActivity, R.color.black))
+                setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    resources.getDimension(com.intuit.ssp.R.dimen._14ssp)
+                )
+                buttonDrawable = ContextCompat.getDrawable(
+                    this@SendDepositActivity,
+                    R.drawable.checkbox_selector
+                )
+                gravity = Gravity.CENTER_VERTICAL
+                setPadding(resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._7sdp), 0, 0, 0)
+                val params = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                if (index > 0) {
+                    params.topMargin = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._7sdp)
+                }
+                layoutParams = params
+
+                // Store invoice object in tag for later retrieval
+                tag = invoice
+
+                setOnCheckedChangeListener { _, _ ->
+                    updateTotal()
+                }
+            }
+            binding.llInvoice.addView(checkBox)
+        }
+    }
+
+    private fun updateTotal() {
+        var total = 0.0
+        for (i in 0 until binding.llInvoice.childCount) {
+            val view = binding.llInvoice.getChildAt(i)
+            if (view is CheckBox && view.isChecked) {
+                val invoice = view.tag as InvoiceItem
+                total += invoice.price
+            }
+        }
+        binding.tvtotal.text = "ETB $total"
+    }
+
+    private fun dialogSingleSelection(
+        list: ArrayList<String>, title: String, hint: String, textView: TextView
+    ) {
+        filterList!!.clear()
+        filterList!!.addAll(list)
+        val inflater = layoutInflater
+        val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
+        val selectedGroup: String = selectedItem
+
+        val singleItemSelectionAdapter =
+            SingleItemSelectionAdapter(this, filterList!!, selectedGroup)
+
+        val lLayout = LinearLayoutManager(this)
+        val rvBinList = alertLayout.findViewById<RecyclerView>(R.id.rvItemList)
+        rvBinList.layoutManager = lLayout
+        rvBinList.adapter = singleItemSelectionAdapter
+        val etBinSearch = alertLayout.findViewById<EditText>(R.id.etItemSearch)
+        etBinSearch.hint = hint
+
+
+
+        etBinSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                //filter(s.toString())
+                filterList!!.clear()
+                if (s.toString().trim().isEmpty()) {
+                    filterList!!.addAll(list)
+                } else {
+                    for (item in list) {
+                        if (item.lowercase().contains(s.toString().lowercase())) {
+                            filterList!!.add(item)
+                        }
+                    }
+                }
+                singleItemSelectionAdapter.notifyDataSetChanged()
+            }
+        })
+
+        val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel2)
+        val tvConfirm = alertLayout.findViewById<TextView>(R.id.tvConfirm2)
+        val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
+        tvTitle.text = title
+
+
+        val alert = AlertDialog.Builder(this)
+        alert.setView(alertLayout)
+        alert.setCancelable(false)
+
+        val dialog = alert.create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+        dialog.show()
+
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { view: View? ->
+            selectedItem = singleItemSelectionAdapter.selected
+            for (item in customerList!!) {
+                if (item.searchName == singleItemSelectionAdapter.selected) {
+                    selectedCustomer = item
+                }
+            }
+            textView.text = singleItemSelectionAdapter.selected
+            dialog.dismiss()
+        }
+    }
+
+
+    private fun customerListAPI() {
+
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@SendDepositActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.customerList()
+                .enqueue(object : Callback<JsonObject> {
+                    override fun onResponse(
+                        call: Call<JsonObject>,
+                        response: Response<JsonObject>
+                    ) {
+                        ProgressDialog.dismiss()
+                        if (response.code() == 401) {
+                            Utils.forceLogout(this@SendDepositActivity)  // show dialog before logout
+                            return
+                        }
+                        if (response.isSuccessful) {
+                            try {
+                                Log.d("TAG", "onResponse: " + response.body().toString())
+
+                                customerList = response.body()!!.getAsJsonArray("items").map {
+                                    Gson().fromJson(it, CustomerDetail::class.java)
+                                } as ArrayList<CustomerDetail>
+                                if (customerList!!.isNotEmpty()) {
+                                    itemList!!.clear()
+                                    for (item in customerList!!) {
+                                        val code = item.searchName
+                                        itemList!!.add(code)
+                                    }
+
+
+                                } else {
+                                    Toast.makeText(
+                                        this@SendDepositActivity,
+                                        "No customer found",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        } else {
+                            Toast.makeText(
+                                this@SendDepositActivity,
+                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                        Toast.makeText(
+                            this@SendDepositActivity,
+                            getString(com.alvimatruck.R.string.api_fail_message),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        ProgressDialog.dismiss()
+                    }
+                })
+        } else {
+            Toast.makeText(
+                this,
+                getString(com.alvimatruck.R.string.please_check_your_internet_connection),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
     }

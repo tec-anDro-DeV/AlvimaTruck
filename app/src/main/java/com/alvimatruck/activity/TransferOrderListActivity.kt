@@ -20,7 +20,7 @@ import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.google.gson.Gson
-import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import retrofit2.Call
 import retrofit2.Callback
@@ -104,10 +104,10 @@ class TransferOrderListActivity : BaseActivity<ActivityTransferOrderListBinding>
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.transferList(userDetail?.salesPersonCode!!)
-                .enqueue(object : Callback<JsonArray> {
+                .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
-                        call: Call<JsonArray>,
-                        response: Response<JsonArray>
+                        call: Call<JsonObject>,
+                        response: Response<JsonObject>
                     ) {
                         ProgressDialog.dismiss()
                         if (response.code() == 401) {
@@ -118,9 +118,9 @@ class TransferOrderListActivity : BaseActivity<ActivityTransferOrderListBinding>
                             try {
                                 Log.d("TAG", "onResponse: " + response.body().toString())
 
-                                transferList = response.body()?.map {
+                                transferList = response.body()!!.getAsJsonArray("data").map {
                                     Gson().fromJson(it, TransferDetail::class.java)
-                                }?.let { ArrayList(it) }
+                                } as ArrayList<TransferDetail>
                                 filterList = ArrayList(transferList!!)
                                 if (filterList!!.isNotEmpty()) {
                                     binding.rvTransferList.layoutManager =
@@ -168,7 +168,7 @@ class TransferOrderListActivity : BaseActivity<ActivityTransferOrderListBinding>
                         }
                     }
 
-                    override fun onFailure(call: Call<JsonArray?>, t: Throwable) {
+                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                         Toast.makeText(
                             this@TransferOrderListActivity,
                             getString(com.alvimatruck.R.string.api_fail_message),
