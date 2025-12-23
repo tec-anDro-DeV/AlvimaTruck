@@ -429,7 +429,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             ApiClient.getRestClient(
                 Constants.BASE_URL, ""
             )!!.webservices.customerPrice(
-                customerDetail!!.customerPriceGroup,
+                customerDetail!!.customerPriceGroup!!,
                 selectedProduct!!.itemNo
             )
                 .enqueue(object : Callback<JsonObject> {
@@ -546,7 +546,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             ProgressDialog.start(this@NewSalesActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, ""
-            )!!.webservices.vanStock(userDetail?.salesPersonCode)
+            )!!.webservices.vanStock(userDetail?.salesPersonCode!!)
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
                         call: Call<JsonObject>,

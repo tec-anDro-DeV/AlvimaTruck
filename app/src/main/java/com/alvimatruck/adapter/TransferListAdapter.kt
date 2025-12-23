@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.databinding.SingleTransferItemBinding
-import com.alvimatruck.utils.TransferItem
+import com.alvimatruck.model.responses.LocationDetail
+import com.alvimatruck.model.responses.TransferDetail
 
 
 class TransferListAdapter(
     private val mActivity: Activity,
-    private val list: ArrayList<TransferItem>,
+    private val list: ArrayList<TransferDetail>,
+    private val locationList: ArrayList<LocationDetail>?,
     private val onSelectionChanged: (Boolean) -> Unit
 ) : RecyclerView.Adapter<TransferListAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = mActivity.layoutInflater
@@ -22,17 +24,17 @@ class TransferListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
 
-        val item = list[position]
+        holder.binding.detail = list[position]
 
         // 1. Remove listener to prevent unwanted triggering during scrolling/recycling
         holder.binding.chkShip.setOnCheckedChangeListener(null)
 
         // 2. Set current state
-        holder.binding.chkShip.isChecked = item.isSelected
+        holder.binding.chkShip.isChecked = list[position].isSelected
 
         // 3. Add Listener
         holder.binding.chkShip.setOnCheckedChangeListener { _, isChecked ->
-            item.isSelected = isChecked
+            list[position].isSelected = isChecked
 
             // Check if ALL items are now selected
             val isAllSelected = list.all { it.isSelected }
@@ -40,6 +42,10 @@ class TransferListAdapter(
             // Notify the activity to update the main "Select All" checkbox
             onSelectionChanged(isAllSelected)
         }
+        holder.binding.tvToLocation.text = locationList
+            ?.find { it.code == list[position].transferToCode }
+            ?.name
+            ?: ""
 
 
     }

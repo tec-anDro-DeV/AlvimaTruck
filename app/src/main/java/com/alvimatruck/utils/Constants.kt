@@ -45,7 +45,9 @@ class Constants {
 
         const val API_Fleet_Log_List = "FleetManagement/get-all-fleet-mobile"
         const val API_Fleet = "FleetManagement/create-fleat"
+
         const val API_Create_Transfer = "Transfer/transfer/create"
+        const val API_Transfer_List = "Transfer/transfer/get-all-from-code"
 
 
         // Constants Key

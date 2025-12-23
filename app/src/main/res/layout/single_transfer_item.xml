@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <!--        <variable-->
-        <!--            name="detail"-->
-        <!--            type="String" />-->
+        <variable
+            name="detail"
+            type="com.alvimatruck.model.responses.TransferDetail" />
     </data>
 
     <LinearLayout
@@ -33,9 +34,10 @@
                 android:layout_marginStart="@dimen/_11sdp"
                 android:layout_toEndOf="@id/ivStock"
                 android:fontFamily="@font/sansbold"
-                android:text="TRF-1001"
+                android:text="@{detail.transferOrderNo}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_12ssp"
+                tools:text="TRF-1001" />
 
 
             <TextView
@@ -87,13 +89,15 @@
                     android:textSize="@dimen/_12ssp" />
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_7sdp">
+                android:layout_marginTop="@dimen/_7sdp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
                     android:text="To"
@@ -101,15 +105,18 @@
                     android:textSize="@dimen/_12ssp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvToLocation"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="Warehouse"
+                    android:textAlignment="textEnd"
                     android:textAllCaps="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-            </RelativeLayout>
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="Warehouse" />
+            </LinearLayout>
 
 
         </LinearLayout>
@@ -131,9 +138,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/sansbold"
-                android:text="16 Dec 2025"
+                android:text="@{detail.requestDate}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_12ssp"
+                tools:text="16 Dec 2025" />
         </RelativeLayout>
 
         <CheckBox

@@ -13,6 +13,7 @@ import com.alvimatruck.model.request.StartTripRequest
 import com.alvimatruck.model.request.TransferRequest
 import com.alvimatruck.model.request.VisitedTripRequest
 import com.alvimatruck.utils.Constants
+import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
@@ -81,6 +82,11 @@ interface ApiInterface {
         @Query("routeName") routeName: String? = null
     ): Call<JsonObject>
 
+    @GET(Constants.API_Transfer_List)
+    fun transferList(
+        @Query("transferFromCode") transferFromCode: String,
+    ): Call<JsonArray>
+
     @GET(Constants.API_Order_Detail + "/{orderId}")
     fun orderDetail(
         @Path("orderId") orderId: String
@@ -94,13 +100,13 @@ interface ApiInterface {
 
     @GET(Constants.API_Customer_Price)
     fun customerPrice(
-        @Query("salesCode") salesCode: String? = null,
-        @Query("itemNo") itemNo: String? = null,
+        @Query("salesCode") salesCode: String,
+        @Query("itemNo") itemNo: String,
     ): Call<JsonObject>
 
     @GET(Constants.API_Van_Stock)
     fun vanStock(
-        @Query("salespersonCode") salespersonCode: String? = null,
+        @Query("salespersonCode") salespersonCode: String,
     ): Call<JsonObject>
 
     @Multipart

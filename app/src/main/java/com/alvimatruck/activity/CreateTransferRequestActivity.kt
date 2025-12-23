@@ -396,7 +396,7 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
             ProgressDialog.start(this@CreateTransferRequestActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, ""
-            )!!.webservices.vanStock(userDetail?.salesPersonCode)
+            )!!.webservices.vanStock(userDetail?.salesPersonCode!!)
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
                         call: Call<JsonObject>,

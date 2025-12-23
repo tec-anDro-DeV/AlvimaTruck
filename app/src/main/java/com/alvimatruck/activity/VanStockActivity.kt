@@ -107,7 +107,7 @@ class VanStockActivity : BaseActivity<ActivityVanStockBinding>() {
             ProgressDialog.start(this@VanStockActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, ""
-            )!!.webservices.vanStock(userDetail?.salesPersonCode)
+            )!!.webservices.vanStock(userDetail?.salesPersonCode!!)
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
                         call: Call<JsonObject>,
