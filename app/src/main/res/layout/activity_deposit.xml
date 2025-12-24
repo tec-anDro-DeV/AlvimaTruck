@@ -48,7 +48,7 @@
             android:id="@+id/rlDeposit"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_73sdp"
-            android:background="@drawable/ic_fuel_refill">
+            android:background="@drawable/ic_deposite_new">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Deposits"
+                android:text="Payment\nCollection"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_73sdp"
             android:layout_marginTop="@dimen/_14sdp"
-            android:background="@drawable/ic_transfer2">
+            android:background="@drawable/ic_payment_logs">
 
             <TextView
                 android:layout_width="wrap_content"

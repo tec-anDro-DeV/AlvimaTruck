@@ -34,10 +34,6 @@ class OperationsActivity : BaseActivity<ActivityOperationsBinding>() {
             startActivity(Intent(this, TransferActivity::class.java))
         }
 
-        binding.rlDelivery.setOnClickListener {
-            // startActivity(Intent(this, DeliveryListActivity::class.java))
-        }
-
         binding.rlDeposit.setOnClickListener {
             startActivity(Intent(this, DepositActivity::class.java))
         }

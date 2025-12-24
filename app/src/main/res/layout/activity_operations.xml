@@ -44,129 +44,61 @@
         android:orientation="vertical"
         android:padding="@dimen/_21sdp">
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rlDeposit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="@dimen/_73sdp"
+            android:background="@drawable/ic_deposite_new">
 
-            <RelativeLayout
-                android:id="@+id/rlDeposit"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_118sdp"
-                android:layout_weight="1"
-                android:background="@drawable/ic_deposite"
-                android:padding="@dimen/_14sdp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_70sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Deposits"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp" />
+        </RelativeLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="Deposit"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_16ssp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlDelivery"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_118sdp"
-                android:layout_marginStart="@dimen/_13sdp"
-                android:layout_weight="1"
-                android:alpha="0.5"
-                android:background="@drawable/ic_delivery_2"
-                android:padding="@dimen/_14sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="Delivery"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_16ssp" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rlStoreRequisition"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_13sdp"
-            android:orientation="horizontal">
+            android:layout_height="@dimen/_73sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:background="@drawable/ic_store_new">
 
-            <RelativeLayout
-                android:id="@+id/rlStoreRequisition"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_118sdp"
-                android:layout_weight="1"
-                android:background="@drawable/ic_store_requ"
-                android:padding="@dimen/_14sdp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_70sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Store\nRequisition"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp" />
+        </RelativeLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autoSizeMinTextSize="@dimen/_1sdp"
-                    android:autoSizeTextType="uniform"
-                    android:fontFamily="@font/sanssemibold"
-                    android:maxLines="2"
-                    android:text="Store Requisition"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_16ssp" />
-            </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rlTransfer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_73sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:background="@drawable/ic_transfer_new">
 
-            <RelativeLayout
-                android:id="@+id/rlTransfer"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_118sdp"
-                android:layout_marginStart="@dimen/_13sdp"
-                android:layout_weight="1"
-                android:background="@drawable/ic_transfer_2"
-                android:padding="@dimen/_14sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="Transfer"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_16ssp" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="@dimen/_13sdp"-->
-        <!--            android:orientation="horizontal">-->
-
-        <!--            <RelativeLayout-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="@dimen/_118sdp"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:background="@drawable/ic_report"-->
-        <!--                android:padding="@dimen/_14sdp">-->
-
-        <!--                <TextView-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:fontFamily="@font/sanssemibold"-->
-        <!--                    android:text="Route Sales"-->
-        <!--                    android:textColor="@color/black"-->
-        <!--                    android:textSize="@dimen/_16ssp" />-->
-        <!--            </RelativeLayout>-->
-
-        <!--            <View-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="@dimen/_118sdp"-->
-        <!--                android:layout_marginStart="@dimen/_13sdp"-->
-        <!--                android:layout_weight="1"-->
-
-        <!--                android:padding="@dimen/_14sdp" />-->
-
-        <!--        </LinearLayout>-->
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_70sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Transfer"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp" />
+        </RelativeLayout>
 
     </LinearLayout>
 
