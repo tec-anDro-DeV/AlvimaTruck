@@ -9,8 +9,6 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.util.TypedValue
-import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.CheckBox
@@ -77,11 +75,11 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
         setupLaunchers()
 
-        invoiceList!!.add(InvoiceItem("Invoice 1", 521.0))
-        invoiceList!!.add(InvoiceItem("Invoice 2", 1521.0))
-        invoiceList!!.add(InvoiceItem("Invoice 3", 5211.0))
-        invoiceList!!.add(InvoiceItem("Invoice 4", 11521.0))
-        invoiceList!!.add(InvoiceItem("Invoice 5", 5121.0))
+        invoiceList!!.add(InvoiceItem("Invoice 1", 521.0, "15 Dec 2025"))
+        invoiceList!!.add(InvoiceItem("Invoice 2", 1521.0, "16 Dec 2025"))
+        invoiceList!!.add(InvoiceItem("Invoice 3", 5211.0, "17 Dec 2025"))
+        invoiceList!!.add(InvoiceItem("Invoice 4", 11521.0, "18 Dec 2025"))
+        invoiceList!!.add(InvoiceItem("Invoice 5", 5121.0, "19 Dec 2025"))
 
 
 
@@ -109,55 +107,98 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
         customerListAPI()
         setupInvoiceCheckboxes()
-        updateTotal()
+        //  updateTotal()
 
     }
 
     private fun setupInvoiceCheckboxes() {
-        binding.llInvoice.removeAllViews() // Clear any existing views
+        binding.llInvoice.removeAllViews()
+
         invoiceList?.forEachIndexed { index, invoice ->
-            val checkBox = CheckBox(this).apply {
-                text = "${invoice.no}: ETB ${invoice.price}"
-                setTextColor(ContextCompat.getColor(this@SendDepositActivity, R.color.black))
-                setTextSize(
-                    TypedValue.COMPLEX_UNIT_PX,
-                    resources.getDimension(com.intuit.ssp.R.dimen._14ssp)
-                )
-                buttonDrawable = ContextCompat.getDrawable(
-                    this@SendDepositActivity,
-                    R.drawable.checkbox_selector
-                )
-                gravity = Gravity.CENTER_VERTICAL
-                setPadding(resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._7sdp), 0, 0, 0)
-                val params = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                if (index > 0) {
-                    params.topMargin = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._7sdp)
-                }
-                layoutParams = params
 
-                // Store invoice object in tag for later retrieval
-                tag = invoice
+            val view = layoutInflater.inflate(R.layout.single_invoice, binding.llInvoice, false)
 
-                setOnCheckedChangeListener { _, _ ->
-                    updateTotal()
-                }
+            val cb = view.findViewById<CheckBox>(R.id.cbInvoice)
+            val root = view.findViewById<LinearLayout>(R.id.rootRow)
+            val tvNo = view.findViewById<TextView>(R.id.tvInvoiceNo)
+            val tvDate = view.findViewById<TextView>(R.id.tvInvoiceDate)
+            val tvAmount = view.findViewById<TextView>(R.id.tvInvoiceAmount)
+            val divider = view.findViewById<View>(R.id.viewDivider)
+
+            tvNo.text = invoice.no
+            tvDate.text = "Date: ${invoice.date ?: "-"}"
+            tvAmount.text = "ETB ${invoice.price}"
+
+            cb.tag = invoice
+            cb.setOnCheckedChangeListener { _, _ ->
+                updateTotal()
             }
-            binding.llInvoice.addView(checkBox)
+
+            if (invoiceList!!.size - 1 == index) {
+                divider.visibility = View.GONE
+            } else {
+                divider.visibility = View.VISIBLE
+            }
+
+            root.setOnClickListener {
+                cb.isChecked = !cb.isChecked
+            }
+
+            binding.llInvoice.addView(view)
         }
     }
 
+//    private fun setupInvoiceCheckboxes() {
+//        binding.llInvoice.removeAllViews() // Clear any existing views
+//        invoiceList?.forEachIndexed { index, invoice ->
+//            val checkBox = CheckBox(this).apply {
+//                text = "${invoice.no}: ETB ${invoice.price}"
+//                setTextColor(ContextCompat.getColor(this@SendDepositActivity, R.color.black))
+//                typeface = ResourcesCompat.getFont(this@SendDepositActivity, R.font.sansregular)
+//                setTextSize(
+//                    TypedValue.COMPLEX_UNIT_PX,
+//                    resources.getDimension(com.intuit.ssp.R.dimen._14ssp)
+//                )
+//                buttonDrawable = ContextCompat.getDrawable(
+//                    this@SendDepositActivity,
+//                    R.drawable.checkbox_selector
+//                )
+//                gravity = Gravity.CENTER_VERTICAL
+//                setPadding(resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._7sdp), 0, 0, 0)
+//                val params = LinearLayout.LayoutParams(
+//                    LinearLayout.LayoutParams.WRAP_CONTENT,
+//                    LinearLayout.LayoutParams.WRAP_CONTENT
+//                )
+//                if (index > 0) {
+//                    params.topMargin = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._7sdp)
+//                }
+//                layoutParams = params
+//
+//                // Store invoice object in tag for later retrieval
+//                tag = invoice
+//
+//                setOnCheckedChangeListener { _, _ ->
+//                    updateTotal()
+//                }
+//            }
+//            binding.llInvoice.addView(checkBox)
+//        }
+//    }
+
     private fun updateTotal() {
         var total = 0.0
+
         for (i in 0 until binding.llInvoice.childCount) {
-            val view = binding.llInvoice.getChildAt(i)
-            if (view is CheckBox && view.isChecked) {
-                val invoice = view.tag as InvoiceItem
+            val row = binding.llInvoice.getChildAt(i)
+
+            val checkBox = row.findViewById<CheckBox>(R.id.cbInvoice)
+
+            if (checkBox.isChecked) {
+                val invoice = checkBox.tag as InvoiceItem
                 total += invoice.price
             }
         }
+
         binding.tvtotal.text = "ETB $total"
     }
 
@@ -230,6 +271,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
                 }
             }
             textView.text = singleItemSelectionAdapter.selected
+            binding.llInvoiceData.visibility = View.VISIBLE
             dialog.dismiss()
         }
     }
@@ -241,62 +283,60 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             ProgressDialog.start(this@SendDepositActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.customerList()
-                .enqueue(object : Callback<JsonObject> {
-                    override fun onResponse(
-                        call: Call<JsonObject>,
-                        response: Response<JsonObject>
-                    ) {
-                        ProgressDialog.dismiss()
-                        if (response.code() == 401) {
-                            Utils.forceLogout(this@SendDepositActivity)  // show dialog before logout
-                            return
-                        }
-                        if (response.isSuccessful) {
-                            try {
-                                Log.d("TAG", "onResponse: " + response.body().toString())
+            )!!.webservices.customerList().enqueue(object : Callback<JsonObject> {
+                override fun onResponse(
+                    call: Call<JsonObject>, response: Response<JsonObject>
+                ) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@SendDepositActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
 
-                                customerList = response.body()!!.getAsJsonArray("items").map {
-                                    Gson().fromJson(it, CustomerDetail::class.java)
-                                } as ArrayList<CustomerDetail>
-                                if (customerList!!.isNotEmpty()) {
-                                    itemList!!.clear()
-                                    for (item in customerList!!) {
-                                        val code = item.searchName
-                                        itemList!!.add(code)
-                                    }
-
-
-                                } else {
-                                    Toast.makeText(
-                                        this@SendDepositActivity,
-                                        "No customer found",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                            customerList = response.body()!!.getAsJsonArray("items").map {
+                                Gson().fromJson(it, CustomerDetail::class.java)
+                            } as ArrayList<CustomerDetail>
+                            if (customerList!!.isNotEmpty()) {
+                                itemList!!.clear()
+                                for (item in customerList!!) {
+                                    val code = item.searchName
+                                    itemList!!.add(code)
                                 }
 
 
-                            } catch (e: Exception) {
-                                e.printStackTrace()
+                            } else {
+                                Toast.makeText(
+                                    this@SendDepositActivity,
+                                    "No customer found",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-                        } else {
-                            Toast.makeText(
-                                this@SendDepositActivity,
-                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
 
-                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
                         Toast.makeText(
                             this@SendDepositActivity,
-                            getString(com.alvimatruck.R.string.api_fail_message),
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
                             Toast.LENGTH_SHORT
                         ).show()
-                        ProgressDialog.dismiss()
                     }
-                })
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@SendDepositActivity,
+                        getString(com.alvimatruck.R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
         } else {
             Toast.makeText(
                 this,
@@ -438,11 +478,9 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
         // For Android 13+ (API 33+), no need for WRITE_EXTERNAL_STORAGE
         if (ContextCompat.checkSelfPermission(
-                this,
-                CAMERA_PERMISSION
+                this, CAMERA_PERMISSION
             ) != PackageManager.PERMISSION_GRANTED
-        )
-            permissionsNeeded.add(CAMERA_PERMISSION)
+        ) permissionsNeeded.add(CAMERA_PERMISSION)
 
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, permissionsNeeded.toTypedArray(), 101)
@@ -468,19 +506,15 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // Android 13+
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    READ_MEDIA_IMAGES
+                    this, READ_MEDIA_IMAGES
                 ) != PackageManager.PERMISSION_GRANTED
-            )
-                permissionsNeeded.add(READ_MEDIA_IMAGES)
+            ) permissionsNeeded.add(READ_MEDIA_IMAGES)
         } else {
             // Android 12 and below
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    READ_EXTERNAL_STORAGE
+                    this, READ_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED
-            )
-                permissionsNeeded.add(READ_EXTERNAL_STORAGE)
+            ) permissionsNeeded.add(READ_EXTERNAL_STORAGE)
         }
 
         if (permissionsNeeded.isNotEmpty()) {
@@ -496,9 +530,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 

@@ -28,7 +28,7 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
 
         userDetail =
             Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
-        binding.tvUsername.text = userDetail?.firstName + " " + userDetail?.lastName
+        binding.tvUsername.text = userDetail?.driverFullName
 
         binding.rlDelivery.setOnClickListener {
             startActivity(Intent(this, DeliveryListActivity::class.java))

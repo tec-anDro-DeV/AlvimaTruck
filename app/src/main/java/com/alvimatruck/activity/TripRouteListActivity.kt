@@ -35,6 +35,11 @@ class TripRouteListActivity : BaseActivity<ActivityTripRouteListBinding>(), Rout
         return ActivityTripRouteListBinding.inflate(layoutInflater)
     }
 
+    override fun onResume() {
+        super.onResume()
+        Utils.isNewOrder = false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

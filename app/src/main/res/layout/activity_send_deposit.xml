@@ -73,48 +73,58 @@
                 android:textSize="@dimen/_12ssp"
                 app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/sanssemibold"
-                android:text="Invoice"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11ssp" />
-
             <LinearLayout
-                android:id="@+id/llInvoice"
+                android:id="@+id/llInvoiceData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_7sdp"
-                android:background="@drawable/input_bg"
                 android:orientation="vertical"
-                android:padding="@dimen/_10sdp" />
+                android:visibility="gone">
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/sansbold"
-                    android:text="Total:"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="Invoice"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_11ssp" />
 
-                <TextView
-                    android:id="@+id/tvtotal"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/llInvoice"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:fontFamily="@font/sansbold"
-                    android:text="ETB 0"
-                    android:textColor="@color/orange"
-                    android:textSize="@dimen/_14ssp" />
-            </RelativeLayout>
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/input_bg"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sansbold"
+                        android:text="Total:"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14ssp" />
+
+                    <TextView
+                        android:id="@+id/tvtotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/sansbold"
+                        android:text="ETB 0"
+                        android:textColor="@color/orange"
+                        android:textSize="@dimen/_14ssp" />
+                </RelativeLayout>
+
+            </LinearLayout>
 
 
             <View

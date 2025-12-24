@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.CustomerListAdapter
@@ -203,6 +204,17 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
             .putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
             .putExtra(Constants.TripStart, tripStart)
         openUpdateCustomer.launch(intent)
+    }
+
+    override fun handleBackPressed(callback: OnBackPressedCallback?) {
+        if (Utils.isNewOrder) {
+            val intent = Intent(this, TripRouteListActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+        } else {
+            super.handleBackPressed(callback)
+        }
     }
 
 

@@ -52,6 +52,7 @@ object Utils {
     var mLastClickTime: Long = 0
     var currentLocation: Location? = null
     var isTripInProgress: Boolean = false
+    var isNewOrder: Boolean = false
 
     private val ETHIOPIA_MOBILE_REGEX = Regex("^0[79]\\d{8}$")
     private val ETHIOPIA_ANY_LOCAL_REGEX = Regex("^0\\d{9}$")
@@ -460,5 +461,5 @@ data class TransferItem(
 )
 
 data class InvoiceItem(
-    var no: String, var price: Double
+    var no: String, var price: Double, var date: String
 )

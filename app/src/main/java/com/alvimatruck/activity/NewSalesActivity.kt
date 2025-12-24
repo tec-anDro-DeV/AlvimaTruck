@@ -86,7 +86,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             }
 
             binding.tvTelephoneNumber.text = number ?: ""
-            binding.tvSalesperson.text = userDetail?.firstName + " " + userDetail?.lastName
+            binding.tvSalesperson.text = userDetail?.driverFullName
             binding.tvLocationCode.text = userDetail?.salesPersonCode
             binding.tvPaymentCode.text = userDetail?.salesPersonCode
         }
@@ -261,6 +261,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                                 Toast.LENGTH_SHORT
                             ).show()
                             customerDetail!!.visitedToday = true
+                            Utils.isNewOrder = true
                             val intent = Intent()
                             intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
                             setResult(RESULT_OK, intent)

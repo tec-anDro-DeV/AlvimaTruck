@@ -81,12 +81,25 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvStockList"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginBottom="@dimen/_80sdp" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_12sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvStockList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="@dimen/_80sdp"
+                    android:nestedScrollingEnabled="false" />
+
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
 
 
     </LinearLayout>

@@ -35,7 +35,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         userDetail =
             Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
-        binding.tvUsername.text = userDetail?.firstName + " " + userDetail?.lastName
+        binding.tvUsername.text = userDetail?.driverFullName
         binding.rlBottomHome.setOnClickListener {
 //            binding.rlBottomHome.setBackgroundResource(R.drawable.orange_circle)
 //            binding.rlBottomTrip.setBackgroundResource(0)
