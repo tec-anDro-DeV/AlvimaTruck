@@ -451,7 +451,7 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
             ApiClient.getRestClient(
                 Constants.BASE_URL, ""
             )!!.webservices.customerPrice(
-                orderDetail!!.customerPriceGroup, selectedProduct!!.itemNo
+                "ADDIS_ADM", selectedProduct!!.itemNo
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(
                     call: Call<JsonObject>, response: Response<JsonObject>
@@ -545,6 +545,15 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
                                 productList = response.body()!!.getAsJsonArray("data").map {
                                     Gson().fromJson(it, VanStockDetail::class.java)
                                 } as ArrayList<VanStockDetail>
+                                productList?.forEach { vanStockItem ->
+                                    // Find the corresponding item in the order being edited
+                                    val orderItem =
+                                        orderList.find { it.itemNo == vanStockItem.itemNo }
+                                    if (orderItem != null) {
+                                        // Add the order quantity back to the available quantity
+                                        vanStockItem.qtyOnHand += orderItem.quantity
+                                    }
+                                }
                                 itemList.clear()
                                 for (item in productList!!) {
                                     val code = item.itemName

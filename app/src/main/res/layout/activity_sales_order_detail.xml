@@ -508,6 +508,19 @@
                 </RelativeLayout>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tvPostInvoice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_21sdp"
+                android:background="@drawable/rounded_button_orange"
+                android:fontFamily="@font/sansbold"
+                android:gravity="center"
+                android:padding="@dimen/_14sdp"
+                android:text="Post Invoice"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp" />
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

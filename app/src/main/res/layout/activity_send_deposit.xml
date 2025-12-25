@@ -143,20 +143,45 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
-            <TextView
-                android:id="@+id/tvPaymentMode"
+            <RadioGroup
+                android:id="@+id/rgPaymentMode"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_44sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_7sdp"
-                android:background="@drawable/input_bg"
-                android:fontFamily="@font/sansregular"
-                android:gravity="center_vertical"
-                android:hint="Choose"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/hintGary"
-                android:textSize="@dimen/_12ssp"
-                app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbCash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/orange"
+                    android:fontFamily="@font/sansregular"
+                    android:text="Cash"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp" />
+
+                <RadioButton
+                    android:id="@+id/rbCheque"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:buttonTint="@color/orange"
+                    android:fontFamily="@font/sansregular"
+                    android:text="Cheque"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp" />
+
+                <RadioButton
+                    android:id="@+id/rbOnline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:buttonTint="@color/orange"
+                    android:fontFamily="@font/sansregular"
+                    android:text="Online"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp" />
+            </RadioGroup>
 
             <TextView
                 android:layout_width="wrap_content"
