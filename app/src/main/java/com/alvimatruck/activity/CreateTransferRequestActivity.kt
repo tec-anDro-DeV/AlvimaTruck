@@ -348,46 +348,49 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
 
         tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
         tvConfirm.setOnClickListener { view: View? ->
-            when (textView) {
-                binding.tvCostCenter -> {
-                    selectedCostCenter = singleItemSelectionAdapter.selected
-                }
+            if (filterList!!.isNotEmpty()) {
+                when (textView) {
+                    binding.tvCostCenter -> {
+                        selectedCostCenter = singleItemSelectionAdapter.selected
+                    }
 
-                binding.tvProfitCenter -> {
-                    selectedProfitCenter = singleItemSelectionAdapter.selected
-                }
+                    binding.tvProfitCenter -> {
+                        selectedProfitCenter = singleItemSelectionAdapter.selected
+                    }
 
-                binding.tvItem -> {
-                    selectedItem = singleItemSelectionAdapter.selected
-                    for (item in productList!!) {
-                        if (item.itemName == singleItemSelectionAdapter.selected) {
-                            selectedProduct = item
+                    binding.tvItem -> {
+                        selectedItem = singleItemSelectionAdapter.selected
+                        for (item in productList!!) {
+                            if (item.itemName == singleItemSelectionAdapter.selected) {
+                                selectedProduct = item
+                            }
+                        }
+                        val existingOrder =
+                            requestList.find { it.itemNo == selectedProduct?.itemNo }
+                        if (existingOrder != null) {
+                            binding.etQuantity.setText(existingOrder.quantity.toString())
+                        } else {
+                            binding.etQuantity.setText("")
                         }
                     }
-                    val existingOrder = requestList.find { it.itemNo == selectedProduct?.itemNo }
-                    if (existingOrder != null) {
-                        binding.etQuantity.setText(existingOrder.quantity.toString())
-                    } else {
-                        binding.etQuantity.setText("")
-                    }
-                }
 
 
-                binding.tvTo -> {
-                    selectedToLocation = singleItemSelectionAdapter.selected
-                    for (item in locationList!!) {
-                        if (item.name == singleItemSelectionAdapter.selected) {
-                            selectedLocation = item
+                    binding.tvTo -> {
+                        selectedToLocation = singleItemSelectionAdapter.selected
+                        for (item in locationList!!) {
+                            if (item.name == singleItemSelectionAdapter.selected) {
+                                selectedLocation = item
+                            }
                         }
                     }
-                }
 
-                else -> {
-                    selectedInTransit = singleItemSelectionAdapter.selected
+                    else -> {
+                        selectedInTransit = singleItemSelectionAdapter.selected
+                    }
                 }
+                textView.text = singleItemSelectionAdapter.selected
+                dialog.dismiss()
             }
-            textView.text = singleItemSelectionAdapter.selected
-            dialog.dismiss()
         }
     }
 

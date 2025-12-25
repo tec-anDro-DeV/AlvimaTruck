@@ -1,6 +1,5 @@
 package com.alvimatruck.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,10 +17,9 @@ import com.alvimatruck.adapter.NewSalesItemListAdapter
 import com.alvimatruck.adapter.SingleItemSelectionAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
-import com.alvimatruck.databinding.ActivityNewSalesBinding
+import com.alvimatruck.databinding.ActivityEditSalesBinding
 import com.alvimatruck.interfaces.DeleteOrderListener
-import com.alvimatruck.model.request.NewOrderRequest
-import com.alvimatruck.model.responses.CustomerDetail
+import com.alvimatruck.model.responses.FullOrderDetail
 import com.alvimatruck.model.responses.SingleOrder
 import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.model.responses.VanStockDetail
@@ -36,7 +34,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderListener {
+class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderListener {
     // var locationCodeList: ArrayList<String> = ArrayList()
     //var paymentCodeList: ArrayList<String> = ArrayList()
     var itemList: ArrayList<String> = ArrayList()
@@ -46,7 +44,6 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
     // var selectedPaymentCode = ""
     var selectedItem = ""
     var selectedProduct: VanStockDetail? = null
-    var customerDetail: CustomerDetail? = null
     var userDetail: UserDetail? = null
 
     var minQty = 0
@@ -59,9 +56,11 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
 
     var productList: ArrayList<VanStockDetail>? = ArrayList()
 
+    var orderDetail: FullOrderDetail? = null
 
-    override fun inflateBinding(): ActivityNewSalesBinding {
-        return ActivityNewSalesBinding.inflate(layoutInflater)
+
+    override fun inflateBinding(): ActivityEditSalesBinding {
+        return ActivityEditSalesBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,29 +69,34 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+
         userDetail =
             Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
 
         if (intent != null) {
-            customerDetail = Gson().fromJson(
-                intent.getStringExtra(Constants.CustomerDetail).toString(),
-                CustomerDetail::class.java
+            orderDetail = Gson().fromJson(
+                intent.getStringExtra(Constants.OrderDetail).toString(),
+                FullOrderDetail::class.java
             )
-            binding.tvCustomer.text = customerDetail!!.searchName
-            val number = if (!customerDetail?.getFormattedContactNo().isNullOrBlank()) {
-                customerDetail?.getFormattedContactNo()
-            } else {
-                customerDetail?.getFormattedTelephoneNo()
-            }
+            binding.tvCustomer.text = orderDetail!!.customerName
+            binding.tvOrderId.text = orderDetail!!.orderId
+            orderList = orderDetail!!.lines
+//            val number = if (!customerDetail?.getFormattedContactNo().isNullOrBlank()) {
+//                customerDetail?.getFormattedContactNo()
+//            } else {
+//                customerDetail?.getFormattedTelephoneNo()
+//            }
 
-            binding.tvTelephoneNumber.text = number ?: ""
-            binding.tvSalesperson.text = userDetail?.driverFullName
-            binding.tvLocationCode.text = userDetail?.salesPersonCode
-            binding.tvPaymentCode.text = userDetail?.salesPersonCode
+//            binding.tvTelephoneNumber.text = number ?: ""
+//            binding.tvSalesperson.text = userDetail?.driverFullName
+//            binding.tvLocationCode.text = userDetail?.salesPersonCode
+//            binding.tvPaymentCode.text = userDetail?.salesPersonCode
         }
 
-        binding.tvPostingDate.text = Utils.getFullDateWithTime(System.currentTimeMillis())
-        binding.tvOrderDate.text = Utils.getFullDate(System.currentTimeMillis())
+        //   binding.tvPostingDate.text = Utils.getFullDateWithTime(System.currentTimeMillis())
+        binding.tvOrderDate.text = orderDetail!!.getRequestDate()
+
+
         //     binding.tvToken.text = System.currentTimeMillis().toString()
 
         //  getLocationCodeList()
@@ -123,19 +127,12 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             )
         }
 
-        binding.tvCancel.setOnClickListener {
-            handleBackPressed()
+        binding.tvDelete.setOnClickListener {
+            //handleBackPressed()
         }
 
         binding.tvConfirmOrder.setOnClickListener {
-            newOrderAPI()
-//            if (binding.tvLocationCode.text.toString().isEmpty()) {
-//                Toast.makeText(this, "Select Location Code", Toast.LENGTH_SHORT).show()
-//            } else if (binding.tvPaymentCode.text.toString().isEmpty()) {
-//                Toast.makeText(this, "Select Payment Code", Toast.LENGTH_SHORT).show()
-//            } else {
-//                newOrderAPI()
-//            }
+
         }
 
         binding.etQuantity.addTextChangedListener(object : TextWatcher {
@@ -147,7 +144,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 if (s.isNullOrEmpty()) return
                 if (s.toString().toInt() > selectedProduct!!.qtyOnHand) {
                     Toast.makeText(
-                        this@NewSalesActivity,
+                        this@EditSalesActivity,
                         "Only up to ${selectedProduct!!.qtyOnHand} units are available in the van ",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -240,80 +237,82 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
 
 
         newSalesItemListAdapter = NewSalesItemListAdapter(
-            this@NewSalesActivity, orderList, this@NewSalesActivity
+            this@EditSalesActivity, orderList, this@EditSalesActivity
         )
         binding.rvProducts.adapter = newSalesItemListAdapter
 
+        calculateFinalTotal()
+
 
     }
 
-    private fun newOrderAPI() {
-
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@NewSalesActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.newOrder(
-                NewOrderRequest(
-                    binding.tvCustomer.text.toString(),
-                    customerDetail!!.no,
-                    binding.tvTotal.text.toString().replace("ETB", "").toDouble(),
-                    orderList,
-                    userDetail?.salesPersonCode.toString(),
-                    userDetail?.salesPersonCode.toString(),
-                    binding.tvSubTotal.text.toString().replace("ETB", "").toDouble(),
-                    binding.tvVat.text.toString().replace("+ ETB", "").toDouble()
-                )
-            ).enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@NewSalesActivity)  // show dialog before logout
-                        return
-                    }
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            Toast.makeText(
-                                this@NewSalesActivity,
-                                response.body()!!.get("message").toString().replace('"', ' ')
-                                    .trim(),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            customerDetail!!.visitedToday = true
-                            Utils.isNewOrder = true
-                            val intent = Intent()
-                            intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
-                            setResult(RESULT_OK, intent)
-                            finish()
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@NewSalesActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@NewSalesActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
+//    private fun newOrderAPI() {
+//
+//        if (Utils.isOnline(this)) {
+//            ProgressDialog.start(this@EditSalesActivity)
+//            ApiClient.getRestClient(
+//                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+//            )!!.webservices.newOrder(
+//                NewOrderRequest(
+//                    binding.tvCustomer.text.toString(),
+//                    customerDetail!!.no,
+//                    binding.tvTotal.text.toString().replace("ETB", "").toDouble(),
+//                    orderList,
+//                    userDetail?.salesPersonCode.toString(),
+//                    userDetail?.salesPersonCode.toString(),
+//                    binding.tvSubTotal.text.toString().replace("ETB", "").toDouble(),
+//                    binding.tvVat.text.toString().replace("+ ETB", "").toDouble()
+//                )
+//            ).enqueue(object : Callback<JsonObject> {
+//                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+//                    ProgressDialog.dismiss()
+//                    if (response.code() == 401) {
+//                        Utils.forceLogout(this@EditSalesActivity)  // show dialog before logout
+//                        return
+//                    }
+//                    if (response.isSuccessful) {
+//                        try {
+//                            Log.d("TAG", "onResponse: " + response.body().toString())
+//                            Toast.makeText(
+//                                this@EditSalesActivity,
+//                                response.body()!!.get("message").toString().replace('"', ' ')
+//                                    .trim(),
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                            customerDetail!!.visitedToday = true
+//                            Utils.isNewOrder = true
+//                            val intent = Intent()
+//                            intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
+//                            setResult(RESULT_OK, intent)
+//                            finish()
+//
+//                        } catch (e: Exception) {
+//                            e.printStackTrace()
+//                        }
+//                    } else {
+//                        Toast.makeText(
+//                            this@EditSalesActivity,
+//                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+//                    Toast.makeText(
+//                        this@EditSalesActivity,
+//                        getString(R.string.api_fail_message),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    ProgressDialog.dismiss()
+//                }
+//            })
+//        } else {
+//            Toast.makeText(
+//                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+//            ).show()
+//        }
+//    }
 
     fun calculateFinalTotal() {
         var subtotal = 0.0
@@ -448,79 +447,79 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             binding.etSalesPrice.setText("")
         }
         if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@NewSalesActivity)
+            ProgressDialog.start(this@EditSalesActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, ""
             )!!.webservices.customerPrice(
-                customerDetail!!.customerPriceGroup!!, selectedProduct!!.itemNo
+                orderDetail!!.customerPriceGroup, selectedProduct!!.itemNo
             ).enqueue(object : Callback<JsonObject> {
-                    override fun onResponse(
-                        call: Call<JsonObject>, response: Response<JsonObject>
-                    ) {
-                        ProgressDialog.dismiss()
-                        if (response.code() == 204) {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            minQty = 1
-                            tempVat = 0.0
+                override fun onResponse(
+                    call: Call<JsonObject>, response: Response<JsonObject>
+                ) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 204) {
+                        Log.d("TAG", "onResponse: " + response.body().toString())
+                        minQty = 1
+                        tempVat = 0.0
 
-                            // API says price is not fixed -> Enable editing
-                            binding.etSalesPrice.isEnabled = true
+                        // API says price is not fixed -> Enable editing
+                        binding.etSalesPrice.isEnabled = true
 
-                            if (existingOrder != null) {
-                                // Restore User's values from Order List
-                                binding.etQuantity.setText(existingOrder.quantity.toString())
-                                binding.etSalesPrice.setText(existingOrder.unitPrice.toString())
-                                tempUnitPrice = existingOrder.unitPrice
-                            } else {
-                                binding.etQuantity.setText(minQty.toString())
-                            }
-                            return
+                        if (existingOrder != null) {
+                            // Restore User's values from Order List
+                            binding.etQuantity.setText(existingOrder.quantity.toString())
+                            binding.etSalesPrice.setText(existingOrder.unitPrice.toString())
+                            tempUnitPrice = existingOrder.unitPrice
+                        } else {
+                            binding.etQuantity.setText(minQty.toString())
                         }
-                        if (response.isSuccessful) {
-                            try {
-                                Log.d("TAG", "onCustomerItemPrice: " + response.body().toString())
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onCustomerItemPrice: " + response.body().toString())
 
-                                if (response.body() != null) {
-                                    minQty =
-                                        response.body()!!.asJsonObject.get("minimumQuantity").asInt
-                                    binding.etSalesPrice.isEnabled = false
-                                    tempUnitPrice =
-                                        response.body()!!.asJsonObject.get("unitPrice").asDouble
-                                    tempVat =
-                                        response.body()!!.asJsonObject.get("unitPriceInclVAT").asDouble
-                                    val finalPrice = tempUnitPrice + tempVat
-                                    binding.etSalesPrice.setText(finalPrice.toString())
+                            if (response.body() != null) {
+                                minQty =
+                                    response.body()!!.asJsonObject.get("minimumQuantity").asInt
+                                binding.etSalesPrice.isEnabled = false
+                                tempUnitPrice =
+                                    response.body()!!.asJsonObject.get("unitPrice").asDouble
+                                tempVat =
+                                    response.body()!!.asJsonObject.get("unitPriceInclVAT").asDouble
+                                val finalPrice = tempUnitPrice + tempVat
+                                binding.etSalesPrice.setText(finalPrice.toString())
 
-                                    if (existingOrder != null) {
-                                        binding.etQuantity.setText(existingOrder.quantity.toString())
-                                    } else {
-                                        binding.etQuantity.setText(minQty.toString())
-                                    }
-
-
+                                if (existingOrder != null) {
+                                    binding.etQuantity.setText(existingOrder.quantity.toString())
+                                } else {
+                                    binding.etQuantity.setText(minQty.toString())
                                 }
 
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        } else {
-                            Toast.makeText(
-                                this@NewSalesActivity,
-                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
 
-                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
                         Toast.makeText(
-                            this@NewSalesActivity,
-                            getString(R.string.api_fail_message),
+                            this@EditSalesActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
                             Toast.LENGTH_SHORT
                         ).show()
-                        ProgressDialog.dismiss()
                     }
-                })
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@EditSalesActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
         } else {
             Toast.makeText(
                 this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
@@ -528,43 +527,10 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
         }
     }
 
-//    private fun getLocationCodeList() {
-//        locationCodeList.clear()
-//
-//        val jsonString = SharedHelper.getKey(this, Constants.API_Location_Code)
-//
-//        if (jsonString.isNotEmpty()) {
-//            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
-//
-//            for (item in dataArray) {
-//                val code = item.asJsonObject.get("code")?.asString
-//                if (!code.isNullOrEmpty()) {
-//                    locationCodeList.add(code)
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun getPaymentCodeList() {
-//        paymentCodeList.clear()
-//
-//        val jsonString = SharedHelper.getKey(this, Constants.API_Payment_Code)
-//
-//        if (jsonString.isNotEmpty()) {
-//            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
-//
-//            for (item in dataArray) {
-//                val code = item.asJsonObject.get("code")?.asString
-//                if (!code.isNullOrEmpty()) {
-//                    paymentCodeList.add(code)
-//                }
-//            }
-//        }
-//    }
 
     private fun getItemList() {
         if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@NewSalesActivity)
+            ProgressDialog.start(this@EditSalesActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, ""
             )!!.webservices.vanStock(userDetail?.salesPersonCode!!)
@@ -591,7 +557,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                             }
                         } else {
                             Toast.makeText(
-                                this@NewSalesActivity,
+                                this@EditSalesActivity,
                                 Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -600,7 +566,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
 
                     override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                         Toast.makeText(
-                            this@NewSalesActivity,
+                            this@EditSalesActivity,
                             getString(R.string.api_fail_message),
                             Toast.LENGTH_SHORT
                         ).show()

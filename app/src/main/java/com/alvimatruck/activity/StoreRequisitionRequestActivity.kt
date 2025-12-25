@@ -199,30 +199,32 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
 
         tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
         tvConfirm.setOnClickListener { view: View? ->
-            when (textView) {
-                binding.tvCostCenter -> {
-                    selectedCostCenter = singleItemSelectionAdapter.selected
-                }
+            if (filterList!!.isNotEmpty()) {
+                when (textView) {
+                    binding.tvCostCenter -> {
+                        selectedCostCenter = singleItemSelectionAdapter.selected
+                    }
 
-                binding.tvProfitCenter -> {
-                    selectedProfitCenter = singleItemSelectionAdapter.selected
-                }
+                    binding.tvProfitCenter -> {
+                        selectedProfitCenter = singleItemSelectionAdapter.selected
+                    }
 
-                binding.tvItem -> {
-                    selectedItem = singleItemSelectionAdapter.selected
-                    for (item in productList!!) {
-                        if (item.description == singleItemSelectionAdapter.selected) {
-                            selectedProduct = item
+                    binding.tvItem -> {
+                        selectedItem = singleItemSelectionAdapter.selected
+                        for (item in productList!!) {
+                            if (item.description == singleItemSelectionAdapter.selected) {
+                                selectedProduct = item
+                            }
                         }
                     }
-                }
 
-                else -> {
-                    selectedInTransit = singleItemSelectionAdapter.selected
+                    else -> {
+                        selectedInTransit = singleItemSelectionAdapter.selected
+                    }
                 }
+                textView.text = singleItemSelectionAdapter.selected
+                dialog.dismiss()
             }
-            textView.text = singleItemSelectionAdapter.selected
-            dialog.dismiss()
         }
     }
 

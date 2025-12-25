@@ -73,6 +73,7 @@ class Constants {
         const val LONGITUDE = "longitude"
         const val CustomerDetail = "customer_detail"
         const val OrderID = "order_id"
+        const val OrderDetail = "order_detail"
 
     }
 

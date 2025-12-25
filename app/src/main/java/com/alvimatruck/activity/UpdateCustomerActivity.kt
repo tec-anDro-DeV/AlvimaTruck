@@ -76,11 +76,7 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
 
         binding.tvCity.setOnClickListener {
             dialogSingleSelection(
-                cityList!!,
-                "Choose City",
-                "Search City",
-                binding.tvCity,
-                binding.tvPostalCode
+                cityList!!, "Choose City", "Search City", binding.tvCity, binding.tvPostalCode
             )
         }
     }
@@ -150,15 +146,17 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
 
         tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
         tvConfirm.setOnClickListener { view: View? ->
-            selectedCity = singleItemSelectionAdapter.selected
+            if (filterList!!.isNotEmpty()) {
+                selectedCity = singleItemSelectionAdapter.selected
 
-            for (item in postalCodeList!!) {
-                if (item.city == singleItemSelectionAdapter.selected) {
-                    textView2?.text = item.code
+                for (item in postalCodeList!!) {
+                    if (item.city == singleItemSelectionAdapter.selected) {
+                        textView2?.text = item.code
+                    }
                 }
+                textView.text = singleItemSelectionAdapter.selected
+                dialog.dismiss()
             }
-            textView.text = singleItemSelectionAdapter.selected
-            dialog.dismiss()
         }
     }
 

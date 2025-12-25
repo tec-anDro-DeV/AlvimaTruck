@@ -94,12 +94,17 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         )
         binding.llCreditLimit.visibility = View.VISIBLE
 
-        if (customerDetail!!.status == "Pending" || !tripStart || customerDetail!!.visitedToday) {
-            //  binding.llCreditLimit.visibility = View.GONE
+        if (customerDetail!!.status == "Pending" || !tripStart) {
             binding.llBottomButtons.visibility = View.GONE
         } else {
-            //   binding.llCreditLimit.visibility = View.VISIBLE
             binding.llBottomButtons.visibility = View.VISIBLE
+        }
+
+
+        if (customerDetail!!.visitedToday) {
+            binding.tvVisited.visibility = View.GONE
+        } else {
+            binding.tvVisited.visibility = View.VISIBLE
         }
     }
 
@@ -111,14 +116,9 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 intent.getStringExtra(Constants.CustomerDetail).toString(),
                 CustomerDetail::class.java
             )
-            tripStart = intent.getBooleanExtra(Constants.TripStart, false)
+            // tripStart = intent.getBooleanExtra(Constants.TripStart, false)
             showUpdatedData()
 
-//            if (customerDetail!!.visitedToday) {
-//                binding.tvVisited.visibility = View.GONE
-//            } else {
-//                binding.tvVisited.visibility = View.VISIBLE
-//            }
 
 
         }

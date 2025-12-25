@@ -264,15 +264,17 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
         tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
         tvConfirm.setOnClickListener { view: View? ->
-            selectedItem = singleItemSelectionAdapter.selected
-            for (item in customerList!!) {
-                if (item.searchName == singleItemSelectionAdapter.selected) {
-                    selectedCustomer = item
+            if (filterList!!.isNotEmpty()) {
+                selectedItem = singleItemSelectionAdapter.selected
+                for (item in customerList!!) {
+                    if (item.searchName == singleItemSelectionAdapter.selected) {
+                        selectedCustomer = item
+                    }
                 }
+                textView.text = singleItemSelectionAdapter.selected
+                binding.llInvoiceData.visibility = View.VISIBLE
+                dialog.dismiss()
             }
-            textView.text = singleItemSelectionAdapter.selected
-            binding.llInvoiceData.visibility = View.VISIBLE
-            dialog.dismiss()
         }
     }
 

@@ -1,5 +1,6 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -46,6 +47,14 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
             handleBackPressed()
         }
 
+        binding.btnEdit.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    EditSalesActivity::class.java
+                ).putExtra(Constants.OrderDetail, Gson().toJson(orderDetail))
+            )
+        }
         binding.rvProducts.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 

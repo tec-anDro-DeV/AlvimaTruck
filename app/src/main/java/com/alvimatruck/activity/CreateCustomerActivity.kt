@@ -439,27 +439,29 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
         tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
         tvConfirm.setOnClickListener { view: View? ->
-            when (textView) {
-                binding.tvCustomerPriceGroup -> {
-                    selectedPriceGroup = singleItemSelectionAdapter.selected
-                }
+            if (filterList!!.isNotEmpty()) {
+                when (textView) {
+                    binding.tvCustomerPriceGroup -> {
+                        selectedPriceGroup = singleItemSelectionAdapter.selected
+                    }
 
-                binding.tvCity -> {
-                    selectedCity = singleItemSelectionAdapter.selected
+                    binding.tvCity -> {
+                        selectedCity = singleItemSelectionAdapter.selected
 
-                    for (item in postalCodeList!!) {
-                        if (item.city == singleItemSelectionAdapter.selected) {
-                            textView2?.text = item.code
+                        for (item in postalCodeList) {
+                            if (item.city == singleItemSelectionAdapter.selected) {
+                                textView2?.text = item.code
+                            }
                         }
                     }
-                }
 
-                else -> {
-                    selectedPostGroup = singleItemSelectionAdapter.selected
+                    else -> {
+                        selectedPostGroup = singleItemSelectionAdapter.selected
+                    }
                 }
+                textView.text = singleItemSelectionAdapter.selected
+                dialog.dismiss()
             }
-            textView.text = singleItemSelectionAdapter.selected
-            dialog.dismiss()
         }
     }
 

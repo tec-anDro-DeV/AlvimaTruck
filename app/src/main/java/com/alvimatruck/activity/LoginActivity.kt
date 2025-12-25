@@ -271,10 +271,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
         tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
         tvConfirm.setOnClickListener { view: View? ->
-            selectedVan = vanItemSelectionAdapter.selected!!
-            binding.tvVanNumber.text = vanItemSelectionAdapter.selected!!.vanNo
-            binding.tvPersonName.text = vanItemSelectionAdapter.selected!!.salesPerson
-            dialog.dismiss()
+            if (filterList!!.isNotEmpty()) {
+                selectedVan = vanItemSelectionAdapter.selected!!
+                binding.tvVanNumber.text = vanItemSelectionAdapter.selected!!.vanNo
+                binding.tvPersonName.text = vanItemSelectionAdapter.selected!!.salesPerson
+                dialog.dismiss()
+            }
+
         }
     }
 

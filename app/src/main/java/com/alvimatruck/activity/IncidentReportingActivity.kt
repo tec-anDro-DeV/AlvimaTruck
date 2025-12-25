@@ -278,9 +278,11 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
 
         tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
         tvConfirm.setOnClickListener { view: View? ->
-            selectedType = singleItemSelectionAdapter.selected
-            textView.text = singleItemSelectionAdapter.selected
-            dialog.dismiss()
+            if (filterList!!.isNotEmpty()) {
+                selectedType = singleItemSelectionAdapter.selected
+                textView.text = singleItemSelectionAdapter.selected
+                dialog.dismiss()
+            }
         }
     }
 
