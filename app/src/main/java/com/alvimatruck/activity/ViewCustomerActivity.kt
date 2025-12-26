@@ -94,18 +94,67 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         )
         binding.llCreditLimit.visibility = View.VISIBLE
 
-        if (customerDetail!!.status == "Pending" || !tripStart) {
-            binding.llBottomButtons.visibility = View.GONE
-        } else {
-            binding.llBottomButtons.visibility = View.VISIBLE
-        }
-
-
         if (customerDetail!!.visitedToday) {
             binding.tvVisited.visibility = View.GONE
         } else {
             binding.tvVisited.visibility = View.VISIBLE
         }
+    }
+
+    private fun checkTripStatusAPI() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@ViewCustomerActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.routeCheck(
+                customerDetail!!.routeName
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@ViewCustomerActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            tripStart =
+                                response.body()!!.get("data").asJsonObject.get("success").asBoolean
+
+                            if (customerDetail!!.status == "Pending" || !tripStart) {
+                                binding.llBottomButtons.visibility = View.GONE
+                            } else {
+                                binding.llBottomButtons.visibility = View.VISIBLE
+                            }
+
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@ViewCustomerActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@ViewCustomerActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,10 +165,9 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 intent.getStringExtra(Constants.CustomerDetail).toString(),
                 CustomerDetail::class.java
             )
-            // tripStart = intent.getBooleanExtra(Constants.TripStart, false)
             showUpdatedData()
 
-
+            checkTripStatusAPI()
 
         }
 
@@ -198,7 +246,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 rgReason.addView(radioButton)
 
                 // Add Divider Line (except for the last item)
-                if (index < reasonList!!.size - 1) {
+                if (index < reasonList.size - 1) {
                     val divider = View(this).apply {
                         layoutParams = LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,

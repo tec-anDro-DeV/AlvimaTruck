@@ -77,7 +77,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                 Intent(
                     this,
                     CustomersActivity::class.java
-                ).putExtra(Constants.RouteDetail, "").putExtra(Constants.TripStart, false)
+                ).putExtra(Constants.RouteDetail, "")
             )
         }
 

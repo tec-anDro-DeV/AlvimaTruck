@@ -34,7 +34,6 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
     var routeName = ""
     var customerList: ArrayList<CustomerDetail>? = ArrayList()
     var filterList: ArrayList<CustomerDetail>? = ArrayList()
-    var tripStart: Boolean = false
 
 
     private val openUpdateCustomer =
@@ -70,7 +69,6 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
 
         if (intent != null) {
             routeName = intent.getStringExtra(Constants.RouteDetail).toString()
-            tripStart = intent.getBooleanExtra(Constants.TripStart, false)
         }
 
 
@@ -202,7 +200,6 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
     override fun onCustomerClick(customerDetail: CustomerDetail) {
         val intent = Intent(this, ViewCustomerActivity::class.java)
             .putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
-            .putExtra(Constants.TripStart, tripStart)
         openUpdateCustomer.launch(intent)
     }
 

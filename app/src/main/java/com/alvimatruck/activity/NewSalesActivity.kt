@@ -262,7 +262,8 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                     userDetail?.salesPersonCode.toString(),
                     userDetail?.salesPersonCode.toString(),
                     binding.tvSubTotal.text.toString().replace("ETB", "").toDouble(),
-                    binding.tvVat.text.toString().replace("+ ETB", "").toDouble()
+                    binding.tvVat.text.toString().replace("+ ETB", "").toDouble(),
+                    customerDetail!!.customerPriceGroup.toString()
                 )
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -454,73 +455,73 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             )!!.webservices.customerPrice(
                 customerDetail!!.customerPriceGroup!!, selectedProduct!!.itemNo
             ).enqueue(object : Callback<JsonObject> {
-                    override fun onResponse(
-                        call: Call<JsonObject>, response: Response<JsonObject>
-                    ) {
-                        ProgressDialog.dismiss()
-                        if (response.code() == 204) {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            minQty = 1
-                            tempVat = 0.0
+                override fun onResponse(
+                    call: Call<JsonObject>, response: Response<JsonObject>
+                ) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 204) {
+                        Log.d("TAG", "onResponse: " + response.body().toString())
+                        minQty = 1
+                        tempVat = 0.0
 
-                            // API says price is not fixed -> Enable editing
-                            binding.etSalesPrice.isEnabled = true
+                        // API says price is not fixed -> Enable editing
+                        binding.etSalesPrice.isEnabled = true
 
-                            if (existingOrder != null) {
-                                // Restore User's values from Order List
-                                binding.etQuantity.setText(existingOrder.quantity.toString())
-                                binding.etSalesPrice.setText(existingOrder.unitPrice.toString())
-                                tempUnitPrice = existingOrder.unitPrice
-                            } else {
-                                binding.etQuantity.setText(minQty.toString())
-                            }
-                            return
+                        if (existingOrder != null) {
+                            // Restore User's values from Order List
+                            binding.etQuantity.setText(existingOrder.quantity.toString())
+                            binding.etSalesPrice.setText(existingOrder.unitPrice.toString())
+                            tempUnitPrice = existingOrder.unitPrice
+                        } else {
+                            binding.etQuantity.setText(minQty.toString())
                         }
-                        if (response.isSuccessful) {
-                            try {
-                                Log.d("TAG", "onCustomerItemPrice: " + response.body().toString())
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onCustomerItemPrice: " + response.body().toString())
 
-                                if (response.body() != null) {
-                                    minQty =
-                                        response.body()!!.asJsonObject.get("minimumQuantity").asInt
-                                    binding.etSalesPrice.isEnabled = false
-                                    tempUnitPrice =
-                                        response.body()!!.asJsonObject.get("unitPrice").asDouble
-                                    tempVat =
-                                        response.body()!!.asJsonObject.get("unitPriceInclVAT").asDouble
-                                    val finalPrice = tempUnitPrice + tempVat
-                                    binding.etSalesPrice.setText(finalPrice.toString())
+                            if (response.body() != null) {
+                                minQty =
+                                    response.body()!!.asJsonObject.get("minimumQuantity").asInt
+                                binding.etSalesPrice.isEnabled = false
+                                tempUnitPrice =
+                                    response.body()!!.asJsonObject.get("unitPrice").asDouble
+                                tempVat =
+                                    response.body()!!.asJsonObject.get("unitPriceInclVAT").asDouble
+                                val finalPrice = tempUnitPrice + tempVat
+                                binding.etSalesPrice.setText(finalPrice.toString())
 
-                                    if (existingOrder != null) {
-                                        binding.etQuantity.setText(existingOrder.quantity.toString())
-                                    } else {
-                                        binding.etQuantity.setText(minQty.toString())
-                                    }
-
-
+                                if (existingOrder != null) {
+                                    binding.etQuantity.setText(existingOrder.quantity.toString())
+                                } else {
+                                    binding.etQuantity.setText(minQty.toString())
                                 }
 
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        } else {
-                            Toast.makeText(
-                                this@NewSalesActivity,
-                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
 
-                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
                         Toast.makeText(
                             this@NewSalesActivity,
-                            getString(R.string.api_fail_message),
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
                             Toast.LENGTH_SHORT
                         ).show()
-                        ProgressDialog.dismiss()
                     }
-                })
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@NewSalesActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
         } else {
             Toast.makeText(
                 this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT

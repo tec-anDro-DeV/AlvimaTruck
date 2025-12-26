@@ -10,5 +10,6 @@ data class NewOrderRequest(
     val locationCode: String,
     val paymentCode: String,
     val subTotal: Double,
-    val totalVat: Double
+    val totalVat: Double,
+    val customerPriceGroup: String
 )

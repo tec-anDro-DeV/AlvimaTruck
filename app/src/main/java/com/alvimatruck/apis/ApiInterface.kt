@@ -86,6 +86,11 @@ interface ApiInterface {
         @Query("transferFromCode") transferFromCode: String,
     ): Call<JsonObject>
 
+    @GET(Constants.API_Check_Route)
+    fun routeCheck(
+        @Query("route") route: String,
+    ): Call<JsonObject>
+
     @GET(Constants.API_Order_Detail + "/{orderId}")
     fun orderDetail(
         @Path("orderId") orderId: String

@@ -342,14 +342,12 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
         }
 
         binding.llCustomer.setOnClickListener {
-            val tripStart: Boolean = status == "InProgress"
-
             startActivity(
                 Intent(
                     this,
                     CustomersActivity::class.java
                 ).putExtra(Constants.RouteDetail, routeDetail!!.routeName)
-                    .putExtra(Constants.TripStart, tripStart)
+
             )
 
         }
