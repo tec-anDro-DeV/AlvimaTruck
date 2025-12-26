@@ -116,7 +116,7 @@
                         android:background="@drawable/bg_status_green"
                         android:fontFamily="@font/sanssemibold"
                         android:paddingVertical="@dimen/_5sdp"
-                        android:text="Delivered"
+                        tools:text="Delivered"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_11ssp" />
@@ -163,7 +163,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansbold"
-                        android:text="INV-115146"
+                        tools:text="INV-115146"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
 

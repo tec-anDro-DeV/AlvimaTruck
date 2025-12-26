@@ -89,7 +89,7 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
                             }
                             binding.tvOrderId.text = orderDetail!!.orderId
                             binding.tvInvoice.text =
-                                orderDetail!!.invoiceNo.takeIf { it.isNotEmpty() } ?: "-"
+                                orderDetail!!.invoiceNo.takeIf { it.isNullOrEmpty() } ?: "-"
                             binding.tvCustomerName.text = orderDetail!!.customerName
                             binding.tvContactNumber.text = orderDetail!!.getFormattedContactNo()
                             binding.tvAddress.text = orderDetail!!.getFullAddress()
@@ -102,6 +102,16 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
                             binding.tvSubTotal.text = "ETB " + orderDetail!!.subtotal.to2Decimal()
                             binding.tvVat.text = "+ " + "ETB " + orderDetail!!.vat.to2Decimal()
                             binding.tvTotal.text = "ETB " + orderDetail!!.total.to2Decimal()
+
+                            if (orderDetail!!.invoiceNo == null || orderDetail!!.invoiceNo == "") {
+                                binding.tvStatus.text = "Open"
+                                binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
+                            } else {
+                                binding.tvStatus.text = "Delivered"
+                                binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
+                            }
+
+
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

@@ -10,9 +10,11 @@ data class OrderDetail(
     val customerName: String,
     val orderDate: String,
     val orderId: String,
+    val dotNetOrderId: String,
     val routeName: String,
     val status: String,
-    val subTotal: Double
+    val subTotal: Double,
+    val invoiceNo: String?
 ) {
     fun subTotal(): String {
         return "ETB " + subTotal.to2Decimal()

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.alvimatruck.R
 import com.alvimatruck.activity.SalesOrderDetailActivity
 import com.alvimatruck.databinding.SingleOrderItemBinding
 import com.alvimatruck.model.responses.OrderDetail
@@ -29,8 +30,16 @@ class SalesOrderListAdapter(
         holder.itemView.setOnClickListener {
             mActivity.startActivity(
                 Intent(mActivity, SalesOrderDetailActivity::class.java)
-                    .putExtra(Constants.OrderID, list[position].orderId)
+                    .putExtra(Constants.OrderID, list[position].dotNetOrderId)
             )
+        }
+
+        if (list[position].invoiceNo == null || list[position].invoiceNo == "") {
+            holder.binding.tvStatus.text = "Open"
+            holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
+        } else {
+            holder.binding.tvStatus.text = "Delivered"
+            holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
         }
 
     }

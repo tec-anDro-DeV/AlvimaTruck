@@ -11,7 +11,7 @@ data class FullOrderDetail(
     val contactNumber: String?,
     val customerName: String,
     val customerPriceGroup: String,
-    val invoiceNo: String,
+    val invoiceNo: String?,
     val lines: ArrayList<SingleOrder>,
     val orderDate: String,
     val orderId: String,

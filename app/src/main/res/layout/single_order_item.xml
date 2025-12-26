@@ -33,7 +33,7 @@
                 android:layout_marginStart="@dimen/_11sdp"
                 android:layout_toEndOf="@id/ivStock"
                 android:fontFamily="@font/sansbold"
-                android:text="@{detail.orderId}"
+                android:text="@{detail.dotNetOrderId}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp"
                 tools:text="Order ID" />
@@ -65,7 +65,7 @@
                 android:background="@drawable/bg_status_green"
                 android:fontFamily="@font/sanssemibold"
                 android:paddingVertical="@dimen/_5sdp"
-                android:text="Delivered"
+                tools:text="Delivered"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_11ssp" />
