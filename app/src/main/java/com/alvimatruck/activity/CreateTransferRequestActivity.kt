@@ -122,14 +122,16 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
 
         binding.tvAdd.setOnClickListener {
             if (binding.tvItem.text.toString().isEmpty()) {
-                Toast.makeText(this, "Please select Item", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.please_select_item), Toast.LENGTH_SHORT)
+                    .show()
             } else if (binding.etQuantity.text.toString().isEmpty()) {
-                Toast.makeText(this, "Enter Quantity", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.enter_quantity), Toast.LENGTH_SHORT).show()
             } else if (binding.etQuantity.text.toString().toInt() > selectedProduct!!.qtyOnHand) {
                 Toast.makeText(
-                    this,
-                    "Only up to ${selectedProduct!!.qtyOnHand} units are available for transfer",
-                    Toast.LENGTH_SHORT
+                    this, getString(
+                        R.string.only_up_to_units_are_available_for_transfer,
+                        selectedProduct!!.qtyOnHand
+                    ), Toast.LENGTH_SHORT
                 ).show()
             } else {
                 val qty = binding.etQuantity.text.toString().toInt()
@@ -177,13 +179,21 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
 
         binding.tvCreateTransferRequest.setOnClickListener {
             if (binding.tvProfitCenter.text.toString().isEmpty()) {
-                Toast.makeText(this, "Please select Profit Center", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_select_profit_center), Toast.LENGTH_SHORT
+                ).show()
             } else if (binding.tvCostCenter.text.toString().isEmpty()) {
-                Toast.makeText(this, "Please select Cost Center", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_select_cost_center), Toast.LENGTH_SHORT
+                ).show()
             } else if (binding.tvTo.text.toString().isEmpty()) {
-                Toast.makeText(this, "Please select To Location", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_select_to_location), Toast.LENGTH_SHORT
+                ).show()
             } else if (binding.tvInTransit.text.toString().isEmpty()) {
-                Toast.makeText(this, "Please select In Transit", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_select_in_transit), Toast.LENGTH_SHORT
+                ).show()
             } else {
                 transferRequestAPI()
             }
@@ -402,8 +412,7 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
             )!!.webservices.vanStock(userDetail?.salesPersonCode!!)
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
-                        call: Call<JsonObject>,
-                        response: Response<JsonObject>
+                        call: Call<JsonObject>, response: Response<JsonObject>
                     ) {
                         ProgressDialog.dismiss()
                         if (response.isSuccessful) {
@@ -442,9 +451,7 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
                 })
         } else {
             Toast.makeText(
-                this,
-                getString(R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
     }

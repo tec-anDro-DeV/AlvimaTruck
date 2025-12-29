@@ -39,9 +39,7 @@ class LocationService : Service() {
     private var handler: Handler? = null
 
     private var liveCallback: ((Double, Double) -> Unit)? = null
-    fun setLocationCallback(cb: (Double, Double) -> Unit) {
-        liveCallback = cb
-    }
+
 
     override fun onBind(i: Intent?) = LocalBinder()
     inner class LocalBinder : Binder() {
@@ -58,8 +56,9 @@ class LocationService : Service() {
         handler = Handler(serviceLooper!!)
 
         // Keep CPU awake even if screen OFF (offline tracking)
-        wakeLock = (getSystemService(POWER_SERVICE) as PowerManager)
-            .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Alvima:GPS_LOCK")
+        wakeLock = (getSystemService(POWER_SERVICE) as PowerManager).newWakeLock(
+            PowerManager.PARTIAL_WAKE_LOCK, "Alvima:GPS_LOCK"
+        )
         wakeLock.acquire()
 
         //startNotification()
@@ -104,10 +103,8 @@ class LocationService : Service() {
 
         // 2️⃣ Fused Provider (Fast when internet/wifi available)
         val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000L)
-            .setMinUpdateIntervalMillis(2500L)
-            .setGranularity(Granularity.GRANULARITY_FINE)
-            .setWaitForAccurateLocation(false)
-            .build()
+            .setMinUpdateIntervalMillis(2500L).setGranularity(Granularity.GRANULARITY_FINE)
+            .setWaitForAccurateLocation(false).build()
 
         fusedCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
@@ -146,16 +143,13 @@ class LocationService : Service() {
         val intent = packageManager.getLaunchIntentForPackage(packageName)
         val pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-        val n = NotificationCompat.Builder(this, id)
-            .setSmallIcon(R.drawable.logo)
-            .setContentTitle("GPS Active")
-            .setContentText("Tracking offline/online…")
-            .setOngoing(true)
-            .setContentIntent(pi)
-            .build()
+        val n = NotificationCompat.Builder(this, id).setSmallIcon(R.drawable.logo)
+            .setContentTitle("GPS Active").setContentText("Tracking offline/online…")
+            .setOngoing(true).setContentIntent(pi).build()
 
-        if (Build.VERSION.SDK_INT >= 34)
-            startForeground(1, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION)
+        if (Build.VERSION.SDK_INT >= 34) startForeground(
+            1, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
+        )
         else startForeground(1, n)
     }
 

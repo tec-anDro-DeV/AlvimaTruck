@@ -16,13 +16,12 @@ class SharedHelper {
             editor!!.putString(Key, Value)
             editor!!.apply()
         }
-    
+
 
         fun getKey(context: Context, Key: String?): String {
-            var data = ""
             sharedPreferences =
                 context.getSharedPreferences("AlvimaTruck_preferances", Context.MODE_PRIVATE)
-            data = sharedPreferences!!.getString(Key, "").toString()
+            val data: String = sharedPreferences!!.getString(Key, "").toString()
             return data
         }
 
@@ -39,13 +38,6 @@ class SharedHelper {
             sharedPreferences =
                 context.getSharedPreferences("AlvimaTruck_preferances", Context.MODE_PRIVATE)
             return sharedPreferences!!.getBoolean(Key, false)
-        }
-
-
-        fun clearSharedPreferences(context: Context) {
-            sharedPreferences =
-                context.getSharedPreferences("AlvimaTruck_preferances", Context.MODE_PRIVATE)
-            sharedPreferences!!.edit().clear().apply()
         }
 
     }

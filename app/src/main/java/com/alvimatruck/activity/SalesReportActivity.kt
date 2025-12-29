@@ -92,13 +92,14 @@ class SalesReportActivity : BaseActivity<ActivitySalesReportBinding>() {
                 binding.tvDateRangePicker.text = "$start — $end"
                 dialog.dismiss()
             } else {
-                Toast.makeText(this, "Please select a date range", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_select_a_date_range), Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
         dialog.show()
-        val width =
-            (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
         dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
     }
 }

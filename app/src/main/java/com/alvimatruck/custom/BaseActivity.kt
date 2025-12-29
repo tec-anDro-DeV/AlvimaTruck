@@ -1,7 +1,6 @@
 package com.alvimatruck.custom
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -21,6 +20,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.viewbinding.ViewBinding
+import com.alvimatruck.R
 import com.alvimatruck.service.AlvimaTuckApplication
 
 abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
@@ -70,9 +70,7 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     fun checkAndStartLocationService() {
 
         // 1️⃣ Location permission not granted → Ask
-        if (!hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
-            !hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-        ) {
+        if (!hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) || !hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
             requestPermissions(
                 arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -83,17 +81,14 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         }
 
         // 2️⃣ Background permission (Android 10+)
-        if (!hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-        ) {
+        if (!hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
             requestPermissions(
                 arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION), 101
             )
             return
         }
 
-        if (Build.VERSION.SDK_INT >= 33 &&
-            !hasPermission(Manifest.permission.POST_NOTIFICATIONS)
-        ) {
+        if (Build.VERSION.SDK_INT >= 33 && !hasPermission(Manifest.permission.POST_NOTIFICATIONS)) {
             requestPermissions(
                 arrayOf(Manifest.permission.POST_NOTIFICATIONS), 103
             )
@@ -101,9 +96,7 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         }
 
         // 3️⃣ Special foreground location service permission (Android 14+)
-        if (Build.VERSION.SDK_INT >= 34 &&
-            !hasPermission(Manifest.permission.FOREGROUND_SERVICE_LOCATION)
-        ) {
+        if (Build.VERSION.SDK_INT >= 34 && !hasPermission(Manifest.permission.FOREGROUND_SERVICE_LOCATION)) {
             requestPermissions(
                 arrayOf(Manifest.permission.FOREGROUND_SERVICE_LOCATION), 102
             )
@@ -119,7 +112,7 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     }
 
     private fun checkBatteryOptimization() {
-        val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
+        val pm = getSystemService(POWER_SERVICE) as PowerManager
 
         if (!pm.isIgnoringBatteryOptimizations(packageName)) {
             showBatteryOptimizationDialog()
@@ -127,14 +120,11 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     }
 
     private fun showBatteryOptimizationDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Allow Background Location Access")
+        AlertDialog.Builder(this).setTitle("Allow Background Location Access")
             .setMessage("To track location offline, set Battery → Unrestricted for this app.")
             .setPositiveButton("Open Settings") { _, _ ->
                 openBatterySettings()
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+            }.setNegativeButton("Cancel", null).show()
     }
 
     private fun openBatterySettings() {
@@ -161,7 +151,9 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
                 checkAndStartLocationService()
             }, 1000) // Wait 1 second after user clicks "Allow"
         } else {
-            Toast.makeText(this, "Location permission required", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this, getString(R.string.location_permission_required), Toast.LENGTH_LONG
+            ).show()
         }
     }
 }

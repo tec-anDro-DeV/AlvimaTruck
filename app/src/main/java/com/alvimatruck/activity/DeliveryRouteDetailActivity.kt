@@ -61,10 +61,8 @@ class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBind
                 val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
 
 
-                val dialog = AlertDialog.Builder(this)
-                    .setView(alertLayout)
-                    .setCancelable(false)
-                    .create()
+                val dialog =
+                    AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
                 dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
 
@@ -73,7 +71,9 @@ class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBind
                 }
                 btnSubmit.setOnClickListener {
                     if (etStartKm.text.toString().isEmpty()) {
-                        Toast.makeText(this, "Please enter start km", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this, getString(R.string.please_enter_start_km), Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         dialog.dismiss()
                         // startTripAPI(etStartKm.text.toString())
@@ -93,10 +93,8 @@ class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBind
                 val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
 
 
-                val dialog = AlertDialog.Builder(this)
-                    .setView(alertLayout)
-                    .setCancelable(false)
-                    .create()
+                val dialog =
+                    AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
                 dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
 
@@ -105,15 +103,17 @@ class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBind
                 }
                 btnSubmit.setOnClickListener {
                     if (etEndKm.text.toString().isEmpty()) {
-                        Toast.makeText(this, "Please enter end km", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            this, getString(R.string.please_enter_end_km), Toast.LENGTH_SHORT
+                        ).show()
                     } else if (etEndKm.text.toString()
                             .toInt() <= binding.tvVanStartKilometer.text.toString().toInt()
                     ) {
                         Toast.makeText(
                             this,
-                            "End km should be greater than start km",
+                            getString(R.string.end_km_should_be_greater_than_start_km),
                             Toast.LENGTH_SHORT
-                        )
+                        ).show()
                     } else {
                         dialog.dismiss()
                         //endTripAPI(etEndKm.text.toString())
@@ -161,25 +161,21 @@ class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBind
                     id = View.generateViewId() // Generate unique ID
                     setTextColor(
                         ContextCompat.getColor(
-                            this@DeliveryRouteDetailActivity,
-                            R.color.black
+                            this@DeliveryRouteDetailActivity, R.color.black
                         )
                     )
                     buttonTintList = ColorStateList.valueOf(
                         ContextCompat.getColor(
-                            this@DeliveryRouteDetailActivity,
-                            R.color.orange
+                            this@DeliveryRouteDetailActivity, R.color.orange
                         )
                     )
                     setPadding(padding, padding, padding, padding)
                     typeface = typefaceRegular
                     setTextSize(
-                        TypedValue.COMPLEX_UNIT_PX,
-                        textSize
+                        TypedValue.COMPLEX_UNIT_PX, textSize
                     ) // Uncomment if you want exact SSP sizing logic
                     layoutParams = RadioGroup.LayoutParams(
-                        RadioGroup.LayoutParams.MATCH_PARENT,
-                        RadioGroup.LayoutParams.WRAP_CONTENT
+                        RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT
                     ).apply {
                         marginStart = padding
                     }
@@ -196,8 +192,7 @@ class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBind
                         )
                         setBackgroundColor(
                             ContextCompat.getColor(
-                                this@DeliveryRouteDetailActivity,
-                                R.color.gray
+                                this@DeliveryRouteDetailActivity, R.color.gray
                             )
                         )
                     }
@@ -225,10 +220,8 @@ class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBind
             }
 
 
-            val dialog = AlertDialog.Builder(this)
-                .setView(alertLayout)
-                .setCancelable(false)
-                .create()
+            val dialog =
+                AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
             dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
 
@@ -246,7 +239,9 @@ class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBind
                     if (selectedOption == "Other") {
                         val writtenReason = etAddReason.text.toString().trim()
                         if (writtenReason.isEmpty()) {
-                            Toast.makeText(this, "Please write a reason", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this, getString(R.string.please_write_a_reason), Toast.LENGTH_SHORT
+                            ).show()
                             return@setOnClickListener // Stop execution, don't dismiss dialog
                         }
                         finalReason = writtenReason
@@ -256,12 +251,13 @@ class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBind
                     dialog.dismiss()
                     // cancelTripAPI(finalReason)
                 } else {
-                    Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this, getString(R.string.please_select_a_reason), Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             dialog.show()
-            val width =
-                (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+            val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
 
@@ -271,8 +267,7 @@ class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBind
 
             startActivity(
                 Intent(
-                    this,
-                    DeliveryListActivity::class.java
+                    this, DeliveryListActivity::class.java
                 )
 //                    .putExtra(Constants.RouteDetail, routeDetail!!.routeName)
 //                    .putExtra(Constants.TripStart, tripStart)

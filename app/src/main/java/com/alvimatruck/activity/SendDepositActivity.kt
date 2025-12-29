@@ -333,7 +333,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     Toast.makeText(
                         this@SendDepositActivity,
-                        getString(com.alvimatruck.R.string.api_fail_message),
+                        getString(R.string.api_fail_message),
                         Toast.LENGTH_SHORT
                     ).show()
                     ProgressDialog.dismiss()
@@ -341,9 +341,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             })
         } else {
             Toast.makeText(
-                this,
-                getString(com.alvimatruck.R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
 
@@ -542,7 +540,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
                 102 -> openGallery()
             }
         } else {
-            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
         }
     }
 }

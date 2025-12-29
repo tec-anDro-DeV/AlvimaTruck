@@ -118,17 +118,13 @@ class FleetManagementActivity : BaseActivity<ActivityFleetManagementBinding>() {
                                     }
 
                                     if (logList!![0].status == "Approved") {
-                                        binding.tvStatus.background =
-                                            ContextCompat.getDrawable(
-                                                this@FleetManagementActivity,
-                                                R.drawable.bg_status_green
-                                            )
+                                        binding.tvStatus.background = ContextCompat.getDrawable(
+                                            this@FleetManagementActivity, R.drawable.bg_status_green
+                                        )
                                     } else {
-                                        binding.tvStatus.background =
-                                            ContextCompat.getDrawable(
-                                                this@FleetManagementActivity,
-                                                R.drawable.bg_status_red
-                                            )
+                                        binding.tvStatus.background = ContextCompat.getDrawable(
+                                            this@FleetManagementActivity, R.drawable.bg_status_red
+                                        )
                                     }
 
                                 } else {
@@ -152,7 +148,7 @@ class FleetManagementActivity : BaseActivity<ActivityFleetManagementBinding>() {
                     override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                         Toast.makeText(
                             this@FleetManagementActivity,
-                            getString(com.alvimatruck.R.string.api_fail_message),
+                            getString(R.string.api_fail_message),
                             Toast.LENGTH_SHORT
                         ).show()
                         ProgressDialog.dismiss()
@@ -160,9 +156,7 @@ class FleetManagementActivity : BaseActivity<ActivityFleetManagementBinding>() {
                 })
         } else {
             Toast.makeText(
-                this,
-                getString(com.alvimatruck.R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
 

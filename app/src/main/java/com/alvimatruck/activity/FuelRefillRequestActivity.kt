@@ -78,9 +78,13 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
 
         binding.tvSubmit.setOnClickListener {
             if (binding.etFuelAmount.text.toString().trim().isEmpty()) {
-                Toast.makeText(this, "Please enter fuel amount", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_enter_fuel_amount), Toast.LENGTH_SHORT
+                ).show()
             } else if (meterProofImageUri == null) {
-                Toast.makeText(this, "Please upload meter/receipt photo", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_upload_meter_receipt_photo), Toast.LENGTH_SHORT
+                ).show()
             } else {
                 apiFuelRequest()
             }
@@ -288,11 +292,9 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
 
         // For Android 13+ (API 33+), no need for WRITE_EXTERNAL_STORAGE
         if (ContextCompat.checkSelfPermission(
-                this,
-                CAMERA_PERMISSION
+                this, CAMERA_PERMISSION
             ) != PackageManager.PERMISSION_GRANTED
-        )
-            permissionsNeeded.add(CAMERA_PERMISSION)
+        ) permissionsNeeded.add(CAMERA_PERMISSION)
 
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, permissionsNeeded.toTypedArray(), 101)
@@ -318,19 +320,15 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // Android 13+
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    READ_MEDIA_IMAGES
+                    this, READ_MEDIA_IMAGES
                 ) != PackageManager.PERMISSION_GRANTED
-            )
-                permissionsNeeded.add(READ_MEDIA_IMAGES)
+            ) permissionsNeeded.add(READ_MEDIA_IMAGES)
         } else {
             // Android 12 and below
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    READ_EXTERNAL_STORAGE
+                    this, READ_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED
-            )
-                permissionsNeeded.add(READ_EXTERNAL_STORAGE)
+            ) permissionsNeeded.add(READ_EXTERNAL_STORAGE)
         }
 
         if (permissionsNeeded.isNotEmpty()) {
@@ -346,9 +344,7 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -358,7 +354,7 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
                 102 -> openGallery()
             }
         } else {
-            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
         }
     }
 

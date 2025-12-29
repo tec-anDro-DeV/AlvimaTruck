@@ -300,7 +300,9 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                     if (selectedOption == "Other") {
                         val writtenReason = etAddReason.text.toString().trim()
                         if (writtenReason.isEmpty()) {
-                            Toast.makeText(this, "Please write a reason", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this, getString(R.string.please_write_a_reason), Toast.LENGTH_SHORT
+                            ).show()
                             return@setOnClickListener // Stop execution, don't dismiss dialog
                         }
                         finalReason = writtenReason
@@ -310,7 +312,9 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                     dialog.dismiss()
                     visitTripAPI(finalReason)
                 } else {
-                    Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this, getString(R.string.please_select_a_reason), Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             dialog.show()

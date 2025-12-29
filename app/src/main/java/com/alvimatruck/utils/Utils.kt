@@ -12,13 +12,10 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
-import android.location.Location
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.provider.OpenableColumns
-import android.text.TextUtils
-import android.util.Patterns
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -43,14 +40,12 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
 
 
 @SuppressLint("SimpleDateFormat")
 object Utils {
     var mLastClickTime: Long = 0
-    var currentLocation: Location? = null
+
     var isTripInProgress: Boolean = false
     var isNewOrder: Boolean = false
 
@@ -84,25 +79,18 @@ object Utils {
 
         val requestBody = fileBytes.toRequestBody("image/*".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData(
-            fieldName,
-            "file_${System.currentTimeMillis()}.jpg",
-            requestBody
+            fieldName, "file_${System.currentTimeMillis()}.jpg", requestBody
         )
     }
 
     fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
         val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)!!
         vectorDrawable.setBounds(
-            0,
-            0,
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight
+            0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight
         )
 
         val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
+            vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888
         )
         val canvas = Canvas(bitmap)
         vectorDrawable.draw(canvas)
@@ -119,7 +107,7 @@ object Utils {
     }
 
     fun getDummyTransferList(counter: Int): ArrayList<TransferItem> {
-        val rawList = getDummyArrayList(5)
+        val rawList = getDummyArrayList(counter)
         val transferList = ArrayList<TransferItem>()
         transferList.clear()
         for (i in rawList) {
@@ -174,54 +162,10 @@ object Utils {
         return SimpleDateFormat("dd MMM, yyyy").format(Date(time!!))
     }
 
-    @SuppressLint("SimpleDateFormat")
-    fun getMinutes(time: Long?): String {
-        val formatter = SimpleDateFormat("mm")
-        formatter.timeZone = TimeZone.getTimeZone("UTC")
-        return formatter.format(Date(time!!))
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    fun getSeconds(time: Long?): String {
-        return SimpleDateFormat("ss", Locale.ENGLISH).format(Date(time!!))
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    fun getFullDateYearFirst(time: Long?): String {
-        return SimpleDateFormat("yyyy-MM-dd").format(Date(time!!))
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    fun getFullTime(time: Long?): String {
-        val df1 = SimpleDateFormat("hh:mm a")
-        df1.timeZone = TimeZone.getDefault()
-        return df1.format(Date(time!! * 1000))
-    }
 
     @SuppressLint("SimpleDateFormat")
     fun getFullDateWithTime(time: Long?): String {
         return SimpleDateFormat("MM/dd/yyyy HH:mm").format(Date(time!!))
-    }
-
-
-    fun dateFormatChange(dateStr: String, input: String, output: String): String {
-        return SimpleDateFormat(output, Locale.ENGLISH).format(
-            SimpleDateFormat(
-                input, Locale.ENGLISH
-            ).parse(dateStr)
-        )
-    }
-
-    fun getMilliFromDate(dateFormat: String?): Long {
-        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
-        val date: Date = formatter.parse(dateFormat)
-        return date.time
-    }
-
-    fun getMilliFromHoldDate(dateFormat: String?): Long {
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val date: Date = formatter.parse(dateFormat)
-        return date.time
     }
 
 
@@ -247,21 +191,6 @@ object Utils {
         }
     }
 
-
-    fun isValidEmail(target: CharSequence?): Boolean {
-        return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
-    }
-
-
-    fun getMonth3LettersName(date: Date): String =
-        SimpleDateFormat("MMM", Locale.getDefault()).format(date)
-
-    fun getDayNumber(date: Date): String = SimpleDateFormat("dd", Locale.getDefault()).format(date)
-
-
-    fun getDaysDifferent(time: Long): Int {
-        return ((System.currentTimeMillis() - time) / (1000 * 60 * 60 * 24)).toInt()
-    }
 
     fun forceLogout(context: Context) {
         if (context !is Activity) {
@@ -324,38 +253,6 @@ object Utils {
         // activity.finishAffinity()
     }
 
-    fun getTimeAgo(mTime: Long): String {
-        val SECOND_MILLIS = 1000
-        val MINUTE_MILLIS = 60 * SECOND_MILLIS
-        val HOUR_MILLIS = 60 * MINUTE_MILLIS
-        val DAY_MILLIS = 24 * HOUR_MILLIS
-        var time = mTime
-        if (time < 1000000000000L) {
-            // if timestamp given in seconds, convert to millis
-            time *= 1000
-        }
-        val now: Long = System.currentTimeMillis()
-        if (time > now || time <= 0) {
-            return "just now"
-        }
-
-        // TODO: localize
-        val diff = now - time
-        return if (diff < MINUTE_MILLIS) {
-            "just now"
-        } else if (diff < 2 * MINUTE_MILLIS) {
-            "a minute ago"
-        } else if (diff < 50 * MINUTE_MILLIS) {
-            (diff / MINUTE_MILLIS).toString() + " minutes ago"
-        } else if (diff < 90 * MINUTE_MILLIS) {
-            "an hour ago"
-        } else if (diff < 24 * HOUR_MILLIS) {
-            (diff / HOUR_MILLIS).toString() + " hours ago"
-        } else {
-            (diff / DAY_MILLIS).toString() + " days ago"
-        }
-    }
-
     fun getFileSizeFromUri(context: Context, uri: Uri): Long {
         context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
             val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
@@ -401,24 +298,16 @@ object Utils {
     }
 
     fun loadProfileWithPlaceholder(
-        context: Context,
-        imageView: ImageView,
-        name: String,
-        imageUrl: String?
+        context: Context, imageView: ImageView, name: String, imageUrl: String?
     ) {
         val firstChar = name.firstOrNull()?.let { (it.uppercaseChar()).toString() }
 
         if (!imageUrl.isNullOrEmpty()) {
-            Glide.with(context)
-                .load(Constants.IMAGE_URL + imageUrl)
-                .circleCrop()
-                .error(
-                    BitmapDrawable(
-                        context.resources,
-                        generateCircleLetterBitmap(context, firstChar.toString())
-                    )
+            Glide.with(context).load(Constants.IMAGE_URL + imageUrl).circleCrop().error(
+                BitmapDrawable(
+                    context.resources, generateCircleLetterBitmap(context, firstChar.toString())
                 )
-                .into(imageView)
+            ).into(imageView)
         } else {
             imageView.setImageBitmap(generateCircleLetterBitmap(context, firstChar.toString()))
         }

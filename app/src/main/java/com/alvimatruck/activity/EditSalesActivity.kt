@@ -75,8 +75,7 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
 
         if (intent != null) {
             orderDetail = Gson().fromJson(
-                intent.getStringExtra(Constants.OrderDetail).toString(),
-                FullOrderDetail::class.java
+                intent.getStringExtra(Constants.OrderDetail).toString(), FullOrderDetail::class.java
             )
             binding.tvCustomer.text = orderDetail!!.customerName
             binding.tvOrderId.text = orderDetail!!.orderId
@@ -157,20 +156,25 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
 
         binding.tvAdd.setOnClickListener {
             if (binding.tvItem.text.toString().isEmpty()) {
-                Toast.makeText(this, "Please select Item", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.please_select_item), Toast.LENGTH_SHORT)
+                    .show()
             } else if (binding.etSalesPrice.text.toString().isEmpty()) {
-                Toast.makeText(this, "Enter Sales Price", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.enter_sales_price), Toast.LENGTH_SHORT)
+                    .show()
             } else if (binding.etQuantity.text.toString().isEmpty()) {
-                Toast.makeText(this, "Enter Quantity", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.enter_quantity), Toast.LENGTH_SHORT).show()
             } else if (binding.etQuantity.text.toString().toInt() < minQty) {
                 Toast.makeText(
-                    this, "Quantity must be greater than or equal to $minQty", Toast.LENGTH_SHORT
+                    this,
+                    getString(R.string.quantity_must_be_greater_than_or_equal_to, minQty),
+                    Toast.LENGTH_SHORT
                 ).show()
             } else if (binding.etQuantity.text.toString().toInt() > selectedProduct!!.qtyOnHand) {
                 Toast.makeText(
-                    this,
-                    "Only up to ${selectedProduct!!.qtyOnHand} units are available in the van ",
-                    Toast.LENGTH_SHORT
+                    this, getString(
+                        R.string.only_up_to_units_are_available_in_the_van,
+                        selectedProduct!!.qtyOnHand
+                    ), Toast.LENGTH_SHORT
                 ).show()
             } else {
                 // Get current values
@@ -480,8 +484,7 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
                             Log.d("TAG", "onCustomerItemPrice: " + response.body().toString())
 
                             if (response.body() != null) {
-                                minQty =
-                                    response.body()!!.asJsonObject.get("minimumQuantity").asInt
+                                minQty = response.body()!!.asJsonObject.get("minimumQuantity").asInt
                                 binding.etSalesPrice.isEnabled = false
                                 tempUnitPrice =
                                     response.body()!!.asJsonObject.get("unitPrice").asDouble

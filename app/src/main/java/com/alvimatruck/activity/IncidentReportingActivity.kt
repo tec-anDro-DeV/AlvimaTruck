@@ -103,13 +103,11 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
                 EqualSpacingItemDecoration.GRID
             )
         )
-        binding.rvPhotos.layoutManager =
-            GridLayoutManager(this, 3)
+        binding.rvPhotos.layoutManager = GridLayoutManager(this, 3)
 
 
         imagesListAdapter = ImagesListAdapter(
-            this@IncidentReportingActivity,
-            listProofImageUri, this
+            this@IncidentReportingActivity, listProofImageUri, this
         )
         binding.rvPhotos.adapter = imagesListAdapter
 
@@ -134,11 +132,17 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
 
         binding.tvSubmit.setOnClickListener {
             if (binding.tvIncidentType.text.toString().trim().isEmpty()) {
-                Toast.makeText(this, "Please select incident type", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_select_incident_type), Toast.LENGTH_SHORT
+                ).show()
             } else if (binding.etDescription.text.toString().trim().isEmpty()) {
-                Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_enter_description), Toast.LENGTH_SHORT
+                ).show()
             } else if (listProofImageUri.isEmpty()) {
-                Toast.makeText(this, "Please upload incident images", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_upload_incident_images), Toast.LENGTH_SHORT
+                ).show()
             } else {
                 apiIncidentRequest()
             }
@@ -215,10 +219,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
     }
 
     private fun dialogSingleSelection(
-        list: ArrayList<String>,
-        title: String,
-        hint: String,
-        textView: TextView
+        list: ArrayList<String>, title: String, hint: String, textView: TextView
     ) {
         filterList!!.clear()
         filterList!!.addAll(list)
@@ -424,11 +425,9 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
 
         // For Android 13+ (API 33+), no need for WRITE_EXTERNAL_STORAGE
         if (ContextCompat.checkSelfPermission(
-                this,
-                CAMERA_PERMISSION
+                this, CAMERA_PERMISSION
             ) != PackageManager.PERMISSION_GRANTED
-        )
-            permissionsNeeded.add(CAMERA_PERMISSION)
+        ) permissionsNeeded.add(CAMERA_PERMISSION)
 
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, permissionsNeeded.toTypedArray(), 101)
@@ -454,19 +453,15 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // Android 13+
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    READ_MEDIA_IMAGES
+                    this, READ_MEDIA_IMAGES
                 ) != PackageManager.PERMISSION_GRANTED
-            )
-                permissionsNeeded.add(READ_MEDIA_IMAGES)
+            ) permissionsNeeded.add(READ_MEDIA_IMAGES)
         } else {
             // Android 12 and below
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    READ_EXTERNAL_STORAGE
+                    this, READ_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED
-            )
-                permissionsNeeded.add(READ_EXTERNAL_STORAGE)
+            ) permissionsNeeded.add(READ_EXTERNAL_STORAGE)
         }
 
         if (permissionsNeeded.isNotEmpty()) {
@@ -482,9 +477,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -494,7 +487,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
                 102 -> openGallery()
             }
         } else {
-            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
         }
     }
 

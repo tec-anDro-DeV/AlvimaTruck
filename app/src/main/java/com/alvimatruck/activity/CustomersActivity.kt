@@ -29,8 +29,7 @@ import retrofit2.Response
 
 class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClickListener {
     private var customerListAdapter: CustomerListAdapter? = null
-    var page: Int = 1
-    var pageSize: Int = 50
+
     var routeName = ""
     var customerList: ArrayList<CustomerDetail>? = ArrayList()
     var filterList: ArrayList<CustomerDetail>? = ArrayList()
@@ -39,11 +38,10 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
     private val openUpdateCustomer =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                val updatedCustomer =
-                    Gson().fromJson(
-                        result.data?.getStringExtra(Constants.CustomerDetail).toString(),
-                        CustomerDetail::class.java
-                    )
+                val updatedCustomer = Gson().fromJson(
+                    result.data?.getStringExtra(Constants.CustomerDetail).toString(),
+                    CustomerDetail::class.java
+                )
 
                 if (updatedCustomer != null) {
                     val index =
@@ -128,8 +126,7 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
             )!!.webservices.customerList(routeName = routeName)
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
-                        call: Call<JsonObject>,
-                        response: Response<JsonObject>
+                        call: Call<JsonObject>, response: Response<JsonObject>
                     ) {
                         ProgressDialog.dismiss()
                         if (response.code() == 401) {
@@ -145,12 +142,9 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
                                 } as ArrayList<CustomerDetail>
                                 filterList = ArrayList(customerList!!)
                                 if (filterList!!.isNotEmpty()) {
-                                    binding.rvCustomerList.layoutManager =
-                                        LinearLayoutManager(
-                                            this@CustomersActivity,
-                                            LinearLayoutManager.VERTICAL,
-                                            false
-                                        )
+                                    binding.rvCustomerList.layoutManager = LinearLayoutManager(
+                                        this@CustomersActivity, LinearLayoutManager.VERTICAL, false
+                                    )
 
 
                                     customerListAdapter = CustomerListAdapter(
@@ -198,8 +192,9 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
     }
 
     override fun onCustomerClick(customerDetail: CustomerDetail) {
-        val intent = Intent(this, ViewCustomerActivity::class.java)
-            .putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
+        val intent = Intent(this, ViewCustomerActivity::class.java).putExtra(
+            Constants.CustomerDetail, Gson().toJson(customerDetail)
+        )
         openUpdateCustomer.launch(intent)
     }
 

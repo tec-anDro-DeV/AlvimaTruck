@@ -112,11 +112,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
             if (binding.tvVanNumber.text.trim().toString().isEmpty()) {
                 Toast.makeText(
-                    this, "Please select van no.", Toast.LENGTH_SHORT
+                    this, getString(R.string.please_select_van_no), Toast.LENGTH_SHORT
                 ).show()
             } else if (binding.etPassword.text.trim().toString().isEmpty()) {
                 Toast.makeText(
-                    this, "Please enter password", Toast.LENGTH_SHORT
+                    this, getString(R.string.please_enter_password), Toast.LENGTH_SHORT
                 ).show()
             } else {
                 if (Utils.isOnline(this)) {
@@ -147,7 +147,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         binding.tvForgotPassword.setOnClickListener {
             if (binding.tvVanNumber.text.trim().toString().isEmpty()) {
                 Toast.makeText(
-                    this, "Please select van no.", Toast.LENGTH_SHORT
+                    this, getString(R.string.please_select_van_no), Toast.LENGTH_SHORT
                 ).show()
             } else {
                 startActivity(

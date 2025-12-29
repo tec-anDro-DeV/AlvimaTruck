@@ -157,53 +157,73 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
     private fun validationAndSubmit() {
         if (binding.etCustomerName.text.toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please enter customer name", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.please_enter_customer_name), Toast.LENGTH_SHORT)
+                .show()
             return
         } else if (binding.etContactName.text.toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please enter contact name", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.please_enter_contact_name), Toast.LENGTH_SHORT)
+                .show()
             return
         } else if (customerPhotoUri == null) {
-            Toast.makeText(this, "Please upload customer photo", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this, getString(R.string.please_upload_customer_photo), Toast.LENGTH_SHORT
+            ).show()
             return
         } else if (binding.etCustomerPhoneNumber.text.toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please enter customer phone number", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this, getString(R.string.please_enter_customer_phone_number), Toast.LENGTH_SHORT
+            ).show()
             return
         } else if (!Utils.isValidEthiopiaMobile(
                 binding.etCustomerPhoneNumber.text.toString().trim()
             )
         ) {
-            Toast.makeText(this, "Please enter valid customer phone number", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                this,
+                getString(R.string.please_enter_valid_customer_phone_number),
+                Toast.LENGTH_SHORT
+            ).show()
             return
         } else if (binding.etTelephoneNumber.text.toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please enter telephone number", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this, getString(R.string.please_enter_telephone_number), Toast.LENGTH_SHORT
+            ).show()
             return
         } else if (!Utils.isValidEthiopiaLocalNumber(
                 binding.etTelephoneNumber.text.toString().trim()
             )
         ) {
-            Toast.makeText(this, "Please enter valid telephone number", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this, getString(R.string.please_enter_valid_telephone_number), Toast.LENGTH_SHORT
+            ).show()
             return
         } else if (binding.tvCity.text.toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please select city", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.please_select_city), Toast.LENGTH_SHORT).show()
             return
         } else if (binding.tvPostalCode.text.toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please enter postal code", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.please_enter_postal_code), Toast.LENGTH_SHORT)
+                .show()
             return
         } else if (binding.etAddress.text.toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please enter address", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.please_enter_address), Toast.LENGTH_SHORT)
+                .show()
             return
         } else if (binding.etTINNumber.text.toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please enter TIN number", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.please_enter_tin_number), Toast.LENGTH_SHORT)
+                .show()
             return
         } else if (idProofImageUri == null) {
-            Toast.makeText(this, "Please upload ID proof", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.please_upload_id_proof), Toast.LENGTH_SHORT)
+                .show()
             return
         } else if (binding.tvCustomerPostingGroup.text.toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please select posting group", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this, getString(R.string.please_select_posting_group), Toast.LENGTH_SHORT
+            ).show()
             return
         } else if (binding.tvCustomerPriceGroup.text.toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please select price group", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.please_select_price_group), Toast.LENGTH_SHORT)
+                .show()
             return
         } else {
             createUserApiCall()
@@ -637,7 +657,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
                 102 -> openGallery()
             }
         } else {
-            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
         }
     }
 

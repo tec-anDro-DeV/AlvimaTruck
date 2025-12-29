@@ -40,10 +40,8 @@ class ScannerDialogFragment : DialogFragment() {
     private lateinit var binding: DialogScannerBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         // return inflater.inflate(R.layout.dialog_scanner, container, false)
         binding = DialogScannerBinding.inflate(inflater, container, false)
         return binding.root
@@ -57,10 +55,14 @@ class ScannerDialogFragment : DialogFragment() {
         startCamera()
 
         val mAnimation: Animation = TranslateAnimation(
-            TranslateAnimation.ABSOLUTE, 0f,
-            TranslateAnimation.ABSOLUTE, 0f,
-            TranslateAnimation.RELATIVE_TO_PARENT, 0f,
-            TranslateAnimation.RELATIVE_TO_PARENT, 1.0f
+            TranslateAnimation.ABSOLUTE,
+            0f,
+            TranslateAnimation.ABSOLUTE,
+            0f,
+            TranslateAnimation.RELATIVE_TO_PARENT,
+            0f,
+            TranslateAnimation.RELATIVE_TO_PARENT,
+            1.0f
         )
         mAnimation.duration = 2000
         mAnimation.repeatCount = Animation.INFINITE
@@ -84,23 +86,20 @@ class ScannerDialogFragment : DialogFragment() {
                 it.surfaceProvider = binding.previewView.surfaceProvider
             }
 
-            val imageAnalyzer = ImageAnalysis.Builder()
-                .build()
-                .also {
-                    it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { barcodes ->
+            val imageAnalyzer = ImageAnalysis.Builder().build().also {
+                it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { barcodes ->
 
-                        if (processingBarcode.compareAndSet(false, true)) {
-                            Log.d("TAG", "Scanned barcode: ${barcodes}")
-                            val mp: MediaPlayer =
-                                MediaPlayer.create(requireContext(), R.raw.sucess)
-                            mp.setOnCompletionListener { player -> player.release() }
-                            mp.start()
-                            scannerResultListener?.onScanResult(barcodes)
-                            dismiss()
+                    if (processingBarcode.compareAndSet(false, true)) {
+                        Log.d("TAG", "Scanned barcode: $barcodes")
+                        val mp: MediaPlayer = MediaPlayer.create(requireContext(), R.raw.sucess)
+                        mp.setOnCompletionListener { player -> player.release() }
+                        mp.start()
+                        scannerResultListener?.onScanResult(barcodes)
+                        dismiss()
 
-                        }
-                    })
-                }
+                    }
+                })
+            }
 
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
@@ -122,11 +121,9 @@ class ScannerDialogFragment : DialogFragment() {
 
     private class BarcodeAnalyzer(
         private val barcodeListener: (barcode: String) -> Unit
-    ) :
-        ImageAnalysis.Analyzer {
-        private val options = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
-            .build()
+    ) : ImageAnalysis.Analyzer {
+        private val options =
+            BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS).build()
         val scanner = BarcodeScanning.getClient(options)
 
         @OptIn(ExperimentalGetImage::class)
@@ -136,20 +133,17 @@ class ScannerDialogFragment : DialogFragment() {
             if (mediaImage != null) {
                 val image =
                     InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-                scanner.process(image)
-                    .addOnSuccessListener { barcodes ->
-                        for (barcode in barcodes) {
-                            barcodeListener(barcode.rawValue ?: "")
-                            //imageProxy.close()
-                        }
+                scanner.process(image).addOnSuccessListener { barcodes ->
+                    for (barcode in barcodes) {
+                        barcodeListener(barcode.rawValue ?: "")
+                        //imageProxy.close()
                     }
-                    .addOnFailureListener {
-                        imageProxy.close()
-                    }
-                    .addOnCompleteListener {
-                        // It's important to close the imageProxy
-                        imageProxy.close()
-                    }
+                }.addOnFailureListener {
+                    imageProxy.close()
+                }.addOnCompleteListener {
+                    // It's important to close the imageProxy
+                    imageProxy.close()
+                }
             }
 
 

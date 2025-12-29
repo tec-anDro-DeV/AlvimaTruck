@@ -70,7 +70,6 @@ class Constants {
         const val IS_HIDE = "is_hide"
 
         const val RouteDetail = "route_detail"
-        const val TripStart = "trip_start"
         const val LATITUDE = "latitude"
         const val LONGITUDE = "longitude"
         const val CustomerDetail = "customer_detail"

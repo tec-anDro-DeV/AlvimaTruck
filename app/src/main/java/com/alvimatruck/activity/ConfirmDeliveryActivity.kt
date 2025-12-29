@@ -202,11 +202,9 @@ class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
 
         // For Android 13+ (API 33+), no need for WRITE_EXTERNAL_STORAGE
         if (ContextCompat.checkSelfPermission(
-                this,
-                CAMERA_PERMISSION
+                this, CAMERA_PERMISSION
             ) != PackageManager.PERMISSION_GRANTED
-        )
-            permissionsNeeded.add(CAMERA_PERMISSION)
+        ) permissionsNeeded.add(CAMERA_PERMISSION)
 
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, permissionsNeeded.toTypedArray(), 101)
@@ -232,19 +230,15 @@ class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // Android 13+
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    READ_MEDIA_IMAGES
+                    this, READ_MEDIA_IMAGES
                 ) != PackageManager.PERMISSION_GRANTED
-            )
-                permissionsNeeded.add(READ_MEDIA_IMAGES)
+            ) permissionsNeeded.add(READ_MEDIA_IMAGES)
         } else {
             // Android 12 and below
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    READ_EXTERNAL_STORAGE
+                    this, READ_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED
-            )
-                permissionsNeeded.add(READ_EXTERNAL_STORAGE)
+            ) permissionsNeeded.add(READ_EXTERNAL_STORAGE)
         }
 
         if (permissionsNeeded.isNotEmpty()) {
@@ -260,9 +254,7 @@ class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -272,7 +264,7 @@ class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
                 102 -> openGallery()
             }
         } else {
-            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
         }
     }
 }

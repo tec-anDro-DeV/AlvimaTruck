@@ -48,26 +48,20 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
                     v.isFocusableInTouchMode = false
 
                     // 🔄 Toggle show/hide password
-                    val isVisible = binding.etNewPassword.inputType ==
-                            (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
+                    val isVisible =
+                        binding.etNewPassword.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
 
                     if (isVisible) {
                         binding.etNewPassword.inputType =
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                         binding.etNewPassword.setCompoundDrawablesWithIntrinsicBounds(
-                            0,
-                            0,
-                            R.drawable.eye,
-                            0
+                            0, 0, R.drawable.eye, 0
                         )
                     } else {
                         binding.etNewPassword.inputType =
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                         binding.etNewPassword.setCompoundDrawablesWithIntrinsicBounds(
-                            0,
-                            0,
-                            R.drawable.hide_eye,
-                            0
+                            0, 0, R.drawable.hide_eye, 0
                         )
                     }
 
@@ -97,26 +91,20 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
                     v.isFocusableInTouchMode = false
 
                     // 🔄 Toggle show/hide password
-                    val isVisible = binding.etConfirmPassword.inputType ==
-                            (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
+                    val isVisible =
+                        binding.etConfirmPassword.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
 
                     if (isVisible) {
                         binding.etConfirmPassword.inputType =
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                         binding.etConfirmPassword.setCompoundDrawablesWithIntrinsicBounds(
-                            0,
-                            0,
-                            R.drawable.eye,
-                            0
+                            0, 0, R.drawable.eye, 0
                         )
                     } else {
                         binding.etConfirmPassword.inputType =
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                         binding.etConfirmPassword.setCompoundDrawablesWithIntrinsicBounds(
-                            0,
-                            0,
-                            R.drawable.hide_eye,
-                            0
+                            0, 0, R.drawable.hide_eye, 0
                         )
                     }
 
@@ -152,17 +140,19 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
         binding.tvResetPassword.setOnClickListener {
             if (binding.etNewPassword.text.trim().toString().isEmpty()) {
                 Toast.makeText(
-                    this, "Please enter new password", Toast.LENGTH_SHORT
+                    this, getString(R.string.please_enter_new_password), Toast.LENGTH_SHORT
                 ).show()
             } else if (binding.etConfirmPassword.text.trim().toString().isEmpty()) {
                 Toast.makeText(
-                    this, "Please enter confirm password", Toast.LENGTH_SHORT
+                    this, getString(R.string.please_enter_confirm_password), Toast.LENGTH_SHORT
                 ).show()
             } else if (binding.etNewPassword.text.trim()
                     .toString() != binding.etConfirmPassword.text.trim().toString()
             ) {
                 Toast.makeText(
-                    this, "New password and confirm password does not match", Toast.LENGTH_SHORT
+                    this,
+                    getString(R.string.new_password_and_confirm_password_does_not_match),
+                    Toast.LENGTH_SHORT
                 ).show()
             } else {
 
@@ -188,8 +178,7 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
             Constants.BASE_URL, ""
         )!!.webservices.changePassword(
             ChangePasswordRequest(
-                vanNo,
-                binding.etNewPassword.text.toString().trim()
+                vanNo, binding.etNewPassword.text.toString().trim()
             )
         ).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -208,10 +197,9 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
                             "Your password has been updated securely. Use your new password to sign in to your account."
 
 
-                        val dialog = AlertDialog.Builder(this@ResetPasswordActivity)
-                            .setView(alertLayout)
-                            .setCancelable(false)
-                            .create()
+                        val dialog =
+                            AlertDialog.Builder(this@ResetPasswordActivity).setView(alertLayout)
+                                .setCancelable(false).create()
                         dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background2)
 
 
@@ -219,8 +207,7 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
                             dialog.dismiss()
                             startActivity(
                                 Intent(
-                                    this@ResetPasswordActivity,
-                                    LoginActivity::class.java
+                                    this@ResetPasswordActivity, LoginActivity::class.java
                                 )
                             )
                             finishAffinity()

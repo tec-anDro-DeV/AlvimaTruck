@@ -52,10 +52,9 @@ class OTPVerificationActivity : BaseActivity<ActivityOtpverificationBinding>() {
         }
 
         binding.tvVerify.setOnClickListener {
-            val otp = binding.etOtp1.text.toString().trim() +
-                    binding.etOtp2.text.toString().trim() +
-                    binding.etOtp3.text.toString().trim() +
-                    binding.etOtp4.text.toString().trim()
+            val otp = binding.etOtp1.text.toString().trim() + binding.etOtp2.text.toString()
+                .trim() + binding.etOtp3.text.toString().trim() + binding.etOtp4.text.toString()
+                .trim()
             if (otp.length == 4) {
                 if (Utils.isOnline(this)) {
                     verifyOTP(otp)
@@ -67,7 +66,9 @@ class OTPVerificationActivity : BaseActivity<ActivityOtpverificationBinding>() {
                     ).show()
                 }
             } else {
-                Toast.makeText(this, "Please enter all 4 digits", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_enter_all_4_digits), Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -86,14 +87,12 @@ class OTPVerificationActivity : BaseActivity<ActivityOtpverificationBinding>() {
                     try {
                         Toast.makeText(
                             this@OTPVerificationActivity,
-                            response.body()!!.get("message").toString().replace('"', ' ')
-                                .trim(),
+                            response.body()!!.get("message").toString().replace('"', ' ').trim(),
                             Toast.LENGTH_SHORT
                         ).show()
                         startActivity(
                             Intent(
-                                this@OTPVerificationActivity,
-                                ResetPasswordActivity::class.java
+                                this@OTPVerificationActivity, ResetPasswordActivity::class.java
                             ).putExtra(Constants.VanNo, vanNo)
                         )
                         finish()
@@ -165,9 +164,7 @@ class OTPVerificationActivity : BaseActivity<ActivityOtpverificationBinding>() {
             })
         } else {
             Toast.makeText(
-                this,
-                getString(R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
 

@@ -54,8 +54,7 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
         binding.btnEdit.setOnClickListener {
             startActivity(
                 Intent(
-                    this,
-                    EditSalesActivity::class.java
+                    this, EditSalesActivity::class.java
                 ).putExtra(Constants.OrderDetail, Gson().toJson(orderDetail))
             )
         }
@@ -71,8 +70,11 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
 
         binding.tvPostInvoice.setOnClickListener {
             if (orderDetail!!.orderId.isNullOrEmpty()) {
-                Toast.makeText(this, "Please contact to Admin for Post Invoice", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(
+                    this,
+                    getString(R.string.please_contact_to_admin_for_post_invoice),
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             } else {
                 orderPostAPI()
@@ -102,8 +104,7 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
                             Toast.makeText(
                                 this@SalesOrderDetailActivity,
                                 response.body()!!.get("data").asJsonObject.get("message").toString()
-                                    .replace('"', ' ')
-                                    .trim(),
+                                    .replace('"', ' ').trim(),
                                 Toast.LENGTH_SHORT
                             ).show()
                             isChange = true

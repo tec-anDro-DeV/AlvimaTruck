@@ -60,8 +60,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
         if (intent != null) {
             status = intent.getStringExtra(Constants.Status).toString()
             routeDetail = Gson().fromJson(
-                intent.getStringExtra(Constants.RouteDetail).toString(),
-                RouteDetail::class.java
+                intent.getStringExtra(Constants.RouteDetail).toString(), RouteDetail::class.java
             )
 
             binding.tvRouteId.text = routeDetail!!.routeName
@@ -135,10 +134,8 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                     val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
 
 
-                    val dialog = AlertDialog.Builder(this)
-                        .setView(alertLayout)
-                        .setCancelable(false)
-                        .create()
+                    val dialog =
+                        AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
                     dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
 
@@ -147,7 +144,9 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                     }
                     btnSubmit.setOnClickListener {
                         if (etStartKm.text.toString().isEmpty()) {
-                            Toast.makeText(this, "Please enter start km", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this, getString(R.string.please_enter_start_km), Toast.LENGTH_SHORT
+                            ).show()
                         } else {
                             dialog.dismiss()
                             startTripAPI(etStartKm.text.toString())
@@ -168,10 +167,8 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
 
 
-                val dialog = AlertDialog.Builder(this)
-                    .setView(alertLayout)
-                    .setCancelable(false)
-                    .create()
+                val dialog =
+                    AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
                 dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
 
@@ -180,15 +177,17 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 }
                 btnSubmit.setOnClickListener {
                     if (etEndKm.text.toString().isEmpty()) {
-                        Toast.makeText(this, "Please enter end km", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            this, getString(R.string.please_enter_end_km), Toast.LENGTH_SHORT
+                        ).show()
                     } else if (etEndKm.text.toString()
                             .toInt() < binding.tvVanStartKilometer.text.toString().toInt()
                     ) {
                         Toast.makeText(
                             this,
-                            "End km should be greater than start km",
+                            getString(R.string.end_km_should_be_greater_than_start_km),
                             Toast.LENGTH_SHORT
-                        )
+                        ).show()
                     } else {
                         dialog.dismiss()
                         endTripAPI(etEndKm.text.toString())
@@ -227,25 +226,21 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                     id = View.generateViewId() // Generate unique ID
                     setTextColor(
                         ContextCompat.getColor(
-                            this@RouteDetailActivity,
-                            R.color.black
+                            this@RouteDetailActivity, R.color.black
                         )
                     )
                     buttonTintList = ColorStateList.valueOf(
                         ContextCompat.getColor(
-                            this@RouteDetailActivity,
-                            R.color.orange
+                            this@RouteDetailActivity, R.color.orange
                         )
                     )
                     setPadding(padding, padding, padding, padding)
                     typeface = typefaceRegular
                     setTextSize(
-                        TypedValue.COMPLEX_UNIT_PX,
-                        textSize
+                        TypedValue.COMPLEX_UNIT_PX, textSize
                     ) // Uncomment if you want exact SSP sizing logic
                     layoutParams = RadioGroup.LayoutParams(
-                        RadioGroup.LayoutParams.MATCH_PARENT,
-                        RadioGroup.LayoutParams.WRAP_CONTENT
+                        RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT
                     ).apply {
                         marginStart = padding
                     }
@@ -262,8 +257,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                         )
                         setBackgroundColor(
                             ContextCompat.getColor(
-                                this@RouteDetailActivity,
-                                R.color.gray
+                                this@RouteDetailActivity, R.color.gray
                             )
                         )
                     }
@@ -291,10 +285,8 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             }
 
 
-            val dialog = AlertDialog.Builder(this)
-                .setView(alertLayout)
-                .setCancelable(false)
-                .create()
+            val dialog =
+                AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
             dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
 
@@ -312,40 +304,42 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                     if (selectedOption == "Other") {
                         val writtenReason = etAddReason.text.toString().trim()
                         if (writtenReason.isEmpty()) {
-                            Toast.makeText(this, "Please write a reason", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this, getString(R.string.please_write_a_reason), Toast.LENGTH_SHORT
+                            ).show()
                             return@setOnClickListener // Stop execution, don't dismiss dialog
                         }
                         finalReason = writtenReason
                     } else if (etEndKm.text.toString().isEmpty()) {
-                        Toast.makeText(this, "Please enter end km", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            this, getString(R.string.please_enter_end_km), Toast.LENGTH_SHORT
+                        ).show()
                     } else if (etEndKm.text.toString()
                             .toInt() < binding.tvVanStartKilometer.text.toString().toInt()
                     ) {
                         Toast.makeText(
-                            this,
-                            "End km should be greater than start km",
-                            Toast.LENGTH_SHORT
-                        )
+                            this, "End km should be greater than start km", Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                     Log.d("TAG", "Selected/Written Reason: $finalReason")
                     dialog.dismiss()
                     cancelTripAPI(finalReason, etEndKm.text.toString().toInt())
                 } else {
-                    Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this, getString(R.string.please_select_a_reason), Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             dialog.show()
-            val width =
-                (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+            val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
 
         binding.llCustomer.setOnClickListener {
             startActivity(
                 Intent(
-                    this,
-                    CustomersActivity::class.java
+                    this, CustomersActivity::class.java
                 ).putExtra(Constants.RouteDetail, routeDetail!!.routeName)
 
             )

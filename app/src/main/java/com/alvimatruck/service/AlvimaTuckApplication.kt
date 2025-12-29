@@ -22,7 +22,7 @@ class AlvimaTuckApplication : Application() {
 
             val intent = Intent(context, LocationService::class.java)
             ContextCompat.startForegroundService(context, intent)
-            context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            context.bindService(intent, connection, BIND_AUTO_CREATE)
         }
 
 
