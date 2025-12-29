@@ -37,6 +37,7 @@ class Constants {
         const val API_New_Order = "SalesOrder/create"
         const val API_Order_Detail = "SalesOrder/get-by-id"
         const val API_Van_Stock = "SalesOrder/get-stock-by-salesperson"
+        const val API_Order_Post = "SalesOrder/post"
 
         const val API_Start_Trip = "Trip/start"
         const val API_End_Trip = "Trip/end"

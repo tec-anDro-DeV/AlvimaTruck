@@ -111,7 +111,7 @@
                         android:maxLines="2"
                         android:text="Sales Route"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11ssp" />
+                        android:textSize="@dimen/_10ssp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -142,7 +142,7 @@
                         android:maxLines="1"
                         android:text="Customer"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11ssp" />
+                        android:textSize="@dimen/_10ssp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -171,9 +171,9 @@
                         android:fontFamily="@font/sanssemibold"
                         android:gravity="center"
                         android:maxLines="2"
-                        android:text="Fleet Management"
+                        android:text="Fleet Services"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11ssp" />
+                        android:textSize="@dimen/_10ssp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -204,7 +204,7 @@
                         android:maxLines="2"
                         android:text="Report Modules"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11ssp" />
+                        android:textSize="@dimen/_10ssp" />
                 </LinearLayout>
             </LinearLayout>
 

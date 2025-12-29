@@ -57,7 +57,7 @@
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
                 android:text="Deposits"
-                android:textAllCaps="true"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>
@@ -76,7 +76,7 @@
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
                 android:text="Store\nRequisition"
-                android:textAllCaps="true"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>
@@ -95,7 +95,7 @@
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
                 android:text="Transfer"
-                android:textAllCaps="true"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>

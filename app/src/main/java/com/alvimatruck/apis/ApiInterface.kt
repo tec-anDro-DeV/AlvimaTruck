@@ -8,6 +8,7 @@ import com.alvimatruck.model.request.LoginRequest
 import com.alvimatruck.model.request.NewOrderRequest
 import com.alvimatruck.model.request.OTPRequest
 import com.alvimatruck.model.request.OTPVerifyRequest
+import com.alvimatruck.model.request.OrderPostRequest
 import com.alvimatruck.model.request.ResetPasswordRequest
 import com.alvimatruck.model.request.StartTripRequest
 import com.alvimatruck.model.request.TransferRequest
@@ -134,6 +135,9 @@ interface ApiInterface {
 
     @PUT(Constants.API_Update_Customer)
     fun updateCustomer(@Body updateCustomerRequest: CustomerUpdate): Call<JsonObject>
+
+    @POST(Constants.API_Order_Post)
+    fun orderPost(@Body orderPostRequest: OrderPostRequest): Call<JsonObject>
 
     @Multipart
     @POST(Constants.API_Fleet)

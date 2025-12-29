@@ -130,7 +130,6 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
                     android:text="$341.76"
-                    android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
             </RelativeLayout>
@@ -205,7 +204,6 @@
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/sansbold"
                 android:text="$1025.27"
-                android:textAllCaps="true"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/_12ssp" />
         </RelativeLayout>

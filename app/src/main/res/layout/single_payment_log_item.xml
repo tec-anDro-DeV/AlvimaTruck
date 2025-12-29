@@ -148,7 +148,6 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
                     android:text="Cash"
-                    android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
             </RelativeLayout>

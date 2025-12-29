@@ -55,8 +55,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Store Requisition request"
-                android:textAllCaps="true"
+                android:text="Store Requisition\nRequest"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp" />
         </RelativeLayout>
@@ -74,8 +74,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Store Requisition request list"
-                android:textAllCaps="true"
+                android:text="Store Requisition\nRequest List"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp" />
         </RelativeLayout>

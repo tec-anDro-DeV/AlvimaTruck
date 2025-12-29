@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Fleet Management"
+            android:text="Fleet Services"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -57,7 +57,7 @@
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
                 android:text="Fuel Refill\nRequest"
-                android:textAllCaps="true"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>
@@ -76,7 +76,7 @@
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
                 android:text="Repair Log"
-                android:textAllCaps="true"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>
@@ -95,7 +95,7 @@
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
                 android:text="Incident\nReporting"
-                android:textAllCaps="true"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>

@@ -3,13 +3,16 @@ package com.alvimatruck.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.R
 import com.alvimatruck.adapter.NewSalesItemListAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivitySalesOrderDetailBinding
+import com.alvimatruck.model.request.OrderPostRequest
 import com.alvimatruck.model.responses.FullOrderDetail
 import com.alvimatruck.model.responses.SingleOrder
 import com.alvimatruck.utils.Constants
@@ -29,6 +32,7 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
     var orderList: ArrayList<SingleOrder> = ArrayList()
 
     var orderID: String? = null
+    var isChange: Boolean = false
     var orderDetail: FullOrderDetail? = null
     override fun inflateBinding(): ActivitySalesOrderDetailBinding {
         return ActivitySalesOrderDetailBinding.inflate(layoutInflater)
@@ -65,6 +69,72 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
         binding.rvProducts.adapter = newSalesItemListAdapter
 
 
+        binding.tvPostInvoice.setOnClickListener {
+            if (orderDetail!!.orderId.isNullOrEmpty()) {
+                Toast.makeText(this, "Please contact to Admin for Post Invoice", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            } else {
+                orderPostAPI()
+            }
+        }
+
+
+    }
+
+    private fun orderPostAPI() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@SalesOrderDetailActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.orderPost(
+                OrderPostRequest(orderDetail!!.orderId.toString())
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@SalesOrderDetailActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@SalesOrderDetailActivity,
+                                response.body()!!.get("data").asJsonObject.get("message").toString()
+                                    .replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            isChange = true
+                            getSalesOrderDetailAPI()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@SalesOrderDetailActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@SalesOrderDetailActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+
     }
 
     private fun getSalesOrderDetailAPI() {
@@ -88,8 +158,11 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
                                 Gson().fromJson(it, FullOrderDetail::class.java)
                             }
                             binding.tvOrderId.text = orderDetail!!.orderId
-                            binding.tvInvoice.text =
-                                orderDetail!!.invoiceNo.takeIf { it.isNullOrEmpty() } ?: "-"
+                            var invoice = orderDetail!!.invoiceNo
+                            if (invoice.isNullOrEmpty()) {
+                                invoice = "-"
+                            }
+                            binding.tvInvoice.text = invoice
                             binding.tvCustomerName.text = orderDetail!!.customerName
                             binding.tvContactNumber.text = orderDetail!!.getFormattedContactNo()
                             binding.tvAddress.text = orderDetail!!.getFullAddress()
@@ -106,9 +179,13 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
                             if (orderDetail!!.invoiceNo == null || orderDetail!!.invoiceNo == "") {
                                 binding.tvStatus.text = "Open"
                                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
+                                binding.tvPostInvoice.visibility = View.VISIBLE
+                                binding.btnEdit.visibility = View.VISIBLE
                             } else {
                                 binding.tvStatus.text = "Delivered"
                                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
+                                binding.tvPostInvoice.visibility = View.GONE
+                                binding.btnEdit.visibility = View.GONE
                             }
 
 
@@ -138,5 +215,13 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
                 this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    override fun handleBackPressed(callback: OnBackPressedCallback?) {
+        if (isChange) {
+            setResult(RESULT_OK)
+        }
+        finish()
+        super.handleBackPressed(callback)
     }
 }

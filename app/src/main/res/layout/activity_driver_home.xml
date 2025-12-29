@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
                     android:text="Route"
-                    android:textAllCaps="true"
+
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp" />
             </RelativeLayout>
@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
                     android:text="Delivery"
-                    android:textAllCaps="true"
+
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp" />
             </RelativeLayout>
@@ -136,8 +136,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Fleet Management"
-                    android:textAllCaps="true"
+                    android:text="Fleet Services"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp" />
             </RelativeLayout>
@@ -159,7 +158,7 @@
                     android:fontFamily="@font/sanssemibold"
                     android:maxLines="2"
                     android:text="Trip Report"
-                    android:textAllCaps="true"
+
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp" />
             </RelativeLayout>

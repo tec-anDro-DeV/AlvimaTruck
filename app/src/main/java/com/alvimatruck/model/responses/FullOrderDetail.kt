@@ -14,7 +14,7 @@ data class FullOrderDetail(
     val invoiceNo: String?,
     val lines: ArrayList<SingleOrder>,
     val orderDate: String,
-    val orderId: String,
+    val orderId: String?,
     val postalCode: String?,
     val status: String,
     val subtotal: Double,

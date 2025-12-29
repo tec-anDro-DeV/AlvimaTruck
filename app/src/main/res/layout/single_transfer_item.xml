@@ -84,7 +84,6 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
                     android:text="Van"
-                    android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
             </RelativeLayout>
@@ -112,7 +111,6 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
                     android:textAlignment="textEnd"
-                    android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
                     tools:text="Warehouse" />

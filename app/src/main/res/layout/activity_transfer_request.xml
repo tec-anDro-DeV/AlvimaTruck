@@ -56,7 +56,7 @@
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
                 android:text="Create transfer\nRequest"
-                android:textAllCaps="true"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>
@@ -75,7 +75,7 @@
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
                 android:text="Transfer\nRequest List"
-                android:textAllCaps="true"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>

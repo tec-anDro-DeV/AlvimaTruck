@@ -451,7 +451,7 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
             ApiClient.getRestClient(
                 Constants.BASE_URL, ""
             )!!.webservices.customerPrice(
-                "ADDIS_ADM", selectedProduct!!.itemNo
+                orderDetail!!.customerPriceGroup, selectedProduct!!.itemNo
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(
                     call: Call<JsonObject>, response: Response<JsonObject>

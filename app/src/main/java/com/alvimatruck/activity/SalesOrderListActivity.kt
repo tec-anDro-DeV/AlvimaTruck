@@ -1,17 +1,20 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.SalesOrderListAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivitySalesOrderListBinding
+import com.alvimatruck.interfaces.SalesOrderClickListener
 import com.alvimatruck.model.responses.OrderDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
@@ -23,7 +26,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>() {
+class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>(),
+    SalesOrderClickListener {
     private var salesOrderListAdapter: SalesOrderListAdapter? = null
 
     var orderList: ArrayList<OrderDetail>? = ArrayList()
@@ -112,7 +116,9 @@ class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>() {
 
 
                                 salesOrderListAdapter = SalesOrderListAdapter(
-                                    this@SalesOrderListActivity, filterList!!
+                                    this@SalesOrderListActivity,
+                                    filterList!!,
+                                    this@SalesOrderListActivity
                                 )
                                 binding.rvOrderList.adapter = salesOrderListAdapter
                                 binding.llData.visibility = View.VISIBLE
@@ -153,4 +159,19 @@ class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>() {
             ).show()
         }
     }
+
+    override fun onOrderClick(orderDetail: OrderDetail) {
+        val intent = Intent(this, SalesOrderDetailActivity::class.java)
+            .putExtra(Constants.OrderID, orderDetail.dotNetOrderId)
+        startForResult.launch(intent)
+    }
+
+    private val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            salesOrderListAPI()
+        }
+    }
+
 }

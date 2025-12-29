@@ -82,7 +82,6 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
                     android:text="Store 1"
-                    android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
             </RelativeLayout>
@@ -106,7 +105,6 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
                     android:text="Store 2"
-                    android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
             </RelativeLayout>
