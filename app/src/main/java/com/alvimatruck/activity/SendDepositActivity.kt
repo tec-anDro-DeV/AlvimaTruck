@@ -186,7 +186,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 //    }
 
     private fun updateTotal() {
-        var total = -150.0
+        var total = 0.0
 
         for (i in 0 until binding.llInvoice.childCount) {
             val row = binding.llInvoice.getChildAt(i)

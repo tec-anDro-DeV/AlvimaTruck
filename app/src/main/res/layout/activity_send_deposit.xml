@@ -99,29 +99,29 @@
                     android:orientation="vertical"
                     android:padding="@dimen/_10sdp" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp">
+                <!--                <RelativeLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="@dimen/_10sdp">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sansregular"
-                        android:text="Balance (Due / Credit):"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                <!--                    <TextView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:fontFamily="@font/sansregular"-->
+                <!--                        android:text="Balance (Due / Credit):"-->
+                <!--                        android:textColor="@color/black"-->
+                <!--                        android:textSize="@dimen/_12ssp" />-->
 
-                    <TextView
-                        android:id="@+id/tvPreviousAmount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:fontFamily="@font/sansregular"
-                        android:text="-ETB 150.0"
-                        android:textColor="@color/orange"
-                        android:textSize="@dimen/_12ssp" />
-                </RelativeLayout>
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/tvPreviousAmount"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_alignParentEnd="true"-->
+                <!--                        android:fontFamily="@font/sansregular"-->
+                <!--                        android:text="-ETB 150.0"-->
+                <!--                        android:textColor="@color/orange"-->
+                <!--                        android:textSize="@dimen/_12ssp" />-->
+                <!--                </RelativeLayout>-->
 
 
                 <RelativeLayout
@@ -158,30 +158,30 @@
                 android:background="@color/orange" />
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/sanssemibold"
-                android:text="Amount To Be Deposit "
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11ssp" />
+            <!--            <TextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/_10sdp"-->
+            <!--                android:fontFamily="@font/sanssemibold"-->
+            <!--                android:text="Amount To Be Deposit "-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textSize="@dimen/_11ssp" />-->
 
-            <EditText
-                android:id="@+id/etAmount"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_44sdp"
-                android:layout_marginTop="@dimen/_7sdp"
-                android:background="@drawable/input_bg"
-                android:fontFamily="@font/sansregular"
-                android:gravity="center_vertical"
-                android:hint="Enter Amount"
-                android:imeOptions="actionNext"
-                android:inputType="numberDecimal"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/hintGary"
-                android:textSize="@dimen/_12ssp" />
+            <!--            <EditText-->
+            <!--                android:id="@+id/etAmount"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="@dimen/_44sdp"-->
+            <!--                android:layout_marginTop="@dimen/_7sdp"-->
+            <!--                android:background="@drawable/input_bg"-->
+            <!--                android:fontFamily="@font/sansregular"-->
+            <!--                android:gravity="center_vertical"-->
+            <!--                android:hint="Enter Amount"-->
+            <!--                android:imeOptions="actionNext"-->
+            <!--                android:inputType="numberDecimal"-->
+            <!--                android:paddingHorizontal="@dimen/_10sdp"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textColorHint="@color/hintGary"-->
+            <!--                android:textSize="@dimen/_12ssp" />-->
 
 
             <TextView
