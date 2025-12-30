@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityEditSalesBinding
 import com.alvimatruck.interfaces.DeleteOrderListener
+import com.alvimatruck.model.request.UpdateOrderRequest
 import com.alvimatruck.model.responses.FullOrderDetail
 import com.alvimatruck.model.responses.SingleOrder
 import com.alvimatruck.model.responses.UserDetail
@@ -35,13 +37,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderListener {
-    // var locationCodeList: ArrayList<String> = ArrayList()
-    //var paymentCodeList: ArrayList<String> = ArrayList()
     var itemList: ArrayList<String> = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
 
-    // var selectedLocationCode = ""
-    // var selectedPaymentCode = ""
     var selectedItem = ""
     var selectedProduct: VanStockDetail? = null
     var userDetail: UserDetail? = null
@@ -57,6 +55,8 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
     var productList: ArrayList<VanStockDetail>? = ArrayList()
 
     var orderDetail: FullOrderDetail? = null
+
+    var isChange: Boolean = false
 
 
     override fun inflateBinding(): ActivityEditSalesBinding {
@@ -80,45 +80,12 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
             binding.tvCustomer.text = orderDetail!!.customerName
             binding.tvOrderId.text = orderDetail!!.orderId
             orderList = orderDetail!!.lines
-//            val number = if (!customerDetail?.getFormattedContactNo().isNullOrBlank()) {
-//                customerDetail?.getFormattedContactNo()
-//            } else {
-//                customerDetail?.getFormattedTelephoneNo()
-//            }
-
-//            binding.tvTelephoneNumber.text = number ?: ""
-//            binding.tvSalesperson.text = userDetail?.driverFullName
-//            binding.tvLocationCode.text = userDetail?.salesPersonCode
-//            binding.tvPaymentCode.text = userDetail?.salesPersonCode
         }
 
-        //   binding.tvPostingDate.text = Utils.getFullDateWithTime(System.currentTimeMillis())
         binding.tvOrderDate.text = orderDetail!!.getRequestDate()
 
 
-        //     binding.tvToken.text = System.currentTimeMillis().toString()
-
-        //  getLocationCodeList()
-        //   getPaymentCodeList()
         getItemList()
-
-//        binding.tvLocationCode.setOnClickListener {
-//            dialogSingleSelection(
-//                locationCodeList,
-//                "Choose Location Code",
-//                "Search Location Code",
-//                binding.tvLocationCode
-//            )
-//        }
-//
-//        binding.tvPaymentCode.setOnClickListener {
-//            dialogSingleSelection(
-//                paymentCodeList,
-//                "Choose Payment Code",
-//                "Search Payment Code",
-//                binding.tvPaymentCode
-//            )
-//        }
 
         binding.tvItem.setOnClickListener {
             dialogSingleSelection(
@@ -131,7 +98,11 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
         }
 
         binding.tvConfirmOrder.setOnClickListener {
-
+            if (orderList.isEmpty()) {
+                Toast.makeText(this, "Please add items to order", Toast.LENGTH_SHORT).show()
+            } else {
+                updateOrderAPI()
+            }
         }
 
         binding.etQuantity.addTextChangedListener(object : TextWatcher {
@@ -250,73 +221,67 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
 
     }
 
-//    private fun newOrderAPI() {
-//
-//        if (Utils.isOnline(this)) {
-//            ProgressDialog.start(this@EditSalesActivity)
-//            ApiClient.getRestClient(
-//                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-//            )!!.webservices.newOrder(
-//                NewOrderRequest(
-//                    binding.tvCustomer.text.toString(),
-//                    customerDetail!!.no,
-//                    binding.tvTotal.text.toString().replace("ETB", "").toDouble(),
-//                    orderList,
-//                    userDetail?.salesPersonCode.toString(),
-//                    userDetail?.salesPersonCode.toString(),
-//                    binding.tvSubTotal.text.toString().replace("ETB", "").toDouble(),
-//                    binding.tvVat.text.toString().replace("+ ETB", "").toDouble()
-//                )
-//            ).enqueue(object : Callback<JsonObject> {
-//                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-//                    ProgressDialog.dismiss()
-//                    if (response.code() == 401) {
-//                        Utils.forceLogout(this@EditSalesActivity)  // show dialog before logout
-//                        return
-//                    }
-//                    if (response.isSuccessful) {
-//                        try {
-//                            Log.d("TAG", "onResponse: " + response.body().toString())
-//                            Toast.makeText(
-//                                this@EditSalesActivity,
-//                                response.body()!!.get("message").toString().replace('"', ' ')
-//                                    .trim(),
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                            customerDetail!!.visitedToday = true
-//                            Utils.isNewOrder = true
-//                            val intent = Intent()
-//                            intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
-//                            setResult(RESULT_OK, intent)
-//                            finish()
-//
-//                        } catch (e: Exception) {
-//                            e.printStackTrace()
-//                        }
-//                    } else {
-//                        Toast.makeText(
-//                            this@EditSalesActivity,
-//                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-//                    Toast.makeText(
-//                        this@EditSalesActivity,
-//                        getString(R.string.api_fail_message),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    ProgressDialog.dismiss()
-//                }
-//            })
-//        } else {
-//            Toast.makeText(
-//                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-//            ).show()
-//        }
-//    }
+    private fun updateOrderAPI() {
+
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@EditSalesActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.updateOrder(
+                UpdateOrderRequest(
+                    binding.tvTotal.text.toString().replace("ETB", "").toDouble(),
+                    orderList,
+                    binding.tvSubTotal.text.toString().replace("ETB", "").toDouble(),
+                    binding.tvVat.text.toString().replace("+ ETB", "").toDouble(),
+                    orderDetail!!.orderId.toString()
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@EditSalesActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@EditSalesActivity,
+                                response.body()!!.get("data").asJsonObject.get("message").toString()
+                                    .replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            isChange = true
+                            handleBackPressed()
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@EditSalesActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@EditSalesActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     fun calculateFinalTotal() {
         var subtotal = 0.0
@@ -341,19 +306,7 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
         val selectedGroup: String = selectedItem
-//        val selectedGroup: String = when (textView) {
-//            binding.tvLocationCode -> {
-//                selectedLocationCode
-//            }
-//
-//            binding.tvItem -> {
-//                selectedItem
-//            }
-//
-//            else -> {
-//                selectedPaymentCode
-//            }
-//        }
+
         val singleItemSelectionAdapter =
             SingleItemSelectionAdapter(this, filterList!!, selectedGroup)
 
@@ -417,27 +370,7 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
                 // Check if item exists in orderList
                 val existingOrder = orderList.find { it.itemNo == selectedProduct?.itemNo }
                 customerPriceAPI(existingOrder)
-//            when (textView) {
-//                binding.tvLocationCode -> {
-//                    selectedLocationCode = singleItemSelectionAdapter.selected
-//                }
-//
-//                binding.tvItem -> {
-//                    selectedItem = singleItemSelectionAdapter.selected
-//                    for (item in productList!!) {
-//                        if (item.description == singleItemSelectionAdapter.selected) {
-//                            selectedProduct = item
-//                        }
-//                    }
-//                    // Check if item exists in orderList
-//                    val existingOrder = orderList.find { it.itemNo == selectedProduct?.no }
-//                    customerPriceAPI(existingOrder)
-//                }
-//
-//                else -> {
-//                    selectedPaymentCode = singleItemSelectionAdapter.selected
-//                }
-//            }
+
                 textView.text = singleItemSelectionAdapter.selected
                 dialog.dismiss()
             }
@@ -603,6 +536,14 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
         } else {
             calculateFinalTotal()
         }
+    }
+
+    override fun handleBackPressed(callback: OnBackPressedCallback?) {
+        if (isChange) {
+            setResult(RESULT_OK)
+        }
+        finish()
+        super.handleBackPressed(callback)
     }
 
 

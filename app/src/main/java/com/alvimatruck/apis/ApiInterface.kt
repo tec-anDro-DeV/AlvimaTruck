@@ -12,6 +12,7 @@ import com.alvimatruck.model.request.OrderPostRequest
 import com.alvimatruck.model.request.ResetPasswordRequest
 import com.alvimatruck.model.request.StartTripRequest
 import com.alvimatruck.model.request.TransferRequest
+import com.alvimatruck.model.request.UpdateOrderRequest
 import com.alvimatruck.model.request.VisitedTripRequest
 import com.alvimatruck.utils.Constants
 import com.google.gson.JsonElement
@@ -23,6 +24,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
@@ -71,6 +73,9 @@ interface ApiInterface {
 
     @POST(Constants.API_New_Order)
     fun newOrder(@Body newOrderRequest: NewOrderRequest): Call<JsonObject>
+
+    @PATCH(Constants.API_Update_Order)
+    fun updateOrder(@Body updateOrderRequest: UpdateOrderRequest): Call<JsonObject>
 
     @POST(Constants.API_Create_Transfer)
     fun newTransferRequest(@Body transferRequest: TransferRequest): Call<JsonObject>

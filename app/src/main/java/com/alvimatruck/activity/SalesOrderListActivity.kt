@@ -74,7 +74,7 @@ class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>(),
                 } else {
                     for (item in orderList!!) {
                         if (item.customerName.lowercase()
-                                .contains(s.toString().lowercase()) || item.orderId.lowercase()
+                                .contains(s.toString().lowercase()) || item.id().lowercase()
                                 .contains(s.toString().lowercase())
                         ) {
                             filterList!!.add(item)
@@ -162,7 +162,7 @@ class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>(),
 
     override fun onOrderClick(orderDetail: OrderDetail) {
         val intent = Intent(this, SalesOrderDetailActivity::class.java)
-            .putExtra(Constants.OrderID, orderDetail.dotNetOrderId)
+            .putExtra(Constants.OrderID, orderDetail.orderId)
         startForResult.launch(intent)
     }
 

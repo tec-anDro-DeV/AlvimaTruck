@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.R
 import com.alvimatruck.adapter.NewSalesItemListAdapter
@@ -52,11 +53,19 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
         }
 
         binding.btnEdit.setOnClickListener {
-            startActivity(
-                Intent(
+            if (orderDetail!!.orderId.isNullOrEmpty()) {
+                Toast.makeText(
+                    this,
+                    getString(R.string.order_has_not_been_synced_with_bc_yet_please_wait_for_a_while_and_try_again),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                val intent = Intent(
                     this, EditSalesActivity::class.java
                 ).putExtra(Constants.OrderDetail, Gson().toJson(orderDetail))
-            )
+                startForResult.launch(intent)
+            }
+
         }
         binding.rvProducts.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -158,7 +167,7 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
                             orderDetail = response.body()!!.getAsJsonObject("data").let {
                                 Gson().fromJson(it, FullOrderDetail::class.java)
                             }
-                            binding.tvOrderId.text = orderDetail!!.orderId
+                            binding.tvOrderId.text = orderDetail!!.id()
                             var invoice = orderDetail!!.invoiceNo
                             if (invoice.isNullOrEmpty()) {
                                 invoice = "-"
@@ -224,5 +233,13 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
         }
         finish()
         super.handleBackPressed(callback)
+    }
+
+    private val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            getSalesOrderDetailAPI()
+        }
     }
 }

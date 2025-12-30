@@ -9,7 +9,8 @@ data class SingleOrder(
     var quantity: Int,
     var unitPrice: Double,
     var vat: Double,
-    var unitOfMeasure: String
+    var unitOfMeasure: String,
+    var lineNo: Int = 0
 ) {
     fun finalPrice(): String {
         return finalPrice.to2Decimal()

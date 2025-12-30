@@ -33,7 +33,7 @@
                 android:layout_marginStart="@dimen/_11sdp"
                 android:layout_toEndOf="@id/ivStock"
                 android:fontFamily="@font/sansbold"
-                android:text="@{detail.dotNetOrderId}"
+                android:text="@{detail.id}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp"
                 tools:text="Order ID" />

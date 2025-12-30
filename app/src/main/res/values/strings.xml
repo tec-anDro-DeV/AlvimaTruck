@@ -53,5 +53,6 @@
     <string name="please_contact_to_admin_for_post_invoice">Please contact to Admin for Post Invoice</string>
     <string name="please_select_a_date_range">Please select a date range</string>
     <string name="please_select_postal_code">Please select postal code</string>
+    <string name="order_has_not_been_synced_with_bc_yet_please_wait_for_a_while_and_try_again">Order has not been synced with BC yet. Please wait for a while and try again</string>
 
 </resources>
