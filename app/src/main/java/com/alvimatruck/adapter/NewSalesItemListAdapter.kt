@@ -28,7 +28,18 @@ class NewSalesItemListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.binding.detail = list[position]
-        if (position == list.size - 1) {
+        if (list[position].isDelete) {
+            holder.itemView.visibility = View.GONE
+            holder.itemView.layoutParams =
+                RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0)
+        } else {
+            holder.itemView.visibility = View.VISIBLE
+            holder.itemView.layoutParams = RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+        if (position == list.size - 1 || (position < list.size - 1 && list[position + 1].isDelete)) {
             holder.binding.divider.visibility = View.GONE
         } else {
             holder.binding.divider.visibility = View.VISIBLE

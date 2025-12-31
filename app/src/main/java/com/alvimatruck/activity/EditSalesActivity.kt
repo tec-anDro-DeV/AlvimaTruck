@@ -166,6 +166,7 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
                     existingOrder.unitPrice = tempUnitPrice
                     existingOrder.finalPrice = finalTotal
                     existingOrder.vat = tempVat // Update VAT in case it changed
+                    existingOrder.isDelete = false
 
                     newSalesItemListAdapter!!.notifyItemChanged(existingIndex)
                 } else {
@@ -286,12 +287,11 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
     fun calculateFinalTotal() {
         var subtotal = 0.0
         var vat = 0.0
-        var total = 0.0
-        for (item in orderList) {
+        for (item in orderList.filter { !it.isDelete }) {
             subtotal += (item.unitPrice * item.quantity)
             vat += (item.vat * item.quantity)
-            total += item.finalPrice
         }
+        val total = subtotal + vat
         binding.tvSubTotal.text = "ETB " + subtotal.to2Decimal()
         binding.tvVat.text = "+ ETB " + vat.to2Decimal()
         binding.tvTotal.text = "ETB " + total.to2Decimal()
@@ -528,6 +528,12 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
 
     override fun onDeleteOrder(orderDetail: SingleOrder) {
         orderList.remove(orderDetail)
+        if (orderDetail.lineNo != 0) {
+            val data = orderDetail
+            data.isDelete = true
+            orderList.add(data)
+        }
+
         newSalesItemListAdapter!!.notifyDataSetChanged()
         if (orderList.isEmpty()) {
             binding.llOrderList.visibility = View.GONE
