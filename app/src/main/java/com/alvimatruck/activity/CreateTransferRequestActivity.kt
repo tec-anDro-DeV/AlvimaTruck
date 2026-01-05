@@ -482,7 +482,7 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
             val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
 
             for (item in dataArray) {
-                val code = item.asJsonObject.get("code")?.asString
+                val code = item.asJsonObject.get("value")?.asString
                 if (!code.isNullOrEmpty()) {
                     profitCenterList.add(code)
                 }

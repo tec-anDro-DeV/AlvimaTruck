@@ -147,29 +147,29 @@
                 android:textColorHint="@color/hintGary"
                 android:textSize="@dimen/_12ssp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_14sdp"
-                android:fontFamily="@font/sanssemibold"
-                android:text="Payment Code"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11ssp" />
+            <!--            <TextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/_14sdp"-->
+            <!--                android:fontFamily="@font/sanssemibold"-->
+            <!--                android:text="Payment Code"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textSize="@dimen/_11ssp" />-->
 
 
-            <TextView
-                android:id="@+id/tvPaymentCode"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_44sdp"
-                android:layout_marginTop="@dimen/_7sdp"
-                android:background="@drawable/input_bg"
-                android:fontFamily="@font/sansregular"
-                android:gravity="center_vertical"
+            <!--            <TextView-->
+            <!--                android:id="@+id/tvPaymentCode"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="@dimen/_44sdp"-->
+            <!--                android:layout_marginTop="@dimen/_7sdp"-->
+            <!--                android:background="@drawable/input_bg"-->
+            <!--                android:fontFamily="@font/sansregular"-->
+            <!--                android:gravity="center_vertical"-->
 
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/hintGary"
-                android:textSize="@dimen/_12ssp" />
+            <!--                android:paddingHorizontal="@dimen/_10sdp"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textColorHint="@color/hintGary"-->
+            <!--                android:textSize="@dimen/_12ssp" />-->
 
 
             <TextView

@@ -348,7 +348,3 @@ object Utils {
 data class TransferItem(
     var name: String, var isSelected: Boolean = false
 )
-
-data class InvoiceItem(
-    var no: String, var price: Double, var date: String
-)

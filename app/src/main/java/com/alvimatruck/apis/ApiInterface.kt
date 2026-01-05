@@ -98,6 +98,11 @@ interface ApiInterface {
         @Query("route") route: String,
     ): Call<JsonObject>
 
+    @GET(Constants.API_Invoice_List)
+    fun invoiceList(
+        @Query("customerNo") customerNo: String,
+    ): Call<JsonObject>
+
     @DELETE(Constants.API_Delete_Order + "{orderId}")
     fun deleteOrder(
         @Path("orderId") orderId: String
@@ -142,6 +147,17 @@ interface ApiInterface {
         @Part("Longitude") longitude: RequestBody,
         @Part customerImage: MultipartBody.Part? = null,   // optional
         @Part idProof: MultipartBody.Part? = null          // optional
+    ): Call<JsonObject>
+
+    @Multipart
+    @POST(Constants.API_Payment_Create)
+    fun paymentCreate(
+        @Part("custNo") custNo: RequestBody,
+        @Part("customerName") customerName: RequestBody,
+        @Part("paymentCode") paymentCode: RequestBody,
+        @Part("totalAmount") totalAmount: RequestBody,
+        @Part("invoiceNumbers[]") invoiceNumbers: ArrayList<RequestBody>,
+        @Part imageProof: MultipartBody.Part? = null,   // optional
     ): Call<JsonObject>
 
     @PUT(Constants.API_Update_Customer)
