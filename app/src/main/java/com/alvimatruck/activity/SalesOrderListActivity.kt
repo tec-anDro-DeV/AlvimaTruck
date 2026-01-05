@@ -174,4 +174,10 @@ class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>(),
         }
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        // An item was deleted, so refresh the list.
+        salesOrderListAPI()
+    }
+
 }

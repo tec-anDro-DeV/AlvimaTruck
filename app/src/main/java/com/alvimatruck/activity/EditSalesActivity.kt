@@ -1,5 +1,6 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -219,6 +220,111 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
 
         calculateFinalTotal()
 
+        binding.tvDelete.setOnClickListener {
+            val inflater = layoutInflater
+            val alertLayout = inflater.inflate(R.layout.dialog_alert_two_button, null)
+
+            val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
+            val tvMessage = alertLayout.findViewById<TextView>(R.id.tvMessage)
+            val btnNo = alertLayout.findViewById<TextView>(R.id.btnNo)
+            val btnYes = alertLayout.findViewById<TextView>(R.id.btnYes)
+
+            // Set content
+            tvTitle.text = "Delete Order?"
+            tvMessage.text = "Are you sure you want to delete this order?"
+            btnNo.text = "No"
+            btnYes.text = "Yes"
+
+
+            val dialog =
+                AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
+            dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+
+            btnNo.setOnClickListener {
+                dialog.dismiss()
+            }
+            btnYes.setOnClickListener {
+                dialog.dismiss()
+                deleteOrderAPI()
+            }
+
+            dialog.show()
+            val width =
+                (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+            dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
+
+        }
+
+
+    }
+
+    private fun deleteOrderAPI() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@EditSalesActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.deleteOrder(
+                orderDetail!!.orderId.toString()
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@EditSalesActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+
+                            Toast.makeText(
+                                this@EditSalesActivity,
+                                response.body()!!.get("message").toString()
+                                    .replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            val intent =
+                                Intent(this@EditSalesActivity, SalesOrderListActivity::class.java)
+
+                            // 2. Clear the activity stack up to SalesOrderListActivity
+                            // This will close both EditSalesActivity and SalesOrderDetailActivity
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+                            // 3. Start the activity
+                            startActivity(intent)
+
+                            // 4. Finish the current activity
+                            finish()
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@EditSalesActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@EditSalesActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
 
     }
 
@@ -287,11 +393,13 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
     fun calculateFinalTotal() {
         var subtotal = 0.0
         var vat = 0.0
+        var total = 0.0
         for (item in orderList.filter { !it.isDelete }) {
             subtotal += (item.unitPrice * item.quantity)
             vat += (item.vat * item.quantity)
+            total += item.finalPrice
         }
-        val total = subtotal + vat
+
         binding.tvSubTotal.text = "ETB " + subtotal.to2Decimal()
         binding.tvVat.text = "+ ETB " + vat.to2Decimal()
         binding.tvTotal.text = "ETB " + total.to2Decimal()

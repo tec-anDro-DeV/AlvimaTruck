@@ -240,6 +240,7 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
     ) { result ->
         if (result.resultCode == RESULT_OK) {
             getSalesOrderDetailAPI()
+            isChange = true
         }
     }
 }

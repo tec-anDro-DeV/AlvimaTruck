@@ -22,6 +22,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
@@ -95,6 +96,11 @@ interface ApiInterface {
     @GET(Constants.API_Check_Route)
     fun routeCheck(
         @Query("route") route: String,
+    ): Call<JsonObject>
+
+    @DELETE(Constants.API_Delete_Order + "{orderId}")
+    fun deleteOrder(
+        @Path("orderId") orderId: String
     ): Call<JsonObject>
 
     @GET(Constants.API_Order_Detail + "/{orderId}")
