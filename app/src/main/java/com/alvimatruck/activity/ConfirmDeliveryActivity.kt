@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityConfirmDeliveryBinding
+import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
@@ -67,6 +68,16 @@ class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
             deliveryProofImageUri = null // ✅ Reset the URI
             binding.rlDeliveryPhoto.visibility = View.GONE
             binding.rlChoosePhoto.visibility = View.VISIBLE
+        }
+
+
+        binding.ivIDProof.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    FullImageActivity::class.java
+                ).putExtra(Constants.ImageUri, deliveryProofImageUri.toString())
+            )
         }
 
     }

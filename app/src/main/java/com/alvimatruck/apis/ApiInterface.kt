@@ -57,6 +57,9 @@ interface ApiInterface {
     @GET(Constants.API_Today_Routes)
     fun getTodayRoutes(): Call<JsonObject>
 
+    @GET(Constants.API_Payment_Logs)
+    fun getPaymentLogs(): Call<JsonObject>
+
     @GET(Constants.API_Sales_Orders)
     fun getSalesOrder(): Call<JsonObject>
 
@@ -152,12 +155,12 @@ interface ApiInterface {
     @Multipart
     @POST(Constants.API_Payment_Create)
     fun paymentCreate(
-        @Part("custNo") custNo: RequestBody,
-        @Part("customerName") customerName: RequestBody,
-        @Part("paymentCode") paymentCode: RequestBody,
-        @Part("totalAmount") totalAmount: RequestBody,
-        @Part("invoiceNumbers[]") invoiceNumbers: ArrayList<RequestBody>,
-        @Part imageProof: MultipartBody.Part? = null,   // optional
+        @Part("CustNo") CustNo: RequestBody,
+        @Part("CustomerName") CustomerName: RequestBody,
+        @Part("PaymentCode") PaymentCode: RequestBody,
+        @Part("TotalAmount") TotalAmount: RequestBody,
+        @Part("InvoiceNumbers[]") InvoiceNumbers: ArrayList<RequestBody>,
+        @Part imageFile: MultipartBody.Part? = null,   // optional
     ): Call<JsonObject>
 
     @PUT(Constants.API_Update_Customer)

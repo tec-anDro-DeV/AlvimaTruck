@@ -153,6 +153,26 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         }
 
 
+        binding.ivIDProof.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    FullImageActivity::class.java
+                ).putExtra(Constants.ImageUri, idProofImageUri.toString())
+            )
+        }
+
+
+        binding.ivUser.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    FullImageActivity::class.java
+                ).putExtra(Constants.ImageUri, customerPhotoUri.toString())
+            )
+        }
+
+
     }
 
     private fun validationAndSubmit() {

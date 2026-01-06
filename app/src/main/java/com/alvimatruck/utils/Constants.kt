@@ -32,6 +32,7 @@ class Constants {
         const val API_Customer_Price = "Customer/get-price"
 
         const val API_Today_Routes = "MobileRoutes/today-routes"
+        const val API_Payment_Logs = "Payment/get-by-salesperson"
 
         const val API_Sales_Orders = "SalesOrder/get-all"
         const val API_New_Order = "SalesOrder/create"
@@ -79,6 +80,8 @@ class Constants {
         const val CustomerDetail = "customer_detail"
         const val OrderID = "order_id"
         const val OrderDetail = "order_detail"
+        const val ImageUri = "image_uri"
+
 
     }
 

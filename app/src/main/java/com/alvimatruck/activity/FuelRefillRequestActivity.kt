@@ -98,6 +98,16 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
             binding.rlChoosePhoto.visibility = View.VISIBLE
         }
 
+
+        binding.ivIDProof.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    FullImageActivity::class.java
+                ).putExtra(Constants.ImageUri, meterProofImageUri.toString())
+            )
+        }
+
     }
 
     private fun apiFuelRequest() {

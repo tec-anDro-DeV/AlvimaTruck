@@ -2,13 +2,16 @@ package com.alvimatruck.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.alvimatruck.activity.FullImageActivity
 import com.alvimatruck.databinding.SinglePhotoBinding
 import com.alvimatruck.interfaces.DeletePhotoListener
+import com.alvimatruck.utils.Constants
 
 
 class ImagesListAdapter(
@@ -28,6 +31,15 @@ class ImagesListAdapter(
 
         holder.binding.btnDeletePhoto.setOnClickListener {
             deletePhotoListener.onDeletePhoto(list[position])
+        }
+
+        holder.binding.imgItem.setOnClickListener {
+            mActivity.startActivity(
+                Intent(
+                    mActivity,
+                    FullImageActivity::class.java
+                ).putExtra(Constants.ImageUri, list[position].toString())
+            )
         }
 
 

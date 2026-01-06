@@ -125,6 +125,15 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
         customerListAPI()
 
+        binding.ivPaymentProof.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    FullImageActivity::class.java
+                ).putExtra(Constants.ImageUri, paymentProofImageUri.toString())
+            )
+        }
+
         //  updateTotal()
 
     }
@@ -142,10 +151,10 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             )!!.webservices.paymentCreate(
                 selectedCustomer!!.no.toRequestBody("text/plain".toMediaType()),
                 selectedCustomer!!.searchName.toRequestBody("text/plain".toMediaType()),
-                binding.rgPaymentMode.findViewById<RadioButton>(binding.rgPaymentMode.checkedRadioButtonId)
-                    .toString().toRequestBody("text/plain".toMediaType()),
+                binding.rgPaymentMode.findViewById<RadioButton>(binding.rgPaymentMode.checkedRadioButtonId).text.toString()
+                    .trim().toRequestBody("text/plain".toMediaType()),
                 total.toString().toRequestBody("text/plain".toMediaType()), invoiceBodyList,
-                Utils.createFilePart("imageProof", paymentProofImageUri, this),
+                Utils.createFilePart("imageFile", paymentProofImageUri, this),
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     ProgressDialog.dismiss()

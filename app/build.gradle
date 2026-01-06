@@ -95,5 +95,5 @@ dependencies {
 
     implementation 'io.github.architshah248.calendar:awesome-calendar:2.0.0'
 
-
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 }
