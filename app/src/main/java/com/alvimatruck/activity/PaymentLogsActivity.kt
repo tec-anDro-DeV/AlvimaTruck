@@ -2,6 +2,7 @@ package com.alvimatruck.activity
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.PaymentLogsListAdapter
@@ -9,10 +10,12 @@ import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityPaymentLogsBinding
+import com.alvimatruck.model.responses.PaymentDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,6 +24,8 @@ import retrofit2.Response
 class PaymentLogsActivity : BaseActivity<ActivityPaymentLogsBinding>() {
 
     private var paymentLogsListAdapter: PaymentLogsListAdapter? = null
+
+    var logList: ArrayList<PaymentDetail>? = ArrayList()
 
 
     override fun inflateBinding(): ActivityPaymentLogsBinding {
@@ -39,14 +44,7 @@ class PaymentLogsActivity : BaseActivity<ActivityPaymentLogsBinding>() {
                 EqualSpacingItemDecoration.VERTICAL
             )
         )
-        binding.rvLogs.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-
-        paymentLogsListAdapter = PaymentLogsListAdapter(
-            this@PaymentLogsActivity, Utils.getDummyArrayList(5)
-        )
-        binding.rvLogs.adapter = paymentLogsListAdapter
 
         paymentLogsAPI()
 
@@ -70,6 +68,29 @@ class PaymentLogsActivity : BaseActivity<ActivityPaymentLogsBinding>() {
                         if (response.isSuccessful) {
                             try {
                                 Log.d("TAG", "onResponse: " + response.body().toString())
+
+                                logList = response.body()!!.getAsJsonArray("items").map {
+                                    Gson().fromJson(it, PaymentDetail::class.java)
+                                } as ArrayList<PaymentDetail>
+                                if (logList!!.isNotEmpty()) {
+                                    binding.rvLogs.layoutManager =
+                                        LinearLayoutManager(
+                                            this@PaymentLogsActivity,
+                                            LinearLayoutManager.VERTICAL,
+                                            false
+                                        )
+
+                                    paymentLogsListAdapter = PaymentLogsListAdapter(
+                                        this@PaymentLogsActivity, logList!!
+                                    )
+                                    binding.rvLogs.adapter = paymentLogsListAdapter
+
+                                    binding.llNoData.root.visibility = View.GONE
+                                    binding.rvLogs.visibility = View.VISIBLE
+                                } else {
+                                    binding.llNoData.root.visibility = View.VISIBLE
+                                    binding.rvLogs.visibility = View.GONE
+                                }
 
 
                             } catch (e: Exception) {

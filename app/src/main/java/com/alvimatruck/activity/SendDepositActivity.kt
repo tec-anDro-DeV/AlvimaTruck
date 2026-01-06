@@ -141,8 +141,8 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
     private fun paymentAPI() {
         if (Utils.isOnline(this)) {
             val invoiceBodyList = ArrayList<RequestBody>()
-            for (invoice in invoiceList!!) {
-                invoiceBodyList.add(invoice.toString().toRequestBody("text/plain".toMediaType()))
+            for (invoice in selectedInvoiceList!!) {
+                invoiceBodyList.add(invoice.toRequestBody("text/plain".toMediaType()))
             }
 
             ProgressDialog.start(this@SendDepositActivity)
