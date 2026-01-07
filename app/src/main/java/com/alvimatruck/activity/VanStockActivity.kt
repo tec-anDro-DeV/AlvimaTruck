@@ -49,7 +49,7 @@ class VanStockActivity : BaseActivity<ActivityVanStockBinding>() {
         if (intent != null) {
             if (intent.getBooleanExtra(Constants.IS_HIDE, false)) {
                 binding.bottomMenu.visibility = View.GONE
-                binding.tvTitle.text = "Stock Report"
+                binding.tvTitle.text = getString(R.string.stock_report)
             }
         }
         getItemList()
@@ -110,8 +110,7 @@ class VanStockActivity : BaseActivity<ActivityVanStockBinding>() {
             )!!.webservices.vanStock(userDetail?.salesPersonCode!!)
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
-                        call: Call<JsonObject>,
-                        response: Response<JsonObject>
+                        call: Call<JsonObject>, response: Response<JsonObject>
                     ) {
                         ProgressDialog.dismiss()
                         if (response.isSuccessful) {
@@ -122,12 +121,9 @@ class VanStockActivity : BaseActivity<ActivityVanStockBinding>() {
                                 } as ArrayList<VanStockDetail>
                                 filterList = ArrayList(itemList!!)
                                 if (filterList!!.isNotEmpty()) {
-                                    binding.rvStockList.layoutManager =
-                                        LinearLayoutManager(
-                                            this@VanStockActivity,
-                                            LinearLayoutManager.VERTICAL,
-                                            false
-                                        )
+                                    binding.rvStockList.layoutManager = LinearLayoutManager(
+                                        this@VanStockActivity, LinearLayoutManager.VERTICAL, false
+                                    )
 
 
                                     vanStockListAdapter = VanStockListAdapter(
@@ -167,9 +163,7 @@ class VanStockActivity : BaseActivity<ActivityVanStockBinding>() {
                 })
         } else {
             Toast.makeText(
-                this,
-                getString(R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
     }

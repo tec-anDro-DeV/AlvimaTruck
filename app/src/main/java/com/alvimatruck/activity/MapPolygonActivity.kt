@@ -21,8 +21,8 @@ class MapPolygonActivity : BaseActivity<ActivityMapPolygonBinding>(), OnMapReady
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.mapFragment) as SupportMapFragment
+        val mapFragment =
+            supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
     }
@@ -82,11 +82,9 @@ class MapPolygonActivity : BaseActivity<ActivityMapPolygonBinding>(), OnMapReady
     private fun drawPolygon(points: List<LatLng>) {
         if (points.isEmpty()) return
 
-        val polygonOptions = PolygonOptions()
-            .addAll(points)
-            .strokeColor(0xFF2196F3.toInt()) // blue border
-            .strokeWidth(4f)
-            .fillColor(0x552196F3) // semi-transparent blue fill
+        val polygonOptions =
+            PolygonOptions().addAll(points).strokeColor(0xFF2196F3.toInt()) // blue border
+                .strokeWidth(4f).fillColor(0x552196F3) // semi-transparent blue fill
 
         mMap.addPolygon(polygonOptions)
 

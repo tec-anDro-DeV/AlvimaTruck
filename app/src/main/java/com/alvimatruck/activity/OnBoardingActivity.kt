@@ -21,17 +21,17 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
     private lateinit var bgImages: Array<Int>
 
     private var titles = arrayOf(
-        "Quality You Deliver",
-        "Smart & Fast Logistics",
-        "Accurate Orders, Happy Customers",
-        "Track. Deliver. Succeed"
+        getString(R.string.quality_you_deliver),
+        getString(R.string.smart_fast_logistics),
+        getString(R.string.accurate_orders_happy_customers),
+        getString(R.string.track_deliver_succeed)
     )
 
     private var descriptions = arrayOf(
-        "Carry Alvima’s high-standard pasta and flour safely to every customer with trust and pride.",
-        "Enjoy seamless deliveries powered by fully automated systems and ERP-integrated routing.",
-        "Ensure every delivery meets expectations, boosting customer satisfaction across Ethiopia.",
-        "Real-time status updates help you complete your route efficiently and grow with Alvima."
+        getString(R.string.carry_alvima_s_high_standard_pasta_and_flour_safely_to_every_customer_with_trust_and_pride),
+        getString(R.string.enjoy_seamless_deliveries_powered_by_fully_automated_systems_and_erp_integrated_routing),
+        getString(R.string.ensure_every_delivery_meets_expectations_boosting_customer_satisfaction_across_ethiopia),
+        getString(R.string.real_time_status_updates_help_you_complete_your_route_efficiently_and_grow_with_alvima)
     )
 
 
@@ -45,8 +45,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
             addBottomDots(position)
             binding.ivOnboard.setImageDrawable(
                 ContextCompat.getDrawable(
-                    this@OnBoardingActivity,
-                    bgImages[position]
+                    this@OnBoardingActivity, bgImages[position]
                 )
             )
             if (position == titles.size.minus(1)) {
@@ -78,10 +77,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
         controller.isAppearanceLightStatusBars = true
 
         bgImages = arrayOf(
-            R.drawable.onboard1,
-            R.drawable.onboard2,
-            R.drawable.onboard3,
-            R.drawable.onboard4
+            R.drawable.onboard1, R.drawable.onboard2, R.drawable.onboard3, R.drawable.onboard4
         )
 
         sliderAdapter = SliderAdapter(this, titles, descriptions)

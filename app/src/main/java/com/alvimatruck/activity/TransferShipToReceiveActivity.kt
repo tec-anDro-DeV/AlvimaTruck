@@ -34,8 +34,7 @@ class TransferShipToReceiveActivity : BaseActivity<ActivityTransferShipToReceive
 
 
         transferShipToReceiveListAdapter = TransferShipToReceiveListAdapter(
-            this@TransferShipToReceiveActivity,
-            Utils.getDummyTransferList(5)
+            this@TransferShipToReceiveActivity, Utils.getDummyTransferList(5)
         ) { allSelected ->
             // This code runs when a single item in the list is clicked.
             // We check if the UI needs updating to avoid infinite loops.

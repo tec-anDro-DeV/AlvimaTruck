@@ -141,7 +141,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
         binding.tvVanNumber.setOnClickListener {
             filterList!!.clear()
-            dialogSingleSelection(itemList!!, "Select Van No.", "Search Van No.")
+            dialogSingleSelection()
         }
 
         binding.tvForgotPassword.setOnClickListener {
@@ -214,8 +214,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     }
 
 
-    private fun dialogSingleSelection(list: ArrayList<VanDetail>, title: String, hint: String) {
-        filterList!!.addAll(list)
+    private fun dialogSingleSelection() {
+        filterList!!.addAll(itemList)
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
 
@@ -226,7 +226,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         rvBinList.layoutManager = lLayout
         rvBinList.adapter = vanItemSelectionAdapter
         val etBinSearch = alertLayout.findViewById<EditText>(R.id.etItemSearch)
-        etBinSearch.hint = hint
+        etBinSearch.hint = getString(R.string.search_van_no)
 
 
 
@@ -239,9 +239,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 //filter(s.toString())
                 filterList!!.clear()
                 if (s.toString().trim().isEmpty()) {
-                    filterList!!.addAll(list)
+                    filterList!!.addAll(itemList)
                 } else {
-                    for (item in list) {
+                    for (item in itemList) {
                         if (item.vanNo.lowercase().contains(s.toString().lowercase())) {
                             filterList!!.add(item)
                         }
@@ -254,7 +254,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel2)
         val tvConfirm = alertLayout.findViewById<TextView>(R.id.tvConfirm2)
         val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
-        tvTitle.text = title
+        tvTitle.text = getString(R.string.select_van_no)
 
 
         val alert = AlertDialog.Builder(this)
@@ -269,12 +269,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
         dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
 
-        tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
-        tvConfirm.setOnClickListener { view: View? ->
+        tvCancel.setOnClickListener { _: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { _: View? ->
             if (filterList!!.isNotEmpty()) {
                 selectedVan = vanItemSelectionAdapter.selected!!
-                binding.tvVanNumber.text = vanItemSelectionAdapter.selected!!.vanNo
-                binding.tvPersonName.text = vanItemSelectionAdapter.selected!!.salesPerson
+                if (binding.tvVanNumber.text != vanItemSelectionAdapter.selected!!.vanNo) {
+                    binding.tvVanNumber.text = vanItemSelectionAdapter.selected!!.vanNo
+                    binding.tvPersonName.text = vanItemSelectionAdapter.selected!!.salesPerson
+                    binding.etPassword.setText("")
+                }
                 dialog.dismiss()
             }
 
@@ -461,10 +464,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             val btnYes = alertLayout.findViewById<TextView>(R.id.btnYes)
 
             // Set content
-            tvTitle.text = "Enable Fingerprint Login?"
-            tvMessage.text = "Would you like to use your fingerprint for future logins?"
-            btnNo.text = "No"
-            btnYes.text = "Yes"
+            tvTitle.text = getString(R.string.enable_fingerprint_login)
+            tvMessage.text =
+                getString(R.string.would_you_like_to_use_your_fingerprint_for_future_logins)
+            btnNo.text = getString(R.string.no)
+            btnYes.text = getString(R.string.yes)
 
 
             val dialog =

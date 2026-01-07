@@ -39,13 +39,15 @@ import java.io.FileOutputStream
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.temporal.ChronoField
 import java.util.Date
 
 
 @SuppressLint("SimpleDateFormat")
 object Utils {
-    var mLastClickTime: Long = 0
-
     var isTripInProgress: Boolean = false
     var isNewOrder: Boolean = false
 
@@ -115,17 +117,6 @@ object Utils {
         }
         return transferList
     }
-
-//    fun parseErrorMessage(response: Response<*>): String {
-//        return try {
-//            JSONObject(response.errorBody()?.string() ?: "").optString(
-//                "message",
-//                "Something went wrong"
-//            )
-//        } catch (_: Exception) {
-//            "Something went wrong"
-//        }
-//    }
 
     fun parseErrorMessage(response: Response<*>): String {
         return try {
@@ -342,6 +333,14 @@ object Utils {
 
     fun Double.to2Decimal(): String {
         return BigDecimal(this).setScale(2, RoundingMode.HALF_UP).toDouble().toString()
+    }
+
+    fun getFormatedRequestDate(dateStr: String): String {
+        return LocalDateTime.parse(
+            dateStr,
+            DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd'T'HH:mm:ss").optionalStart()
+                .appendFraction(ChronoField.NANO_OF_SECOND, 1, 9, true).optionalEnd().toFormatter()
+        ).format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
     }
 }
 

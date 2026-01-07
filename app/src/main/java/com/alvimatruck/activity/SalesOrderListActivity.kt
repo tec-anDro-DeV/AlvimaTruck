@@ -161,8 +161,9 @@ class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>(),
     }
 
     override fun onOrderClick(orderDetail: OrderDetail) {
-        val intent = Intent(this, SalesOrderDetailActivity::class.java)
-            .putExtra(Constants.OrderID, orderDetail.orderId)
+        val intent = Intent(this, SalesOrderDetailActivity::class.java).putExtra(
+            Constants.OrderID, orderDetail.orderId
+        )
         startForResult.launch(intent)
     }
 

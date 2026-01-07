@@ -126,7 +126,7 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
     private fun apiRepairLogRequest() {
         val partsList = ArrayList<MultipartBody.Part>()
 
-        listProofImageUri.forEachIndexed { index, file ->
+        listProofImageUri.forEachIndexed { index, _ ->
             val part = Utils.createFilePart("RepairLogReplacePart", listProofImageUri[index], this)
             partsList.add(part!!)
         }

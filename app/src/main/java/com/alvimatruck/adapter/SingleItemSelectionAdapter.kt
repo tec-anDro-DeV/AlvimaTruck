@@ -14,8 +14,7 @@ class SingleItemSelectionAdapter(
     private val context: Context,
     private val van: ArrayList<String>,
     private val selectedVan: String?
-) :
-    RecyclerView.Adapter<SingleItemSelectionAdapter.SingleViewHolder?>() {
+) : RecyclerView.Adapter<SingleItemSelectionAdapter.SingleViewHolder?>() {
     // if checkedPosition = -1, there is no default selection
     // if checkedPosition = 0, 1st item is selected by default
     private var checkedPosition = van.indexOf(selectedVan).takeIf { it >= 0 } ?: 0
@@ -43,8 +42,7 @@ class SingleItemSelectionAdapter(
                 //     imageView.setVisibility(View.GONE);
                 imageView.setImageDrawable(
                     ContextCompat.getDrawable(
-                        context,
-                        R.drawable.outline_circle
+                        context, R.drawable.outline_circle
                     )
                 )
             } else {
@@ -52,28 +50,25 @@ class SingleItemSelectionAdapter(
                     //   imageView.setVisibility(View.VISIBLE);
                     imageView.setImageDrawable(
                         ContextCompat.getDrawable(
-                            context,
-                            R.drawable.select_circle
+                            context, R.drawable.select_circle
                         )
                     )
                 } else {
                     //   imageView.setVisibility(View.GONE);
                     imageView.setImageDrawable(
                         ContextCompat.getDrawable(
-                            context,
-                            R.drawable.outline_circle
+                            context, R.drawable.outline_circle
                         )
                     )
                 }
             }
             textView.text = vanNo
 
-            itemView.setOnClickListener { view: View? ->
+            itemView.setOnClickListener { _: View? ->
                 //imageView.setVisibility(View.VISIBLE);
                 imageView.setImageDrawable(
                     ContextCompat.getDrawable(
-                        context,
-                        R.drawable.select_circle
+                        context, R.drawable.select_circle
                     )
                 )
                 if (checkedPosition != bindingAdapterPosition) {

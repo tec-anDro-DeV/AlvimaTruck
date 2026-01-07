@@ -29,8 +29,7 @@ class DeliveryTripRouteActivity : BaseActivity<ActivityDeliveryTripRouteBinding>
 
         binding.rvRouteList.addItemDecoration(
             EqualSpacingItemDecoration(
-                resources.getDimension(R.dimen._12sdp).toInt(),
-                EqualSpacingItemDecoration.VERTICAL
+                resources.getDimension(R.dimen._12sdp).toInt(), EqualSpacingItemDecoration.VERTICAL
             )
         )
 
@@ -51,12 +50,9 @@ class DeliveryTripRouteActivity : BaseActivity<ActivityDeliveryTripRouteBinding>
     private fun routesListAPI() {
         binding.swipeRefresh.isRefreshing = false
 
-        binding.rvRouteList.layoutManager =
-            LinearLayoutManager(
-                this@DeliveryTripRouteActivity,
-                LinearLayoutManager.VERTICAL,
-                false
-            )
+        binding.rvRouteList.layoutManager = LinearLayoutManager(
+            this@DeliveryTripRouteActivity, LinearLayoutManager.VERTICAL, false
+        )
 
 
         routeListAdapter = DeliveryRouteListAdapter(

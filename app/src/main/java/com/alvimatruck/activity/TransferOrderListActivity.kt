@@ -70,9 +70,7 @@ class TransferOrderListActivity : BaseActivity<ActivityTransferOrderListBinding>
                     filterList!!.addAll(transferList!!)
                 } else {
                     for (item in transferList!!) {
-                        if (item.transferOrderNo.lowercase()
-                                .contains(s.toString().lowercase())
-                        ) {
+                        if (item.transferOrderNo.lowercase().contains(s.toString().lowercase())) {
                             filterList!!.add(item)
                         }
                     }
@@ -106,8 +104,7 @@ class TransferOrderListActivity : BaseActivity<ActivityTransferOrderListBinding>
             )!!.webservices.transferList(userDetail?.salesPersonCode!!)
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
-                        call: Call<JsonObject>,
-                        response: Response<JsonObject>
+                        call: Call<JsonObject>, response: Response<JsonObject>
                     ) {
                         ProgressDialog.dismiss()
                         if (response.code() == 401) {
@@ -123,17 +120,15 @@ class TransferOrderListActivity : BaseActivity<ActivityTransferOrderListBinding>
                                 } as ArrayList<TransferDetail>
                                 filterList = ArrayList(transferList!!)
                                 if (filterList!!.isNotEmpty()) {
-                                    binding.rvTransferList.layoutManager =
-                                        LinearLayoutManager(
-                                            this@TransferOrderListActivity,
-                                            LinearLayoutManager.VERTICAL,
-                                            false
-                                        )
+                                    binding.rvTransferList.layoutManager = LinearLayoutManager(
+                                        this@TransferOrderListActivity,
+                                        LinearLayoutManager.VERTICAL,
+                                        false
+                                    )
 
 
                                     transferListAdapter = TransferListAdapter(
-                                        this@TransferOrderListActivity,
-                                        filterList!!, locationList
+                                        this@TransferOrderListActivity, filterList!!, locationList
                                     ) { allSelected ->
                                         // This code runs when a single item in the list is clicked.
                                         // We check if the UI needs updating to avoid infinite loops.

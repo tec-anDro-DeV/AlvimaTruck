@@ -124,8 +124,8 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
 
             dialogSingleSelection(
                 typeList!!,
-                "Choose Incident Type",
-                "Search Incident Type",
+                getString(R.string.choose_incident_type),
+                getString(R.string.search_incident_type),
                 binding.tvIncidentType,
             )
         }

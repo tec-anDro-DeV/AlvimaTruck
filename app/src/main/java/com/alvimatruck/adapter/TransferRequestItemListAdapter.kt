@@ -28,10 +28,8 @@ class TransferRequestItemListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.binding.detail = list[position]
-        if (position == list.size - 1)
-            holder.binding.divider.visibility = View.GONE
-        else
-            holder.binding.divider.visibility = View.VISIBLE
+        if (position == list.size - 1) holder.binding.divider.visibility = View.GONE
+        else holder.binding.divider.visibility = View.VISIBLE
 
         holder.binding.tvDelete.setOnClickListener {
 
@@ -45,10 +43,11 @@ class TransferRequestItemListAdapter(
             val btnYes = alertLayout.findViewById<TextView>(R.id.btnYes)
 
             // Set content
-            tvTitle.text = "Delete Request"
-            tvMessage.text = "Are you sure you want to delete this request?"
-            btnNo.text = "No"
-            btnYes.text = "Yes"
+            tvTitle.text = mActivity.getString(R.string.delete_request)
+            tvMessage.text =
+                mActivity.getString(R.string.are_you_sure_you_want_to_delete_this_request)
+            btnNo.text = mActivity.getString(R.string.no)
+            btnYes.text = mActivity.getString(R.string.yes)
 
 
             val dialog =

@@ -26,10 +26,6 @@ class OperationsActivity : BaseActivity<ActivityOperationsBinding>() {
             startActivity(Intent(this, VanStockActivity::class.java))
         }
 
-        binding.rlBottomTrip.setOnClickListener {
-
-        }
-
         binding.rlTransfer.setOnClickListener {
             startActivity(Intent(this, TransferActivity::class.java))
         }

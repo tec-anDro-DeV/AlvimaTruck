@@ -120,8 +120,8 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     }
 
     private fun showBatteryOptimizationDialog() {
-        AlertDialog.Builder(this).setTitle("Allow Background Location Access")
-            .setMessage("To track location offline, set Battery → Unrestricted for this app.")
+        AlertDialog.Builder(this).setTitle(getString(R.string.allow_background_location_access))
+            .setMessage(getString(R.string.to_track_location_offline_set_battery_unrestricted_for_this_app))
             .setPositiveButton("Open Settings") { _, _ ->
                 openBatterySettings()
             }.setNegativeButton("Cancel", null).show()

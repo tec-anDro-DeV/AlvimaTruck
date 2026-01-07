@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isNotEmpty
 import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityDeliveryOrderDetailBinding
@@ -61,25 +62,21 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                     id = View.generateViewId() // Generate unique ID
                     setTextColor(
                         ContextCompat.getColor(
-                            this@DeliveryOrderDetailActivity,
-                            R.color.black
+                            this@DeliveryOrderDetailActivity, R.color.black
                         )
                     )
                     buttonTintList = ColorStateList.valueOf(
                         ContextCompat.getColor(
-                            this@DeliveryOrderDetailActivity,
-                            R.color.orange
+                            this@DeliveryOrderDetailActivity, R.color.orange
                         )
                     )
                     setPadding(padding, padding, padding, padding)
                     typeface = typefaceRegular
                     setTextSize(
-                        TypedValue.COMPLEX_UNIT_PX,
-                        textSize
+                        TypedValue.COMPLEX_UNIT_PX, textSize
                     ) // Uncomment if you want exact SSP sizing logic
                     layoutParams = RadioGroup.LayoutParams(
-                        RadioGroup.LayoutParams.MATCH_PARENT,
-                        RadioGroup.LayoutParams.WRAP_CONTENT
+                        RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT
                     ).apply {
                         marginStart = padding
                     }
@@ -96,8 +93,7 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                         )
                         setBackgroundColor(
                             ContextCompat.getColor(
-                                this@DeliveryOrderDetailActivity,
-                                R.color.gray
+                                this@DeliveryOrderDetailActivity, R.color.gray
                             )
                         )
                     }
@@ -106,15 +102,13 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
             }
 
             // Select the first item by default
-            if (rgReason.childCount > 0) {
+            if (rgReason.isNotEmpty()) {
                 (rgReason.getChildAt(0) as? RadioButton)?.isChecked = true
             }
 
 
-            val dialog = AlertDialog.Builder(this)
-                .setView(alertLayout)
-                .setCancelable(false)
-                .create()
+            val dialog =
+                AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
             dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
 
@@ -130,8 +124,7 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                 Log.d("TAG", "Selected: $selectedReason")
             }
             dialog.show()
-            val width =
-                (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+            val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
     }

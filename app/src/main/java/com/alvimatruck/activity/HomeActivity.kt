@@ -36,35 +36,14 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         userDetail =
             Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
         binding.tvUsername.text = userDetail?.driverFullName
-        binding.rlBottomHome.setOnClickListener {
-//            binding.rlBottomHome.setBackgroundResource(R.drawable.orange_circle)
-//            binding.rlBottomTrip.setBackgroundResource(0)
-//            binding.rlBottomVanStock.setBackgroundResource(0)
-//            binding.rlBottomOpreation.setBackgroundResource(0)
-        }
-
-        binding.rlBottomTrip.setOnClickListener {
-//            binding.rlBottomHome.setBackgroundResource(0)
-//            binding.rlBottomTrip.setBackgroundResource(R.drawable.orange_circle)
-//            binding.rlBottomVanStock.setBackgroundResource(0)
-//            binding.rlBottomOpreation.setBackgroundResource(0)
-        }
 
 
         binding.rlBottomVanStock.setOnClickListener {
             startActivity(Intent(this, VanStockActivity::class.java))
-//            binding.rlBottomHome.setBackgroundResource(0)
-//            binding.rlBottomTrip.setBackgroundResource(0)
-//            binding.rlBottomVanStock.setBackgroundResource(R.drawable.orange_circle)
-//            binding.rlBottomOpreation.setBackgroundResource(0)
         }
 
 
         binding.rlBottomOpreation.setOnClickListener {
-//            binding.rlBottomHome.setBackgroundResource(0)
-//            binding.rlBottomTrip.setBackgroundResource(0)
-//            binding.rlBottomVanStock.setBackgroundResource(0)
-//            binding.rlBottomOpreation.setBackgroundResource(R.drawable.orange_circle)
             startActivity(Intent(this, OperationsActivity::class.java))
         }
 
@@ -75,8 +54,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         binding.llCustomer.setOnClickListener {
             startActivity(
                 Intent(
-                    this,
-                    CustomersActivity::class.java
+                    this, CustomersActivity::class.java
                 ).putExtra(Constants.RouteDetail, "")
             )
         }
@@ -188,9 +166,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                     withContext(Dispatchers.Main) {
                         ProgressDialog.dismiss()
                         Toast.makeText(
-                            this@HomeActivity,
-                            "Failed to sync data",
-                            Toast.LENGTH_LONG
+                            this@HomeActivity, "Failed to sync data", Toast.LENGTH_LONG
                         ).show()
                     }
                 }

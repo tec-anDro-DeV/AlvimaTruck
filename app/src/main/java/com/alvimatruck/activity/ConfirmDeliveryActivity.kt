@@ -74,8 +74,7 @@ class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
         binding.ivIDProof.setOnClickListener {
             startActivity(
                 Intent(
-                    this,
-                    FullImageActivity::class.java
+                    this, FullImageActivity::class.java
                 ).putExtra(Constants.ImageUri, deliveryProofImageUri.toString())
             )
         }

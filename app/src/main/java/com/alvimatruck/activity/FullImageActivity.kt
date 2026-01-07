@@ -23,9 +23,7 @@ class FullImageActivity : BaseActivity<ActivityFullImageBinding>() {
             uriString = intent.getStringExtra(Constants.ImageUri).toString()
             val imageUri = uriString!!.toUri()
 
-            Glide.with(this)
-                .load(imageUri)
-                .into(binding.photoView)
+            Glide.with(this).load(imageUri).into(binding.photoView)
         }
     }
 }

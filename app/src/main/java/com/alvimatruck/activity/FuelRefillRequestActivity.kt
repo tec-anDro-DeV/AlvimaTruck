@@ -102,8 +102,7 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
         binding.ivIDProof.setOnClickListener {
             startActivity(
                 Intent(
-                    this,
-                    FullImageActivity::class.java
+                    this, FullImageActivity::class.java
                 ).putExtra(Constants.ImageUri, meterProofImageUri.toString())
             )
         }

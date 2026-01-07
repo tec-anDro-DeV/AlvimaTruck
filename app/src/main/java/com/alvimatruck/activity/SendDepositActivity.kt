@@ -100,9 +100,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
         }
 
         binding.tvCustomer.setOnClickListener {
-            dialogSingleSelection(
-                itemList!!, "Choose Customer", "Search Customer", binding.tvCustomer
-            )
+            dialogSingleSelection()
         }
 
         binding.tvCancel.setOnClickListener {
@@ -111,13 +109,19 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
         binding.tvSubmit.setOnClickListener {
             if (selectedCustomer == null) {
-                Toast.makeText(this, "Please select customer", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.please_select_customer), Toast.LENGTH_SHORT)
+                    .show()
             } else if (selectedInvoiceList!!.isEmpty()) {
-                Toast.makeText(this, "Please select invoice", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.please_select_invoice), Toast.LENGTH_SHORT)
+                    .show()
             } else if (binding.rgPaymentMode.checkedRadioButtonId == -1) {
-                Toast.makeText(this, "Please select payment mode", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_select_payment_mode), Toast.LENGTH_SHORT
+                ).show()
             } else if (paymentProofImageUri == null) {
-                Toast.makeText(this, "Please upload payment proof", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_upload_payment_proof), Toast.LENGTH_SHORT
+                ).show()
             } else {
                 paymentAPI()
             }
@@ -128,8 +132,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
         binding.ivPaymentProof.setOnClickListener {
             startActivity(
                 Intent(
-                    this,
-                    FullImageActivity::class.java
+                    this, FullImageActivity::class.java
                 ).putExtra(Constants.ImageUri, paymentProofImageUri.toString())
             )
         }
@@ -257,11 +260,9 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
         binding.tvtotal.text = "ETB $total"
     }
 
-    private fun dialogSingleSelection(
-        list: ArrayList<String>, title: String, hint: String, textView: TextView
-    ) {
+    private fun dialogSingleSelection() {
         filterList!!.clear()
-        filterList!!.addAll(list)
+        filterList!!.addAll(itemList!!)
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
         val selectedGroup: String = selectedItem
@@ -274,7 +275,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
         rvBinList.layoutManager = lLayout
         rvBinList.adapter = singleItemSelectionAdapter
         val etBinSearch = alertLayout.findViewById<EditText>(R.id.etItemSearch)
-        etBinSearch.hint = hint
+        etBinSearch.hint = getString(R.string.search_customer)
 
 
 
@@ -287,9 +288,9 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
                 //filter(s.toString())
                 filterList!!.clear()
                 if (s.toString().trim().isEmpty()) {
-                    filterList!!.addAll(list)
+                    filterList!!.addAll(itemList!!)
                 } else {
-                    for (item in list) {
+                    for (item in itemList) {
                         if (item.lowercase().contains(s.toString().lowercase())) {
                             filterList!!.add(item)
                         }
@@ -302,7 +303,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
         val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel2)
         val tvConfirm = alertLayout.findViewById<TextView>(R.id.tvConfirm2)
         val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
-        tvTitle.text = title
+        tvTitle.text = getString(R.string.choose_customer)
 
 
         val alert = AlertDialog.Builder(this)
@@ -317,8 +318,8 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
         val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
         dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
 
-        tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
-        tvConfirm.setOnClickListener { view: View? ->
+        tvCancel.setOnClickListener { _: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { _: View? ->
             if (filterList!!.isNotEmpty()) {
                 selectedItem = singleItemSelectionAdapter.selected
                 for (item in customerList!!) {
@@ -329,7 +330,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
                         invoiceListAPI()
                     }
                 }
-                textView.text = singleItemSelectionAdapter.selected
+                binding.tvCustomer.text = singleItemSelectionAdapter.selected
                 dialog.dismiss()
             }
         }
@@ -353,16 +354,21 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
                         if (response.isSuccessful) {
                             try {
                                 Log.d("TAG", "onResponse: " + response.body().toString())
-                                invoiceList =
-                                    response.body()!!.getAsJsonArray("data").map {
-                                        Gson().fromJson(it, InvoiceDetail::class.java)
-                                    } as ArrayList<InvoiceDetail>
+                                invoiceList = response.body()!!.getAsJsonArray("data").map {
+                                    Gson().fromJson(it, InvoiceDetail::class.java)
+                                } as ArrayList<InvoiceDetail>
 
                                 if (invoiceList!!.isNotEmpty()) {
                                     binding.llInvoiceData.visibility = View.VISIBLE
                                     setupInvoiceCheckboxes()
                                 } else {
                                     binding.llInvoiceData.visibility = View.GONE
+                                    Toast.makeText(
+                                        this@SendDepositActivity,
+                                        "No invoice found",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    selectedInvoiceList!!.clear()
 
                                 }
 

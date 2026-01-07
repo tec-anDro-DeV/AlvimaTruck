@@ -82,7 +82,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
 
 
             if (status.equals("Pending")) {
-                binding.tvStartEndTrip.text = "Start Trip"
+                binding.tvStartEndTrip.text = getString(R.string.start_trip)
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
                 binding.rlStartKilometer.visibility = View.GONE
                 binding.rlEndKilometer.visibility = View.GONE
@@ -90,7 +90,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
 
             } else if (status.equals("InProgress")) {
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
-                binding.tvStartEndTrip.text = "End Trip"
+                binding.tvStartEndTrip.text = getString(R.string.end_trip)
                 binding.rlStartKilometer.visibility = View.VISIBLE
                 binding.rlEndKilometer.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.VISIBLE
@@ -122,7 +122,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 if (Utils.isTripInProgress) {
                     Toast.makeText(
                         this,
-                        "You can’t start a new trip while another trip is in progress.",
+                        getString(R.string.you_can_t_start_a_new_trip_while_another_trip_is_in_progress),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
@@ -249,7 +249,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 rgReason.addView(radioButton)
 
                 // Add Divider Line (except for the last item)
-                if (index < reasonList!!.size - 1) {
+                if (index < reasonList.size - 1) {
                     val divider = View(this).apply {
                         layoutParams = LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -458,7 +458,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                             status = "InProgress"
                             Utils.isTripInProgress = true
                             binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
-                            binding.tvStartEndTrip.text = "End Trip"
+                            binding.tvStartEndTrip.text = getString(R.string.end_trip)
                             binding.rlStartKilometer.visibility = View.VISIBLE
                             binding.rlEndKilometer.visibility = View.GONE
                             binding.llBottomButtons.visibility = View.VISIBLE

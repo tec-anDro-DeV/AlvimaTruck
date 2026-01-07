@@ -99,8 +99,8 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         binding.tvCustomerPriceGroup.setOnClickListener {
             dialogSingleSelection(
                 priceItemList,
-                "Choose Price Group",
-                "Search Price Group",
+                getString(R.string.choose_price_group),
+                getString(R.string.search_price_group),
                 binding.tvCustomerPriceGroup
             )
         }
@@ -108,15 +108,19 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         binding.tvCustomerPostingGroup.setOnClickListener {
             dialogSingleSelection(
                 postItemList!!,
-                "Choose Posting Group",
-                "Search Posting Group",
+                getString(R.string.choose_posting_group),
+                getString(R.string.search_posting_group),
                 binding.tvCustomerPostingGroup
             )
         }
 
         binding.tvCity.setOnClickListener {
             dialogSingleSelection(
-                cityList!!, "Choose City", "Search City", binding.tvCity, binding.tvPostalCode
+                cityList,
+                getString(R.string.choose_city),
+                getString(R.string.search_city),
+                binding.tvCity,
+                binding.tvPostalCode
             )
         }
 
@@ -156,8 +160,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         binding.ivIDProof.setOnClickListener {
             startActivity(
                 Intent(
-                    this,
-                    FullImageActivity::class.java
+                    this, FullImageActivity::class.java
                 ).putExtra(Constants.ImageUri, idProofImageUri.toString())
             )
         }
@@ -166,8 +169,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         binding.ivUser.setOnClickListener {
             startActivity(
                 Intent(
-                    this,
-                    FullImageActivity::class.java
+                    this, FullImageActivity::class.java
                 ).putExtra(Constants.ImageUri, customerPhotoUri.toString())
             )
         }
@@ -477,8 +479,8 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
         dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
 
-        tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
-        tvConfirm.setOnClickListener { view: View? ->
+        tvCancel.setOnClickListener { _: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { _: View? ->
             if (filterList!!.isNotEmpty()) {
                 when (textView) {
                     binding.tvCustomerPriceGroup -> {

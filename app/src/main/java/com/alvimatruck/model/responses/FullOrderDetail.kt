@@ -1,9 +1,6 @@
 package com.alvimatruck.model.responses
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeFormatterBuilder
-import java.time.temporal.ChronoField
+import com.alvimatruck.utils.Utils
 
 data class FullOrderDetail(
     val address: String,
@@ -31,6 +28,7 @@ data class FullOrderDetail(
             orderId
         }
     }
+
     fun getFormattedContactNo(): String {
         val number = contactNumber?.trim()
         if (number.isNullOrEmpty()) return "-"
@@ -54,13 +52,6 @@ data class FullOrderDetail(
     }
 
     fun getRequestDate(): String {
-        return LocalDateTime.parse(
-            orderDate, DateTimeFormatterBuilder()
-                .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
-                .optionalStart()
-                .appendFraction(ChronoField.NANO_OF_SECOND, 1, 9, true)
-                .optionalEnd()
-                .toFormatter()
-        ).format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
+        return Utils.getFormatedRequestDate(orderDate)
     }
 }

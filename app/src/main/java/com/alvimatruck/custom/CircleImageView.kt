@@ -24,11 +24,11 @@ import android.view.ViewOutlineProvider
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.withStyledAttributes
+import androidx.core.graphics.createBitmap
 import com.alvimatruck.R
 import kotlin.math.min
 import kotlin.math.pow
-import androidx.core.content.withStyledAttributes
-import androidx.core.graphics.createBitmap
 
 class CircleImageView : AppCompatImageView {
     private val mDrawableRect = RectF()
@@ -39,8 +39,7 @@ class CircleImageView : AppCompatImageView {
     private val mCircleBackgroundPaint = Paint()
     private var mBorderColor = DEFAULT_BORDER_COLOR
     private var mBorderWidth = DEFAULT_BORDER_WIDTH
-    private var mCircleBackgroundColor =
-        DEFAULT_CIRCLE_BACKGROUND_COLOR
+    private var mCircleBackgroundColor = DEFAULT_CIRCLE_BACKGROUND_COLOR
     private var mImageAlpha = DEFAULT_IMAGE_ALPHA
     private var mBitmap: Bitmap? = null
     private var mBitmapCanvas: Canvas? = null
@@ -65,16 +64,13 @@ class CircleImageView : AppCompatImageView {
     ) : super(context, attrs, defStyle) {
         context.withStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0) {
             mBorderWidth = getDimensionPixelSize(
-                R.styleable.CircleImageView_civ_border_width,
-                DEFAULT_BORDER_WIDTH
+                R.styleable.CircleImageView_civ_border_width, DEFAULT_BORDER_WIDTH
             )
             mBorderColor = getColor(
-                R.styleable.CircleImageView_civ_border_color,
-                DEFAULT_BORDER_COLOR
+                R.styleable.CircleImageView_civ_border_color, DEFAULT_BORDER_COLOR
             )
             mBorderOverlay = getBoolean(
-                R.styleable.CircleImageView_civ_border_overlay,
-                DEFAULT_BORDER_OVERLAY
+                R.styleable.CircleImageView_civ_border_overlay, DEFAULT_BORDER_OVERLAY
             )
             mCircleBackgroundColor = getColor(
                 R.styleable.CircleImageView_civ_circle_background_color,
@@ -105,8 +101,7 @@ class CircleImageView : AppCompatImageView {
     override fun setScaleType(scaleType: ScaleType) {
         require(scaleType == SCALE_TYPE) {
             String.format(
-                "ScaleType %s not supported.",
-                scaleType
+                "ScaleType %s not supported.", scaleType
             )
         }
     }
@@ -144,18 +139,12 @@ class CircleImageView : AppCompatImageView {
                 mBitmapPaint.shader = bitmapShader
             }
             canvas.drawCircle(
-                mDrawableRect.centerX(),
-                mDrawableRect.centerY(),
-                mDrawableRadius,
-                mBitmapPaint
+                mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint
             )
         }
         if (mBorderWidth > 0) {
             canvas.drawCircle(
-                mBorderRect.centerX(),
-                mBorderRect.centerY(),
-                mBorderRadius,
-                mBorderPaint
+                mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint
             )
         }
     }
@@ -369,8 +358,7 @@ class CircleImageView : AppCompatImageView {
         if (!mBorderOverlay && mBorderWidth > 0) {
             mDrawableRect.inset(mBorderWidth - 1.0f, mBorderWidth - 1.0f)
         }
-        mDrawableRadius =
-            min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f)
+        mDrawableRadius = min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f)
         updateShaderMatrix()
     }
 
@@ -402,8 +390,7 @@ class CircleImageView : AppCompatImageView {
         }
         mShaderMatrix.setScale(scale, scale)
         mShaderMatrix.postTranslate(
-            (dx + 0.5f).toInt() + mDrawableRect.left,
-            (dy + 0.5f).toInt() + mDrawableRect.top
+            (dx + 0.5f).toInt() + mDrawableRect.left, (dy + 0.5f).toInt() + mDrawableRect.top
         )
         mRebuildShader = true
     }

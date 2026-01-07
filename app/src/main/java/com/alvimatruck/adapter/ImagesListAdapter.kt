@@ -36,8 +36,7 @@ class ImagesListAdapter(
         holder.binding.imgItem.setOnClickListener {
             mActivity.startActivity(
                 Intent(
-                    mActivity,
-                    FullImageActivity::class.java
+                    mActivity, FullImageActivity::class.java
                 ).putExtra(Constants.ImageUri, list[position].toString())
             )
         }

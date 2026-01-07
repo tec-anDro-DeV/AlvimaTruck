@@ -34,8 +34,7 @@ class StoreRequisitionListActivity : BaseActivity<ActivityStoreRequisitionListBi
 
 
         requisitionListAdapter = RequisitionListAdapter(
-            this@StoreRequisitionListActivity,
-            Utils.getDummyTransferList(5)
+            this@StoreRequisitionListActivity, Utils.getDummyTransferList(5)
         ) { allSelected ->
             // This code runs when a single item in the list is clicked.
             // We check if the UI needs updating to avoid infinite loops.

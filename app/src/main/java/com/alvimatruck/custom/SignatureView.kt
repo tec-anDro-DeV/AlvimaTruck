@@ -11,8 +11,7 @@ import android.view.MotionEvent
 import android.view.View
 
 class SignatureView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null
+    context: Context, attrs: AttributeSet? = null
 ) : View(context, attrs) {
 
     private val path = Path()

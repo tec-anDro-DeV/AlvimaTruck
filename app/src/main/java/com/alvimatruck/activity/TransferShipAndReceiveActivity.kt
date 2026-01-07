@@ -33,8 +33,7 @@ class TransferShipAndReceiveActivity : BaseActivity<ActivityTransferShipAndReciv
 
 
         transferShipAndReciveAdapter = TransferShipAndReceiveListAdapter(
-            this@TransferShipAndReceiveActivity,
-            Utils.getDummyArrayList(5)
+            this@TransferShipAndReceiveActivity, Utils.getDummyArrayList(5)
         )
         binding.rvTransferList.adapter = transferShipAndReciveAdapter
 

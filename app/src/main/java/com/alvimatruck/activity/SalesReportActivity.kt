@@ -86,8 +86,8 @@ class SalesReportActivity : BaseActivity<ActivitySalesReportBinding>() {
         btnOk.setOnClickListener {
             if (startDate != null && endDate != null) {
                 val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-                val start = sdf.format(startDate!!.time)
-                val end = sdf.format(endDate!!.time)
+                val start = sdf.format(startDate.time)
+                val end = sdf.format(endDate.time)
 
                 binding.tvDateRangePicker.text = "$start — $end"
                 dialog.dismiss()

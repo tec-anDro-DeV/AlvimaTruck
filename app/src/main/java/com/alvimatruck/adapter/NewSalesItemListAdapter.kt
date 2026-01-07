@@ -35,8 +35,7 @@ class NewSalesItemListAdapter(
         } else {
             holder.itemView.visibility = View.VISIBLE
             holder.itemView.layoutParams = RecyclerView.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
         }
         if (position == list.size - 1 || (position < list.size - 1 && list[position + 1].isDelete)) {
@@ -63,10 +62,11 @@ class NewSalesItemListAdapter(
             val btnYes = alertLayout.findViewById<TextView>(R.id.btnYes)
 
             // Set content
-            tvTitle.text = "Delete Order?"
-            tvMessage.text = "Are you sure you want to delete this order?"
-            btnNo.text = "No"
-            btnYes.text = "Yes"
+            tvTitle.text = mActivity.getString(R.string.delete_order)
+            tvMessage.text =
+                mActivity.getString(R.string.are_you_sure_you_want_to_delete_this_order)
+            btnNo.text = mActivity.getString(R.string.no)
+            btnYes.text = mActivity.getString(R.string.yes)
 
 
             val dialog =

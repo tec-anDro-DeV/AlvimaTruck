@@ -32,19 +32,16 @@ class RouteMapActivity : BaseActivity<ActivityRouteMapBinding>(), OnMapReadyCall
     private var latLngList: List<LatLng> = emptyList()
 
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
-                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
-            ) {
-                // Permission was granted. Enable the user's location.
-                enableMyLocation()
-            } else {
-                // Optionally, handle the case where the user denies the permission.
-            }
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true || permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
+            // Permission was granted. Enable the user's location.
+            enableMyLocation()
+        } else {
+            // Optionally, handle the case where the user denies the permission.
         }
+    }
 
 
     override fun inflateBinding(): ActivityRouteMapBinding {
@@ -62,8 +59,7 @@ class RouteMapActivity : BaseActivity<ActivityRouteMapBinding>(), OnMapReadyCall
 
         if (intent != null) {
             routeDetail = Gson().fromJson(
-                intent.getStringExtra(Constants.RouteDetail).toString(),
-                RouteDetail::class.java
+                intent.getStringExtra(Constants.RouteDetail).toString(), RouteDetail::class.java
             )
             binding.tvTitle.text = "Route " + routeDetail!!.routeName
             latLngList = routeDetail!!.locations.map {
@@ -71,8 +67,8 @@ class RouteMapActivity : BaseActivity<ActivityRouteMapBinding>(), OnMapReadyCall
             }
         }
 
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.mapFragment) as SupportMapFragment
+        val mapFragment =
+            supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
 
@@ -144,23 +140,22 @@ class RouteMapActivity : BaseActivity<ActivityRouteMapBinding>(), OnMapReadyCall
         drawPolygon(latLngList)
 
         mMap.addMarker(
-            MarkerOptions()
-                .position(LatLng(AlvimaTuckApplication.latitude, AlvimaTuckApplication.longitude))
-                .icon(bitmapDescriptorFromVector(this, R.drawable.ic_truck_marker))
+            MarkerOptions().position(
+                LatLng(
+                    AlvimaTuckApplication.latitude, AlvimaTuckApplication.longitude
+                )
+            ).icon(bitmapDescriptorFromVector(this, R.drawable.ic_truck_marker))
                 .anchor(0.5f, 0.5f) // center the marker
         )
     }
 
 
-
     private fun drawPolygon(points: List<LatLng>) {
         if (points.isEmpty()) return
 
-        val polygonOptions = PolygonOptions()
-            .addAll(points)
-            .strokeColor(0xFF2196F3.toInt()) // blue border
-            .strokeWidth(4f)
-            .fillColor(0x552196F3) // semi-transparent blue fill
+        val polygonOptions =
+            PolygonOptions().addAll(points).strokeColor(0xFF2196F3.toInt()) // blue border
+                .strokeWidth(4f).fillColor(0x552196F3) // semi-transparent blue fill
 
         mMap.addPolygon(polygonOptions)
 

@@ -42,10 +42,8 @@ class TransferListAdapter(
             // Notify the activity to update the main "Select All" checkbox
             onSelectionChanged(isAllSelected)
         }
-        holder.binding.tvToLocation.text = locationList
-            ?.find { it.code == list[position].transferToCode }
-            ?.name
-            ?: ""
+        holder.binding.tvToLocation.text =
+            locationList?.find { it.code == list[position].transferToCode }?.name ?: ""
 
 
     }

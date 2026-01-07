@@ -228,7 +228,7 @@ class OTPVerificationActivity : BaseActivity<ActivityOtpverificationBinding>() {
 
             override fun onFinish() {
                 binding.tvResendCode.isEnabled = true
-                binding.tvResendCode.text = "Resend Code"
+                binding.tvResendCode.text = getString(R.string.resend_code)
             }
         }.start()
     }

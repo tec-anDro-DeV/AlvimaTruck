@@ -75,21 +75,13 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
         }
 
         binding.tvCity.setOnClickListener {
-            dialogSingleSelection(
-                cityList!!, "Choose City", "Search City", binding.tvCity, binding.tvPostalCode
-            )
+            dialogSingleSelection()
         }
     }
 
-    private fun dialogSingleSelection(
-        list: ArrayList<String>,
-        title: String,
-        hint: String,
-        textView: TextView,
-        textView2: TextView? = null
-    ) {
+    private fun dialogSingleSelection() {
         filterList!!.clear()
-        filterList!!.addAll(list)
+        filterList!!.addAll(cityList)
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
         val selectedGroup: String = selectedCity
@@ -101,7 +93,7 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
         rvBinList.layoutManager = lLayout
         rvBinList.adapter = singleItemSelectionAdapter
         val etBinSearch = alertLayout.findViewById<EditText>(R.id.etItemSearch)
-        etBinSearch.hint = hint
+        etBinSearch.hint = getString(R.string.search_city)
 
 
 
@@ -114,9 +106,9 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
                 //filter(s.toString())
                 filterList!!.clear()
                 if (s.toString().trim().isEmpty()) {
-                    filterList!!.addAll(list)
+                    filterList!!.addAll(cityList)
                 } else {
-                    for (item in list) {
+                    for (item in cityList) {
                         if (item.lowercase().contains(s.toString().lowercase())) {
                             filterList!!.add(item)
                         }
@@ -129,7 +121,7 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
         val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel2)
         val tvConfirm = alertLayout.findViewById<TextView>(R.id.tvConfirm2)
         val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
-        tvTitle.text = title
+        tvTitle.text = getString(R.string.choose_city)
 
 
         val alert = AlertDialog.Builder(this)
@@ -144,17 +136,17 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
         val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
         dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
 
-        tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
-        tvConfirm.setOnClickListener { view: View? ->
+        tvCancel.setOnClickListener { _: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { _: View? ->
             if (filterList!!.isNotEmpty()) {
                 selectedCity = singleItemSelectionAdapter.selected
 
-                for (item in postalCodeList!!) {
+                for (item in postalCodeList) {
                     if (item.city == singleItemSelectionAdapter.selected) {
-                        textView2?.text = item.code
+                        binding.tvPostalCode.text = item.code
                     }
                 }
-                textView.text = singleItemSelectionAdapter.selected
+                binding.tvCity.text = singleItemSelectionAdapter.selected
                 dialog.dismiss()
             }
         }

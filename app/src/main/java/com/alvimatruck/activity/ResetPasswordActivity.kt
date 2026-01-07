@@ -194,7 +194,7 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
                         val tvMessage = alertLayout.findViewById<TextView>(R.id.tvMessage)
 
                         tvMessage.text =
-                            "Your password has been updated securely. Use your new password to sign in to your account."
+                            getString(R.string.your_password_has_been_updated_securely_use_your_new_password_to_sign_in_to_your_account)
 
 
                         val dialog =

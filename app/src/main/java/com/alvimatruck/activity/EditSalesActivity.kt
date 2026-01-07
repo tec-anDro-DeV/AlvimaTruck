@@ -90,17 +90,18 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
 
         binding.tvItem.setOnClickListener {
             dialogSingleSelection(
-                itemList, "Choose Item", "Search Item", binding.tvItem
+                itemList,
+                getString(R.string.choose_item),
+                getString(R.string.search_item),
+                binding.tvItem
             )
-        }
-
-        binding.tvDelete.setOnClickListener {
-            //handleBackPressed()
         }
 
         binding.tvConfirmOrder.setOnClickListener {
             if (orderList.isEmpty()) {
-                Toast.makeText(this, "Please add items to order", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, getString(R.string.please_add_items_to_order), Toast.LENGTH_SHORT
+                ).show()
             } else {
                 updateOrderAPI()
             }
@@ -230,10 +231,10 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
             val btnYes = alertLayout.findViewById<TextView>(R.id.btnYes)
 
             // Set content
-            tvTitle.text = "Delete Order?"
-            tvMessage.text = "Are you sure you want to delete this order?"
-            btnNo.text = "No"
-            btnYes.text = "Yes"
+            tvTitle.text = getString(R.string.delete_order)
+            tvMessage.text = getString(R.string.are_you_sure_you_want_to_delete_this_order)
+            btnNo.text = getString(R.string.no)
+            btnYes.text = getString(R.string.yes)
 
 
             val dialog =
@@ -250,8 +251,7 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
             }
 
             dialog.show()
-            val width =
-                (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+            val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
 
 
@@ -280,8 +280,7 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
 
                             Toast.makeText(
                                 this@EditSalesActivity,
-                                response.body()!!.get("message").toString()
-                                    .replace('"', ' ')
+                                response.body()!!.get("message").toString().replace('"', ' ')
                                     .trim(),
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -355,8 +354,7 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
                             Toast.makeText(
                                 this@EditSalesActivity,
                                 response.body()!!.get("data").asJsonObject.get("message").toString()
-                                    .replace('"', ' ')
-                                    .trim(),
+                                    .replace('"', ' ').trim(),
                                 Toast.LENGTH_SHORT
                             ).show()
                             isChange = true
@@ -466,8 +464,8 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
         val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
         dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
 
-        tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
-        tvConfirm.setOnClickListener { view: View? ->
+        tvCancel.setOnClickListener { _: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { _: View? ->
             if (filterList!!.isNotEmpty()) {
                 selectedItem = singleItemSelectionAdapter.selected
                 for (item in productList!!) {

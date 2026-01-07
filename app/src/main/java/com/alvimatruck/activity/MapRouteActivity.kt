@@ -56,8 +56,8 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.mapFragment) as SupportMapFragment
+        val mapFragment =
+            supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         if (intent != null) {
@@ -106,10 +106,7 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
 
         // 3. Update Camera (Every time, but with a limit)
         try {
-            val bounds = LatLngBounds.builder()
-                .include(newOrigin)
-                .include(destination)
-                .build()
+            val bounds = LatLngBounds.builder().include(newOrigin).include(destination).build()
 
             // Calculate the camera update for these bounds with padding
             val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 150)
@@ -138,10 +135,8 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
     private fun getRoute(origin: LatLng, dest: LatLng) {
         val apiKey = getString(R.string.googlemapkey)
         //val apiKey = "AIzaSyBGkMG-nj0pgK1ruZRZUdLW-7SgSkmqQfQ"
-        val url = "https://maps.googleapis.com/maps/api/directions/json?" +
-                "origin=${origin.latitude},${origin.longitude}" +
-                "&destination=${dest.latitude},${dest.longitude}" +
-                "&sensor=false&mode=driving&key=$apiKey"
+        val url =
+            "https://maps.googleapis.com/maps/api/directions/json?" + "origin=${origin.latitude},${origin.longitude}" + "&destination=${dest.latitude},${dest.longitude}" + "&sensor=false&mode=driving&key=$apiKey"
 
         val request = Request.Builder().url(url).build()
 
@@ -151,13 +146,12 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
             }
 
             override fun onResponse(call: Call, response: Response) {
-                response.body?.string()?.let { jsonData ->
+                response.body.string().let { jsonData ->
                     val jsonObject = JSONObject(jsonData)
                     val routes = jsonObject.getJSONArray("routes")
                     if (routes.length() > 0) {
                         val points = decodePolyline(
-                            routes.getJSONObject(0)
-                                .getJSONObject("overview_polyline")
+                            routes.getJSONObject(0).getJSONObject("overview_polyline")
                                 .getString("points")
                         )
                         runOnUiThread {
@@ -206,11 +200,9 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
 
     private fun drawRoute(points: List<LatLng>) {
         currentPolyline?.remove()
-        val polylineOptions = PolylineOptions()
-            .addAll(points)
-            .width(8f)
-            .color(0xFF1976D2.toInt()) // blue color
-            .geodesic(true)
+        val polylineOptions =
+            PolylineOptions().addAll(points).width(8f).color(0xFF1976D2.toInt()) // blue color
+                .geodesic(true)
         mMap.addPolyline(polylineOptions)
     }
 

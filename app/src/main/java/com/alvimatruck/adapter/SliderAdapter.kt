@@ -12,8 +12,7 @@ class SliderAdapter(
     private val context: Context,
     private val titles: Array<String>,
     private val descriptions: Array<String>
-) :
-    PagerAdapter() {
+) : PagerAdapter() {
 
     private lateinit var layoutInflater: LayoutInflater
 

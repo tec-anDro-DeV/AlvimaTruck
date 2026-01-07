@@ -89,33 +89,45 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
 
         binding.tvItem.setOnClickListener {
             dialogSingleSelection(
-                itemList, "Choose Item", "Search Item", binding.tvItem
+                itemList,
+                getString(R.string.choose_item),
+                getString(R.string.search_item),
+                binding.tvItem
             )
         }
         binding.tvCostCenter.setOnClickListener {
             dialogSingleSelection(
-                costCenterList, "Choose Cost Center", "Search Cost Center", binding.tvCostCenter
+                costCenterList,
+                getString(R.string.choose_cost_center),
+                getString(R.string.search_cost_center),
+                binding.tvCostCenter
             )
         }
 
         binding.tvProfitCenter.setOnClickListener {
             dialogSingleSelection(
                 profitCenterList,
-                "Choose Profit Center",
-                "Search Profit Center",
+                getString(R.string.choose_profit_center),
+                getString(R.string.search_profit_center),
                 binding.tvProfitCenter
             )
         }
 
         binding.tvInTransit.setOnClickListener {
             dialogSingleSelection(
-                inTransitList, "Choose In Transit", "Search In Transit", binding.tvInTransit
+                inTransitList,
+                getString(R.string.choose_in_transit),
+                getString(R.string.search_in_transit),
+                binding.tvInTransit
             )
         }
 
         binding.tvTo.setOnClickListener {
             dialogSingleSelection(
-                toLocationList, "Choose To Location", "Search To Location", binding.tvTo
+                toLocationList,
+                getString(R.string.choose_to_location),
+                getString(R.string.search_to_location),
+                binding.tvTo
             )
 
         }
@@ -356,8 +368,8 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
         val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
         dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
 
-        tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
-        tvConfirm.setOnClickListener { view: View? ->
+        tvCancel.setOnClickListener { _: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { _: View? ->
             if (filterList!!.isNotEmpty()) {
                 when (textView) {
                     binding.tvCostCenter -> {

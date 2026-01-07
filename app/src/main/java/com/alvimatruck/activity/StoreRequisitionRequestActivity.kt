@@ -7,16 +7,19 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.adapter.SingleItemSelectionAdapter
-import com.alvimatruck.adapter.StoreRequisitionRequestItemListAdapter
+import com.alvimatruck.adapter.TransferRequestItemListAdapter
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityStoreRequisitionRequestBinding
-import com.alvimatruck.interfaces.DeleteRequestListener
+import com.alvimatruck.interfaces.DeleteTransferRequestListener
 import com.alvimatruck.model.responses.ItemDetail
+import com.alvimatruck.model.responses.LocationDetail
+import com.alvimatruck.model.responses.SingleTransfer
 import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.SharedHelper
@@ -25,25 +28,33 @@ import com.google.gson.Gson
 import com.google.gson.JsonParser
 
 class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionRequestBinding>(),
-    DeleteRequestListener {
+    DeleteTransferRequestListener {
     var itemList: ArrayList<String> = ArrayList()
     var costCenterList: ArrayList<String> = ArrayList()
     var profitCenterList: ArrayList<String> = ArrayList()
     var inTransitList: ArrayList<String> = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
+    var fromLocationList: ArrayList<String> = ArrayList()
     var selectedItem = ""
     var selectedCostCenter = ""
     var selectedProfitCenter = ""
     var selectedInTransit = ""
 
     var selectedProduct: ItemDetail? = null
+
+    var selectedLocation: LocationDetail? = null
     var userDetail: UserDetail? = null
 
-    var storeRequisitionRequestItemListAdapter: StoreRequisitionRequestItemListAdapter? = null
+    var storeRequisitionRequestItemListAdapter: TransferRequestItemListAdapter? = null
 
-    var requestList: ArrayList<String> = ArrayList()
+    var requestList: ArrayList<SingleTransfer> = ArrayList()
 
     var productList: ArrayList<ItemDetail>? = ArrayList()
+
+    var locationList: ArrayList<LocationDetail>? = ArrayList()
+
+    var selectedFromLocation = ""
+
 
     override fun inflateBinding(): ActivityStoreRequisitionRequestBinding {
         return ActivityStoreRequisitionRequestBinding.inflate(layoutInflater)
@@ -55,60 +66,103 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
             handleBackPressed()
         }
 
+
         binding.tvDateTime.text = Utils.getFullDateWithTime(System.currentTimeMillis())
+
         //  binding.tvTransferNumber.text = System.currentTimeMillis().toString()
 
         userDetail =
             Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
+        binding.tvTo.text = "VAN (" + userDetail?.salesPersonCode + ")"
 
         getItemList()
         getCostCenterList()
         getProfitCenterList()
         getInTransitList()
+        getFromLocationList()
 
         binding.tvItem.setOnClickListener {
             dialogSingleSelection(
-                itemList, "Choose Item", "Search Item", binding.tvItem
+                itemList,
+                getString(R.string.choose_item),
+                getString(R.string.search_item),
+                binding.tvItem
             )
         }
 
         binding.tvCostCenter.setOnClickListener {
             dialogSingleSelection(
-                costCenterList, "Choose Cost Center", "Search Cost Center", binding.tvCostCenter
+                costCenterList,
+                getString(R.string.choose_cost_center),
+                getString(R.string.search_cost_center),
+                binding.tvCostCenter
             )
         }
-
         binding.tvProfitCenter.setOnClickListener {
             dialogSingleSelection(
                 profitCenterList,
-                "Choose Profit Center",
-                "Search Profit Center",
+                getString(R.string.choose_profit_center),
+                getString(R.string.search_profit_center),
                 binding.tvProfitCenter
             )
         }
 
         binding.tvInTransit.setOnClickListener {
             dialogSingleSelection(
-                inTransitList, "Choose In Transit", "Search In Transit", binding.tvInTransit
+                inTransitList,
+                getString(R.string.choose_in_transit),
+                getString(R.string.search_in_transit),
+                binding.tvInTransit
             )
         }
 
+        binding.tvFrom.setOnClickListener {
+            dialogSingleSelection(
+                fromLocationList,
+                getString(R.string.choose_to_location),
+                getString(R.string.search_to_location),
+                binding.tvTo
+            )
+
+        }
+
         binding.tvAdd.setOnClickListener {
-            requestList.add("")
-            binding.llRequestList.visibility = View.VISIBLE
-            binding.tvCreateStoreRequisition.visibility = View.VISIBLE
-            binding.tvItem.text = ""
-            binding.tvCostCenter.text = ""
-            binding.tvProfitCenter.text = ""
-            binding.tvInTransit.text = ""
-            selectedItem = ""
-            selectedCostCenter = ""
-            selectedProfitCenter = ""
-            selectedInTransit = ""
-            selectedProduct = null
-            storeRequisitionRequestItemListAdapter!!.notifyDataSetChanged()
-            binding.nestedScrollView.post {
-                binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
+            if (binding.tvItem.text.toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.please_select_item), Toast.LENGTH_SHORT)
+                    .show()
+            } else if (binding.etQty.text.toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.enter_quantity), Toast.LENGTH_SHORT).show()
+            } else {
+                val qty = binding.etQty.text.toString().toInt()
+                val existingIndex = requestList.indexOfFirst { it.itemNo == selectedProduct!!.no }
+                if (existingIndex != -1) {
+                    val existingOrder = requestList[existingIndex]
+                    existingOrder.quantity = qty
+                    storeRequisitionRequestItemListAdapter!!.notifyDataSetChanged()
+
+                } else {
+                    val singleRequest = SingleTransfer(
+                        selectedItem,
+                        selectedProduct!!.no,
+                        qty,
+                        selectedProduct!!.baseUnitOfMeasure,
+                    )
+                    requestList.add(singleRequest)
+                    storeRequisitionRequestItemListAdapter!!.notifyDataSetChanged()
+
+                }
+
+                binding.llRequestList.visibility = View.VISIBLE
+                binding.tvCreateStoreRequisition.visibility = View.VISIBLE
+                binding.tvItem.text = ""
+
+                selectedItem = ""
+
+                selectedProduct = null
+                binding.etQty.setText("")
+                binding.nestedScrollView.post {
+                    binding.nestedScrollView.fullScroll(View.FOCUS_DOWN)
+                }
             }
         }
 
@@ -116,10 +170,26 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
 
-        storeRequisitionRequestItemListAdapter = StoreRequisitionRequestItemListAdapter(
+        storeRequisitionRequestItemListAdapter = TransferRequestItemListAdapter(
             this@StoreRequisitionRequestActivity, requestList, this@StoreRequisitionRequestActivity
         )
         binding.rvTransferList.adapter = storeRequisitionRequestItemListAdapter
+    }
+
+    private fun getFromLocationList() {
+        val jsonString = SharedHelper.getKey(this, Constants.API_To_Location)
+        if (jsonString.isNotEmpty()) {
+            locationList =
+                JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data").map {
+                    Gson().fromJson(it, LocationDetail::class.java)
+                } as ArrayList<LocationDetail>
+            fromLocationList.clear()
+            for (item in locationList!!) {
+                val name = item.name
+                fromLocationList.add(name)
+            }
+        }
+
     }
 
     private fun dialogSingleSelection(
@@ -140,6 +210,10 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
 
             binding.tvItem -> {
                 selectedItem
+            }
+
+            binding.tvFrom -> {
+                selectedFromLocation
             }
 
             else -> {
@@ -197,8 +271,8 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
         val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
         dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
 
-        tvCancel.setOnClickListener { view: View? -> dialog.dismiss() }
-        tvConfirm.setOnClickListener { view: View? ->
+        tvCancel.setOnClickListener { _: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { _: View? ->
             if (filterList!!.isNotEmpty()) {
                 when (textView) {
                     binding.tvCostCenter -> {
@@ -216,6 +290,22 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
                                 selectedProduct = item
                             }
                         }
+                        val existingOrder = requestList.find { it.itemNo == selectedProduct?.no }
+                        if (existingOrder != null) {
+                            binding.etQty.setText(existingOrder.quantity.toString())
+                        } else {
+                            binding.etQty.setText("")
+                        }
+                    }
+
+
+                    binding.tvFrom -> {
+                        selectedFromLocation = singleItemSelectionAdapter.selected
+                        for (item in locationList!!) {
+                            if (item.name == singleItemSelectionAdapter.selected) {
+                                selectedLocation = item
+                            }
+                        }
                     }
 
                     else -> {
@@ -231,9 +321,10 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
     private fun getItemList() {
         val jsonString = SharedHelper.getKey(this, Constants.API_Item_List)
         if (jsonString.isNotEmpty()) {
-            productList = JsonParser.parseString(jsonString).asJsonArray.map {
-                Gson().fromJson(it, ItemDetail::class.java)
-            } as ArrayList<ItemDetail>
+            productList =
+                JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data").map {
+                    Gson().fromJson(it, ItemDetail::class.java)
+                } as ArrayList<ItemDetail>
             itemList.clear()
             for (item in productList!!) {
                 val code = item.description
@@ -268,7 +359,7 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
             val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
 
             for (item in dataArray) {
-                val code = item.asJsonObject.get("code")?.asString
+                val code = item.asJsonObject.get("value")?.asString
                 if (!code.isNullOrEmpty()) {
                     profitCenterList.add(code)
                 }
@@ -293,9 +384,8 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
         }
     }
 
-    override fun onDeleteOrder(orderDetail: String) {
-
-        requestList.remove(orderDetail)
+    override fun onDeleteRequest(request: SingleTransfer) {
+        requestList.remove(request)
         storeRequisitionRequestItemListAdapter!!.notifyDataSetChanged()
         if (requestList.isEmpty()) {
             binding.llRequestList.visibility = View.GONE

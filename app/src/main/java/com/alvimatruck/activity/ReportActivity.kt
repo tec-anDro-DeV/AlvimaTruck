@@ -24,8 +24,7 @@ class ReportActivity : BaseActivity<ActivityReportBinding>() {
         binding.rlStockReport.setOnClickListener {
             startActivity(
                 Intent(this, VanStockActivity::class.java).putExtra(
-                    Constants.IS_HIDE,
-                    true
+                    Constants.IS_HIDE, true
                 )
             )
         }
