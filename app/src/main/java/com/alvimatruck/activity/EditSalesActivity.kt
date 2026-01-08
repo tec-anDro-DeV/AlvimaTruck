@@ -188,7 +188,7 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
 
                 // Reset UI
                 binding.llOrderList.visibility = View.VISIBLE
-                binding.llBottomButtons.visibility = View.VISIBLE
+                binding.tvConfirmOrder.visibility = View.VISIBLE
                 binding.llOrderTotal.visibility = View.VISIBLE
 
                 binding.tvItem.text = ""
@@ -643,7 +643,7 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
         newSalesItemListAdapter!!.notifyDataSetChanged()
         if (orderList.isEmpty()) {
             binding.llOrderList.visibility = View.GONE
-            binding.llBottomButtons.visibility = View.GONE
+            binding.tvConfirmOrder.visibility = View.GONE
             binding.llOrderTotal.visibility = View.GONE
         } else {
             calculateFinalTotal()

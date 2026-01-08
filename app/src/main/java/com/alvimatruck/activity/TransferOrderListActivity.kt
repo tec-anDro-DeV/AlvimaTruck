@@ -84,6 +84,11 @@ class TransferOrderListActivity : BaseActivity<ActivityTransferOrderListBinding>
         transferListAPI()
         getToLocationList()
 
+        binding.chkAll.setOnClickListener {
+            val isChecked = binding.chkAll.isChecked
+            transferListAdapter?.selectAll(isChecked)
+        }
+
         binding.tvConfirmShipment.setOnClickListener {
             val selectedOrders = filterList?.filter { it.isSelected }
             if (selectedOrders.isNullOrEmpty()) {
@@ -210,10 +215,7 @@ class TransferOrderListActivity : BaseActivity<ActivityTransferOrderListBinding>
                                     }
                                     binding.rvTransferList.adapter = transferListAdapter
 
-                                    binding.chkAll.setOnClickListener {
-                                        val isChecked = binding.chkAll.isChecked
-                                        transferListAdapter?.selectAll(isChecked)
-                                    }
+
                                     binding.llData.visibility = View.VISIBLE
                                     binding.llNoData.root.visibility = View.GONE
 

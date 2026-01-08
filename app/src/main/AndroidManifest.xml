@@ -42,7 +42,9 @@
         android:theme="@style/Theme.AlvimaTruck"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".activity.EditStoreRequisitionActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true"

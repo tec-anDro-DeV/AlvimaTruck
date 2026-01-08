@@ -58,7 +58,7 @@ class Constants {
         const val API_Payment_Create = "Payment/create"
 
         const val API_Create_Store_Requisition = "store-requisition/create"
-
+        const val API_Store_Requisition_List = "store-requisition/get-by-salesperson"
 
 
         // Constants Key
