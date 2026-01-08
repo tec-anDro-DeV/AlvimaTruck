@@ -12,6 +12,7 @@ import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityTransferOrderListBinding
+import com.alvimatruck.model.request.TransferPostRequest
 import com.alvimatruck.model.responses.LocationDetail
 import com.alvimatruck.model.responses.TransferDetail
 import com.alvimatruck.model.responses.UserDetail
@@ -83,6 +84,77 @@ class TransferOrderListActivity : BaseActivity<ActivityTransferOrderListBinding>
         transferListAPI()
         getToLocationList()
 
+        binding.tvConfirmShipment.setOnClickListener {
+            val selectedOrders = filterList?.filter { it.isSelected }
+            if (selectedOrders.isNullOrEmpty()) {
+                Toast.makeText(
+                    this, "Please select at least one order to confirm shipment", Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            } else {
+                val selectedOrderNumbers = selectedOrders.map { it.transferOrderNo }
+                transferPostAPI(selectedOrderNumbers)
+            }
+
+
+        }
+
+    }
+
+    private fun transferPostAPI(selectedOrderNumbers: List<String>) {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@TransferOrderListActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.transferPost(TransferPostRequest(selectedOrderNumbers))
+                .enqueue(object : Callback<JsonObject> {
+                    override fun onResponse(
+                        call: Call<JsonObject>, response: Response<JsonObject>
+                    ) {
+                        ProgressDialog.dismiss()
+                        if (response.code() == 401) {
+                            Utils.forceLogout(this@TransferOrderListActivity)  // show dialog before logout
+                            return
+                        }
+                        if (response.isSuccessful) {
+                            try {
+                                Log.d("TAG", "onResponse: " + response.body().toString())
+                                Toast.makeText(
+                                    this@TransferOrderListActivity,
+                                    response.body()!!.get("message").toString().replace('"', ' ')
+                                        .trim(),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                transferListAPI()
+
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        } else {
+                            Toast.makeText(
+                                this@TransferOrderListActivity,
+                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                        Toast.makeText(
+                            this@TransferOrderListActivity,
+                            getString(com.alvimatruck.R.string.api_fail_message),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        ProgressDialog.dismiss()
+                    }
+                })
+        } else {
+            Toast.makeText(
+                this,
+                getString(com.alvimatruck.R.string.please_check_your_internet_connection),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun getToLocationList() {

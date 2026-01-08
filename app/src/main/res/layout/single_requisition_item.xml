@@ -15,35 +15,43 @@
         android:orientation="vertical"
         android:padding="@dimen/_9sdp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/ivStock"
-                android:layout_width="wrap_content"
+            <!-- Left section (icon + order id) -->
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_transfer_small" />
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tvOrderId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_11sdp"
-                android:layout_toEndOf="@id/ivStock"
-                android:fontFamily="@font/sansbold"
-                android:text="STR-1001"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
+                <ImageView
+                    android:id="@+id/ivStock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_transfer_small" />
 
+                <TextView
+                    android:id="@+id/tvOrderId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_11sdp"
+                    android:fontFamily="@font/sansbold"
+                    android:text="STR-1001"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp" />
+            </LinearLayout>
 
+            <!-- Status -->
             <TextView
                 android:id="@+id/tvStatus"
                 android:layout_width="@dimen/_72sdp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/bg_status_red"
                 android:fontFamily="@font/sanssemibold"
                 android:paddingVertical="@dimen/_5sdp"
@@ -52,9 +60,15 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_11ssp" />
 
+            <!-- Edit icon -->
+            <ImageView
+                android:id="@+id/ivEdit"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:src="@drawable/ic_edit"
+                android:tint="@color/orange" />
 
-        </RelativeLayout>
-
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

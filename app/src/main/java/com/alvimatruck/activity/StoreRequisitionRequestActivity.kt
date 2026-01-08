@@ -3,6 +3,7 @@ package com.alvimatruck.activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
@@ -14,18 +15,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.adapter.SingleItemSelectionAdapter
 import com.alvimatruck.adapter.TransferRequestItemListAdapter
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityStoreRequisitionRequestBinding
 import com.alvimatruck.interfaces.DeleteTransferRequestListener
+import com.alvimatruck.model.request.StoreRequisitionLine
+import com.alvimatruck.model.request.StoreRequisitionRequest
 import com.alvimatruck.model.responses.ItemDetail
 import com.alvimatruck.model.responses.LocationDetail
 import com.alvimatruck.model.responses.SingleTransfer
 import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionRequestBinding>(),
     DeleteTransferRequestListener {
@@ -121,7 +130,7 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
                 fromLocationList,
                 getString(R.string.choose_to_location),
                 getString(R.string.search_to_location),
-                binding.tvTo
+                binding.tvFrom
             )
 
         }
@@ -174,6 +183,100 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
             this@StoreRequisitionRequestActivity, requestList, this@StoreRequisitionRequestActivity
         )
         binding.rvTransferList.adapter = storeRequisitionRequestItemListAdapter
+
+        binding.tvCreateStoreRequisition.setOnClickListener {
+
+            if (binding.tvProfitCenter.text.toString().isEmpty()) {
+                Toast.makeText(
+                    this, getString(R.string.please_select_profit_center), Toast.LENGTH_SHORT
+                ).show()
+            } else if (binding.tvCostCenter.text.toString().isEmpty()) {
+                Toast.makeText(
+                    this, getString(R.string.please_select_cost_center), Toast.LENGTH_SHORT
+                ).show()
+            } else if (binding.tvFrom.text.toString().isEmpty()) {
+                Toast.makeText(
+                    this, getString(R.string.please_select_to_location), Toast.LENGTH_SHORT
+                ).show()
+            } else if (binding.tvInTransit.text.toString().isEmpty()) {
+                Toast.makeText(
+                    this, getString(R.string.please_select_in_transit), Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                storeRequisitionRequestAPI()
+            }
+        }
+    }
+
+    private fun storeRequisitionRequestAPI() {
+
+
+        if (Utils.isOnline(this)) {
+            val storeRequisitionLines: List<StoreRequisitionLine> =
+                requestList.map { item ->
+                    StoreRequisitionLine(
+                        fromLocation = selectedLocation!!.code,
+                        itemNo = item.itemNo,
+                        quantityRequested = item.quantity
+                    )
+                }
+            ProgressDialog.start(this@StoreRequisitionRequestActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.newRequisitionRequest(
+                StoreRequisitionRequest(
+                    selectedCostCenter,
+                    selectedLocation!!.code,
+                    selectedInTransit,
+                    storeRequisitionLines,
+                    selectedProfitCenter,
+                    userDetail?.salesPersonCode!!
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@StoreRequisitionRequestActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@StoreRequisitionRequestActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            handleBackPressed()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@StoreRequisitionRequestActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@StoreRequisitionRequestActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+
     }
 
     private fun getFromLocationList() {

@@ -11,6 +11,8 @@ import com.alvimatruck.model.request.OTPVerifyRequest
 import com.alvimatruck.model.request.OrderPostRequest
 import com.alvimatruck.model.request.ResetPasswordRequest
 import com.alvimatruck.model.request.StartTripRequest
+import com.alvimatruck.model.request.StoreRequisitionRequest
+import com.alvimatruck.model.request.TransferPostRequest
 import com.alvimatruck.model.request.TransferRequest
 import com.alvimatruck.model.request.UpdateOrderRequest
 import com.alvimatruck.model.request.VisitedTripRequest
@@ -83,6 +85,12 @@ interface ApiInterface {
 
     @POST(Constants.API_Create_Transfer)
     fun newTransferRequest(@Body transferRequest: TransferRequest): Call<JsonObject>
+
+    @POST(Constants.API_Transfer_Post)
+    fun transferPost(@Body transferPostRequest: TransferPostRequest): Call<JsonObject>
+
+    @POST(Constants.API_Create_Store_Requisition)
+    fun newRequisitionRequest(@Body storeRequisitionRequest: StoreRequisitionRequest): Call<JsonObject>
 
     @GET(Constants.API_Customer_List)
     fun customerList(

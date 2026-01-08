@@ -25,17 +25,34 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_transfer_small" />
 
-            <TextView
-                android:id="@+id/tvOrderId"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_11sdp"
                 android:layout_toEndOf="@id/ivStock"
-                android:fontFamily="@font/sansbold"
-                android:text="TRF-1001"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvProductName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:layout_toStartOf="@+id/tvTId"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sansbold"
+                    android:maxLines="1"
+                    android:text="Chinese Noodles 1Kg"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sansregular"
+                    android:text="Packets • SKU: N209-8529"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/_11ssp" />
+            </LinearLayout>
 
 
         </RelativeLayout>
@@ -57,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="SKU"
+                    android:text="Transfer Order No."
                     android:textColor="@color/darkgray"
                     android:textSize="@dimen/_12ssp" />
 
@@ -66,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="NSE-25845-774"
+                    android:text="TR-25845-774"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
             </RelativeLayout>

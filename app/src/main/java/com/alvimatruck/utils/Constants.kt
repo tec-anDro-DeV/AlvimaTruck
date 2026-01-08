@@ -50,11 +50,15 @@ class Constants {
         const val API_Fleet = "FleetManagement/create-fleat"
 
         const val API_Create_Transfer = "Transfer/transfer/create"
+        const val API_Transfer_Post = "Transfer/transfer/Post"
         const val API_Transfer_List = "Transfer/transfer/get-all-from-code"
         const val API_Check_Route = "RouteAddress/route-check"
         const val API_Invoice_List = "Payment/invoice-dropdown"
         const val API_Delete_Order = "SalesOrder/delete-order/"
         const val API_Payment_Create = "Payment/create"
+
+        const val API_Create_Store_Requisition = "store-requisition/create"
+
 
 
         // Constants Key
