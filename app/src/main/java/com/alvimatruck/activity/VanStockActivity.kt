@@ -90,7 +90,10 @@ class VanStockActivity : BaseActivity<ActivityVanStockBinding>() {
                     filterList!!.addAll(itemList!!)
                 } else {
                     for (item in itemList!!) {
-                        if (item.itemName.lowercase().contains(s.toString().lowercase())) {
+                        if (item.itemName.lowercase()
+                                .contains(s.toString().lowercase()) || item.itemNo.lowercase()
+                                .contains(s.toString().lowercase())
+                        ) {
                             filterList!!.add(item)
                         }
                     }

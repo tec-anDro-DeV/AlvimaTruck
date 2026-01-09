@@ -78,60 +78,59 @@
                 <!--                    android:textSize="@dimen/_12ssp"-->
                 <!--                    tools:text="TRN-12566-5854" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="Profit Center Code"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_11ssp" />
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:fontFamily="@font/sanssemibold"-->
+                <!--                    android:text="Profit Center Code"-->
+                <!--                    android:textColor="@color/black"-->
+                <!--                    android:textSize="@dimen/_11ssp" />-->
+
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tvProfitCenter"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="@dimen/_44sdp"-->
+                <!--                    android:layout_marginTop="@dimen/_7sdp"-->
+                <!--                    android:background="@drawable/border_bg"-->
+                <!--                    android:fontFamily="@font/sansregular"-->
+                <!--                    android:gravity="center_vertical"-->
+                <!--                    android:hint="Choose"-->
+                <!--                    android:paddingHorizontal="@dimen/_10sdp"-->
+                <!--                    android:textColor="@color/black"-->
+                <!--                    android:textColorHint="@color/hintGary"-->
+                <!--                    android:textSize="@dimen/_12ssp"-->
+                <!--                    app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />-->
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="@dimen/_14sdp"-->
+                <!--                    android:fontFamily="@font/sanssemibold"-->
+                <!--                    android:text="Cost Center Code"-->
+                <!--                    android:textColor="@color/black"-->
+                <!--                    android:textSize="@dimen/_11ssp" />-->
+
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tvCostCenter"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="@dimen/_44sdp"-->
+                <!--                    android:layout_marginTop="@dimen/_7sdp"-->
+                <!--                    android:background="@drawable/border_bg"-->
+                <!--                    android:fontFamily="@font/sansregular"-->
+                <!--                    android:gravity="center_vertical"-->
+                <!--                    android:hint="Choose"-->
+                <!--                    android:paddingHorizontal="@dimen/_10sdp"-->
+                <!--                    android:textColor="@color/black"-->
+                <!--                    android:textColorHint="@color/hintGary"-->
+                <!--                    android:textSize="@dimen/_12ssp"-->
+                <!--                    app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />-->
 
 
                 <TextView
-                    android:id="@+id/tvProfitCenter"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_44sdp"
-                    android:layout_marginTop="@dimen/_7sdp"
-                    android:background="@drawable/border_bg"
-                    android:fontFamily="@font/sansregular"
-                    android:gravity="center_vertical"
-                    android:hint="Choose"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/hintGary"
-                    android:textSize="@dimen/_12ssp"
-                    app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_14sdp"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="Cost Center Code"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_11ssp" />
-
-
-                <TextView
-                    android:id="@+id/tvCostCenter"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_44sdp"
-                    android:layout_marginTop="@dimen/_7sdp"
-                    android:background="@drawable/border_bg"
-                    android:fontFamily="@font/sansregular"
-                    android:gravity="center_vertical"
-                    android:hint="Choose"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/hintGary"
-                    android:textSize="@dimen/_12ssp"
-                    app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sanssemibold"
                     android:text="From"
                     android:textColor="@color/black"

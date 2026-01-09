@@ -82,6 +82,24 @@ class StoreRequisitionListActivity : BaseActivity<ActivityStoreRequisitionListBi
         getRequisitionListAPI()
         getToLocationList()
 
+        binding.tvConfirmShipment.setOnClickListener {
+            val selectedOrders = filterList?.filter { it.isSelected }
+            if (selectedOrders.isNullOrEmpty()) {
+                Toast.makeText(
+                    this, "Please select at least one order send to approval", Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            } else {
+                val selectedOrderNumbers = selectedOrders.map { it.no }
+                approvalPostAPI(selectedOrderNumbers)
+            }
+        }
+
+
+    }
+
+    private fun approvalPostAPI(selectedOrderNumbers: List<String>) {
+
 
     }
 
