@@ -121,7 +121,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                             tripStart =
                                 response.body()!!.get("data").asJsonObject.get("success").asBoolean
 
-                            if (customerDetail!!.status == "Pending" || !tripStart) {
+                            if (!tripStart) {
                                 binding.llBottomButtons.visibility = View.GONE
                             } else {
                                 binding.llBottomButtons.visibility = View.VISIBLE
@@ -167,7 +167,12 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
             )
             showUpdatedData()
 
-            checkTripStatusAPI()
+            if (customerDetail!!.status == "Pending") {
+                binding.llBottomButtons.visibility = View.GONE
+            } else {
+                checkTripStatusAPI()
+            }
+
 
         }
 

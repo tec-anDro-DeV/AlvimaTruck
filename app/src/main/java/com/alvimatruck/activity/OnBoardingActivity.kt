@@ -20,20 +20,9 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
     private var dots: Array<TextView?>? = null
     private lateinit var bgImages: Array<Int>
 
-    private var titles = arrayOf(
-        getString(R.string.quality_you_deliver),
-        getString(R.string.smart_fast_logistics),
-        getString(R.string.accurate_orders_happy_customers),
-        getString(R.string.track_deliver_succeed)
-    )
 
-    private var descriptions = arrayOf(
-        getString(R.string.carry_alvima_s_high_standard_pasta_and_flour_safely_to_every_customer_with_trust_and_pride),
-        getString(R.string.enjoy_seamless_deliveries_powered_by_fully_automated_systems_and_erp_integrated_routing),
-        getString(R.string.ensure_every_delivery_meets_expectations_boosting_customer_satisfaction_across_ethiopia),
-        getString(R.string.real_time_status_updates_help_you_complete_your_route_efficiently_and_grow_with_alvima)
-    )
-
+    private lateinit var titles: Array<String>
+    private lateinit var descriptions: Array<String>
 
     override fun inflateBinding(): ActivityOnBoardingBinding {
         return ActivityOnBoardingBinding.inflate(layoutInflater)
@@ -75,6 +64,20 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
         super.onCreate(savedInstanceState)
         val controller = WindowCompat.getInsetsController(window, window.decorView)
         controller.isAppearanceLightStatusBars = true
+
+        titles = arrayOf(
+            getString(R.string.quality_you_deliver),
+            getString(R.string.smart_fast_logistics),
+            getString(R.string.accurate_orders_happy_customers),
+            getString(R.string.track_deliver_succeed)
+        )
+
+        descriptions = arrayOf(
+            getString(R.string.carry_alvima_s_high_standard_pasta_and_flour_safely_to_every_customer_with_trust_and_pride),
+            getString(R.string.enjoy_seamless_deliveries_powered_by_fully_automated_systems_and_erp_integrated_routing),
+            getString(R.string.ensure_every_delivery_meets_expectations_boosting_customer_satisfaction_across_ethiopia),
+            getString(R.string.real_time_status_updates_help_you_complete_your_route_efficiently_and_grow_with_alvima)
+        )
 
         bgImages = arrayOf(
             R.drawable.onboard1, R.drawable.onboard2, R.drawable.onboard3, R.drawable.onboard4
