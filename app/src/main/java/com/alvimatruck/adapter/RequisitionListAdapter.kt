@@ -63,14 +63,16 @@ class RequisitionListAdapter(
             )
         } else {
             holder.binding.tvStatus.background = ContextCompat.getDrawable(
-                mActivity, R.drawable.bg_status_red
+                mActivity, R.drawable.bg_status_green
             )
         }
 
         if (list[position].status != "Open") {
             holder.binding.ivEdit.visibility = View.GONE
+            holder.binding.chkShip.visibility = View.GONE
         } else {
             holder.binding.ivEdit.visibility = View.VISIBLE
+            holder.binding.chkShip.visibility = View.VISIBLE
         }
 
 

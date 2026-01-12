@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Telephone Number"
+                android:text="Telephone Number*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="City"
+                    android:text="City*"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -119,7 +119,7 @@
                     android:layout_marginStart="@dimen/_14sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Postal Code"
+                    android:text="Postal Code*"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
             </LinearLayout>
@@ -167,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Address"
+                android:text="Address*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 

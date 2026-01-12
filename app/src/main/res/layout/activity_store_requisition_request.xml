@@ -83,7 +83,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Profit Center Code"
+                    android:text="Profit Center Code*"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Cost Center Code"
+                    android:text="Cost Center Code*"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -133,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="From"
+                    android:text="From*"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -180,7 +180,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="In Transit Code"
+                    android:text="In Transit Code*"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 

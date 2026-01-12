@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_7sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Incident Type"
+                android:text="Incident Type*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -80,7 +80,7 @@
                 android:layout_marginHorizontal="@dimen/_7sdp"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Description"
+                android:text="Description*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -113,7 +113,7 @@
                     android:layout_marginHorizontal="@dimen/_7sdp"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Incident Photos"
+                    android:text="Incident Photos*"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 

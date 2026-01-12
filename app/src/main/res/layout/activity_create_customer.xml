@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Customer Name"
+                android:text="Customer Name*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Contact Name"
+                android:text="Contact Name*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Upload Photo"
+                android:text="Upload Photo*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Customer Phone Number"
+                android:text="Customer Phone Number*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -184,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Telephone Number"
+                android:text="Telephone Number*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -217,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="City"
+                    android:text="City*"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -227,7 +227,7 @@
                     android:layout_marginStart="@dimen/_14sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Postal Code"
+                    android:text="Postal Code*"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
             </LinearLayout>
@@ -274,7 +274,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Address"
+                android:text="Address*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -302,7 +302,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="TIN Number"
+                android:text="TIN Number*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -328,7 +328,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="ID Proof"
+                android:text="ID Proof*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -382,7 +382,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Customer Posting Group"
+                android:text="Customer Posting Group*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -407,7 +407,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Customer Price Group"
+                android:text="Customer Price Group*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 

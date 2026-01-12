@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_7sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Vendor Details"
+                android:text="Vendor Details*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -66,8 +66,8 @@
                 android:fontFamily="@font/sansregular"
                 android:gravity="center_vertical"
                 android:hint="Choose"
-                android:text="Vendor 1"
                 android:paddingHorizontal="@dimen/_10sdp"
+                android:text="Vendor 1"
                 android:textColor="@color/black"
                 android:textColorHint="@color/hintGary"
                 android:textSize="@dimen/_12ssp"
@@ -79,7 +79,7 @@
                 android:layout_marginHorizontal="@dimen/_7sdp"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Repair Cost"
+                android:text="Repair Cost*"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -112,7 +112,7 @@
                     android:layout_marginHorizontal="@dimen/_7sdp"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Replaced Parts Photos"
+                    android:text="Replaced Parts Photos*"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 

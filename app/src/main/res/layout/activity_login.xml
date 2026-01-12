@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sanssemibold"
-            android:text="Select Van No."
+            android:text="Select Van No.*"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_14sdp"
             android:fontFamily="@font/sanssemibold"
-            android:text="Password"
+            android:text="Password*"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
@@ -114,8 +114,8 @@
                 android:layout_height="wrap_content"
                 android:button="@drawable/checkbox_selector"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Remember me"
                 android:paddingStart="@dimen/_5sdp"
+                android:text="Remember me"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 

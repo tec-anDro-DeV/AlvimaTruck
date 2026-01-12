@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sanssemibold"
-            android:text="Fuel Amount"
+            android:text="Fuel Amount*"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_14sdp"
             android:fontFamily="@font/sanssemibold"
-            android:text="Photo (Meter/Receipt)"
+            android:text="Photo (Meter/Receipt)*"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
