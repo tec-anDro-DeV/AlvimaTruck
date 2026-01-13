@@ -67,11 +67,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_9sdp" />
 
-
+        <include
+            android:id="@+id/llNoData"
+            layout="@layout/no_data" />
     </LinearLayout>
 
-    <include
-        android:id="@+id/llNoData"
-        layout="@layout/no_data" />
 
 </RelativeLayout>

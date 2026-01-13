@@ -6,11 +6,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.databinding.SingleSalesReportItemBinding
+import com.alvimatruck.model.responses.SalesReportDetail
 
 
 class SalesReportListAdapter(
     private val mActivity: Activity,
-    private val list: ArrayList<String>,
+    private val list: ArrayList<SalesReportDetail>,
 ) : RecyclerView.Adapter<SalesReportListAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = mActivity.layoutInflater
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,7 +20,7 @@ class SalesReportListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        //   holder.binding.detail = list[position]
+        holder.binding.detail = list[position]
         //   holder.binding.tvData.text = "Demo List Item " + (position + 1)
 
     }

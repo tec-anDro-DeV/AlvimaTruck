@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <!--        <variable-->
-        <!--            name="detail"-->
-        <!--            type="String" />-->
+        <variable
+            name="detail"
+            type="com.alvimatruck.model.responses.SalesReportDetail" />
     </data>
 
     <LinearLayout
@@ -35,9 +36,10 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/sansbold"
                 android:maxLines="1"
-                android:text="Chinese Noodles 1Kg"
+                android:text="@{detail.description}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_12ssp"
+                tools:text="Chinese Noodles 1Kg" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -46,9 +48,10 @@
                 android:layout_marginStart="@dimen/_11sdp"
                 android:layout_toEndOf="@+id/ivStock"
                 android:fontFamily="@font/sansregular"
-                android:text="SKU: N209-8529"
+                android:text="@{`SKU:` + detail.no}"
                 android:textColor="@color/darkgray"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_11ssp"
+                tools:text="SKU: N209-8529" />
 
         </RelativeLayout>
 
@@ -77,10 +80,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="Dco-1001"
+                    android:text="@{detail.documentNo}"
                     android:textAllCaps="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="Dco-1001" />
             </RelativeLayout>
 
             <LinearLayout
@@ -105,10 +109,11 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/sansbold"
                     android:maxLines="2"
-                    android:text="Jone Doe"
+                    android:text="@{detail.customerName}"
                     android:textAlignment="textEnd"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="Jone Doe" />
             </LinearLayout>
 
             <RelativeLayout
@@ -129,9 +134,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="$341.76"
+                    android:text="@{`ETB `+detail.unitPrice}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="$341.76" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -152,10 +158,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="3 Packets"
+                    android:text="@{detail.quantity+ ` `+detail.unitOfMeasureCode}"
                     android:textAllCaps="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="3 Packets" />
             </RelativeLayout>
 
 
@@ -177,10 +184,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="12 Dec 2025"
+                    android:text="@{detail.requestDate}"
                     android:textAllCaps="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="12 Dec 2025" />
             </RelativeLayout>
 
 
@@ -203,9 +211,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/sansbold"
-                android:text="$1025.27"
+                android:text="@{`ETB `+detail.totalAmount}"
                 android:textColor="@color/orange"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_12ssp"
+                tools:text="$1025.27" />
         </RelativeLayout>
 
 

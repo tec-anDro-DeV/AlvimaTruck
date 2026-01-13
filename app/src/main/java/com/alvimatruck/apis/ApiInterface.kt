@@ -102,6 +102,12 @@ interface ApiInterface {
         @Query("routeName") routeName: String? = null
     ): Call<JsonObject>
 
+    @GET(Constants.API_Sales_Report)
+    fun salesReportList(
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String,
+    ): Call<JsonObject>
+
     @GET(Constants.API_Transfer_List)
     fun transferList(
         @Query("transferFromCode") transferFromCode: String,

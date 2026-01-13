@@ -60,6 +60,9 @@ class Constants {
         const val API_Create_Store_Requisition = "store-requisition/create"
         const val API_Store_Requisition_List = "store-requisition/get-by-salesperson"
 
+        const val API_Sales_Report = "report/sales"
+
+
 
         // Constants Key
         const val IS_LOGIN = "is_login"
