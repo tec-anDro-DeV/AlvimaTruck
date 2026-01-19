@@ -93,7 +93,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         postItemList!!.add("Distributor")
         postItemList!!.add("Whole-seller")
         postItemList!!.add("Retailers")
-        postItemList!!.add("ABEDELLA")
+        postItemList!!.add("ABDELLA")
         postItemList!!.add("Foreign")
 
         binding.tvCustomerPriceGroup.setOnClickListener {
