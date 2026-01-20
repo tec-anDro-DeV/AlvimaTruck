@@ -348,7 +348,8 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             if (filterList!!.isNotEmpty()) {
                 selectedItem = singleItemSelectionAdapter.selected
                 for (item in customerList!!) {
-                    if (item.searchName == singleItemSelectionAdapter.selected) {
+                    val temp = item.searchName + " (" + item.bcCustomerNo + ")"
+                    if (temp == singleItemSelectionAdapter.selected) {
                         selectedInvoiceList!!.clear()
                         total = 0.0
                         selectedCustomer = item
@@ -451,7 +452,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
                             if (customerList!!.isNotEmpty()) {
                                 itemList!!.clear()
                                 for (item in customerList!!) {
-                                    val code = item.searchName
+                                    val code = item.searchName + " (" + item.bcCustomerNo + ")"
                                     itemList!!.add(code)
                                 }
 
