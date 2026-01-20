@@ -105,5 +105,10 @@
     <string name="are_you_sure_you_want_to_delete_this_request">Are you sure you want to delete this request?</string>
     <string name="allow_background_location_access">Allow Background Location Access</string>
     <string name="to_track_location_offline_set_battery_unrestricted_for_this_app">To track location offline, set Battery → Unrestricted for this app.</string>
+    <string name="please_enter_transaction_ref_no">Please enter transaction ref no</string>
+    <string name="cheque_no">Cheque Ref No.</string>
+    <string name="transaction_ref_no">Transaction Ref No.</string>
+    <string name="enter_cheque_no">Enter cheque no.</string>
+    <string name="enter_transaction_ref_no">Enter transaction ref no.</string>
 
 </resources>

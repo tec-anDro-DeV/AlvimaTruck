@@ -14,7 +14,6 @@ import android.view.WindowManager
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -107,6 +106,26 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             handleBackPressed()
         }
 
+        binding.rgPaymentMode.setOnCheckedChangeListener { _, checkedId ->
+
+            val isCash = checkedId == R.id.rbCash
+            binding.etTransRefNo.visibility = if (isCash) View.GONE else View.VISIBLE
+            binding.tvTransRefNoLabel.visibility = if (isCash) View.GONE else View.VISIBLE
+
+            when (checkedId) {
+                R.id.rbCheque -> {
+                    binding.tvTransRefNoLabel.text = getString(R.string.cheque_no)
+                    binding.etTransRefNo.hint = getString(R.string.enter_cheque_no)
+                }
+
+                R.id.rbOnline -> {
+                    binding.tvTransRefNoLabel.text = getString(R.string.transaction_ref_no)
+                    binding.etTransRefNo.hint = getString(R.string.enter_transaction_ref_no)
+                }
+            }
+        }
+
+
         binding.tvSubmit.setOnClickListener {
             if (selectedCustomer == null) {
                 Toast.makeText(this, getString(R.string.please_select_customer), Toast.LENGTH_SHORT)
@@ -117,6 +136,12 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             } else if (binding.rgPaymentMode.checkedRadioButtonId == -1) {
                 Toast.makeText(
                     this, getString(R.string.please_select_payment_mode), Toast.LENGTH_SHORT
+                ).show()
+            } else if (binding.rgPaymentMode.checkedRadioButtonId != R.id.rbCash && binding.etTransRefNo.text.toString()
+                    .trim().isEmpty()
+            ) {
+                Toast.makeText(
+                    this, getString(R.string.please_enter_transaction_ref_no), Toast.LENGTH_SHORT
                 ).show()
             } else if (paymentProofImageUri == null) {
                 Toast.makeText(
@@ -152,11 +177,11 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.paymentCreate(
-                selectedCustomer!!.no.toRequestBody("text/plain".toMediaType()),
+                selectedCustomer!!.bcCustomerNo.toRequestBody("text/plain".toMediaType()),
                 selectedCustomer!!.searchName.toRequestBody("text/plain".toMediaType()),
-                binding.rgPaymentMode.findViewById<RadioButton>(binding.rgPaymentMode.checkedRadioButtonId).text.toString()
-                    .trim().toRequestBody("text/plain".toMediaType()),
-                total.toString().toRequestBody("text/plain".toMediaType()), invoiceBodyList,
+                total.toString().toRequestBody("text/plain".toMediaType()),
+                binding.etTransRefNo.text.toString().toRequestBody("text/plain".toMediaType()),
+                invoiceBodyList,
                 Utils.createFilePart("imageFile", paymentProofImageUri, this),
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -341,7 +366,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             ProgressDialog.start(this@SendDepositActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.invoiceList(selectedCustomer!!.no)
+            )!!.webservices.invoiceList(selectedCustomer!!.bcCustomerNo)
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
                         call: Call<JsonObject>, response: Response<JsonObject>

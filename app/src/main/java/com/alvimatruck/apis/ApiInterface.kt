@@ -174,8 +174,9 @@ interface ApiInterface {
     fun paymentCreate(
         @Part("CustNo") CustNo: RequestBody,
         @Part("CustomerName") CustomerName: RequestBody,
-        @Part("PaymentCode") PaymentCode: RequestBody,
+//        @Part("PaymentCode") PaymentCode: RequestBody,
         @Part("TotalAmount") TotalAmount: RequestBody,
+        @Part("BankReferenceNo") BankReferenceNo: RequestBody,
         @Part("InvoiceNumbers[]") InvoiceNumbers: ArrayList<RequestBody>,
         @Part imageFile: MultipartBody.Part? = null,   // optional
     ): Call<JsonObject>

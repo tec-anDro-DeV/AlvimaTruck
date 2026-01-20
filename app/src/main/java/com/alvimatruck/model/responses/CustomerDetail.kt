@@ -14,6 +14,7 @@ data class CustomerDetail(
     val locationCode: String?,
     var longitude: Double,
     val no: String,
+    val bcCustomerNo: String,
     val phoneNo: String?,
     val routeName: String,
     val searchName: String,

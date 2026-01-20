@@ -354,7 +354,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.visitTrip(
                 VisitedTripRequest(
-                    customerDetail!!.no, reason
+                    customerDetail!!.bcCustomerNo, reason
 
                 )
             ).enqueue(object : Callback<JsonObject> {

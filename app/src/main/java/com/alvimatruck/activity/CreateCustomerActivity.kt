@@ -89,12 +89,12 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         getPriceList()
         getCityList()
 
-        postItemList!!.add("DOMESTIC")
-        postItemList!!.add("Distributor")
-        postItemList!!.add("Whole-seller")
-        postItemList!!.add("Retailers")
         postItemList!!.add("ABDELLA")
-        postItemList!!.add("Foreign")
+        postItemList!!.add("AGENT")
+        postItemList!!.add("DOMESTIC")
+        postItemList!!.add("EU")
+        postItemList!!.add("FOREIGN")
+        postItemList!!.add("REG.AGENT")
 
         binding.tvCustomerPriceGroup.setOnClickListener {
             dialogSingleSelection(

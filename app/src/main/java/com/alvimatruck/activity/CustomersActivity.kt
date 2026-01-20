@@ -128,8 +128,9 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
                     override fun onResponse(
                         call: Call<JsonObject>, response: Response<JsonObject>
                     ) {
-                        ProgressDialog.dismiss()
+
                         if (response.code() == 401) {
+                            ProgressDialog.dismiss()
                             Utils.forceLogout(this@CustomersActivity)  // show dialog before logout
                             return
                         }
@@ -154,16 +155,23 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
                                     binding.llData.visibility = View.VISIBLE
                                     binding.llNoData.root.visibility = View.GONE
 
+                                    binding.rvCustomerList.post {
+                                        ProgressDialog.dismiss()
+                                    }
+
                                 } else {
+                                    ProgressDialog.dismiss()
                                     binding.llData.visibility = View.GONE
                                     binding.llNoData.root.visibility = View.VISIBLE
                                 }
 
 
                             } catch (e: Exception) {
+                                ProgressDialog.dismiss()
                                 e.printStackTrace()
                             }
                         } else {
+                            ProgressDialog.dismiss()
                             Toast.makeText(
                                 this@CustomersActivity,
                                 Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this

@@ -231,7 +231,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             )!!.webservices.newOrder(
                 NewOrderRequest(
                     binding.tvCustomer.text.toString(),
-                    customerDetail!!.no,
+                    customerDetail!!.bcCustomerNo,
                     binding.tvTotal.text.toString().replace("ETB", "").toDouble(),
                     orderList,
                     userDetail?.salesPersonCode.toString(),

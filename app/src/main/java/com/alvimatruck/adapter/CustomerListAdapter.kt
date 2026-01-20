@@ -6,7 +6,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.activity.MapRouteActivity
@@ -52,18 +51,22 @@ class CustomerListAdapter(
             list[position].customerImage
         )
 
-        if (list[position].status == "Pending") {
-            holder.binding.tvStatus.visibility = View.VISIBLE
-            holder.binding.tvStatus.text = list[position].status
-            holder.binding.tvStatus.background =
-                ContextCompat.getDrawable(holder.itemView.context, R.drawable.bg_status_red)
-        } else if (list[position].visitedToday) {
-            holder.binding.tvStatus.visibility = View.VISIBLE
-            holder.binding.tvStatus.text = "Visited"
-            holder.binding.tvStatus.background =
-                ContextCompat.getDrawable(holder.itemView.context, R.drawable.bg_status_green)
-        } else {
-            holder.binding.tvStatus.visibility = View.GONE
+        when {
+            list[position].status == "Pending" -> {
+                holder.binding.tvStatus.visibility = View.VISIBLE
+                holder.binding.tvStatus.text = list[position].status
+                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
+            }
+
+            list[position].visitedToday -> {
+                holder.binding.tvStatus.visibility = View.VISIBLE
+                holder.binding.tvStatus.text = "Visited"
+                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
+            }
+
+            else -> {
+                holder.binding.tvStatus.visibility = View.GONE
+            }
         }
 
     }
