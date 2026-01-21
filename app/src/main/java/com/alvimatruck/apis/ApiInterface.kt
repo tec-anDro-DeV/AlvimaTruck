@@ -173,9 +173,9 @@ interface ApiInterface {
     @POST(Constants.API_Payment_Create)
     fun paymentCreate(
         @Part("CustNo") CustNo: RequestBody,
-        @Part("CustomerName") CustomerName: RequestBody,
+        //  @Part("CustomerName") CustomerName: RequestBody,
 //        @Part("PaymentCode") PaymentCode: RequestBody,
-        @Part("TotalAmount") TotalAmount: RequestBody,
+        //  @Part("TotalAmount") TotalAmount: RequestBody,
         @Part("BankReferenceNo") BankReferenceNo: RequestBody,
         @Part("InvoiceNumbers[]") InvoiceNumbers: ArrayList<RequestBody>,
         @Part imageFile: MultipartBody.Part? = null,   // optional

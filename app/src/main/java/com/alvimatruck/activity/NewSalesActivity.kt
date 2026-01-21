@@ -152,8 +152,9 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 ).show()
             } else {
                 // Get current values
-                if (tempVat == 0.0) {
-                    tempUnitPrice = binding.etSalesPrice.text.toString().toDouble()
+                if (binding.etSalesPrice.isEnabled) {
+                    tempUnitPrice = binding.etSalesPrice.text.toString().toDouble() * 100 / 115
+                    tempVat = binding.etSalesPrice.text.toString().toDouble() - tempUnitPrice
                 }
                 val qty = binding.etQuantity.text.toString().toInt()
                 val finalTotal = (tempUnitPrice + tempVat) * qty.toDouble()
@@ -402,6 +403,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                         Log.d("TAG", "onResponse: " + response.body().toString())
                         minQty = 1
                         tempVat = 0.0
+                        tempUnitPrice = 0.0
 
                         // API says price is not fixed -> Enable editing
                         binding.etSalesPrice.isEnabled = true
@@ -409,8 +411,10 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                         if (existingOrder != null) {
                             // Restore User's values from Order List
                             binding.etQuantity.setText(existingOrder.quantity.toString())
-                            binding.etSalesPrice.setText(existingOrder.unitPrice.toString())
-                            tempUnitPrice = existingOrder.unitPrice
+                            val finalPrice = existingOrder.unitPrice.toString()
+                                .toDouble() + existingOrder.vat.toString().toDouble()
+                            binding.etSalesPrice.setText(finalPrice.toString())
+                            //  tempUnitPrice = existingOrder.unitPrice
                         } else {
                             binding.etQuantity.setText(minQty.toString())
                         }

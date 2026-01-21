@@ -178,8 +178,6 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.paymentCreate(
                 selectedCustomer!!.bcCustomerNo.toRequestBody("text/plain".toMediaType()),
-                selectedCustomer!!.searchName.toRequestBody("text/plain".toMediaType()),
-                total.toString().toRequestBody("text/plain".toMediaType()),
                 binding.etTransRefNo.text.toString().toRequestBody("text/plain".toMediaType()),
                 invoiceBodyList,
                 Utils.createFilePart("imageFile", paymentProofImageUri, this),
