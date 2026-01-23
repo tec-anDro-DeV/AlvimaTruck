@@ -2,14 +2,11 @@ package com.alvimatruck.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
-import com.alvimatruck.activity.EditStoreRequisitionActivity
 import com.alvimatruck.databinding.SingleRequisitionItemBinding
 import com.alvimatruck.model.responses.LocationDetail
 import com.alvimatruck.model.responses.RequisitionDetail
@@ -32,26 +29,26 @@ class RequisitionListAdapter(
 
         val item = list[position]
 
-        // 1. Remove listener to prevent unwanted triggering during scrolling/recycling
-        holder.binding.chkShip.setOnCheckedChangeListener(null)
-
-        // 2. Set current state
-        holder.binding.chkShip.isChecked = item.isSelected
-
-        // 3. Add Listener
-        holder.binding.chkShip.setOnCheckedChangeListener { _, isChecked ->
-            item.isSelected = isChecked
-
-            // Check if ALL items are now selected
-            val isAllSelected = list.all { it.isSelected }
-
-            // Notify the activity to update the main "Select All" checkbox
-            onSelectionChanged(isAllSelected)
-        }
-
-        holder.binding.ivEdit.setOnClickListener {
-            mActivity.startActivity(Intent(mActivity, EditStoreRequisitionActivity::class.java))
-        }
+//        // 1. Remove listener to prevent unwanted triggering during scrolling/recycling
+//        holder.binding.chkShip.setOnCheckedChangeListener(null)
+//
+//        // 2. Set current state
+//        holder.binding.chkShip.isChecked = item.isSelected
+//
+//        // 3. Add Listener
+//        holder.binding.chkShip.setOnCheckedChangeListener { _, isChecked ->
+//            item.isSelected = isChecked
+//
+//            // Check if ALL items are now selected
+//            val isAllSelected = list.all { it.isSelected }
+//
+//            // Notify the activity to update the main "Select All" checkbox
+//            onSelectionChanged(isAllSelected)
+//        }
+//
+//        holder.binding.ivEdit.setOnClickListener {
+//            mActivity.startActivity(Intent(mActivity, EditStoreRequisitionActivity::class.java))
+//        }
 
         holder.binding.tvFromLocation.text =
             locationList?.find { it.code == list[position].fromLocation }?.name ?: ""
@@ -61,19 +58,23 @@ class RequisitionListAdapter(
             holder.binding.tvStatus.background = ContextCompat.getDrawable(
                 mActivity, R.drawable.bg_status_red
             )
-        } else {
+        } else if (list[position].status == "Released") {
             holder.binding.tvStatus.background = ContextCompat.getDrawable(
                 mActivity, R.drawable.bg_status_green
             )
+        } else {
+            holder.binding.tvStatus.background = ContextCompat.getDrawable(
+                mActivity, R.drawable.bg_status_orange
+            )
         }
 
-        if (list[position].status != "Open") {
-            holder.binding.ivEdit.visibility = View.GONE
-            holder.binding.chkShip.visibility = View.GONE
-        } else {
-            holder.binding.ivEdit.visibility = View.VISIBLE
-            holder.binding.chkShip.visibility = View.VISIBLE
-        }
+//        if (list[position].status != "Open") {
+//            holder.binding.ivEdit.visibility = View.GONE
+//            holder.binding.chkShip.visibility = View.GONE
+//        } else {
+//            holder.binding.ivEdit.visibility = View.VISIBLE
+//            holder.binding.chkShip.visibility = View.VISIBLE
+//        }
 
 
     }

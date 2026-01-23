@@ -74,26 +74,26 @@ class StoreRequisitionListActivity : BaseActivity<ActivityStoreRequisitionListBi
             }
         })
 
-        binding.chkAll.setOnClickListener {
-            val isChecked = binding.chkAll.isChecked
-            requisitionListAdapter?.selectAll(isChecked)
-        }
+//        binding.chkAll.setOnClickListener {
+//            val isChecked = binding.chkAll.isChecked
+//            requisitionListAdapter?.selectAll(isChecked)
+//        }
 
         getRequisitionListAPI()
         getToLocationList()
-
-        binding.tvConfirmShipment.setOnClickListener {
-            val selectedOrders = filterList?.filter { it.isSelected }
-            if (selectedOrders.isNullOrEmpty()) {
-                Toast.makeText(
-                    this, "Please select at least one order send to approval", Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            } else {
-                val selectedOrderNumbers = selectedOrders.map { it.no }
-                approvalPostAPI(selectedOrderNumbers)
-            }
-        }
+//
+//        binding.tvConfirmShipment.setOnClickListener {
+//            val selectedOrders = filterList?.filter { it.isSelected }
+//            if (selectedOrders.isNullOrEmpty()) {
+//                Toast.makeText(
+//                    this, "Please select at least one order send to approval", Toast.LENGTH_SHORT
+//                ).show()
+//                return@setOnClickListener
+//            } else {
+//                val selectedOrderNumbers = selectedOrders.map { it.no }
+//                approvalPostAPI(selectedOrderNumbers)
+//            }
+//        }
 
 
     }
@@ -147,11 +147,10 @@ class StoreRequisitionListActivity : BaseActivity<ActivityStoreRequisitionListBi
                                 requisitionListAdapter = RequisitionListAdapter(
                                     this@StoreRequisitionListActivity, filterList!!, locationList
                                 ) { allSelected ->
-                                    // This code runs when a single item in the list is clicked.
-                                    // We check if the UI needs updating to avoid infinite loops.
-                                    if (binding.chkAll.isChecked != allSelected) {
-                                        binding.chkAll.isChecked = allSelected
-                                    }
+
+//                                    if (binding.chkAll.isChecked != allSelected) {
+//                                        binding.chkAll.isChecked = allSelected
+//                                    }
                                 }
                                 binding.rvRequisitionList.adapter = requisitionListAdapter
 
