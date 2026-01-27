@@ -27,7 +27,7 @@ class OperationsActivity : BaseActivity<ActivityOperationsBinding>() {
         }
 
         binding.rlTransfer.setOnClickListener {
-            startActivity(Intent(this, TransferActivity::class.java))
+            startActivity(Intent(this, TransferRequestActivity::class.java))
         }
 
         binding.rlDeposit.setOnClickListener {
