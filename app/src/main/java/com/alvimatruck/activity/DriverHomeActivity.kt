@@ -34,9 +34,9 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
             startActivity(Intent(this, DeliveryListActivity::class.java))
         }
 
-        binding.rlRoute.setOnClickListener {
-            startActivity(Intent(this, DeliveryTripRouteActivity::class.java))
-        }
+//        binding.rlRoute.setOnClickListener {
+//            startActivity(Intent(this, DeliveryTripRouteActivity::class.java))
+//        }
 
         binding.rlReport.setOnClickListener {
             startActivity(Intent(this, DeliveryTripReportActivity::class.java))
@@ -68,8 +68,8 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
 
-        binding.rlFeetManagement.setOnClickListener {
-            startActivity(Intent(this, FleetManagementActivity::class.java))
-        }
+//        binding.rlFeetManagement.setOnClickListener {
+//            startActivity(Intent(this, FleetManagementActivity::class.java))
+//        }
     }
 }

@@ -3,6 +3,7 @@ package com.alvimatruck.adapter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -29,23 +30,23 @@ class RequisitionListAdapter(
 
         val item = list[position]
 
-//        // 1. Remove listener to prevent unwanted triggering during scrolling/recycling
-//        holder.binding.chkShip.setOnCheckedChangeListener(null)
-//
-//        // 2. Set current state
-//        holder.binding.chkShip.isChecked = item.isSelected
-//
-//        // 3. Add Listener
-//        holder.binding.chkShip.setOnCheckedChangeListener { _, isChecked ->
-//            item.isSelected = isChecked
-//
-//            // Check if ALL items are now selected
-//            val isAllSelected = list.all { it.isSelected }
-//
-//            // Notify the activity to update the main "Select All" checkbox
-//            onSelectionChanged(isAllSelected)
-//        }
-//
+        // 1. Remove listener to prevent unwanted triggering during scrolling/recycling
+        holder.binding.chkShip.setOnCheckedChangeListener(null)
+
+        // 2. Set current state
+        holder.binding.chkShip.isChecked = item.isSelected
+
+        // 3. Add Listener
+        holder.binding.chkShip.setOnCheckedChangeListener { _, isChecked ->
+            item.isSelected = isChecked
+
+            // Check if ALL items are now selected
+            val isAllSelected = list.all { it.isSelected }
+
+            // Notify the activity to update the main "Select All" checkbox
+            onSelectionChanged(isAllSelected)
+        }
+
 //        holder.binding.ivEdit.setOnClickListener {
 //            mActivity.startActivity(Intent(mActivity, EditStoreRequisitionActivity::class.java))
 //        }
@@ -68,13 +69,13 @@ class RequisitionListAdapter(
             )
         }
 
-//        if (list[position].status != "Open") {
-//            holder.binding.ivEdit.visibility = View.GONE
-//            holder.binding.chkShip.visibility = View.GONE
-//        } else {
-//            holder.binding.ivEdit.visibility = View.VISIBLE
-//            holder.binding.chkShip.visibility = View.VISIBLE
-//        }
+        if (list[position].status != "Open") {
+            // holder.binding.ivEdit.visibility = View.GONE
+            holder.binding.chkShip.visibility = View.GONE
+        } else {
+            // holder.binding.ivEdit.visibility = View.VISIBLE
+            holder.binding.chkShip.visibility = View.VISIBLE
+        }
 
 
     }

@@ -80,28 +80,10 @@
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:id="@+id/rlRoute"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_118sdp"
-                android:layout_weight="1"
-                android:background="@drawable/ic_report"
-                android:padding="@dimen/_14sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="Route"
-
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_13ssp" />
-            </RelativeLayout>
-
-            <RelativeLayout
                 android:id="@+id/rlDelivery"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_118sdp"
-                android:layout_marginStart="@dimen/_13sdp"
+
                 android:layout_weight="1"
                 android:background="@drawable/ic_delivery_2"
                 android:padding="@dimen/_14sdp">
@@ -112,31 +94,6 @@
                     android:fontFamily="@font/sanssemibold"
                     android:text="Delivery"
 
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_13ssp" />
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_13sdp"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:id="@+id/rlFeetManagement"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_118sdp"
-                android:layout_weight="1"
-                android:background="@drawable/ic_transfer_3"
-                android:padding="@dimen/_14sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="Fleet Services"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp" />
             </RelativeLayout>
@@ -162,8 +119,98 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp" />
             </RelativeLayout>
-
         </LinearLayout>
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="horizontal">-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rlRoute"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="@dimen/_118sdp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:background="@drawable/ic_report"-->
+        <!--                android:padding="@dimen/_14sdp">-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/sanssemibold"-->
+        <!--                    android:text="Route"-->
+
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="@dimen/_13ssp" />-->
+        <!--            </RelativeLayout>-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rlDelivery"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="@dimen/_118sdp"-->
+        <!--                android:layout_marginStart="@dimen/_13sdp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:background="@drawable/ic_delivery_2"-->
+        <!--                android:padding="@dimen/_14sdp">-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/sanssemibold"-->
+        <!--                    android:text="Delivery"-->
+
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="@dimen/_13ssp" />-->
+        <!--            </RelativeLayout>-->
+
+        <!--        </LinearLayout>-->
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="@dimen/_13sdp"-->
+        <!--            android:orientation="horizontal">-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rlFeetManagement"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="@dimen/_118sdp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:background="@drawable/ic_transfer_3"-->
+        <!--                android:padding="@dimen/_14sdp">-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/sanssemibold"-->
+        <!--                    android:text="Fleet Services"-->
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="@dimen/_13ssp" />-->
+        <!--            </RelativeLayout>-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/rlReport"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="@dimen/_118sdp"-->
+        <!--                android:layout_marginStart="@dimen/_13sdp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:background="@drawable/ic_report_2"-->
+        <!--                android:padding="@dimen/_14sdp">-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:autoSizeMinTextSize="@dimen/_1sdp"-->
+        <!--                    android:autoSizeTextType="uniform"-->
+        <!--                    android:fontFamily="@font/sanssemibold"-->
+        <!--                    android:maxLines="2"-->
+        <!--                    android:text="Trip Report"-->
+
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="@dimen/_13ssp" />-->
+        <!--            </RelativeLayout>-->
+
+        <!--        </LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
