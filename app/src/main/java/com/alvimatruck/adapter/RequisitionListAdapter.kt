@@ -40,8 +40,10 @@ class RequisitionListAdapter(
         holder.binding.chkShip.setOnCheckedChangeListener { _, isChecked ->
             item.isSelected = isChecked
 
+            val openItems = list.filter { it.status == "Open" }
+
             // Check if ALL items are now selected
-            val isAllSelected = list.all { it.isSelected }
+            val isAllSelected = openItems.isNotEmpty() && openItems.all { it.isSelected }
 
             // Notify the activity to update the main "Select All" checkbox
             onSelectionChanged(isAllSelected)
@@ -86,7 +88,15 @@ class RequisitionListAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun selectAll(isSelected: Boolean) {
-        list.forEach { it.isSelected = isSelected }
+        list.forEach {
+            // Only toggle selection if the status is "Open"
+            if (it.status == "Open") {
+                it.isSelected = isSelected
+            } else {
+                // Ensure items that are not "Open" remain unselected
+                it.isSelected = false
+            }
+        }
         notifyDataSetChanged()
     }
 

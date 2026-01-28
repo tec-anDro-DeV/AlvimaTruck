@@ -234,7 +234,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
             val view = layoutInflater.inflate(R.layout.single_invoice, binding.llInvoice, false)
 
-            val cb = view.findViewById<CheckBox>(R.id.cbInvoice)
+            val rb = view.findViewById<CheckBox>(R.id.cbInvoice)
             val root = view.findViewById<LinearLayout>(R.id.rootRow)
             val tvNo = view.findViewById<TextView>(R.id.tvInvoiceNo)
             val tvDate = view.findViewById<TextView>(R.id.tvInvoiceDate)
@@ -245,9 +245,9 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             tvDate.text = "Date: ${invoice.getRequestDate() ?: "-"}"
             tvAmount.text = "ETB ${invoice.remainingAmount}"
 
-            cb.tag = invoice
-            cb.setOnCheckedChangeListener { _, _ ->
-                updateTotal()
+            rb.tag = invoice
+            rb.setOnClickListener {
+                handleSingleSelection(index)
             }
 
             if (invoiceList!!.size - 1 == index) {
@@ -257,16 +257,25 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             }
 
             root.setOnClickListener {
-                cb.isChecked = !cb.isChecked
+                handleSingleSelection(index)
             }
 
             binding.llInvoice.addView(view)
         }
     }
 
+    private fun handleSingleSelection(selectedIndex: Int) {
+        for (i in 0 until binding.llInvoice.childCount) {
+            val row = binding.llInvoice.getChildAt(i)
+            val checkBox = row.findViewById<CheckBox>(R.id.cbInvoice)
+            checkBox.isChecked = (i == selectedIndex)
+        }
+        updateTotal()
+    }
+
     private fun updateTotal() {
         selectedInvoiceList!!.clear()
-        total = 0.0
+        // total = 0.0
 
         for (i in 0 until binding.llInvoice.childCount) {
             val row = binding.llInvoice.getChildAt(i)
@@ -276,11 +285,11 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             if (checkBox.isChecked) {
                 val invoice = checkBox.tag as InvoiceDetail
                 selectedInvoiceList!!.add(invoice.documentNo)
-                total += invoice.remainingAmount
+                // total += invoice.remainingAmount
             }
         }
 
-        binding.tvtotal.text = "ETB $total"
+        //binding.tvtotal.text = "ETB $total"
     }
 
     private fun dialogSingleSelection() {

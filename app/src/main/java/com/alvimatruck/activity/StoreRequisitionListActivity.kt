@@ -12,6 +12,7 @@ import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityStoreRequisitionListBinding
+import com.alvimatruck.model.request.StoreRequisitionApproveRequest
 import com.alvimatruck.model.responses.LocationDetail
 import com.alvimatruck.model.responses.RequisitionDetail
 import com.alvimatruck.utils.Constants
@@ -91,15 +92,81 @@ class StoreRequisitionListActivity : BaseActivity<ActivityStoreRequisitionListBi
                 return@setOnClickListener
             } else {
                 val selectedOrderNumbers = selectedOrders.map { it.no }
-                approvalPostAPI(selectedOrderNumbers)
+                if (Utils.isOnline(this)) {
+                    ProgressDialog.start(this@StoreRequisitionListActivity)
+                    approvalPostAPI(selectedOrderNumbers, 0)
+                } else {
+                    Toast.makeText(
+                        this,
+                        getString(com.alvimatruck.R.string.please_check_your_internet_connection),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 
 
     }
 
-    private fun approvalPostAPI(selectedOrderNumbers: List<String>) {
+    private fun approvalPostAPI(selectedOrderNumbers: List<String>, index: Int) {
+        ApiClient.getRestClient(
+            Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+        )!!.webservices.storeRequisitionApproveRequest(
+            StoreRequisitionApproveRequest(
+                selectedOrderNumbers[index]
+            )
+        ).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(
+                call: Call<JsonObject>, response: Response<JsonObject>
+            ) {
 
+                if (response.code() == 401) {
+                    ProgressDialog.dismiss()
+                    Utils.forceLogout(this@StoreRequisitionListActivity)  // show dialog before logout
+                    return
+                }
+                if (response.isSuccessful) {
+                    try {
+                        Log.d("TAG", "onResponse: " + response.body().toString())
+                        val nextIndex = index + 1
+                        if (nextIndex < selectedOrderNumbers.size) {
+                            // Call next order
+                            approvalPostAPI(selectedOrderNumbers, nextIndex)
+                        } else {
+                            ProgressDialog.dismiss()
+                            Toast.makeText(
+                                this@StoreRequisitionListActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            binding.chkAll.isChecked = false
+                            getRequisitionListAPI()
+                        }
+
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    ProgressDialog.dismiss()
+                    Toast.makeText(
+                        this@StoreRequisitionListActivity,
+                        Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                Toast.makeText(
+                    this@StoreRequisitionListActivity,
+                    getString(com.alvimatruck.R.string.api_fail_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+                ProgressDialog.dismiss()
+            }
+        })
 
     }
 
