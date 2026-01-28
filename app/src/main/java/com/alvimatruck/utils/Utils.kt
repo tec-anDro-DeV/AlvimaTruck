@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
+import android.location.Location
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -252,6 +253,15 @@ object Utils {
             }
         }
         return -1L // Return -1 if size cannot be determined
+    }
+
+    fun distanceInKm(
+        lat1: Double, lon1: Double,
+        lat2: Double, lon2: Double
+    ): String {
+        val result = FloatArray(1)
+        Location.distanceBetween(lat1, lon1, lat2, lon2, result)
+        return (result[0] / 1000).toDouble().to2Decimal()
     }
 
     fun getCompressedUri(context: Context, uri: Uri): Uri {

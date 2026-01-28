@@ -146,8 +146,22 @@ class TripReportActivity : BaseActivity<ActivityTripReportBinding>() {
         val btnCancel = dialog.findViewById<TextView>(R.id.btnCancel)
         val btnOk = dialog.findViewById<TextView>(R.id.btnOk)
 
+        val minDate = Calendar.getInstance().apply {
+            set(2020, 0, 1)
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+        val maxDate = Calendar.getInstance()
+
+        calendarView.setVisibleMonthRange(minDate, maxDate)
+        calendarView.setSelectableDateRange(minDate, maxDate)
+
+        calendarView.setCurrentMonth(maxDate)
+
         if (selectedStartDate != null && selectedEndDate != null) {
             calendarView.setSelectedDateRange(selectedStartDate!!, selectedEndDate!!)
+            calendarView.setCurrentMonth(selectedEndDate!!)
         }
 
         var tempStart: Calendar? = selectedStartDate

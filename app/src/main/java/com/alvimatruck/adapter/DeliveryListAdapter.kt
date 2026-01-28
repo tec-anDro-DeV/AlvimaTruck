@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.activity.DeliveryOrderDetailActivity
 import com.alvimatruck.activity.MapRouteActivity
 import com.alvimatruck.databinding.SingleDeliveryItemBinding
+import com.alvimatruck.utils.Constants
 
 
 class DeliveryListAdapter(
@@ -26,7 +27,12 @@ class DeliveryListAdapter(
             mActivity.startActivity(Intent(mActivity, DeliveryOrderDetailActivity::class.java))
         }
         holder.binding.tvViewMap.setOnClickListener {
-            mActivity.startActivity(Intent(mActivity, MapRouteActivity::class.java))
+            mActivity.startActivity(
+                Intent(mActivity, MapRouteActivity::class.java).putExtra(
+                    Constants.LATITUDE, 23.001438039330147
+                ).putExtra(Constants.LONGITUDE, 72.5509716370138)
+                    .putExtra(Constants.CustomerDetail, "")
+            )
         }
 
     }

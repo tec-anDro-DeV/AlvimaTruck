@@ -1,16 +1,37 @@
 package com.alvimatruck.activity
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.DeliveryListAdapter
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityDeliveryListBinding
+import com.alvimatruck.model.responses.UserDetail
+import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>() {
-
+    var userDetail: UserDetail? = null
+    private val todayDate: Calendar = Calendar.getInstance()
+    private val todayDateStr: String
+        get() = dateFormatterAPI.format(todayDate.time)
     private var deliveryListAdapter: DeliveryListAdapter? = null
+
+    private val dateFormatterAPI = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
 
     override fun inflateBinding(): ActivityDeliveryListBinding {
         return ActivityDeliveryListBinding.inflate(layoutInflater)
@@ -18,6 +39,9 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        userDetail =
+            Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
 
         binding.btnBack.setOnClickListener {
             handleBackPressed()
@@ -38,6 +62,74 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>() {
         )
         binding.rvDeliveryList.adapter = deliveryListAdapter
 
+        getDriverTrip()
+
+
+    }
+
+    private fun getDriverTrip() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@DeliveryListActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.driverTripList(userDetail!!.driverNo, todayDateStr)
+                .enqueue(object : Callback<JsonObject> {
+                    override fun onResponse(
+                        call: Call<JsonObject>,
+                        response: Response<JsonObject>
+                    ) {
+                        ProgressDialog.dismiss()
+                        if (response.code() == 401) {
+                            Utils.forceLogout(this@DeliveryListActivity)  // show dialog before logout
+                            return
+                        }
+                        if (response.isSuccessful) {
+                            try {
+                                Log.d("TAG", "onResponse: " + response.body().toString())
+
+//                            routeList = response.body()!!.getAsJsonArray("routes").map {
+//                                Gson().fromJson(it, RouteDetail::class.java)
+//                            } as ArrayList<RouteDetail>
+//
+//                            if (routeList!!.isNotEmpty()) {
+//
+//                                binding.llData.visibility = View.VISIBLE
+//                                binding.llNoData.root.visibility = View.GONE
+//
+//                            } else {
+//                                binding.llData.visibility = View.GONE
+//                                binding.llNoData.root.visibility = View.VISIBLE
+//                            }
+
+
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        } else {
+                            Toast.makeText(
+                                this@DeliveryListActivity,
+                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                        Toast.makeText(
+                            this@DeliveryListActivity,
+                            getString(com.alvimatruck.R.string.api_fail_message),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        ProgressDialog.dismiss()
+                    }
+                })
+        } else {
+            Toast.makeText(
+                this,
+                getString(com.alvimatruck.R.string.please_check_your_internet_connection),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
     }
 }

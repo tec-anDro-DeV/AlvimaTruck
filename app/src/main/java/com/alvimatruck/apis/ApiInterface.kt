@@ -149,6 +149,12 @@ interface ApiInterface {
         @Query("pageSize") pageSize: Int? = null,
     ): Call<JsonObject>
 
+    @GET(Constants.API_Driver_Trip)
+    fun driverTripList(
+        @Query("DriverNo") DriverNo: String? = null,
+        @Query("ShipmentDate") ShipmentDate: String? = null,
+    ): Call<JsonObject>
+
     @GET(Constants.API_Customer_Price)
     fun customerPrice(
         @Query("salesCode") salesCode: String,
