@@ -112,6 +112,12 @@ interface ApiInterface {
         @Query("endDate") endDate: String,
     ): Call<JsonObject>
 
+    @GET(Constants.API_Trip_Report)
+    fun tripReport(
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String,
+    ): Call<JsonObject>
+
     @GET(Constants.API_Transfer_List)
     fun transferList(
         @Query("transferFromCode") transferFromCode: String,

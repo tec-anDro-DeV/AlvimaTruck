@@ -62,6 +62,7 @@ class Constants {
         const val API_Store_Requisition_Approve = "store-requisition/approve"
 
         const val API_Sales_Report = "report/sales"
+        const val API_Trip_Report = "report/trip-report"
 
 
 
