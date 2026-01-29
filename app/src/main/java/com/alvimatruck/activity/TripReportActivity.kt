@@ -94,7 +94,7 @@ class TripReportActivity : BaseActivity<ActivityTripReportBinding>() {
                                         .get("totalCashSales")
                                         .toString()
                                 binding.tvTotalCollectionCash.text =
-                                    "ETB " + response.body()!!.getAsJsonObject("data")
+                                    response.body()!!.getAsJsonObject("data")
                                         .get("totalCashCollections")
                                         .toString()
                                 binding.tvTotalVisit.text =
