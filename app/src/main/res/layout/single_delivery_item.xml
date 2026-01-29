@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <!--        <variable-->
-        <!--            name="detail"-->
-        <!--            type="String" />-->
+        <variable
+            name="detail"
+            type="com.alvimatruck.model.responses.DeliveryTripDetail" />
     </data>
 
     <LinearLayout
@@ -32,9 +33,10 @@
                 android:layout_marginStart="@dimen/_11sdp"
                 android:layout_toEndOf="@id/ivStock"
                 android:fontFamily="@font/sansbold"
-                android:text="John Doe"
+                android:text="@{detail.sellToCustomerName}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_12ssp"
+                tools:text="John Doe" />
 
             <TextView
                 android:id="@+id/tvDeliveryLabel"
@@ -55,9 +57,10 @@
                 android:layout_below="@+id/tvCustomerName"
                 android:layout_toEndOf="@id/tvDeliveryLabel"
                 android:fontFamily="@font/sanssemibold"
-                android:text="DLV-1002"
+                android:text="@{detail.no}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_11ssp"
+                tools:text="DLV-1002" />
 
 
             <TextView
@@ -93,51 +96,12 @@
                 android:textColor="@color/darkgray"
                 android:textSize="@dimen/_12ssp" />
 
-            <TextView
-                android:id="@+id/tvProductName"
+            <LinearLayout
+                android:id="@+id/llItemList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_7sdp"
-                android:layout_marginEnd="@dimen/_2sdp"
-                android:ellipsize="end"
-                android:fontFamily="@font/sansbold"
-                android:maxLines="1"
-                android:text="1. Chinese Noodles 1Kg"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sansregular"
-                android:text="Qty: 3 Packets • SKU: N209-8529"
-                android:textColor="@color/darkgray"
-                android:textSize="@dimen/_11ssp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginVertical="@dimen/_7sdp"
-                android:background="@color/gray" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_2sdp"
-                android:ellipsize="end"
-                android:fontFamily="@font/sansbold"
-                android:maxLines="1"
-                android:text="2. Chinese Noodles 100G"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sansregular"
-                android:text="Qty: 3 Packets • SKU: N209-8528"
-                android:textColor="@color/darkgray"
-                android:textSize="@dimen/_11ssp" />
+                android:orientation="vertical" />
 
         </LinearLayout>
 

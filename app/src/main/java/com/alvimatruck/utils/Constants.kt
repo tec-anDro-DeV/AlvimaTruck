@@ -90,7 +90,7 @@ class Constants {
         const val OrderID = "order_id"
         const val OrderDetail = "order_detail"
         const val ImageUri = "image_uri"
-
+        const val DeliveryDetail = "delivery_detail"
 
     }
 

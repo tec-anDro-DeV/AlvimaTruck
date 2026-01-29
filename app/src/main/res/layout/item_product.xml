@@ -1,0 +1,34 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvProductName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:ellipsize="end"
+        android:fontFamily="@font/sansbold"
+        android:maxLines="1"
+        android:text="1. Product Name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp" />
+
+    <TextView
+        android:id="@+id/tvProductDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sansregular"
+        android:text="Qty: 1 Carton • SKU: FG-001"
+        android:textColor="@color/darkgray"
+        android:textSize="@dimen/_11ssp" />
+
+    <View
+        android:id="@+id/dividerLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginVertical="@dimen/_7sdp"
+        android:background="@color/gray" />
+
+</LinearLayout>

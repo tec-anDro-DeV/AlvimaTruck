@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -23,12 +24,15 @@ import androidx.core.view.isNotEmpty
 import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityDeliveryOrderDetailBinding
+import com.alvimatruck.model.responses.DeliveryTripDetail
 import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.distanceInKm
+import com.google.gson.Gson
 
 class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBinding>() {
+    var orderDetail: DeliveryTripDetail? = null
     override fun inflateBinding(): ActivityDeliveryOrderDetailBinding {
         return ActivityDeliveryOrderDetailBinding.inflate(layoutInflater)
     }
@@ -41,6 +45,58 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
             handleBackPressed()
         }
 
+        if (intent != null) {
+            orderDetail = Gson().fromJson(
+                intent.getStringExtra(Constants.DeliveryDetail).toString(),
+                DeliveryTripDetail::class.java
+            )
+            binding.tvOrderId.text = orderDetail!!.no
+            binding.tvCustomerName.text = orderDetail!!.sellToCustomerName
+            binding.tvAddress.text =
+                orderDetail!!.shipToAddress + " " + orderDetail!!.shipToPostCode
+            Utils.loadProfileWithPlaceholder(
+                this, binding.ivUser, orderDetail!!.sellToCustomerName, ""
+            )
+            binding.tvOrderDate.text = Utils.getFormatedRequestDate(orderDetail!!.shipmentDate)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.tvDistanceValue.text = distanceInKm(
+                    AlvimaTuckApplication.latitude,
+                    AlvimaTuckApplication.longitude, orderDetail!!.latitude, orderDetail!!.longitude
+                ) + " Km"
+
+            }, 3000)
+
+            binding.llItemList.removeAllViews()
+
+            for (i in orderDetail!!.postedSalesShipmentLines.indices) {
+
+                val item = orderDetail!!.postedSalesShipmentLines[i]
+
+                // ✅ Inflate item_product.xml
+                val productView = LayoutInflater.from(this)
+                    .inflate(R.layout.item_product, binding.llItemList, false)
+
+                // ✅ Find Views
+                val tvProductName = productView.findViewById<TextView>(R.id.tvProductName)
+                val tvProductDetails = productView.findViewById<TextView>(R.id.tvProductDetails)
+                val dividerLine = productView.findViewById<View>(R.id.dividerLine)
+
+                // ✅ Set Dynamic Data
+                tvProductName.text = "${item.description}"
+                tvProductDetails.text =
+                    "Qty: ${item.quantity} ${item.unitOfMeasure} • SKU: ${item.no}"
+
+                // ✅ Hide Divider for Last Item
+                if (i == orderDetail!!.postedSalesShipmentLines.size - 1) {
+                    dividerLine.visibility = View.GONE
+                }
+
+                // ✅ Add Inflated View into LinearLayout
+                binding.llItemList.addView(productView)
+            }
+        }
+
         binding.tvConfirmDelivery.setOnClickListener {
             startActivity(Intent(this, ConfirmDeliveryActivity::class.java))
         }
@@ -48,9 +104,9 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
         binding.tvViewMap.setOnClickListener {
             startActivity(
                 Intent(this, MapRouteActivity::class.java).putExtra(
-                    Constants.LATITUDE, 23.001438039330147
-                ).putExtra(Constants.LONGITUDE, 72.5509716370138)
-                    .putExtra(Constants.CustomerDetail, "")
+                    Constants.LATITUDE, orderDetail!!.latitude
+                ).putExtra(Constants.LONGITUDE, orderDetail!!.longitude)
+                    .putExtra(Constants.CustomerDetail, orderDetail!!.sellToCustomerName)
             )
         }
 
@@ -83,15 +139,6 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
             binding.tvStartEndTrip.visibility = View.VISIBLE
             binding.tvStartEndTrip.text = getString(R.string.end_trip)
         }
-
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.tvDistanceValue.text = distanceInKm(
-                AlvimaTuckApplication.latitude,
-                AlvimaTuckApplication.longitude, 23.001438039330147, 72.5509716370138
-            ).toString() + " Km"
-
-        }, 3000)
 
 
 

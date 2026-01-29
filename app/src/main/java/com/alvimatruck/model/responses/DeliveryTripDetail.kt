@@ -13,7 +13,8 @@ data class DeliveryTripDetail(
     val sellToCustomerName: String,
     val sellToCustomerNo: String,
     val shipToAddress: String,
-    val shipmentDate: String
+    val shipmentDate: String,
+    val shipToPostCode: String
 )
 
 data class PostedSalesShipmentLine(
