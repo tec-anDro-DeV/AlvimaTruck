@@ -14,8 +14,24 @@ data class DeliveryTripDetail(
     val sellToCustomerNo: String,
     val shipToAddress: String,
     val shipmentDate: String,
-    val shipToPostCode: String
-)
+    val phoneNo: String?,
+    val orderDate: String,
+    val appStatus: String,
+    val shipToPostCode: String,
+    val startKM: Int?,
+    val endKM: Int?,
+) {
+    fun getFormattedContactNo(): String {
+        val number = phoneNo?.trim()
+        if (number.isNullOrEmpty()) return "-"
+
+        return if (number.startsWith("0")) {
+            "+251 " + number.substring(1)
+        } else {
+            "+251 $number"
+        }
+    }
+}
 
 data class PostedSalesShipmentLine(
     val description: String,

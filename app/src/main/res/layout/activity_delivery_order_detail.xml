@@ -152,6 +152,7 @@
                     android:textSize="@dimen/_12ssp" />
 
                 <RelativeLayout
+                    android:id="@+id/rlDistance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_11sdp">
@@ -326,7 +327,7 @@
                         android:layout_toEndOf="@id/tvContact"
                         android:autoLink="phone"
                         android:fontFamily="@font/sansbold"
-                        android:text="+251 852147854"
+                        tools:text="+251 852147854"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
                 </RelativeLayout>

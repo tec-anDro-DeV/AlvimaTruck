@@ -346,8 +346,11 @@ object Utils {
     }
 
     fun getFormatedRequestDate(dateStr: String): String {
+        val finalDate = if (dateStr.length == 10) {
+            dateStr + "T00:00:00"
+        } else dateStr
         return LocalDateTime.parse(
-            dateStr,
+            finalDate,
             DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd'T'HH:mm:ss").optionalStart()
                 .appendFraction(ChronoField.NANO_OF_SECOND, 1, 9, true).optionalEnd().toFormatter()
         ).format(DateTimeFormatter.ofPattern("dd MMM yyyy"))

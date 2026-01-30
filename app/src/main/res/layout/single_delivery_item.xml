@@ -72,7 +72,8 @@
                 android:background="@drawable/bg_status_red"
                 android:fontFamily="@font/sanssemibold"
                 android:paddingVertical="@dimen/_5sdp"
-                android:text="Open"
+                android:text="@{detail.appStatus}"
+                tools:text="Open"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_11ssp" />

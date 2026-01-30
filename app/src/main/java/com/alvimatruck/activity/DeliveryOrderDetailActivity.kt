@@ -50,6 +50,7 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                 intent.getStringExtra(Constants.DeliveryDetail).toString(),
                 DeliveryTripDetail::class.java
             )
+            binding.tvStatus.text = orderDetail!!.appStatus
             binding.tvOrderId.text = orderDetail!!.no
             binding.tvCustomerName.text = orderDetail!!.sellToCustomerName
             binding.tvAddress.text =
@@ -57,7 +58,7 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
             Utils.loadProfileWithPlaceholder(
                 this, binding.ivUser, orderDetail!!.sellToCustomerName, ""
             )
-            binding.tvOrderDate.text = Utils.getFormatedRequestDate(orderDetail!!.shipmentDate)
+            binding.tvOrderDate.text = Utils.getFormatedRequestDate(orderDetail!!.orderDate)
 
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.tvDistanceValue.text = distanceInKm(
@@ -66,6 +67,10 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                 ) + " Km"
 
             }, 3000)
+            binding.tvVanStartKilometer.text = orderDetail!!.startKM.toString()
+            binding.tvEndKilometer.text = orderDetail!!.endKM.toString()
+            binding.tvContactNumber.text = orderDetail!!.getFormattedContactNo()
+
 
             binding.llItemList.removeAllViews()
 
@@ -110,34 +115,53 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
             )
         }
 
-        if (binding.tvStatus.text.equals("Open")) {
-            binding.tvStartEndTrip.text = getString(R.string.start_trip)
-            binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
-            binding.rlStartKilometer.visibility = View.GONE
-            binding.rlEndKilometer.visibility = View.GONE
-            binding.llBottomButtons.visibility = View.GONE
-            binding.tvStartEndTrip.visibility = View.VISIBLE
+        when (orderDetail!!.appStatus) {
+            "Open" -> {
+                binding.tvStartEndTrip.text = getString(R.string.start_trip)
+                binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
+                binding.rlStartKilometer.visibility = View.GONE
+                binding.rlEndKilometer.visibility = View.GONE
+                binding.llBottomButtons.visibility = View.GONE
+                binding.tvStartEndTrip.visibility = View.VISIBLE
+                binding.rlDistance.visibility = View.VISIBLE
+            }
 
-        } else if (binding.tvStatus.text.equals("InProgress")) {
-            binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
-            binding.rlStartKilometer.visibility = View.VISIBLE
-            binding.rlEndKilometer.visibility = View.GONE
-            binding.llBottomButtons.visibility = View.VISIBLE
-            binding.tvStartEndTrip.visibility = View.GONE
+            "InProgress" -> {
+                binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
+                binding.rlStartKilometer.visibility = View.VISIBLE
+                binding.rlEndKilometer.visibility = View.GONE
+                binding.llBottomButtons.visibility = View.VISIBLE
+                binding.tvStartEndTrip.visibility = View.GONE
+                binding.rlDistance.visibility = View.VISIBLE
+            }
 
-        } else if (binding.tvStatus.text.equals("Cancelled")) {
-            binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
-            binding.rlStartKilometer.visibility = View.VISIBLE
-            binding.rlEndKilometer.visibility = View.VISIBLE
-            binding.llBottomButtons.visibility = View.GONE
-            binding.tvStartEndTrip.visibility = View.GONE
-        } else {
-            binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
-            binding.rlStartKilometer.visibility = View.VISIBLE
-            binding.rlEndKilometer.visibility = View.GONE
-            binding.llBottomButtons.visibility = View.GONE
-            binding.tvStartEndTrip.visibility = View.VISIBLE
-            binding.tvStartEndTrip.text = getString(R.string.end_trip)
+            "Cancelled" -> {
+                binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
+                binding.rlStartKilometer.visibility = View.VISIBLE
+                binding.rlEndKilometer.visibility = View.VISIBLE
+                binding.llBottomButtons.visibility = View.GONE
+                binding.tvStartEndTrip.visibility = View.GONE
+                binding.rlDistance.visibility = View.GONE
+            }
+
+            "Delivered" -> {
+                binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
+                binding.rlStartKilometer.visibility = View.VISIBLE
+                binding.rlEndKilometer.visibility = View.GONE
+                binding.llBottomButtons.visibility = View.GONE
+                binding.tvStartEndTrip.visibility = View.VISIBLE
+                binding.tvStartEndTrip.text = getString(R.string.end_trip)
+                binding.rlDistance.visibility = View.GONE
+            }
+
+            else -> {
+                binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
+                binding.rlStartKilometer.visibility = View.VISIBLE
+                binding.rlEndKilometer.visibility = View.VISIBLE
+                binding.llBottomButtons.visibility = View.GONE
+                binding.tvStartEndTrip.visibility = View.GONE
+                binding.rlDistance.visibility = View.GONE
+            }
         }
 
 
@@ -233,12 +257,15 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
             val btnCancel = alertLayout.findViewById<TextView>(R.id.btnCancel)
             val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
             val rgReason = alertLayout.findViewById<RadioGroup>(R.id.rgReason)
+            val tvReasonLabel = alertLayout.findViewById<TextView>(R.id.tvReasonLabel)
+            val etAddReason = alertLayout.findViewById<EditText>(R.id.etAddReason)
 
             val reasonsList = listOf(
                 "Customer not available / Store closed",
                 "Wrong address / Location not found",
                 "Customer refused to accept",
-                "Delivery cancelled"
+                "Delivery cancelled",
+                "Other"
             )
             rgReason.removeAllViews()
 
@@ -290,6 +317,20 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                     rgReason.addView(divider)
                 }
             }
+            rgReason.setOnCheckedChangeListener { group, checkedId ->
+                val selectedRb = group.findViewById<RadioButton>(checkedId)
+                if (selectedRb != null && selectedRb.text == "Other") {
+                    tvReasonLabel.visibility = View.VISIBLE
+                    etAddReason.visibility = View.VISIBLE
+                    etAddReason.requestFocus()
+                } else {
+                    tvReasonLabel.visibility = View.GONE
+                    etAddReason.visibility = View.GONE
+                    // Hide keyboard if needed, or just clear focus
+                    etAddReason.clearFocus()
+                }
+            }
+
 
             // Select the first item by default
             if (rgReason.isNotEmpty()) {
@@ -306,12 +347,32 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                 dialog.dismiss()
             }
             btnSubmit.setOnClickListener {
-                dialog.dismiss()
-
                 val selectedId = rgReason.checkedRadioButtonId
-                val selectedRb = alertLayout.findViewById<RadioButton>(selectedId)
-                val selectedReason = selectedRb.text.toString()
-                Log.d("TAG", "Selected: $selectedReason")
+                if (selectedId != -1) {
+                    val selectedRb = alertLayout.findViewById<RadioButton>(selectedId)
+                    val selectedOption = selectedRb.text.toString()
+                    var finalReason = selectedOption
+
+                    // If "Other" is selected, validate and use the EditText value
+                    if (selectedOption == "Other") {
+                        val writtenReason = etAddReason.text.toString().trim()
+                        if (writtenReason.isEmpty()) {
+                            Toast.makeText(
+                                this, getString(R.string.please_write_a_reason), Toast.LENGTH_SHORT
+                            ).show()
+                            return@setOnClickListener // Stop execution, don't dismiss dialog
+                        }
+                        finalReason = writtenReason
+                    }
+
+                    Log.d("TAG", "Selected/Written Reason: $finalReason")
+                    dialog.dismiss()
+                    // cancelTripAPI(finalReason)
+                } else {
+                    Toast.makeText(
+                        this, getString(R.string.please_select_a_reason), Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
             dialog.show()
             val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width

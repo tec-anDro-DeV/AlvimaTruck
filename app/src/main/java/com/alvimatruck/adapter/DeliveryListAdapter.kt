@@ -74,6 +74,24 @@ class DeliveryListAdapter(
             holder.binding.llItemList.addView(productView)
         }
 
+        when (list[position].appStatus) {
+            "Open" -> {
+                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
+            }
+
+            "InProgress" -> {
+                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
+            }
+
+            "Cancelled" -> {
+                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
+            }
+
+            else -> {
+                holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
+            }
+        }
+
     }
 
     override fun getItemCount(): Int {

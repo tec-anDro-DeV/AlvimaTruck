@@ -34,13 +34,15 @@
         android:orientation="vertical" />
 
     <TextView
+        android:id="@+id/tvReasonLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/sanssemibold"
         android:padding="@dimen/_10sdp"
-        android:text="Describe Reason (optional)"
+        android:text="Write Reason"
         android:textColor="@color/black"
-        android:textSize="@dimen/_12ssp" />
+        android:textSize="@dimen/_12ssp"
+        android:visibility="gone" />
 
 
     <EditText
@@ -51,13 +53,37 @@
         android:background="@drawable/input_bg2"
         android:fontFamily="@font/sansregular"
         android:gravity="top"
-        android:hint="Write reason..."
+        android:hint="Enter Reason"
         android:inputType="textMultiLine"
         android:minLines="3"
         android:padding="@dimen/_10sdp"
         android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sanssemibold"
+        android:padding="@dimen/_10sdp"
+        android:text="Add End Kilomerers"
+        android:textColor="@color/black"
         android:textSize="@dimen/_12ssp" />
 
+
+    <EditText
+        android:id="@+id/etEndKm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:background="@drawable/input_bg2"
+        android:fontFamily="@font/sansregular"
+        android:hint="End Kilometer"
+        android:inputType="number"
+        android:padding="@dimen/_10sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp" />
 
     <LinearLayout
         android:layout_width="match_parent"
