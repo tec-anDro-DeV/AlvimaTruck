@@ -7,6 +7,8 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import androidx.core.content.ContextCompat
+import com.alvimatruck.custom.SocketManager
+import com.alvimatruck.custom.WebSocketManager
 
 class AlvimaTuckApplication : Application() {
 
@@ -41,5 +43,8 @@ class AlvimaTuckApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this   // <-- MAKE INSTANCE AVAILABLE GLOBALLY
+
+        SocketManager.connect()
+        WebSocketManager.connect()
     }
 }

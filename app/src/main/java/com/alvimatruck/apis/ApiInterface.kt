@@ -3,6 +3,9 @@ package com.alvimatruck.apis
 import com.alvimatruck.model.request.CancelTripRequest
 import com.alvimatruck.model.request.ChangePasswordRequest
 import com.alvimatruck.model.request.CustomerUpdate
+import com.alvimatruck.model.request.DeliveryCancelRequest
+import com.alvimatruck.model.request.DeliveryEndRequest
+import com.alvimatruck.model.request.DeliveryStartRequest
 import com.alvimatruck.model.request.EndTripRequest
 import com.alvimatruck.model.request.LoginRequest
 import com.alvimatruck.model.request.NewOrderRequest
@@ -72,6 +75,12 @@ interface ApiInterface {
     @POST(Constants.API_Start_Trip)
     fun startTrip(@Body startTripRequest: StartTripRequest): Call<JsonObject>
 
+    @POST(Constants.API_Start_DriverTrip)
+    fun startDriverTrip(@Body deliveryStartRequest: DeliveryStartRequest): Call<JsonObject>
+
+    @POST(Constants.API_End_DriverTrip)
+    fun endDriverTrip(@Body deliveryEndRequest: DeliveryEndRequest): Call<JsonObject>
+
     @POST(Constants.API_End_Trip)
     fun endTrip(@Body endTripRequest: EndTripRequest): Call<JsonObject>
 
@@ -80,6 +89,9 @@ interface ApiInterface {
 
     @POST(Constants.API_Cancel_Trip)
     fun cancelTrip(@Body cancelTripRequest: CancelTripRequest): Call<JsonObject>
+
+    @POST(Constants.API_Cancel_DriverTrip)
+    fun cancelDriverTrip(@Body deliveryCancelRequest: DeliveryCancelRequest): Call<JsonObject>
 
     @POST(Constants.API_New_Order)
     fun newOrder(@Body newOrderRequest: NewOrderRequest): Call<JsonObject>
@@ -234,6 +246,17 @@ interface ApiInterface {
         @Part("IncidentReportType") incidentReportType: RequestBody,
         @Part("IncidentReportDescription") incidentReportDescription: RequestBody,
         @Part repairLogReplacePart: List<MultipartBody.Part> // <-- multiple files
+    ): Call<JsonObject>
+
+
+    @Multipart
+    @POST(Constants.API_Confirm_DriverTrip)
+    fun driverTripConfirm(
+        @Part("BCOrderNo") BCOrderNo: RequestBody,
+        @Part("Remarks") Remarks: RequestBody,
+        @Part("CustomerGeoLocation") CustomerGeoLocation: RequestBody,
+        @Part signatureImage: MultipartBody.Part?, // <-- multiple files
+        @Part deliveryPhoto: MultipartBody.Part? // <-- multiple files
     ): Call<JsonObject>
 
     @GET

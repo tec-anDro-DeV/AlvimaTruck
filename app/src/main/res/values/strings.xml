@@ -110,5 +110,7 @@
     <string name="transaction_ref_no">Transaction Ref No.</string>
     <string name="enter_cheque_no">Enter cheque no.</string>
     <string name="enter_transaction_ref_no">Enter transaction ref no.</string>
+    <string name="please_select_a_photo">Please select a delivery photo/site</string>
+    <string name="please_enter_signature">Please add customer signature</string>
 
 </resources>

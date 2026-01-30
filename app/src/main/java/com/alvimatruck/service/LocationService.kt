@@ -18,6 +18,8 @@ import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.alvimatruck.R
+import com.alvimatruck.custom.SocketManager
+import com.alvimatruck.custom.WebSocketManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity
 import com.google.android.gms.location.LocationCallback
@@ -25,6 +27,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import kotlin.math.abs
 
 class LocationService : Service() {
 
@@ -37,6 +40,10 @@ class LocationService : Service() {
 
     private var serviceLooper: Looper? = null
     private var handler: Handler? = null
+
+    private var lastLat: Double = 0.0
+    private var lastLon: Double = 0.0
+
 
     private var liveCallback: ((Double, Double) -> Unit)? = null
 
@@ -127,8 +134,26 @@ class LocationService : Service() {
     private fun update(lat: Double, lon: Double) {
         Log.d("GPS", "Lat=$lat  Lon=$lon")
 
-        AlvimaTuckApplication.latitude = lat
-        AlvimaTuckApplication.longitude = lon
+        // ✅ Send only if location changed enough (avoid spam)
+        if (abs(lat - lastLat) > 0.0001 ||
+            abs(lon - lastLon) > 0.0001
+        ) {
+
+            // ✅ Save last values
+            lastLat = lat
+            lastLon = lon
+
+            // ✅ Store globally
+            AlvimaTuckApplication.latitude = lat
+            AlvimaTuckApplication.longitude = lon
+
+            // ✅ Send to server using socket
+            SocketManager.sendLocation(lat, lon)
+            WebSocketManager.sendLocation(lat, lon)
+
+            Log.d("GPS", "✅ Location Sent to Server")
+        }
+
 
         Handler(Looper.getMainLooper()).post { liveCallback?.invoke(lat, lon) }
     }

@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
@@ -19,17 +20,27 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.alvimatruck.R
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityConfirmDeliveryBinding
+import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
+import com.google.gson.JsonObject
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
@@ -37,6 +48,9 @@ class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
 
     private var deliveryProofImageUri: Uri? = null
+    private var signatureUri: Uri? = null
+
+    private var orderId: String? = null
     private lateinit var cropLauncher: ActivityResultLauncher<Intent>
 
 
@@ -49,6 +63,10 @@ class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
         checkAndStartLocationService()
 
         setupLaunchers()
+
+        if (intent != null) {
+            orderId = intent.getStringExtra(Constants.OrderID).toString()
+        }
 
 
         binding.btnBack.setOnClickListener {
@@ -79,6 +97,100 @@ class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
             )
         }
 
+        binding.tvConfirm.setOnClickListener {
+            if (deliveryProofImageUri == null) {
+                Toast.makeText(this, getString(R.string.please_select_a_photo), Toast.LENGTH_SHORT)
+                    .show()
+            } else if (binding.signature.isEmpty) {
+                Toast.makeText(this, getString(R.string.please_enter_signature), Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                signatureUri = getSignatureUri()
+                confirmDeliveryAPI()
+            }
+        }
+
+    }
+
+    private fun confirmDeliveryAPI() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@ConfirmDeliveryActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.driverTripConfirm(
+                orderId.toString().toRequestBody("text/plain".toMediaType()),
+                binding.etRemark.text.trim().toString().toRequestBody("text/plain".toMediaType()),
+                (AlvimaTuckApplication.latitude.toString() + "," + AlvimaTuckApplication.longitude).toRequestBody(
+                    "text/plain".toMediaType()
+                ),
+                Utils.createFilePart("SignatureImage", signatureUri, this),
+                Utils.createFilePart("DeliveryPhoto", deliveryProofImageUri, this)
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@ConfirmDeliveryActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@ConfirmDeliveryActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            val intent = Intent()
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@ConfirmDeliveryActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@ConfirmDeliveryActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun getSignatureUri(): Uri? {
+        return try {
+            // 1. Get Bitmap from the signature view
+            val bitmap = binding.signature.getBitmap()
+
+            // 2. Create a temporary file in the cache directory
+            val signatureFile = File(cacheDir, "signature_${System.currentTimeMillis()}.png")
+
+            // 3. Save the bitmap to the file
+            signatureFile.outputStream().use { out ->
+                bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, out)
+            }
+
+            // 4. Return the Uri from the file
+            Uri.fromFile(signatureFile)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
     private fun openImageChooseDailog() {

@@ -9,17 +9,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
-import com.alvimatruck.activity.DeliveryOrderDetailActivity
 import com.alvimatruck.activity.MapRouteActivity
 import com.alvimatruck.databinding.SingleDeliveryItemBinding
+import com.alvimatruck.interfaces.DeliveryClickListener
 import com.alvimatruck.model.responses.DeliveryTripDetail
 import com.alvimatruck.utils.Constants
-import com.google.gson.Gson
 
 
 class DeliveryListAdapter(
     private val mActivity: Activity,
     private val list: ArrayList<DeliveryTripDetail>,
+    private val deliveryClickListener: DeliveryClickListener,
 ) : RecyclerView.Adapter<DeliveryListAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = mActivity.layoutInflater
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,12 +30,7 @@ class DeliveryListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.binding.detail = list[position]
         holder.itemView.setOnClickListener {
-            mActivity.startActivity(
-                Intent(mActivity, DeliveryOrderDetailActivity::class.java).putExtra(
-                    Constants.DeliveryDetail,
-                    Gson().toJson(list[position])
-                )
-            )
+            deliveryClickListener.onDeliveryClick(list[position])
         }
         holder.binding.tvViewMap.setOnClickListener {
             mActivity.startActivity(

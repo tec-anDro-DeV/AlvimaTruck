@@ -320,11 +320,13 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                         Toast.makeText(
                             this, "End km should be greater than start km", Toast.LENGTH_SHORT
                         ).show()
+                    } else {
+                        cancelTripAPI(finalReason, etEndKm.text.toString().toInt())
                     }
 
                     Log.d("TAG", "Selected/Written Reason: $finalReason")
                     dialog.dismiss()
-                    cancelTripAPI(finalReason, etEndKm.text.toString().toInt())
+
                 } else {
                     Toast.makeText(
                         this, getString(R.string.please_select_a_reason), Toast.LENGTH_SHORT

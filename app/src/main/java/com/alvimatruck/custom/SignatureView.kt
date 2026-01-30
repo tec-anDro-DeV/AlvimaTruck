@@ -15,6 +15,9 @@ class SignatureView @JvmOverloads constructor(
 ) : View(context, attrs) {
 
     private val path = Path()
+
+    var isEmpty: Boolean = true
+        private set
     private val paint = Paint().apply {
         color = Color.BLACK
         style = Paint.Style.STROKE
@@ -36,6 +39,7 @@ class SignatureView @JvmOverloads constructor(
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 path.moveTo(x, y)
+                isEmpty = false // User started drawing
                 return true
             }
 
@@ -53,6 +57,7 @@ class SignatureView @JvmOverloads constructor(
 
     fun clear() {
         path.reset()
+        isEmpty = true // Reset the flag
         invalidate()
     }
 

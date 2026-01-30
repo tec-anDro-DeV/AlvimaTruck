@@ -17,22 +17,38 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isNotEmpty
 import com.alvimatruck.R
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityDeliveryOrderDetailBinding
+import com.alvimatruck.model.request.DeliveryCancelRequest
+import com.alvimatruck.model.request.DeliveryEndRequest
+import com.alvimatruck.model.request.DeliveryStartRequest
 import com.alvimatruck.model.responses.DeliveryTripDetail
 import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.distanceInKm
 import com.google.gson.Gson
+import com.google.gson.JsonObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBinding>() {
     var orderDetail: DeliveryTripDetail? = null
+    private lateinit var distanceRunnable: Runnable
+    private val distanceHandler = Handler(Looper.getMainLooper())
+
+    var isChange: Boolean = false
     override fun inflateBinding(): ActivityDeliveryOrderDetailBinding {
         return ActivityDeliveryOrderDetailBinding.inflate(layoutInflater)
     }
@@ -50,6 +66,27 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                 intent.getStringExtra(Constants.DeliveryDetail).toString(),
                 DeliveryTripDetail::class.java
             )
+            distanceRunnable = object : Runnable {
+                override fun run() {
+                    val currentLat = AlvimaTuckApplication.latitude
+                    val currentLng = AlvimaTuckApplication.longitude
+                    val destLat = orderDetail?.latitude ?: 0.0
+                    val destLng = orderDetail?.longitude ?: 0.0
+
+                    // Check if all 4 data points are available (not zero)
+                    if (currentLat != 0.0 && currentLng != 0.0 && destLat != 0.0 && destLng != 0.0) {
+                        val distance = distanceInKm(currentLat, currentLng, destLat, destLng)
+                        binding.tvDistanceValue.text = "$distance Km"
+                    } else {
+                        Log.d("DistanceUpdate", "Coordinates not yet available")
+                    }
+
+                    // Schedule the next execution in 5 seconds
+                    distanceHandler.postDelayed(this, 5000)
+                }
+            }
+            distanceHandler.postDelayed(distanceRunnable, 1000)
+
             binding.tvStatus.text = orderDetail!!.appStatus
             binding.tvOrderId.text = orderDetail!!.no
             binding.tvCustomerName.text = orderDetail!!.sellToCustomerName
@@ -59,14 +96,6 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                 this, binding.ivUser, orderDetail!!.sellToCustomerName, ""
             )
             binding.tvOrderDate.text = Utils.getFormatedRequestDate(orderDetail!!.orderDate)
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                binding.tvDistanceValue.text = distanceInKm(
-                    AlvimaTuckApplication.latitude,
-                    AlvimaTuckApplication.longitude, orderDetail!!.latitude, orderDetail!!.longitude
-                ) + " Km"
-
-            }, 3000)
             binding.tvVanStartKilometer.text = orderDetail!!.startKM.toString()
             binding.tvEndKilometer.text = orderDetail!!.endKM.toString()
             binding.tvContactNumber.text = orderDetail!!.getFormattedContactNo()
@@ -103,7 +132,12 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
         }
 
         binding.tvConfirmDelivery.setOnClickListener {
-            startActivity(Intent(this, ConfirmDeliveryActivity::class.java))
+            val intent =
+                Intent(this, ConfirmDeliveryActivity::class.java).putExtra(
+                    Constants.OrderID,
+                    orderDetail!!.orderNo
+                )
+            startForResult.launch(intent)
         }
 
         binding.tvViewMap.setOnClickListener {
@@ -259,6 +293,8 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
             val rgReason = alertLayout.findViewById<RadioGroup>(R.id.rgReason)
             val tvReasonLabel = alertLayout.findViewById<TextView>(R.id.tvReasonLabel)
             val etAddReason = alertLayout.findViewById<EditText>(R.id.etAddReason)
+            val etEndKm = alertLayout.findViewById<EditText>(R.id.etEndKm)
+
 
             val reasonsList = listOf(
                 "Customer not available / Store closed",
@@ -353,7 +389,6 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                     val selectedOption = selectedRb.text.toString()
                     var finalReason = selectedOption
 
-                    // If "Other" is selected, validate and use the EditText value
                     if (selectedOption == "Other") {
                         val writtenReason = etAddReason.text.toString().trim()
                         if (writtenReason.isEmpty()) {
@@ -363,11 +398,21 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                             return@setOnClickListener // Stop execution, don't dismiss dialog
                         }
                         finalReason = writtenReason
+                    } else if (etEndKm.text.toString().isEmpty()) {
+                        Toast.makeText(
+                            this, getString(R.string.please_enter_end_km), Toast.LENGTH_SHORT
+                        ).show()
+                    } else if (etEndKm.text.toString()
+                            .toInt() < binding.tvVanStartKilometer.text.toString().toInt()
+                    ) {
+                        Toast.makeText(
+                            this, "End km should be greater than start km", Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        cancelTripAPI(finalReason, etEndKm.text.toString().toInt())
                     }
-
                     Log.d("TAG", "Selected/Written Reason: $finalReason")
                     dialog.dismiss()
-                    // cancelTripAPI(finalReason)
                 } else {
                     Toast.makeText(
                         this, getString(R.string.please_select_a_reason), Toast.LENGTH_SHORT
@@ -380,13 +425,217 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
         }
     }
 
-    private fun endTripAPI(toString: String) {
+    private fun cancelTripAPI(reason: String, endKm: Int) {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@DeliveryOrderDetailActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.cancelDriverTrip(
+                DeliveryCancelRequest(
+                    orderDetail!!.orderNo,
+                    reason,
+                    endKm,
+                    AlvimaTuckApplication.latitude.toString() + "," + AlvimaTuckApplication.longitude.toString()
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@DeliveryOrderDetailActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@DeliveryOrderDetailActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            isChange = true
+                            handleBackPressed()
 
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@DeliveryOrderDetailActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@DeliveryOrderDetailActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun endTripAPI(endKm: String) {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@DeliveryOrderDetailActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.endDriverTrip(
+                DeliveryEndRequest(
+                    orderDetail!!.orderNo, endKm.toInt()
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@DeliveryOrderDetailActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@DeliveryOrderDetailActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            isChange = true
+                            Utils.isTripInProgress = false
+                            handleBackPressed()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@DeliveryOrderDetailActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@DeliveryOrderDetailActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
 
     }
 
-    private fun startTripAPI(toString: String) {
+    private fun startTripAPI(startKm: String) {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@DeliveryOrderDetailActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.startDriverTrip(
+                DeliveryStartRequest(
+                    orderDetail!!.orderNo,
+                    orderDetail!!.driverID,
+                    startKm.toInt()
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@DeliveryOrderDetailActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@DeliveryOrderDetailActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            isChange = true
+                            binding.tvVanStartKilometer.text = startKm
+                            binding.tvStatus.text = "InProgress"
+                            Utils.isTripInProgress = true
+                            binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
+                            binding.rlStartKilometer.visibility = View.VISIBLE
+                            binding.rlEndKilometer.visibility = View.GONE
+                            binding.llBottomButtons.visibility = View.VISIBLE
+                            binding.tvStartEndTrip.visibility = View.GONE
+                            binding.rlDistance.visibility = View.VISIBLE
 
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@DeliveryOrderDetailActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
 
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@DeliveryOrderDetailActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
+
+    override fun handleBackPressed(callback: OnBackPressedCallback?) {
+        if (isChange) {
+            setResult(RESULT_OK)
+        }
+        finish()
+        super.handleBackPressed(callback)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Stop the loop when activity is destroyed
+        if (::distanceRunnable.isInitialized) {
+            distanceHandler.removeCallbacks(distanceRunnable)
+        }
+    }
+
+    private val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            binding.tvStatus.text = "Delivered"
+            binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
+            binding.rlStartKilometer.visibility = View.VISIBLE
+            binding.rlEndKilometer.visibility = View.GONE
+            binding.llBottomButtons.visibility = View.GONE
+            binding.tvStartEndTrip.visibility = View.VISIBLE
+            binding.tvStartEndTrip.text = getString(R.string.end_trip)
+            binding.rlDistance.visibility = View.GONE
+        }
     }
 }

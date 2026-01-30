@@ -1,17 +1,20 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.DeliveryListAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityDeliveryListBinding
+import com.alvimatruck.interfaces.DeliveryClickListener
 import com.alvimatruck.model.responses.DeliveryTripDetail
 import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
@@ -27,7 +30,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>() {
+class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>(), DeliveryClickListener {
     var userDetail: UserDetail? = null
     private val todayDate: Calendar = Calendar.getInstance()
     private val todayDateStr: String
@@ -116,6 +119,11 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>() {
                                 orderList = response.body()!!.getAsJsonArray("data").map {
                                     Gson().fromJson(it, DeliveryTripDetail::class.java)
                                 } as ArrayList<DeliveryTripDetail>
+                                Utils.isTripInProgress = orderList!!.any {
+                                    it.appStatus.equals(
+                                        "InProgress", ignoreCase = true
+                                    )
+                                }
                                 filterList = ArrayList(orderList!!)
                                 if (filterList!!.isNotEmpty()) {
 
@@ -127,7 +135,9 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>() {
                                         )
 
                                     deliveryListAdapter = DeliveryListAdapter(
-                                        this@DeliveryListActivity, filterList!!
+                                        this@DeliveryListActivity,
+                                        filterList!!,
+                                        this@DeliveryListActivity
                                     )
                                     binding.rvDeliveryList.adapter = deliveryListAdapter
                                     binding.llData.visibility = View.VISIBLE
@@ -167,5 +177,22 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>() {
             ).show()
         }
 
+    }
+
+    override fun onDeliveryClick(deliveryTripDetail: DeliveryTripDetail) {
+        val intent =
+            Intent(this, DeliveryOrderDetailActivity::class.java).putExtra(
+                Constants.DeliveryDetail,
+                Gson().toJson(deliveryTripDetail)
+            )
+        startForResult.launch(intent)
+    }
+
+    private val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            getDriverTrip()
+        }
     }
 }
