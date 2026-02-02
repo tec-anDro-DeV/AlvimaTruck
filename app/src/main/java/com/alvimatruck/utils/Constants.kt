@@ -7,13 +7,16 @@ class Constants {
         const val BASE_URL = "http://192.168.1.148:8696/api/" //Sandbox
         const val IMAGE_URL = "http://192.168.1.148:8696/" //Sandbox
 
+        //Auth Flow
+        const val API_VanList = "Dropdown/get-van-sales-dropdown"
         const val API_SignIn = "MobileLogin/mobilelogin"
         const val API_ResetPassword = "MobileLogin/reset-password"
         const val API_ResendOTP = "MobileLogin/resend-otp"
         const val API_OTPVerify = "MobileLogin/verify-otp"
         const val API_ChangePassword = "MobileLogin/change-password"
 
-        const val API_VanList = "Dropdown/get-van-sales-dropdown"
+
+        //Salesperson
         const val API_Price_Group = "Dropdown/get-customer-price-group-dropdown"
         const val API_City = "Dropdown/get-postcodes-dropdown"
         const val API_Location_Code = "Dropdown/get-locations-dropdown"
@@ -32,7 +35,12 @@ class Constants {
         const val API_Customer_Price = "Customer/get-price"
 
         const val API_Today_Routes = "MobileRoutes/today-routes"
-        const val API_Payment_Logs = "Payment/get-by-salesperson"
+        const val API_Check_Route = "RouteAddress/route-check"
+
+        const val API_Start_Trip = "Trip/start"
+        const val API_End_Trip = "Trip/end"
+        const val API_Visit_Trip = "Trip/visit"
+        const val API_Cancel_Trip = "Trip/cancel"
 
         const val API_Sales_Orders = "SalesOrder/get-all"
         const val API_New_Order = "SalesOrder/create"
@@ -40,16 +48,11 @@ class Constants {
         const val API_Order_Detail = "SalesOrder/get-by-id"
         const val API_Van_Stock = "SalesOrder/get-stock-by-salesperson"
         const val API_Order_Post = "SalesOrder/post"
+        const val API_Delete_Order = "SalesOrder/delete-order/"
 
-        const val API_Start_Trip = "Trip/start"
-        const val API_Start_DriverTrip = "DriverTrip/trip/start"
-        const val API_End_Trip = "Trip/end"
-
-        const val API_End_DriverTrip = "DriverTrip/trip/end"
-        const val API_Visit_Trip = "Trip/visit"
-        const val API_Cancel_Trip = "Trip/cancel"
-        const val API_Cancel_DriverTrip = "DriverTrip/delivery/cancel"
-        const val API_Confirm_DriverTrip = "DriverTrip/delivery/confirm"
+        const val API_Payment_Logs = "Payment/get-by-salesperson"
+        const val API_Invoice_List = "Payment/invoice-dropdown"
+        const val API_Payment_Create = "Payment/create"
 
         const val API_Fleet_Log_List = "FleetManagement/get-all-fleet-mobile"
         const val API_Fleet = "FleetManagement/create-fleat"
@@ -57,10 +60,6 @@ class Constants {
         const val API_Create_Transfer = "Transfer/transfer/create"
         const val API_Transfer_Post = "Transfer/transfer/Post"
         const val API_Transfer_List = "Transfer/transfer/get-all-from-code"
-        const val API_Check_Route = "RouteAddress/route-check"
-        const val API_Invoice_List = "Payment/invoice-dropdown"
-        const val API_Delete_Order = "SalesOrder/delete-order/"
-        const val API_Payment_Create = "Payment/create"
 
         const val API_Create_Store_Requisition = "store-requisition/create"
         const val API_Store_Requisition_List = "store-requisition/get-by-salesperson"
@@ -68,8 +67,13 @@ class Constants {
 
         const val API_Sales_Report = "report/sales"
         const val API_Trip_Report = "report/trip-report"
-        const val API_Driver_Trip = "DriverTrip/driver/get-all-shipment"
 
+        //Driver
+        const val API_Driver_Trip = "DriverTrip/driver/get-all-shipment"
+        const val API_Start_DriverTrip = "DriverTrip/trip/start"
+        const val API_End_DriverTrip = "DriverTrip/trip/end"
+        const val API_Cancel_DriverTrip = "DriverTrip/delivery/cancel"
+        const val API_Confirm_DriverTrip = "DriverTrip/delivery/confirm"
 
         // Constants Key
         const val IS_LOGIN = "is_login"
@@ -96,6 +100,14 @@ class Constants {
         const val OrderDetail = "order_detail"
         const val ImageUri = "image_uri"
         const val DeliveryDetail = "delivery_detail"
+
+        const val LocationPermissionCode = 100
+        const val BackgroundPermissionCode = 101
+        const val ForgroundPermissionCode = 102
+        const val NotificationPermissionCode = 103
+        const val CameraPermissionCode = 201
+        const val GalleryPermissionCode = 202
+
 
     }
 

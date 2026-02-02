@@ -430,7 +430,11 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
         ) permissionsNeeded.add(CAMERA_PERMISSION)
 
         if (permissionsNeeded.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this, permissionsNeeded.toTypedArray(), 101)
+            ActivityCompat.requestPermissions(
+                this,
+                permissionsNeeded.toTypedArray(),
+                Constants.CameraPermissionCode
+            )
         } else {
             openCamera()
         }
@@ -465,7 +469,11 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
         }
 
         if (permissionsNeeded.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this, permissionsNeeded.toTypedArray(), 102)
+            ActivityCompat.requestPermissions(
+                this,
+                permissionsNeeded.toTypedArray(),
+                Constants.GalleryPermissionCode
+            )
         } else {
             openGallery()
         }
@@ -483,8 +491,8 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
 
         if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
             when (requestCode) {
-                101 -> openCamera()
-                102 -> openGallery()
+                Constants.CameraPermissionCode -> openCamera()
+                Constants.GalleryPermissionCode -> openGallery()
             }
         } else {
             Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()

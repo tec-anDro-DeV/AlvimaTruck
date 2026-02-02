@@ -22,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.viewbinding.ViewBinding
 import com.alvimatruck.R
 import com.alvimatruck.service.AlvimaTuckApplication
+import com.alvimatruck.utils.Constants
 
 abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
 
@@ -75,7 +76,7 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
                 arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
-                ), 100
+                ), Constants.LocationPermissionCode
             )
             return
         }
@@ -83,14 +84,16 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         // 2️⃣ Background permission (Android 10+)
         if (!hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
             requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION), 101
+                arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
+                Constants.BackgroundPermissionCode
             )
             return
         }
 
         if (Build.VERSION.SDK_INT >= 33 && !hasPermission(Manifest.permission.POST_NOTIFICATIONS)) {
             requestPermissions(
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS), 103
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                Constants.NotificationPermissionCode
             )
             return
         }
@@ -98,7 +101,8 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         // 3️⃣ Special foreground location service permission (Android 14+)
         if (Build.VERSION.SDK_INT >= 34 && !hasPermission(Manifest.permission.FOREGROUND_SERVICE_LOCATION)) {
             requestPermissions(
-                arrayOf(Manifest.permission.FOREGROUND_SERVICE_LOCATION), 102
+                arrayOf(Manifest.permission.FOREGROUND_SERVICE_LOCATION),
+                Constants.ForgroundPermissionCode
             )
             return
         }
