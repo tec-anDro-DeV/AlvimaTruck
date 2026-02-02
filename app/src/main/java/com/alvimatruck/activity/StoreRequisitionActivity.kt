@@ -23,5 +23,9 @@ class StoreRequisitionActivity : BaseActivity<ActivityStoreRequisitionBinding>()
         binding.rlRequisitionRequest.setOnClickListener {
             startActivity(Intent(this, StoreRequisitionRequestActivity::class.java))
         }
+
+        binding.rlTransferShipToReceive.setOnClickListener {
+            startActivity(Intent(this, TransferShipToReceiveActivity::class.java))
+        }
     }
 }

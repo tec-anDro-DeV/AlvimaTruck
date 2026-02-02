@@ -80,6 +80,24 @@
                 android:textSize="@dimen/_15ssp" />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/rlTransferShipToReceive"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_73sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:background="@drawable/ic_transfer_4">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_70sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="Store Requisition Receiving"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp" />
+        </RelativeLayout>
+
 
     </LinearLayout>
 </RelativeLayout>

@@ -33,14 +33,18 @@ class PaymentLogsListAdapter(
         }
         holder.binding.executePendingBindings()
 
-        if (list[position].status == "Pending" || list[position].status == "Rejected") {
+        if (list[position].status == "Rejected") {
             holder.binding.tvStatus.background = ContextCompat.getDrawable(
                 mActivity, R.drawable.bg_status_red
             )
 
-        } else {
+        } else if (list[position].status == "Paid") {
             holder.binding.tvStatus.background = ContextCompat.getDrawable(
                 mActivity, R.drawable.bg_status_green
+            )
+        } else {
+            holder.binding.tvStatus.background = ContextCompat.getDrawable(
+                mActivity, R.drawable.bg_status_orange
             )
         }
     }
