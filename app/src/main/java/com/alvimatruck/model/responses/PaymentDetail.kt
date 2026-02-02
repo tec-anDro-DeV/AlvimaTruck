@@ -12,10 +12,15 @@ data class PaymentDetail(
     val salesPersonCode: String,
     val status: String,
     val totalAmount: Double,
-    val amount: Double
+    val amount: Double,
+    val markPaymentDate: String
 ) {
     fun getRequestDate(): String {
-        return Utils.getFormatedRequestDate(postingDate)
+        return if (status == "Paid") {
+            Utils.getFormatedRequestDate(postingDate)
+        } else {
+            Utils.getFormatedRequestDate(markPaymentDate)
+        }
     }
 
     fun formatedAmount(): String {

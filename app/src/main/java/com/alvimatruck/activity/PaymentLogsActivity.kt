@@ -71,6 +71,7 @@ class PaymentLogsActivity : BaseActivity<ActivityPaymentLogsBinding>() {
                             logList = response.body()!!.getAsJsonArray("items").map {
                                 Gson().fromJson(it, PaymentDetail::class.java)
                             } as ArrayList<PaymentDetail>
+                            logList!!.sortBy { it.paymentId }
                             if (logList!!.isNotEmpty()) {
                                 binding.rvLogs.layoutManager = LinearLayoutManager(
                                     this@PaymentLogsActivity, LinearLayoutManager.VERTICAL, false
