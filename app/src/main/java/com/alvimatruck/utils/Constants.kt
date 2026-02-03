@@ -61,6 +61,8 @@ class Constants {
         const val API_Create_Transfer = "Transfer/transfer/create"
         const val API_Transfer_Post = "Transfer/transfer/Post"
         const val API_Transfer_List = "Transfer/transfer/get-all-from-code"
+        const val API_Transfer_Lines = "Transfer/lines"
+        const val API_Transfer_Receive = "Transfer/receive"
 
         const val API_Create_Store_Requisition = "store-requisition/create"
         const val API_Store_Requisition_List = "store-requisition/get-by-salesperson"

@@ -76,25 +76,27 @@
                 android:layout_marginStart="@dimen/_11sdp"
                 android:background="@drawable/input_bg3"
                 android:padding="@dimen/_11sdp"
-                android:src="@drawable/ic_filter" />
+                android:src="@drawable/ic_filter"
+                android:visibility="gone" />
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/chkAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_9sdp"
-            android:button="@drawable/checkbox_selector"
-            android:fontFamily="@font/sansregular"
-            android:paddingStart="@dimen/_5sdp"
-            android:text="Select All to confirm receive"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_12ssp" />
+        <!--        <CheckBox-->
+        <!--            android:id="@+id/chkAll"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="@dimen/_9sdp"-->
+        <!--            android:button="@drawable/checkbox_selector"-->
+        <!--            android:fontFamily="@font/sansregular"-->
+        <!--            android:paddingStart="@dimen/_5sdp"-->
+        <!--            android:text="Select All to confirm receive"-->
+        <!--            android:textColor="@color/black"-->
+        <!--            android:textSize="@dimen/_12ssp" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTransferList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_11sdp"
             android:layout_weight="1" />
 
         <TextView

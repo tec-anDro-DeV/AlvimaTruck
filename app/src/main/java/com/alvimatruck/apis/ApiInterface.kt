@@ -12,6 +12,7 @@ import com.alvimatruck.model.request.NewOrderRequest
 import com.alvimatruck.model.request.OTPRequest
 import com.alvimatruck.model.request.OTPVerifyRequest
 import com.alvimatruck.model.request.OrderPostRequest
+import com.alvimatruck.model.request.ReceiveItemRequest
 import com.alvimatruck.model.request.ResetPasswordRequest
 import com.alvimatruck.model.request.StartTripRequest
 import com.alvimatruck.model.request.StoreRequisitionApproveRequest
@@ -21,7 +22,6 @@ import com.alvimatruck.model.request.TransferRequest
 import com.alvimatruck.model.request.UpdateOrderRequest
 import com.alvimatruck.model.request.VisitedTripRequest
 import com.alvimatruck.utils.Constants
-import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
@@ -64,9 +64,6 @@ interface ApiInterface {
     @GET(Constants.API_Today_Routes)
     fun getTodayRoutes(): Call<JsonObject>
 
-    @GET(Constants.API_Vendor_List)
-    fun vendorList(): Call<JsonArray>
-
     @GET(Constants.API_Payment_Logs)
     fun getPaymentLogs(): Call<JsonObject>
 
@@ -96,6 +93,9 @@ interface ApiInterface {
 
     @POST(Constants.API_Cancel_DriverTrip)
     fun cancelDriverTrip(@Body deliveryCancelRequest: DeliveryCancelRequest): Call<JsonObject>
+
+    @POST(Constants.API_Transfer_Receive)
+    fun receiveItem(@Body receiveItemRequest: ReceiveItemRequest): Call<JsonObject>
 
     @POST(Constants.API_New_Order)
     fun newOrder(@Body newOrderRequest: NewOrderRequest): Call<JsonObject>
@@ -138,6 +138,9 @@ interface ApiInterface {
     fun transferList(
         @Query("transferFromCode") transferFromCode: String,
     ): Call<JsonObject>
+
+    @GET(Constants.API_Transfer_Lines)
+    fun transferLines(): Call<JsonObject>
 
     @GET(Constants.API_Check_Route)
     fun routeCheck(

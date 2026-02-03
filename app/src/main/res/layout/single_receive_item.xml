@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <!--        <variable-->
-        <!--            name="detail"-->
-        <!--            type="String" />-->
+        <variable
+            name="detail"
+            type="com.alvimatruck.model.responses.TransferReciveDetail" />
     </data>
 
     <LinearLayout
@@ -41,17 +42,18 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/sansbold"
                     android:maxLines="1"
-                    android:text="Chinese Noodles 1Kg"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="Chinese Noodles 1Kg" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Packets • SKU: N209-8529"
+                    android:text="@{detail.unitOfMeasureCode+ ` • SKU: `+detail.itemNo}"
                     android:textColor="@color/darkgray"
-                    android:textSize="@dimen/_11ssp" />
+                    android:textSize="@dimen/_11ssp"
+                    tools:text="Packets • SKU: N209-8529" />
             </LinearLayout>
 
 
@@ -83,9 +85,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="TR-25845-774"
+                    android:text="@{detail.documentNo}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="TR-25845-774" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -106,9 +109,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="300"
+                    android:text="@{detail.quantityShipped+``}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="300" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -129,9 +133,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="200"
+                    android:text="@{detail.quantityReceived+``}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="200" />
 
             </RelativeLayout>
 
@@ -150,6 +155,7 @@
                     android:textSize="@dimen/_12ssp" />
 
                 <EditText
+                    android:id="@+id/etQuantity"
                     android:layout_width="@dimen/_68sdp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -160,7 +166,6 @@
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:padding="@dimen/_7sdp"
-                    android:text="200"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
@@ -186,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/sansbold"
-                android:text="16 Dec 2025"
+                tools:text="16 Dec 2025"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp" />
         </RelativeLayout>
