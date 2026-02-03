@@ -6,9 +6,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -20,8 +23,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.adapter.ImagesListAdapter
+import com.alvimatruck.adapter.SingleItemSelectionAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
@@ -36,6 +42,7 @@ import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,6 +66,10 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
     private lateinit var cropLauncher: ActivityResultLauncher<Intent>
 
     private var imagesListAdapter: ImagesListAdapter? = null
+
+    private var vendorList: ArrayList<String> = ArrayList()
+    var filterList: ArrayList<String>? = ArrayList()
+    var selectedVendor = ""
 
 
     override fun inflateBinding(): ActivityRepairLogBinding {
@@ -120,7 +131,90 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
             }
         }
 
+        getVendorList()
 
+        binding.tvVendorDetails.setOnClickListener {
+            dialogSingleSelection()
+        }
+    }
+
+    fun dialogSingleSelection() {
+        filterList!!.clear()
+        filterList!!.addAll(vendorList!!)
+        val inflater = layoutInflater
+        val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
+        val selectedGroup: String = selectedVendor
+        val singleItemSelectionAdapter =
+            SingleItemSelectionAdapter(this, filterList!!, selectedGroup)
+
+        val lLayout = LinearLayoutManager(this)
+        val rvBinList = alertLayout.findViewById<RecyclerView>(R.id.rvItemList)
+        rvBinList.layoutManager = lLayout
+        rvBinList.adapter = singleItemSelectionAdapter
+        val etBinSearch = alertLayout.findViewById<EditText>(R.id.etItemSearch)
+        etBinSearch.hint = getString(R.string.search_vendor)
+
+
+
+        etBinSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                //filter(s.toString())
+                filterList!!.clear()
+                if (s.toString().trim().isEmpty()) {
+                    filterList!!.addAll(vendorList!!)
+                } else {
+                    for (item in vendorList) {
+                        if (item.lowercase().contains(s.toString().lowercase())) {
+                            filterList!!.add(item)
+                        }
+                    }
+                }
+                singleItemSelectionAdapter.notifyDataSetChanged()
+            }
+        })
+
+        val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel2)
+        val tvConfirm = alertLayout.findViewById<TextView>(R.id.tvConfirm2)
+        val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
+        tvTitle.text = getString(R.string.choose_vendor)
+
+
+        val alert = AlertDialog.Builder(this)
+        alert.setView(alertLayout)
+        alert.setCancelable(false)
+
+        val dialog = alert.create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+        dialog.show()
+
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        tvCancel.setOnClickListener { _: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { _: View? ->
+            if (filterList!!.isNotEmpty()) {
+                selectedVendor = singleItemSelectionAdapter.selected
+                binding.tvVendorDetails.text = singleItemSelectionAdapter.selected
+                dialog.dismiss()
+            }
+        }
+    }
+
+    private fun getVendorList() {
+        val jsonString = SharedHelper.getKey(this, Constants.API_Vendor_List)
+        if (jsonString.isNotEmpty()) {
+            val list = JsonParser.parseString(jsonString).asJsonArray
+            for (item in list!!) {
+                val jsonObject = item.asJsonObject
+                val name = jsonObject.get("name").asString
+                vendorList!!.add(name)
+            }
+        }
     }
 
     private fun apiRepairLogRequest() {
@@ -410,4 +504,6 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
         binding.rlChoosePhoto.visibility = View.VISIBLE
 
     }
+
+
 }

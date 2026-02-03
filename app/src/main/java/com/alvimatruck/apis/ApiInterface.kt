@@ -21,6 +21,7 @@ import com.alvimatruck.model.request.TransferRequest
 import com.alvimatruck.model.request.UpdateOrderRequest
 import com.alvimatruck.model.request.VisitedTripRequest
 import com.alvimatruck.utils.Constants
+import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
@@ -62,6 +63,9 @@ interface ApiInterface {
 
     @GET(Constants.API_Today_Routes)
     fun getTodayRoutes(): Call<JsonObject>
+
+    @GET(Constants.API_Vendor_List)
+    fun vendorList(): Call<JsonArray>
 
     @GET(Constants.API_Payment_Logs)
     fun getPaymentLogs(): Call<JsonObject>

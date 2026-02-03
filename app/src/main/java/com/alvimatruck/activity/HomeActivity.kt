@@ -137,7 +137,8 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                         Constants.API_CostCenter_Code,
                         Constants.API_ProfitCenter_Code,
                         Constants.API_Intransit_Code,
-                        Constants.API_To_Location
+                        Constants.API_To_Location,
+                        Constants.API_Vendor_List,
                     )
 
                     // This assumes your ApiClient and ApiService are set up correctly
