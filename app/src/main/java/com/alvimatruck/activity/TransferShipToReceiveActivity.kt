@@ -70,7 +70,10 @@ class TransferShipToReceiveActivity : BaseActivity<ActivityTransferShipToReceive
                     filterList!!.addAll(transferList!!)
                 } else {
                     for (item in transferList!!) {
-                        if (item.documentNo.lowercase().contains(s.toString().lowercase())) {
+                        if (item.documentNo.lowercase()
+                                .contains(s.toString().lowercase()) || item.description.lowercase()
+                                .contains(s.toString().lowercase())
+                        ) {
                             filterList!!.add(item)
                         }
                     }

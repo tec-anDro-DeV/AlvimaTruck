@@ -5,6 +5,7 @@ import android.app.Activity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -81,6 +82,17 @@ class TransferShipToReceiveListAdapter(
                 }
             }
         })
+
+        if (list[position].quantityShipped != list[position].quantityReceived) {
+            // holder.binding.ivEdit.visibility = View.GONE
+            holder.binding.chkReceive.visibility = View.VISIBLE
+            holder.binding.rlReceive.visibility = View.VISIBLE
+        } else {
+            // holder.binding.ivEdit.visibility = View.VISIBLE
+            holder.binding.chkReceive.visibility = View.GONE
+            holder.binding.rlReceive.visibility = View.GONE
+
+        }
 
     }
 

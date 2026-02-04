@@ -40,6 +40,7 @@
                     android:layout_marginEnd="@dimen/_2sdp"
                     android:layout_toStartOf="@+id/tvTId"
                     android:ellipsize="end"
+                    android:text="@{detail.description}"
                     android:fontFamily="@font/sansbold"
                     android:maxLines="1"
                     android:textColor="@color/black"
@@ -141,6 +142,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rlReceive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_7sdp">
@@ -192,6 +194,7 @@
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/sansbold"
                 tools:text="16 Dec 2025"
+                android:text="@{detail.getFormatedDate}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp" />
         </RelativeLayout>
