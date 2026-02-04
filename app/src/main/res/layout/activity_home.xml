@@ -590,6 +590,9 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
                                 tools:text="ETB 0.0"
+                                android:autoSizeMinTextSize="@dimen/_1sdp"
+                                android:autoSizeTextType="uniform"
+                                android:maxLines="1"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_18ssp" />
                         </LinearLayout>
@@ -626,6 +629,9 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
                                 android:text="ETB 0.00"
+                                android:autoSizeMinTextSize="@dimen/_1sdp"
+                                android:autoSizeTextType="uniform"
+                                android:maxLines="1"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_18ssp" />
                         </LinearLayout>

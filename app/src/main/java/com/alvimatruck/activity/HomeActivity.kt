@@ -112,6 +112,24 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         fetchAndCacheAllDropdowns(isManualSync = false)
 
+
+        binding.tvViewMap.setOnClickListener {
+            startActivity(
+                Intent(this, RouteMapActivity::class.java).putExtra(
+                    Constants.RouteDetail, Gson().toJson(dashboardDetails!!.activeRoute)
+                )
+            )
+        }
+
+        binding.llProgressRoute.setOnClickListener {
+            val routeDetail = dashboardDetails!!.activeRoute
+            startActivity(
+                Intent(this, RouteDetailActivity::class.java).putExtra(
+                    Constants.Status, routeDetail!!.status
+                ).putExtra(Constants.RouteDetail, Gson().toJson(routeDetail))
+            )
+        }
+
     }
 
     private fun isDropdownDataCached(): Boolean {
@@ -226,9 +244,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                                 binding.llProgressRoute.visibility = View.GONE
                             }
                             binding.tvTodayVisit.text =
-                                dashboardDetails!!.routesCompletedCount.toString()
+                                dashboardDetails!!.totalCustomerVisits.toString()
                             binding.tvTotalSaleCash.text =
-                                "ETB " + dashboardDetails!!.todaySalesCount.toDouble().to2Decimal()
+                                "ETB " + dashboardDetails!!.todaySalesSum.toDouble().to2Decimal()
                             binding.tvTotalCollectionCash.text =
                                 dashboardDetails!!.todayCollectionsCount.toString()
 
