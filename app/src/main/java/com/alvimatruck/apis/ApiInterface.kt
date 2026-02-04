@@ -73,6 +73,9 @@ interface ApiInterface {
     @GET(Constants.API_Dashboard_Report)
     fun getSalesDashboardReport(): Call<JsonObject>
 
+    @GET(Constants.API_Driver_Dashboard_Report)
+    fun getDriverDashboardReport(): Call<JsonObject>
+
     @GET(Constants.API_Store_Requisition_List)
     fun getStoreRequisitionList(): Call<JsonObject>
 

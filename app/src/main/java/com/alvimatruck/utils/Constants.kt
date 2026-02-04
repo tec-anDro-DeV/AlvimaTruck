@@ -79,6 +79,8 @@ class Constants {
         const val API_End_DriverTrip = "DriverTrip/trip/end"
         const val API_Cancel_DriverTrip = "DriverTrip/delivery/cancel"
         const val API_Confirm_DriverTrip = "DriverTrip/delivery/confirm"
+        const val API_Driver_Dashboard_Report = "report/driver/dashboard/today"
+
 
         // Constants Key
         const val IS_LOGIN = "is_login"
