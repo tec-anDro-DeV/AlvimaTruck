@@ -324,7 +324,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tvRouteLabel"
                         android:fontFamily="@font/sansbold"
-                        android:text="549SD0X87"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14ssp"
                         tools:text="5855555555" />
@@ -388,7 +387,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/sanssemibold"
-                            android:text="12"
+                            tools:text="12"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12ssp" />
                     </RelativeLayout>
@@ -422,41 +421,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/sanssemibold"
-                            android:text="9"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_12ssp" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_12sdp">
-
-                        <ImageView
-                            android:id="@+id/icSkippedCustomers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:src="@drawable/ic_people" />
-
-                        <TextView
-                            android:id="@+id/tvSkippedCustomersLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_7sdp"
-                            android:layout_toEndOf="@id/icSkippedCustomers"
-                            android:fontFamily="@font/sansregular"
-                            android:text="Skipped Customers"
-                            android:textColor="@color/darkgray"
-                            android:textSize="@dimen/_11ssp" />
-
-                        <TextView
-                            android:id="@+id/tvSkippedCustomersValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:fontFamily="@font/sanssemibold"
-                            android:text="10"
+                            tools:text="9"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12ssp" />
                     </RelativeLayout>
@@ -490,7 +455,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/sanssemibold"
-                            android:text="40km"
+                            tools:text="40km"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12ssp" />
                     </RelativeLayout>
@@ -545,11 +510,11 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tvTodayPayment"
+                    android:id="@+id/tvTodayVisit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="45"
+                    tools:text="45"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_21ssp" />
 
@@ -620,10 +585,11 @@
                                 android:textSize="@dimen/_11ssp" />
 
                             <TextView
+                                android:id="@+id/tvTotalSaleCash"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
-                                android:text="$ 8310.00"
+                                tools:text="ETB 0.0"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_18ssp" />
                         </LinearLayout>
@@ -659,7 +625,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
-                                android:text="$ 2100.00"
+                                android:text="ETB 0.00"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_18ssp" />
                         </LinearLayout>
@@ -732,10 +698,11 @@
                                 android:textSize="@dimen/_11ssp" />
 
                             <TextView
+                                android:id="@+id/tvTotalCollectionCash"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
-                                android:text="$ 8310.00"
+                                android:text="0"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_18ssp" />
                         </LinearLayout>
@@ -771,7 +738,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
-                                android:text="$ 2100.00"
+                                android:text="0"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_18ssp" />
                         </LinearLayout>

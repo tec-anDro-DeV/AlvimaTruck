@@ -70,6 +70,8 @@ class Constants {
 
         const val API_Sales_Report = "report/sales"
         const val API_Trip_Report = "report/trip-report"
+        const val API_Dashboard_Report = "report/dashboard/today"
+
 
         //Driver
         const val API_Driver_Trip = "DriverTrip/driver/get-all-shipment"

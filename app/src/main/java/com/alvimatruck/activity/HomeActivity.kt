@@ -3,6 +3,7 @@ package com.alvimatruck.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
@@ -12,18 +13,25 @@ import com.alvimatruck.R
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityHomeBinding
+import com.alvimatruck.model.responses.DashboardDetails
 import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.alvimatruck.utils.Utils.to2Decimal
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     var userDetail: UserDetail? = null
+    var dashboardDetails: DashboardDetails? = null
     override fun inflateBinding(): ActivityHomeBinding {
         return ActivityHomeBinding.inflate(layoutInflater)
     }
@@ -172,6 +180,80 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                     }
                 }
             }
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        dashboardAPI()
+    }
+
+    private fun dashboardAPI() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@HomeActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.getSalesDashboardReport().enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@HomeActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            dashboardDetails = Gson().fromJson(
+                                response.body()!!.asJsonObject.get("data"),
+                                DashboardDetails::class.java
+                            )
+
+                            if (dashboardDetails!!.activeRoute != null) {
+                                binding.llProgressRoute.visibility = View.VISIBLE
+                                binding.tvRouteId.text = dashboardDetails!!.activeRoute!!.routeName
+                                binding.tvRegularCustomersValue.text =
+                                    dashboardDetails!!.activeRoute!!.regularCustomerCount.toString()
+                                binding.tvVisitedCustomersValue.text =
+                                    dashboardDetails!!.activeRoute!!.visited.toString()
+                                binding.tvDistanceValue.text =
+                                    dashboardDetails!!.activeRoute!!.distance.toString() + "Km"
+
+                            } else {
+                                binding.llProgressRoute.visibility = View.GONE
+                            }
+                            binding.tvTodayVisit.text =
+                                dashboardDetails!!.routesCompletedCount.toString()
+                            binding.tvTotalSaleCash.text =
+                                "ETB " + dashboardDetails!!.todaySalesCount.toDouble().to2Decimal()
+                            binding.tvTotalCollectionCash.text =
+                                dashboardDetails!!.todayCollectionsCount.toString()
+
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@HomeActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@HomeActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
         } else {
             Toast.makeText(
                 this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT

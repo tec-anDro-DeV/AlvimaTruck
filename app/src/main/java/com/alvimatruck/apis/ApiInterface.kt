@@ -70,6 +70,9 @@ interface ApiInterface {
     @GET(Constants.API_Sales_Orders)
     fun getSalesOrder(): Call<JsonObject>
 
+    @GET(Constants.API_Dashboard_Report)
+    fun getSalesDashboardReport(): Call<JsonObject>
+
     @GET(Constants.API_Store_Requisition_List)
     fun getStoreRequisitionList(): Call<JsonObject>
 
