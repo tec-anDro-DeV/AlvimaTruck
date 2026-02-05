@@ -50,7 +50,6 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
-        checkAndStartLocationService()
         getCityList()
 
         if (intent != null) {

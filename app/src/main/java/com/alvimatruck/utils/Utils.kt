@@ -27,6 +27,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.alvimatruck.R
 import com.alvimatruck.activity.LoginActivity
+import com.alvimatruck.custom.SignalRManager
+import com.alvimatruck.model.responses.DeliveryTripDetail
+import com.alvimatruck.service.AlvimaTuckApplication
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -51,6 +54,9 @@ import java.util.Date
 object Utils {
     var isTripInProgress: Boolean = false
     var isNewOrder: Boolean = false
+
+    var driverOrderList: ArrayList<DeliveryTripDetail>? = ArrayList()
+    var DriverVanNo: String = ""
 
     private val ETHIOPIA_MOBILE_REGEX = Regex("^0[79]\\d{8}$")
     private val ETHIOPIA_ANY_LOCAL_REGEX = Regex("^0\\d{9}$")
@@ -214,6 +220,12 @@ object Utils {
 
 
     fun logout(context: Context) {
+
+        // ✅ stop tracking service
+        AlvimaTuckApplication.instance.stopLocationService(context)
+
+        // ✅ disconnect realtime socket if used
+        SignalRManager.disconnect()   // if using SignalR
         SharedHelper.putKey(
             context, Constants.IS_LOGIN, false
         )

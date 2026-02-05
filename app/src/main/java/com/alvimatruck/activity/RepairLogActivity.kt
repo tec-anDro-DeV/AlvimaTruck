@@ -85,8 +85,6 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
             handleBackPressed()
         }
 
-        checkAndStartLocationService()
-
         setupLaunchers()
 
         binding.tvCancel.setOnClickListener {

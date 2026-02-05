@@ -15,10 +15,12 @@ import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityHomeBinding
 import com.alvimatruck.model.responses.DashboardDetails
 import com.alvimatruck.model.responses.UserDetail
+import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.alvimatruck.utils.Utils.DriverVanNo
 import com.alvimatruck.utils.Utils.to2Decimal
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -39,10 +41,13 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        checkAndStartLocationService()
+
         binding.tvDate.text = Utils.getFullDate(System.currentTimeMillis())
 
         userDetail =
             Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
+
         binding.tvUsername.text = userDetail?.driverFullName
 
 
@@ -208,6 +213,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     override fun onResume() {
         super.onResume()
         dashboardAPI()
+        DriverVanNo = userDetail!!.plateNo
+        AlvimaTuckApplication.instance
+            .ensureLocationServiceRunning(this)
     }
 
     private fun dashboardAPI() {

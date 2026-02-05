@@ -7,8 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import androidx.core.content.ContextCompat
-import com.alvimatruck.custom.SocketManager
-import com.alvimatruck.custom.WebSocketManager
+import com.alvimatruck.custom.SignalRManager
 
 class AlvimaTuckApplication : Application() {
 
@@ -44,7 +43,26 @@ class AlvimaTuckApplication : Application() {
         super.onCreate()
         instance = this   // <-- MAKE INSTANCE AVAILABLE GLOBALLY
 
-        SocketManager.connect()
-        WebSocketManager.connect()
+        // SocketManager.connect()
+        //WebSocketManager.connect()
+        SignalRManager.connect()
+    }
+
+    fun stopLocationService(context: Context) {
+
+        try {
+            locationService?.stopSelf()
+            context.unbindService(connection)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        locationService = null
+    }
+
+    fun ensureLocationServiceRunning(context: Context) {
+        if (locationService == null) {
+            startLocationService(context)
+        }
     }
 }

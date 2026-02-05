@@ -2,15 +2,25 @@ package com.alvimatruck.activity
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import com.alvimatruck.R
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityDeliveryTripReportBinding
+import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
+import com.alvimatruck.utils.Utils
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+import com.google.gson.JsonObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -58,10 +68,6 @@ class DeliveryTripReportActivity : BaseActivity<ActivityDeliveryTripReportBindin
             dateFormatterAPI.format(selectedStartDate!!.time),
             dateFormatterAPI.format(selectedEndDate!!.time)
         )
-    }
-
-    private fun tripReportAPI(startDate: String, endDate: String) {
-
     }
 
     private fun openDateRangePicker() {
@@ -129,5 +135,64 @@ class DeliveryTripReportActivity : BaseActivity<ActivityDeliveryTripReportBindin
         dialog.show()
         val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
         dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+    }
+
+    private fun tripReportAPI(startDate: String, endDate: String) {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@DeliveryTripReportActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.driverTripReport(startDate, endDate)
+                .enqueue(object : Callback<JsonObject> {
+                    override fun onResponse(
+                        call: Call<JsonObject>,
+                        response: Response<JsonObject>
+                    ) {
+                        ProgressDialog.dismiss()
+                        if (response.code() == 401) {
+                            Utils.forceLogout(this@DeliveryTripReportActivity)  // show dialog before logout
+                            return
+                        }
+                        if (response.isSuccessful) {
+                            try {
+                                Log.d("TAG", "onResponse: " + response.body().toString())
+                                binding.tvTotalDeliveryCompleted.text =
+                                    response.body()!!.getAsJsonObject("data")
+                                        .get("totalDeliveriesCompleted")
+                                        .toString()
+                                binding.tvDistance.text =
+                                    response.body()!!.getAsJsonObject("data")
+                                        .get("totalDistanceKm")
+                                        .toString() + "Km"
+
+
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        } else {
+                            Toast.makeText(
+                                this@DeliveryTripReportActivity,
+                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                        Toast.makeText(
+                            this@DeliveryTripReportActivity,
+                            getString(com.alvimatruck.R.string.api_fail_message),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        ProgressDialog.dismiss()
+                    }
+                })
+        } else {
+            Toast.makeText(
+                this,
+                getString(com.alvimatruck.R.string.please_check_your_internet_connection),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

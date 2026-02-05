@@ -55,8 +55,6 @@ class RouteMapActivity : BaseActivity<ActivityRouteMapBinding>(), OnMapReadyCall
             handleBackPressed()
         }
 
-        checkAndStartLocationService()
-
         if (intent != null) {
             routeDetail = Gson().fromJson(
                 intent.getStringExtra(Constants.RouteDetail).toString(), RouteDetail::class.java

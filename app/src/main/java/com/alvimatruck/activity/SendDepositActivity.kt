@@ -76,7 +76,6 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkAndStartLocationService()
 
         setupLaunchers()
 

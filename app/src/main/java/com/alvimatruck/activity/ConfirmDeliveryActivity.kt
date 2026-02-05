@@ -60,7 +60,6 @@ class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkAndStartLocationService()
 
         setupLaunchers()
 

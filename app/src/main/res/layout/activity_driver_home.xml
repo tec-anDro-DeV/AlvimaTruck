@@ -249,10 +249,12 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tvAssignOrder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="34"
+                    android:text="0"
+                    tools:text="34"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_21ssp" />
 
@@ -292,10 +294,12 @@
 
 
                 <TextView
+                    android:id="@+id/tvPendingOrder"
+                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="10"
+                    tools:text="10"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_21ssp" />
 
@@ -338,10 +342,12 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tvDeliveredOrder"
+                android:text="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sanssemibold"
-                android:text="24"
+                tools:text="24"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_21ssp" />
 

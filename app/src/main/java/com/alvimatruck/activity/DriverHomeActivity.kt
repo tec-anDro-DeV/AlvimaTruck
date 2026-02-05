@@ -11,20 +11,33 @@ import com.alvimatruck.R
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityDriverHomeBinding
-import com.alvimatruck.model.responses.DriverDashboardDetail
+import com.alvimatruck.model.responses.DeliveryTripDetail
 import com.alvimatruck.model.responses.UserDetail
+import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.alvimatruck.utils.Utils.DriverVanNo
+import com.alvimatruck.utils.Utils.driverOrderList
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
     var userDetail: UserDetail? = null
+
+    private val todayDate: Calendar = Calendar.getInstance()
+    private val dateFormatterAPI = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+    private val todayDateStr: String
+        get() = dateFormatterAPI.format(todayDate.time)
+
 
     override fun inflateBinding(): ActivityDriverHomeBinding {
         return ActivityDriverHomeBinding.inflate(layoutInflater)
@@ -32,6 +45,8 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        checkAndStartLocationService()
 
         binding.tvDate.text = Utils.getFullDate(System.currentTimeMillis())
 
@@ -77,65 +92,94 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
 
+        binding.rlSync.setOnClickListener {
+            getDriverTrip()
+        }
+
 //        binding.rlFeetManagement.setOnClickListener {
 //            startActivity(Intent(this, FleetManagementActivity::class.java))
 //        }
+
+        getDriverTrip()
     }
 
     override fun onResume() {
         super.onResume()
-        driverDashboardAPI()
+        setupData()
+        AlvimaTuckApplication.instance
+            .ensureLocationServiceRunning(this)
     }
 
-    private fun driverDashboardAPI() {
+    private fun getDriverTrip() {
         if (Utils.isOnline(this)) {
             ProgressDialog.start(this@DriverHomeActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.getDriverDashboardReport().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@DriverHomeActivity)  // show dialog before logout
-                        return
-                    }
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            val dashboardDetails = Gson().fromJson(
-                                response.body()!!.asJsonObject.get("data"),
-                                DriverDashboardDetail::class.java
-                            )
-//                            binding.tvAssignOrder.text=dashboardDetails.pendingOrders.toString()
-//                            binding.tvPendingOrder.text=dashboardDetails.pendingOrders.toString()
-//                            binding.tvDeliveredOrder.text=dashboardDetails.pendingOrders.toString()
-
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+            )!!.webservices.driverTripList(userDetail!!.driverNo, todayDateStr)
+                .enqueue(object : Callback<JsonObject> {
+                    override fun onResponse(
+                        call: Call<JsonObject>,
+                        response: Response<JsonObject>
+                    ) {
+                        ProgressDialog.dismiss()
+                        if (response.code() == 401) {
+                            Utils.forceLogout(this@DriverHomeActivity)  // show dialog before logout
+                            return
                         }
-                    } else {
+                        if (response.isSuccessful) {
+                            try {
+                                Log.d("TAG", "onResponse: " + response.body().toString())
+                                driverOrderList = response.body()!!.getAsJsonArray("data").map {
+                                    Gson().fromJson(it, DeliveryTripDetail::class.java)
+                                } as ArrayList<DeliveryTripDetail>
+                                setupData()
+
+
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        } else {
+                            Toast.makeText(
+                                this@DriverHomeActivity,
+                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                         Toast.makeText(
                             this@DriverHomeActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            getString(R.string.api_fail_message),
                             Toast.LENGTH_SHORT
                         ).show()
+                        ProgressDialog.dismiss()
                     }
-                }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@DriverHomeActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
+                })
         } else {
             Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+                this,
+                getString(R.string.please_check_your_internet_connection),
+                Toast.LENGTH_SHORT
             ).show()
+        }
+
+    }
+
+    private fun setupData() {
+        DriverVanNo = userDetail!!.plateNo
+        if (driverOrderList!!.isNotEmpty()) {
+            binding.tvAssignOrder.text = driverOrderList?.size.toString()
+            val openCount =
+                driverOrderList!!.count { it.appStatus == "Open" || it.appStatus == "InProgress" }
+            binding.tvPendingOrder.text = openCount.toString()
+            val pendingCount =
+                driverOrderList!!.count { it.appStatus == "Cancelled" || it.appStatus == "Delivered" }
+            binding.tvDeliveredOrder.text = pendingCount.toString()
+        } else {
+            binding.tvAssignOrder.text = "0"
+            binding.tvPendingOrder.text = "0"
+            binding.tvDeliveredOrder.text = "0"
         }
     }
 }

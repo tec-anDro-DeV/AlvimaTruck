@@ -13,7 +13,6 @@ class DepositActivity : BaseActivity<ActivityDepositBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkAndStartLocationService()
 
 
         binding.btnBack.setOnClickListener {

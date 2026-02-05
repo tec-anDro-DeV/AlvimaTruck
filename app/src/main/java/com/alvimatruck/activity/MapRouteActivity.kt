@@ -52,7 +52,6 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkAndStartLocationService()
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }

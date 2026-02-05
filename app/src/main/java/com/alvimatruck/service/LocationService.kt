@@ -18,8 +18,8 @@ import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.alvimatruck.R
-import com.alvimatruck.custom.SocketManager
-import com.alvimatruck.custom.WebSocketManager
+import com.alvimatruck.custom.SignalRManager
+import com.alvimatruck.utils.Utils.DriverVanNo
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity
 import com.google.android.gms.location.LocationCallback
@@ -56,6 +56,8 @@ class LocationService : Service() {
     override fun onCreate() {
         super.onCreate()
 
+        startNotification()
+
         // Background processing thread (ESSENTIAL for Android 14+)
         val thread = HandlerThread("GPS_THREAD")
         thread.start()
@@ -80,17 +82,6 @@ class LocationService : Service() {
             stopSelf() // Stop service to prevent crash
             return
         }
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            try {
-                startNotification()
-            } catch (e: Exception) {
-                // Android 14 specific safety catch
-                if (Build.VERSION.SDK_INT >= 34) {
-                    stopSelf() // Fail gracefully instead of crashing
-                }
-            }
-        }, 500) // 500ms delay
 
     }
 
@@ -148,8 +139,14 @@ class LocationService : Service() {
             AlvimaTuckApplication.longitude = lon
 
             // ✅ Send to server using socket
-            SocketManager.sendLocation(lat, lon)
-            WebSocketManager.sendLocation(lat, lon)
+            // SocketManager.sendLocation(lat, lon)
+            // WebSocketManager.sendLocation(lat, lon)
+
+            SignalRManager.sendLocation(
+                driverId = DriverVanNo,
+                lat = lat,
+                lon = lon
+            )
 
             Log.d("GPS", "✅ Location Sent to Server")
         }

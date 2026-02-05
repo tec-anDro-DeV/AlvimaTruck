@@ -59,7 +59,6 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkAndStartLocationService()
 
         setupLaunchers()
 

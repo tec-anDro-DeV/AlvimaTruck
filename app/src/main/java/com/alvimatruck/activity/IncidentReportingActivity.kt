@@ -83,8 +83,6 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
             handleBackPressed()
         }
 
-        checkAndStartLocationService()
-
         setupLaunchers()
 
         binding.tvCancel.setOnClickListener {

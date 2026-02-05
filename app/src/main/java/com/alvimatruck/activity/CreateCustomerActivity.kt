@@ -83,7 +83,6 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
-        checkAndStartLocationService()
 
         setupLaunchers()
         getPriceList()

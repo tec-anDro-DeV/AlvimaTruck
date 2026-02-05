@@ -65,48 +65,48 @@
                 app:drawableEndCompat="@drawable/ic_calendar" />
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_98sdp"
-                android:layout_marginTop="@dimen/_14sdp"
-                android:background="@drawable/ic_box2"
-                android:orientation="vertical"
-                android:padding="@dimen/_14sdp">
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="@dimen/_98sdp"-->
+            <!--                android:layout_marginTop="@dimen/_14sdp"-->
+            <!--                android:background="@drawable/ic_box2"-->
+            <!--                android:orientation="vertical"-->
+            <!--                android:padding="@dimen/_14sdp">-->
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:orientation="horizontal">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sansregular"
-                        android:text="Route "
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_11ssp" />
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:fontFamily="@font/sansregular"-->
+            <!--                        android:text="Route "-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textSize="@dimen/_11ssp" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/sansbold"
-                        android:maxLines="1"
-                        android:text="Completed"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_11ssp" />
-                </LinearLayout>
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:ellipsize="end"-->
+            <!--                        android:fontFamily="@font/sansbold"-->
+            <!--                        android:maxLines="1"-->
+            <!--                        android:text="Completed"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textSize="@dimen/_11ssp" />-->
+            <!--                </LinearLayout>-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="45"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_21ssp" />
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:fontFamily="@font/sanssemibold"-->
+            <!--                    android:text="45"-->
+            <!--                    android:textColor="@color/black"-->
+            <!--                    android:textSize="@dimen/_21ssp" />-->
 
 
-            </LinearLayout>
+            <!--            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -141,11 +141,11 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tvTodayPayment"
+                    android:id="@+id/tvTotalDeliveryCompleted"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="145"
+                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_21ssp" />
 
@@ -172,10 +172,11 @@
 
 
                 <TextView
+                    android:id="@+id/tvDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="4500 Km"
+                    android:text="0 Km"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_21ssp" />
 

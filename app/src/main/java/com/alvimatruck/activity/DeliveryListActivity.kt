@@ -21,6 +21,7 @@ import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.alvimatruck.utils.Utils.driverOrderList
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import retrofit2.Call
@@ -38,8 +39,6 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>(), Delive
     private var deliveryListAdapter: DeliveryListAdapter? = null
 
     private val dateFormatterAPI = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-
-    var orderList: ArrayList<DeliveryTripDetail>? = ArrayList()
 
     var filterList: ArrayList<DeliveryTripDetail>? = ArrayList()
 
@@ -65,11 +64,7 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>(), Delive
             )
         )
 
-
-
-
-        getDriverTrip()
-
+        setupData()
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -79,9 +74,9 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>(), Delive
 
                 filterList!!.clear()
                 if (s.toString().trim().isEmpty()) {
-                    filterList!!.addAll(orderList!!)
+                    filterList!!.addAll(driverOrderList!!)
                 } else {
-                    for (item in orderList!!) {
+                    for (item in driverOrderList!!) {
                         if (item.sellToCustomerName.lowercase()
                                 .contains(s.toString().lowercase()) || item.no.lowercase()
                                 .contains(s.toString().lowercase())
@@ -96,6 +91,7 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>(), Delive
 
 
     }
+
 
     private fun getDriverTrip() {
         if (Utils.isOnline(this)) {
@@ -116,37 +112,10 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>(), Delive
                         if (response.isSuccessful) {
                             try {
                                 Log.d("TAG", "onResponse: " + response.body().toString())
-                                orderList = response.body()!!.getAsJsonArray("data").map {
+                                driverOrderList = response.body()!!.getAsJsonArray("data").map {
                                     Gson().fromJson(it, DeliveryTripDetail::class.java)
                                 } as ArrayList<DeliveryTripDetail>
-                                Utils.isTripInProgress = orderList!!.any {
-                                    it.appStatus.equals(
-                                        "InProgress", ignoreCase = true
-                                    )
-                                }
-                                filterList = ArrayList(orderList!!)
-                                if (filterList!!.isNotEmpty()) {
-
-                                    binding.rvDeliveryList.layoutManager =
-                                        LinearLayoutManager(
-                                            this@DeliveryListActivity,
-                                            LinearLayoutManager.VERTICAL,
-                                            false
-                                        )
-
-                                    deliveryListAdapter = DeliveryListAdapter(
-                                        this@DeliveryListActivity,
-                                        filterList!!,
-                                        this@DeliveryListActivity
-                                    )
-                                    binding.rvDeliveryList.adapter = deliveryListAdapter
-                                    binding.llData.visibility = View.VISIBLE
-                                    binding.llNoData.root.visibility = View.GONE
-
-                                } else {
-                                    binding.llData.visibility = View.GONE
-                                    binding.llNoData.root.visibility = View.VISIBLE
-                                }
+                                setupData()
 
                             } catch (e: Exception) {
                                 e.printStackTrace()
@@ -177,6 +146,37 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>(), Delive
             ).show()
         }
 
+    }
+
+    private fun setupData() {
+        Utils.isTripInProgress = driverOrderList!!.any {
+            it.appStatus.equals(
+                "InProgress", ignoreCase = true
+            )
+        }
+        filterList = ArrayList(driverOrderList!!)
+        if (filterList!!.isNotEmpty()) {
+
+            binding.rvDeliveryList.layoutManager =
+                LinearLayoutManager(
+                    this@DeliveryListActivity,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
+
+            deliveryListAdapter = DeliveryListAdapter(
+                this@DeliveryListActivity,
+                filterList!!,
+                this@DeliveryListActivity
+            )
+            binding.rvDeliveryList.adapter = deliveryListAdapter
+            binding.llData.visibility = View.VISIBLE
+            binding.llNoData.root.visibility = View.GONE
+
+        } else {
+            binding.llData.visibility = View.GONE
+            binding.llNoData.root.visibility = View.VISIBLE
+        }
     }
 
     override fun onDeliveryClick(deliveryTripDetail: DeliveryTripDetail) {

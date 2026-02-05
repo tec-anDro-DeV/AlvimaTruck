@@ -56,7 +56,6 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkAndStartLocationService()
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
