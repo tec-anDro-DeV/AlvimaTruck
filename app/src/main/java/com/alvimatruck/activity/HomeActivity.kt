@@ -15,7 +15,6 @@ import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityHomeBinding
 import com.alvimatruck.model.responses.DashboardDetails
 import com.alvimatruck.model.responses.UserDetail
-import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
@@ -214,8 +213,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         super.onResume()
         dashboardAPI()
         DriverVanNo = userDetail!!.plateNo
-        AlvimaTuckApplication.instance
-            .ensureLocationServiceRunning(this)
     }
 
     private fun dashboardAPI() {

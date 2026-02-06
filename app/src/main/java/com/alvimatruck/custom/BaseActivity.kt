@@ -71,7 +71,7 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     fun checkAndStartLocationService() {
 
         // 1️⃣ Location permission not granted → Ask
-        if (!hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) || !hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+        if (!hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) && !hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
             requestPermissions(
                 arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -99,13 +99,13 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         }
 
         // 3️⃣ Special foreground location service permission (Android 14+)
-        if (Build.VERSION.SDK_INT >= 34 && !hasPermission(Manifest.permission.FOREGROUND_SERVICE_LOCATION)) {
-            requestPermissions(
-                arrayOf(Manifest.permission.FOREGROUND_SERVICE_LOCATION),
-                Constants.ForgroundPermissionCode
-            )
-            return
-        }
+//        if (Build.VERSION.SDK_INT >= 34 && !hasPermission(Manifest.permission.FOREGROUND_SERVICE_LOCATION)) {
+//            requestPermissions(
+//                arrayOf(Manifest.permission.FOREGROUND_SERVICE_LOCATION),
+//                Constants.ForgroundPermissionCode
+//            )
+//            return
+//        }
 
         // 4️⃣ All location permissions granted → Now check battery optimization
         checkBatteryOptimization()  // 🔥 CRITICAL FOR ANDROID 14+

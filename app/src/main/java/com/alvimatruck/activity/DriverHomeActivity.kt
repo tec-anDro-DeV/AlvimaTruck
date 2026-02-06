@@ -13,7 +13,6 @@ import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityDriverHomeBinding
 import com.alvimatruck.model.responses.DeliveryTripDetail
 import com.alvimatruck.model.responses.UserDetail
-import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
@@ -106,8 +105,6 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
     override fun onResume() {
         super.onResume()
         setupData()
-        AlvimaTuckApplication.instance
-            .ensureLocationServiceRunning(this)
     }
 
     private fun getDriverTrip() {

@@ -158,7 +158,7 @@ class LocationService : Service() {
     private fun startNotification() {
         val id = "gps_channel"
         val nm = getSystemService(NotificationManager::class.java)
-        if (Build.VERSION.SDK_INT >= 26) nm.createNotificationChannel(
+        nm.createNotificationChannel(
             NotificationChannel(id, "GPS Tracking", NotificationManager.IMPORTANCE_HIGH)
         )
 
@@ -166,7 +166,7 @@ class LocationService : Service() {
         val pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         val n = NotificationCompat.Builder(this, id).setSmallIcon(R.drawable.logo)
-            .setContentTitle("GPS Active").setContentText("Tracking offline/online…")
+            .setContentTitle("GPS Active").setContentText("Tracking Location…")
             .setOngoing(true).setContentIntent(pi).build()
 
         if (Build.VERSION.SDK_INT >= 34) startForeground(
