@@ -30,7 +30,7 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
 
     // Example points (Ahmedabad)
     var origin: LatLng? = null // Starting point
-    private var destination = LatLng(23.071593, 72.5869836)// Ending point
+    private var destination: LatLng? = null// Ending point
     var customerName: String? = null
 
     private val updateHandler = android.os.Handler(android.os.Looper.getMainLooper())
@@ -73,7 +73,7 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
         mMap = googleMap
 
         // Add static destination marker once
-        mMap.addMarker(MarkerOptions().position(destination).title(customerName))
+        mMap.addMarker(MarkerOptions().position(destination!!).title(customerName))
 
         // Start the update loop immediately
         updateHandler.post(updateRunnable)
@@ -105,7 +105,7 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
 
         // 3. Update Camera (Every time, but with a limit)
         try {
-            val bounds = LatLngBounds.builder().include(newOrigin).include(destination).build()
+            val bounds = LatLngBounds.builder().include(newOrigin).include(destination!!).build()
 
             // Calculate the camera update for these bounds with padding
             val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 150)
@@ -128,7 +128,7 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
         }
 
         // 4. Recalculate Route
-        getRoute(newOrigin, destination)
+        getRoute(newOrigin, destination!!)
     }
 
     private fun getRoute(origin: LatLng, dest: LatLng) {

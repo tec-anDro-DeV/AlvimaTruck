@@ -50,10 +50,10 @@
                 android:fontFamily="@font/sanssemibold"
                 android:paddingVertical="@dimen/_5sdp"
                 android:text="@{detail.status}"
-                tools:text="Pending"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_11ssp"
+                tools:text="Pending" />
 
 
         </RelativeLayout>
@@ -85,35 +85,38 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
                     android:text="@{detail.fleetType}"
-                    tools:text="Fuel Refill"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="Fuel Refill" />
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/rlVendor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_7sdp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:fontFamily="@font/sansregular"
                     android:text="Vendor"
                     android:textColor="@color/darkgray"
                     android:textSize="@dimen/_12ssp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:layout_weight="2"
                     android:fontFamily="@font/sansbold"
                     android:text="@{detail.repairLogVendorDetail}"
-                    tools:text="ABCD"
+                    android:textAlignment="textEnd"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-            </RelativeLayout>
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="ABCD" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/rlDescription"
@@ -163,10 +166,10 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
                     android:text="@{detail.requestDate}"
-                    tools:text="12 Dec 2025"
                     android:textAllCaps="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="12 Dec 2025" />
             </RelativeLayout>
 
 
@@ -191,9 +194,9 @@
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/sansbold"
                 android:text="@{detail.cost.toString()}"
-                tools:text="$200.00"
                 android:textColor="@color/orange"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_12ssp"
+                tools:text="$200.00" />
         </RelativeLayout>
 
 

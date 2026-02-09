@@ -213,15 +213,16 @@
                             tools:text="Fuel Refill" />
                     </RelativeLayout>
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:id="@+id/rlVendor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_7sdp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:fontFamily="@font/sansregular"
                             android:text="Vendor"
                             android:textColor="@color/darkgray"
@@ -229,14 +230,17 @@
 
                         <TextView
                             android:id="@+id/tvVendorDetails"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
+                            android:layout_weight="2"
                             android:fontFamily="@font/sansbold"
+                            android:text="@{detail.repairLogVendorDetail}"
+                            android:textAlignment="textEnd"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12ssp"
                             tools:text="ABCD" />
-                    </RelativeLayout>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/rlDescription"

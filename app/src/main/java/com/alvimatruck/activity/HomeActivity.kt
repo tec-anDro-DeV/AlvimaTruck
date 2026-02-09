@@ -96,13 +96,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
 
-        binding.llProgressRoute.setOnClickListener {
-//            startActivity(
-//                Intent(this, RouteDetailActivity::class.java).putExtra(
-//                    Constants.Status, binding.tvStatus.text.toString()
-//                )
-//            )
-        }
         binding.llFeetManagement.setOnClickListener {
             startActivity(Intent(this, FleetManagementActivity::class.java))
         }
@@ -112,6 +105,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         binding.rlSync.setOnClickListener {
             fetchAndCacheAllDropdowns(isManualSync = true)
+            dashboardAPI()
         }
 
         fetchAndCacheAllDropdowns(isManualSync = false)
