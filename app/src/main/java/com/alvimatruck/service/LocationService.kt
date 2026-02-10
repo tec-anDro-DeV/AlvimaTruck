@@ -27,7 +27,6 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
-import kotlin.math.abs
 
 class LocationService : Service() {
 
@@ -126,9 +125,9 @@ class LocationService : Service() {
         Log.d("GPS", "Lat=$lat  Lon=$lon")
 
         // ✅ Send only if location changed enough (avoid spam)
-        if (abs(lat - lastLat) > 0.0001 ||
-            abs(lon - lastLon) > 0.0001
-        ) {
+//        if (abs(lat - lastLat) > 0.0001 ||
+//            abs(lon - lastLon) > 0.0001
+//        ) {
 
             // ✅ Save last values
             lastLat = lat
@@ -149,7 +148,7 @@ class LocationService : Service() {
             )
 
             Log.d("GPS", "✅ Location Sent to Server")
-        }
+        //   }
 
 
         Handler(Looper.getMainLooper()).post { liveCallback?.invoke(lat, lon) }

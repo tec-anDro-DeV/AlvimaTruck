@@ -48,15 +48,21 @@ object SignalRManager {
 
         // ✅ start connection
         hubConnection?.start()
-            ?.doOnComplete {
-                isConnecting = false
-                println("✅ SignalR Connected")
-            }
-            ?.doOnError {
-                isConnecting = false
-                println("❌ SignalR Start Error: ${it.message}")
-            }
-            ?.subscribe()
+            ?.subscribe(
+                {
+                    isConnecting = false
+                    println("✅ SignalR Connected")
+                },
+                { error ->
+                    isConnecting = false
+                    println("❌ SignalR Start Failed: ${error.message}")
+
+                    // auto retry after delay
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        connect()
+                    }, 5000)
+                }
+            )
     }
 
     // ✅ Send Location to .NET Hub
