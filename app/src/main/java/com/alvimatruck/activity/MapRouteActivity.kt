@@ -1,7 +1,12 @@
 package com.alvimatruck.activity
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityMapRouteBinding
@@ -72,12 +77,82 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
+        checkPermissions()
+
         // Add static destination marker once
         mMap.addMarker(MarkerOptions().position(destination!!).title(customerName))
 
         // Start the update loop immediately
         updateHandler.post(updateRunnable)
     }
+
+
+    private fun checkPermissions() {
+        val hasFineLocation = ContextCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val hasCoarseLocation = ContextCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (hasFineLocation || hasCoarseLocation) {
+            // Permissions are already granted, enable location.
+            enableMyLocation()
+        } else {
+            // Permissions are not granted, request them.
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true || permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
+            // Permission was granted. Enable the user's location.
+            enableMyLocation()
+        } else {
+            // Optionally, handle the case where the user denies the permission.
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun enableMyLocation() {
+        // This function is only called after the permission check has passed.
+        // The @SuppressLint annotation is used to suppress the Lint warning.
+        mMap.isMyLocationEnabled = true
+        mMap.uiSettings.isMyLocationButtonEnabled = true
+
+        mMap.setLocationSource(object : com.google.android.gms.maps.LocationSource {
+            override fun activate(listener: com.google.android.gms.maps.LocationSource.OnLocationChangedListener) {
+                // Do nothing. We don't pass location updates to the map layer.
+                // This prevents the blue dot from being drawn/updated.
+            }
+
+            override fun deactivate() {
+                // Cleanup if needed
+            }
+        })
+
+        mMap.setOnMyLocationButtonClickListener {
+            // Get the actual location from your app's tracking or the LocationManager
+            val currentLat = AlvimaTuckApplication.latitude
+            val currentLng = AlvimaTuckApplication.longitude
+
+            if (currentLat != 0.0 && currentLng != 0.0) {
+                val latLng = LatLng(currentLat, currentLng)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
+            }
+            // Return true to consume the event so the map doesn't try to default handle it
+            true
+        }
+    }
+
 
     private fun updateLocationAndRoute() {
         // 1. Get latest location
@@ -94,7 +169,8 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
         if (originMarker == null) {
             // Create marker if it doesn't exist
             originMarker = mMap.addMarker(
-                MarkerOptions().position(newOrigin).title("Start")
+                MarkerOptions().position(newOrigin)
+//                        .title("Start")
                     .icon(bitmapDescriptorFromVector(this, R.drawable.ic_truck_marker))
                     .anchor(0.5f, 0.5f)
             )
