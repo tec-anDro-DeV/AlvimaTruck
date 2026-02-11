@@ -423,10 +423,10 @@
 
             </LinearLayout>
 
+
             <LinearLayout
                 android:id="@+id/llBottomButtons"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_21sdp"
                 android:orientation="horizontal">
@@ -457,6 +457,38 @@
                     android:text="New Order"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
+
+                <LinearLayout
+                    android:id="@+id/llViewOrder"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvNotes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sansregular"
+                        android:text="*One order is open for this customer. Please post it before creating a new order."
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <TextView
+                        android:id="@+id/tvViewOrder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_9sdp"
+                        android:background="@drawable/rounded_button_orange"
+                        android:fontFamily="@font/sansbold"
+                        android:gravity="center"
+                        android:padding="@dimen/_14sdp"
+                        android:text="View Order"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14ssp" />
+                </LinearLayout>
+
+
             </LinearLayout>
 
 

@@ -23,7 +23,8 @@ data class CustomerDetail(
     var telexNo: String?,
     val tinNo: String?,
     val balanceLcy: Double,
-    var visitedToday: Boolean
+    var visitedToday: Boolean,
+    var canCreateNewOrder: Boolean
 ) {
     fun getFormattedContactNo(): String {
         val number = phoneNo?.trim()

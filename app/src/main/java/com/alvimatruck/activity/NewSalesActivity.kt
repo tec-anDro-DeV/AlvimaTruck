@@ -258,6 +258,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                                 Toast.LENGTH_SHORT
                             ).show()
                             customerDetail!!.visitedToday = true
+                            customerDetail!!.canCreateNewOrder = false
                             Utils.isNewOrder = true
                             val intent = Intent()
                             intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))

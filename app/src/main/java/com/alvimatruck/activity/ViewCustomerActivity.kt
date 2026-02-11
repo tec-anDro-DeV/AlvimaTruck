@@ -63,6 +63,15 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
             }
         }
 
+    private val openUpdateSalesOrder =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                customerDetail!!.canCreateNewOrder = true
+                showUpdatedData() // refresh UI
+            }
+
+        }
+
     private fun showUpdatedData() {
         binding.tvCustomerName.text = customerDetail!!.searchName
         binding.tvContactNumber.text = customerDetail!!.getFormattedContactNo()
@@ -75,7 +84,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         binding.tvTINNumber.text = customerDetail!!.tinNo
         binding.tvCustomerPostingGroup.text = customerDetail!!.customerPostingGroup
         binding.tvCustomerPricingGroup.text = customerDetail!!.customerPriceGroup
-        binding.tvUsages.text = customerDetail!!.balanceLcy.toString()
+        binding.tvUsages.text = " ETB " + customerDetail!!.balanceLcy.toString()
         binding.tvTotalLimit.text = "Total: ETB " + customerDetail!!.creditLimitLcy.toString()
         val progress =
             if (customerDetail!!.creditLimitLcy == 0.0 || customerDetail!!.balanceLcy <= 0) {
@@ -98,6 +107,13 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
             binding.tvVisited.visibility = View.GONE
         } else {
             binding.tvVisited.visibility = View.VISIBLE
+        }
+        if (customerDetail!!.canCreateNewOrder) {
+            binding.tvNewOrder.visibility = View.VISIBLE
+            binding.llViewOrder.visibility = View.GONE
+        } else {
+            binding.tvNewOrder.visibility = View.GONE
+            binding.llViewOrder.visibility = View.VISIBLE
         }
     }
 
@@ -189,6 +205,14 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
 
         binding.btnBack.setOnClickListener {
             handleBackPressed()
+        }
+
+        binding.tvViewOrder.setOnClickListener {
+            val intent = Intent(
+                this,
+                SalesOrderListActivity::class.java
+            ).putExtra(Constants.CustomerDetail, customerDetail!!.searchName)
+            openUpdateSalesOrder.launch(intent)
         }
 
         binding.btnEdit.setOnClickListener {

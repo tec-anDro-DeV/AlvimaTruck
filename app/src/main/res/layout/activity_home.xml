@@ -387,9 +387,9 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/sanssemibold"
-                            tools:text="12"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_12ssp" />
+                            android:textSize="@dimen/_12ssp"
+                            tools:text="12" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -421,9 +421,9 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/sanssemibold"
-                            tools:text="9"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_12ssp" />
+                            android:textSize="@dimen/_12ssp"
+                            tools:text="9" />
                     </RelativeLayout>
 
                     <!-- Distance -->
@@ -455,9 +455,9 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/sanssemibold"
-                            tools:text="40km"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_12ssp" />
+                            android:textSize="@dimen/_12ssp"
+                            tools:text="40km" />
                     </RelativeLayout>
 
                     <TextView
@@ -514,9 +514,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    tools:text="45"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_21ssp" />
+                    android:textSize="@dimen/_21ssp"
+                    tools:text="45" />
 
 
             </LinearLayout>
@@ -588,19 +588,20 @@
                                 android:id="@+id/tvTotalSaleCash"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/sansbold"
-                                tools:text="ETB 0.0"
                                 android:autoSizeMinTextSize="@dimen/_1sdp"
                                 android:autoSizeTextType="uniform"
+                                android:fontFamily="@font/sansbold"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/_18ssp" />
+                                android:textSize="@dimen/_18ssp"
+                                tools:text="ETB 0.0" />
                         </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:layout_weight="1"
                         android:orientation="horizontal">
 
@@ -627,11 +628,11 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/sansbold"
-                                android:text="ETB 0.00"
                                 android:autoSizeMinTextSize="@dimen/_1sdp"
                                 android:autoSizeTextType="uniform"
+                                android:fontFamily="@font/sansbold"
                                 android:maxLines="1"
+                                android:text="ETB 0.00"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_18ssp" />
                         </LinearLayout>

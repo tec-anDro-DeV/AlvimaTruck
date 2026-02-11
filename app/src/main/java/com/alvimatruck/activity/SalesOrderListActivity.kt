@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.SalesOrderListAdapter
@@ -33,6 +34,7 @@ class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>(),
     var orderList: ArrayList<OrderDetail>? = ArrayList()
 
     var filterList: ArrayList<OrderDetail>? = ArrayList()
+    var customerName: String? = null
 
     override fun inflateBinding(): ActivitySalesOrderListBinding {
         return ActivitySalesOrderListBinding.inflate(layoutInflater)
@@ -88,6 +90,25 @@ class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>(),
 
     }
 
+    override fun handleBackPressed(callback: OnBackPressedCallback?) {
+        if (!orderList.isNullOrEmpty() && customerName != null) {
+
+            val customerOrders = orderList!!.filter {
+                it.customerName == customerName
+            }
+
+            val hasPending = customerOrders.any {
+                (it.invoiceNo == null || it.invoiceNo == "")
+            }
+
+            if (!hasPending && customerOrders.isNotEmpty()) {
+                setResult(RESULT_OK)
+            }
+        }
+
+        finish()
+    }
+
     private fun salesOrderListAPI() {
         if (Utils.isOnline(this)) {
             ProgressDialog.start(this@SalesOrderListActivity)
@@ -123,6 +144,15 @@ class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>(),
                                 binding.rvOrderList.adapter = salesOrderListAdapter
                                 binding.llData.visibility = View.VISIBLE
                                 binding.llNoData.root.visibility = View.GONE
+
+                                if (intent != null) {
+                                    customerName =
+                                        intent.getStringExtra(Constants.CustomerDetail)
+                                    if (customerName != null) {
+                                        binding.etSearch.setText(customerName)
+                                        binding.etSearch.setSelection(customerName.toString().length)
+                                    }
+                                }
 
                             } else {
                                 binding.llData.visibility = View.GONE
