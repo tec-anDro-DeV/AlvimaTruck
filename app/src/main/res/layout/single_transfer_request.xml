@@ -40,7 +40,7 @@
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/sansbold"
                 android:text="ID:8521479630125"
-                android:textColor="@color/darkgray"
+                android:textColor="@color/darkGray"
                 android:textSize="@dimen/_11ssp"
                 android:visibility="gone" />
         </RelativeLayout>
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/sansregular"
             android:text="@{`Qty: `+detail.quantity+` `+detail.unitOfMeasureCode+` • SKU: `+detail.itemNo}"
-            android:textColor="@color/darkgray"
+            android:textColor="@color/darkGray"
             android:textSize="@dimen/_11ssp"
             tools:text="Qty: 3 Packets • SKU: N209-8529" />
 

@@ -311,7 +311,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
                     android:text="Transfer Details"
-                    android:textColor="@color/darkgray"
+                    android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
                 <androidx.recyclerview.widget.RecyclerView

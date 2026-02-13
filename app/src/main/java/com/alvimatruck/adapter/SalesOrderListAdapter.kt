@@ -31,10 +31,10 @@ class SalesOrderListAdapter(
         }
 
         if (list[position].invoiceNo == null || list[position].invoiceNo == "") {
-            holder.binding.tvStatus.text = "Open"
+            holder.binding.tvStatus.text = mActivity.getString(R.string.open)
             holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
         } else {
-            holder.binding.tvStatus.text = "Delivered"
+            holder.binding.tvStatus.text = mActivity.getString(R.string.delivered)
             holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
         }
 

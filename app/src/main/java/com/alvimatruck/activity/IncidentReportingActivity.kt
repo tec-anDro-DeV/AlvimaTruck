@@ -91,7 +91,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
 
         binding.rlChoosePhoto.setOnClickListener {
             if (listProofImageUri.size < 5) {
-                openImageChooseDailog()
+                openImageChooseDialog()
             }
         }
 
@@ -286,7 +286,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
     }
 
 
-    private fun openImageChooseDailog() {
+    private fun openImageChooseDialog() {
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_image_selection, null)
 
@@ -429,9 +429,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
 
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(
-                this,
-                permissionsNeeded.toTypedArray(),
-                Constants.CameraPermissionCode
+                this, permissionsNeeded.toTypedArray(), Constants.CameraPermissionCode
             )
         } else {
             openCamera()
@@ -468,9 +466,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
 
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(
-                this,
-                permissionsNeeded.toTypedArray(),
-                Constants.GalleryPermissionCode
+                this, permissionsNeeded.toTypedArray(), Constants.GalleryPermissionCode
             )
         } else {
             openGallery()

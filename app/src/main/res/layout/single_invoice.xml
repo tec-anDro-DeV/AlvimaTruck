@@ -46,7 +46,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:maxLines="1"
                 android:text="Due: 21 Aug 2025"
-                android:textColor="@color/darkgray"
+                android:textColor="@color/darkGray"
                 android:textSize="@dimen/_10ssp" />
         </LinearLayout>
 

@@ -9,6 +9,7 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.graphics.createBitmap
 
 class SignatureView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -62,7 +63,7 @@ class SignatureView @JvmOverloads constructor(
     }
 
     fun getBitmap(): Bitmap {
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val bitmap = createBitmap(width, height)
         val canvas = Canvas(bitmap)
         draw(canvas)
         return bitmap

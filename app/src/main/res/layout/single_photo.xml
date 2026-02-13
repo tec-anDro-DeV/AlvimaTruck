@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:src="@color/darkgray"
+        android:src="@color/darkGray"
         app:cornerRadius="@dimen/_11sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"

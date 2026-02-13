@@ -93,7 +93,7 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
 
         binding.rlChoosePhoto.setOnClickListener {
             if (listProofImageUri.size < 5) {
-                openImageChooseDailog()
+                openImageChooseDialog()
             }
         }
 
@@ -284,7 +284,7 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
 
     }
 
-    private fun openImageChooseDailog() {
+    private fun openImageChooseDialog() {
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_image_selection, null)
 
@@ -428,9 +428,7 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
 
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(
-                this,
-                permissionsNeeded.toTypedArray(),
-                Constants.CameraPermissionCode
+                this, permissionsNeeded.toTypedArray(), Constants.CameraPermissionCode
             )
         } else {
             openCamera()
@@ -467,9 +465,7 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
 
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(
-                this,
-                permissionsNeeded.toTypedArray(),
-                Constants.GalleryPermissionCode
+                this, permissionsNeeded.toTypedArray(), Constants.GalleryPermissionCode
             )
         } else {
             openGallery()

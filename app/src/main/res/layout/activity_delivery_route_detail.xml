@@ -127,7 +127,7 @@
                         android:layout_toEndOf="@id/icDistance"
                         android:fontFamily="@font/sansregular"
                         android:text="Distance"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -162,7 +162,7 @@
                         android:layout_toEndOf="@id/icDistance1"
                         android:fontFamily="@font/sansregular"
                         android:text="Van Start Kilometer"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -196,7 +196,7 @@
                         android:layout_toEndOf="@id/icDistance2"
                         android:fontFamily="@font/sansregular"
                         android:text="Van End Kilometer"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -265,7 +265,7 @@
                         android:layout_toEndOf="@id/icRegularCustomers"
                         android:fontFamily="@font/sansregular"
                         android:text="Total Deliveries"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -300,7 +300,7 @@
                         android:layout_toEndOf="@id/icVisitedCustomers"
                         android:fontFamily="@font/sansregular"
                         android:text="Cancelled Deliveries"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -334,7 +334,7 @@
                         android:layout_toEndOf="@id/icSkippedCustomers"
                         android:fontFamily="@font/sansregular"
                         android:text="Completed Deliveries"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView

@@ -60,7 +60,7 @@ class CustomerListAdapter(
 
             list[position].visitedToday -> {
                 holder.binding.tvStatus.visibility = View.VISIBLE
-                holder.binding.tvStatus.text = "Visited"
+                holder.binding.tvStatus.text = mActivity.getString(R.string.visited)
                 holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
             }
 

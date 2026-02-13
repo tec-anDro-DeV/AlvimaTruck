@@ -36,10 +36,9 @@ class AlvimaTuckApplication : Application() {
         fun hasLocationPermission(ctx: Context): Boolean {
             return ContextCompat.checkSelfPermission(
                 ctx, Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED ||
-                    ContextCompat.checkSelfPermission(
-                        ctx, Manifest.permission.ACCESS_COARSE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                ctx, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
         }
 
 
@@ -58,9 +57,6 @@ class AlvimaTuckApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this   // <-- MAKE INSTANCE AVAILABLE GLOBALLY
-
-        // SocketManager.connect()
-        //WebSocketManager.connect()
         SignalRManager.connect()
     }
 

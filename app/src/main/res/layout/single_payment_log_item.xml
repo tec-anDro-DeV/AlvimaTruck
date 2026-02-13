@@ -27,7 +27,7 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/sansregular"
                 android:text="Ref ID: "
-                android:textColor="@color/darkgray"
+                android:textColor="@color/darkGray"
                 android:textSize="@dimen/_12ssp" />
 
             <TextView
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
                     android:text="Invoice"
-                    android:textColor="@color/darkgray"
+                    android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
                 <TextView
@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
                     android:text="Payment Mode"
-                    android:textColor="@color/darkgray"
+                    android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
                 <TextView
@@ -159,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
                     android:text="Deposit Date"
-                    android:textColor="@color/darkgray"
+                    android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
                 <TextView
@@ -186,7 +186,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sansregular"
                 android:text="Total Payment"
-                android:textColor="@color/darkgray"
+                android:textColor="@color/darkGray"
                 android:textSize="@dimen/_12ssp" />
 
             <TextView

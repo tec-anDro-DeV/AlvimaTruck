@@ -86,9 +86,9 @@
                         android:layout_marginStart="@dimen/_11sdp"
                         android:layout_toEndOf="@id/ivStock"
                         android:fontFamily="@font/sansbold"
-                        tools:text="DLV-0001"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="DLV-0001" />
 
 
                     <TextView
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
                     android:text="Alvimasupport@gmail.com"
-                    android:textColor="@color/darkgray"
+                    android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
 
@@ -172,7 +172,7 @@
                         android:layout_toEndOf="@id/icDistance"
                         android:fontFamily="@font/sansregular"
                         android:text="Distance"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -207,7 +207,7 @@
                         android:layout_toEndOf="@id/icDistance1"
                         android:fontFamily="@font/sansregular"
                         android:text="Van Start Kilometer"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -241,7 +241,7 @@
                         android:layout_toEndOf="@id/icDistance2"
                         android:fontFamily="@font/sansregular"
                         android:text="Van End Kilometer"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
@@ -282,7 +282,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
                     android:text="Customer Details"
-                    android:textColor="@color/darkgray"
+                    android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
                 <RelativeLayout
@@ -303,9 +303,9 @@
                         android:layout_marginStart="@dimen/_11sdp"
                         android:layout_toEndOf="@id/ivUser"
                         android:fontFamily="@font/sansbold"
-                        tools:text="Customer Name"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="Customer Name" />
 
                     <TextView
                         android:id="@+id/tvContact"
@@ -327,9 +327,9 @@
                         android:layout_toEndOf="@id/tvContact"
                         android:autoLink="phone"
                         android:fontFamily="@font/sansbold"
-                        tools:text="+251 852147854"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11ssp" />
+                        android:textSize="@dimen/_11ssp"
+                        tools:text="+251 852147854" />
                 </RelativeLayout>
 
                 <View
@@ -352,9 +352,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:fontFamily="@font/sansregular"
-                    tools:text="405, 4th floor, Bole Medhanialem road Hidmona building, Addis Ababa, Ethiopia."
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="405, 4th floor, Bole Medhanialem road Hidmona building, Addis Ababa, Ethiopia." />
 
             </LinearLayout>
 
@@ -376,7 +376,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
                         android:text="Order Date"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
@@ -401,7 +401,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
                     android:text="Products Details"
-                    android:textColor="@color/darkgray"
+                    android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
 

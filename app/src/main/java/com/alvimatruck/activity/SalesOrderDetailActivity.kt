@@ -187,12 +187,12 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
                             binding.tvTotal.text = "ETB " + orderDetail!!.total.to2Decimal()
 
                             if (orderDetail!!.invoiceNo == null || orderDetail!!.invoiceNo == "") {
-                                binding.tvStatus.text = "Open"
+                                binding.tvStatus.text = getString(R.string.open)
                                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
                                 binding.tvPostInvoice.visibility = View.VISIBLE
                                 binding.btnEdit.visibility = View.VISIBLE
                             } else {
-                                binding.tvStatus.text = "Delivered"
+                                binding.tvStatus.text = getString(R.string.delivered)
                                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
                                 binding.tvPostInvoice.visibility = View.GONE
                                 binding.btnEdit.visibility = View.GONE

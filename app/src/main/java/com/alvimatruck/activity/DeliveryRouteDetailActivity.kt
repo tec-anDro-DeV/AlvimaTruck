@@ -22,12 +22,11 @@ import androidx.core.view.isNotEmpty
 import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityDeliveryRouteDetailBinding
-import com.alvimatruck.model.responses.RouteDetail
 
 class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBinding>() {
     var status: String? = ""
 
-    var routeDetail: RouteDetail? = null
+    //    var routeDetail: RouteDetail? = null
     var isChange: Boolean = false
 
 
@@ -262,8 +261,6 @@ class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBind
         }
 
         binding.llDeliveries.setOnClickListener {
-            var tripStart = false
-            tripStart = status == "InProgress"
 
             startActivity(
                 Intent(

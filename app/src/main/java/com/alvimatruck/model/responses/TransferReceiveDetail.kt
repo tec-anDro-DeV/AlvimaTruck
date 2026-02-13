@@ -2,7 +2,7 @@ package com.alvimatruck.model.responses
 
 import com.alvimatruck.utils.Utils
 
-data class TransferReciveDetail(
+data class TransferReceiveDetail(
     val documentNo: String,
     val itemNo: String,
     val lineNo: Int,

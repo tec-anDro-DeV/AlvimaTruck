@@ -56,9 +56,8 @@ class DeliveryListAdapter(
             val dividerLine = productView.findViewById<View>(R.id.dividerLine)
 
             // ✅ Set Dynamic Data
-            tvProductName.text = "${item.description}"
-            tvProductDetails.text =
-                "Qty: ${item.quantity} ${item.unitOfMeasure} • SKU: ${item.no}"
+            tvProductName.text = item.description
+            tvProductDetails.text = "Qty: ${item.quantity} ${item.unitOfMeasure} • SKU: ${item.no}"
 
             // ✅ Hide Divider for Last Item
             if (i == list[position].postedSalesShipmentLines.size - 1) {

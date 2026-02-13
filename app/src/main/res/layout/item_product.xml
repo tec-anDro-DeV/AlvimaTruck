@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/sansregular"
         android:text="Qty: 1 Carton • SKU: FG-001"
-        android:textColor="@color/darkgray"
+        android:textColor="@color/darkGray"
         android:textSize="@dimen/_11ssp" />
 
     <View

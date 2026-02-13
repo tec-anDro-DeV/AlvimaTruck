@@ -40,8 +40,8 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
     var itemList: ArrayList<String> = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
 
-    var costCenterList: ArrayList<String> = ArrayList()
-    var profitCenterList: ArrayList<String> = ArrayList()
+    //    var costCenterList: ArrayList<String> = ArrayList()
+//    var profitCenterList: ArrayList<String> = ArrayList()
     var inTransitList: ArrayList<String> = ArrayList()
     var toLocationList: ArrayList<String> = ArrayList()
 

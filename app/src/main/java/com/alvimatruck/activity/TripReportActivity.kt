@@ -75,64 +75,58 @@ class TripReportActivity : BaseActivity<ActivityTripReportBinding>() {
             ProgressDialog.start(this@TripReportActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.tripReport(startDate, endDate)
-                .enqueue(object : Callback<JsonObject> {
-                    override fun onResponse(
-                        call: Call<JsonObject>,
-                        response: Response<JsonObject>
-                    ) {
-                        ProgressDialog.dismiss()
-                        if (response.code() == 401) {
-                            Utils.forceLogout(this@TripReportActivity)  // show dialog before logout
-                            return
-                        }
-                        if (response.isSuccessful) {
-                            try {
-                                Log.d("TAG", "onResponse: " + response.body().toString())
-                                binding.tvTotalSaleCash.text =
-                                    "ETB " + response.body()!!.getAsJsonObject("data")
-                                        .get("totalCashSales")
-                                        .toString()
-                                binding.tvTotalCollectionCash.text =
-                                    response.body()!!.getAsJsonObject("data")
-                                        .get("totalCashCollections")
-                                        .toString()
-                                binding.tvTotalVisit.text =
-                                    response.body()!!.getAsJsonObject("data").get("totalVisits")
-                                        .toString()
-                                binding.tvDistance.text =
-                                    response.body()!!.getAsJsonObject("data").get("totalDistanceKm")
-                                        .toString() + " Km"
-                                binding.tvRouteCompleted.text =
-                                    response.body()!!.getAsJsonObject("data").get("routesCompleted")
-                                        .toString()
-
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        } else {
-                            Toast.makeText(
-                                this@TripReportActivity,
-                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+            )!!.webservices.tripReport(startDate, endDate).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(
+                    call: Call<JsonObject>, response: Response<JsonObject>
+                ) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@TripReportActivity)  // show dialog before logout
+                        return
                     }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            binding.tvTotalSaleCash.text =
+                                "ETB " + response.body()!!.getAsJsonObject("data")
+                                    .get("totalCashSales").toString()
+                            binding.tvTotalCollectionCash.text =
+                                response.body()!!.getAsJsonObject("data")
+                                    .get("totalCashCollections").toString()
+                            binding.tvTotalVisit.text =
+                                response.body()!!.getAsJsonObject("data").get("totalVisits")
+                                    .toString()
+                            binding.tvDistance.text =
+                                response.body()!!.getAsJsonObject("data").get("totalDistanceKm")
+                                    .toString() + " Km"
+                            binding.tvRouteCompleted.text =
+                                response.body()!!.getAsJsonObject("data").get("routesCompleted")
+                                    .toString()
 
-                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
                         Toast.makeText(
                             this@TripReportActivity,
-                            getString(com.alvimatruck.R.string.api_fail_message),
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
                             Toast.LENGTH_SHORT
                         ).show()
-                        ProgressDialog.dismiss()
                     }
-                })
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@TripReportActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
         } else {
             Toast.makeText(
-                this,
-                getString(com.alvimatruck.R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
     }

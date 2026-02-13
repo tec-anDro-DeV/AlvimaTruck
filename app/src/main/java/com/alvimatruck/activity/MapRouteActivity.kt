@@ -191,7 +191,7 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
                 override fun onFinish() {
                     // Once animation finishes, check if we are zoomed in too far
                     if (mMap.cameraPosition.zoom > 18f) {
-                        // If zoom is 16, 17, 18+, force it back to 15
+                        // If Zoom is 16, 17, 18+, force it back to 15
                         mMap.animateCamera(CameraUpdateFactory.zoomTo(18f))
                     }
                 }

@@ -10,12 +10,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.databinding.SingleReceiveItemBinding
-import com.alvimatruck.model.responses.TransferReciveDetail
+import com.alvimatruck.model.responses.TransferReceiveDetail
 
 
 class TransferShipToReceiveListAdapter(
     private val mActivity: Activity,
-    private val list: ArrayList<TransferReciveDetail>,
+    private val list: ArrayList<TransferReceiveDetail>,
     private val onSelectionChanged: (Boolean) -> Unit
 ) : RecyclerView.Adapter<TransferShipToReceiveListAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = mActivity.layoutInflater
@@ -98,12 +98,6 @@ class TransferShipToReceiveListAdapter(
 
     override fun getItemCount(): Int {
         return list.size
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun selectAll(isSelected: Boolean) {
-        list.forEach { it.isSelected = isSelected }
-        notifyDataSetChanged()
     }
 
     class ViewHolder(var binding: SingleReceiveItemBinding) : RecyclerView.ViewHolder(

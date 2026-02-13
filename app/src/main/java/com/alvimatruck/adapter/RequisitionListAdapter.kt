@@ -57,18 +57,24 @@ class RequisitionListAdapter(
             locationList?.find { it.code == list[position].fromLocation }?.name ?: ""
 
 
-        if (list[position].status == "Open" || list[position].status == "Rejected") {
-            holder.binding.tvStatus.background = ContextCompat.getDrawable(
-                mActivity, R.drawable.bg_status_red
-            )
-        } else if (list[position].status == "Released") {
-            holder.binding.tvStatus.background = ContextCompat.getDrawable(
-                mActivity, R.drawable.bg_status_green
-            )
-        } else {
-            holder.binding.tvStatus.background = ContextCompat.getDrawable(
-                mActivity, R.drawable.bg_status_orange
-            )
+        when (list[position].status) {
+            "Open", "Rejected" -> {
+                holder.binding.tvStatus.background = ContextCompat.getDrawable(
+                    mActivity, R.drawable.bg_status_red
+                )
+            }
+
+            "Released" -> {
+                holder.binding.tvStatus.background = ContextCompat.getDrawable(
+                    mActivity, R.drawable.bg_status_green
+                )
+            }
+
+            else -> {
+                holder.binding.tvStatus.background = ContextCompat.getDrawable(
+                    mActivity, R.drawable.bg_status_orange
+                )
+            }
         }
 
         if (list[position].status != "Open") {

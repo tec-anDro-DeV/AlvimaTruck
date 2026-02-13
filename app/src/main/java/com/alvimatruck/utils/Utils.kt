@@ -11,20 +11,19 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
-import android.graphics.drawable.BitmapDrawable
 import android.location.Location
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.provider.OpenableColumns
-import android.view.View
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.drawable.toDrawable
 import com.alvimatruck.R
 import com.alvimatruck.activity.LoginActivity
 import com.alvimatruck.custom.SignalRManager
@@ -62,7 +61,7 @@ object Utils {
     private val ETHIOPIA_ANY_LOCAL_REGEX = Regex("^0\\d{9}$")
 
 
-    val MAX_FILE_SIZE_BYTES = 1 * 1024 * 1024
+    const val MAX_FILE_SIZE_BYTES = 1 * 1024 * 1024
 
     const val CAMERA_PERMISSION = Manifest.permission.CAMERA
     const val READ_MEDIA_IMAGES = Manifest.permission.READ_MEDIA_IMAGES
@@ -98,9 +97,7 @@ object Utils {
             0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight
         )
 
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888
-        )
+        val bitmap = createBitmap(vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
         val canvas = Canvas(bitmap)
         vectorDrawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
@@ -113,16 +110,6 @@ object Utils {
             stringArrayList.add("")
         }
         return stringArrayList
-    }
-
-    fun getDummyTransferList(counter: Int): ArrayList<TransferItem> {
-        val rawList = getDummyArrayList(counter)
-        val transferList = ArrayList<TransferItem>()
-        transferList.clear()
-        for (i in rawList) {
-            transferList.add(TransferItem(i))
-        }
-        return transferList
     }
 
     fun parseErrorMessage(response: Response<*>): String {
@@ -167,10 +154,10 @@ object Utils {
     }
 
 
-    fun hideSoftKeyboard(activity: Activity, view: View) {
-        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
+//    fun hideSoftKeyboard(activity: Activity, view: View) {
+//        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        imm.hideSoftInputFromWindow(view.windowToken, 0)
+//    }
 
 
     fun isOnline(context: Context): Boolean {
@@ -268,8 +255,7 @@ object Utils {
     }
 
     fun distanceInKm(
-        lat1: Double, lon1: Double,
-        lat2: Double, lon2: Double
+        lat1: Double, lon1: Double, lat2: Double, lon2: Double
     ): String {
         val result = FloatArray(1)
         Location.distanceBetween(lat1, lon1, lat2, lon2, result)
@@ -317,9 +303,9 @@ object Utils {
 
         if (!imageUrl.isNullOrEmpty()) {
             Glide.with(context).load(Constants.IMAGE_URL + imageUrl).circleCrop().error(
-                BitmapDrawable(
-                    context.resources, generateCircleLetterBitmap(context, firstChar.toString())
-                )
+                generateCircleLetterBitmap(
+                    context, firstChar.toString()
+                ).toDrawable(context.resources)
             ).into(imageView)
         } else {
             imageView.setImageBitmap(generateCircleLetterBitmap(context, firstChar.toString()))
@@ -327,7 +313,7 @@ object Utils {
     }
 
     fun generateCircleLetterBitmap(context: Context, letter: String, size: Int = 120): Bitmap {
-        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val bitmap = createBitmap(size, size)
         val canvas = Canvas(bitmap)
 
         val paintCircle = Paint().apply {

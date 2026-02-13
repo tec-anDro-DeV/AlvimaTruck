@@ -114,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:button="@drawable/checkbox_selector"
                 android:fontFamily="@font/sanssemibold"
-                android:paddingStart="@dimen/_5sdp"
+                android:paddingHorizontal="@dimen/_5sdp"
                 android:text="Remember me"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />

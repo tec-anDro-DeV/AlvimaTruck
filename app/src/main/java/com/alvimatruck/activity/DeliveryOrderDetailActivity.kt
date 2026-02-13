@@ -116,7 +116,7 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                 val dividerLine = productView.findViewById<View>(R.id.dividerLine)
 
                 // ✅ Set Dynamic Data
-                tvProductName.text = "${item.description}"
+                tvProductName.text = item.description
                 tvProductDetails.text =
                     "Qty: ${item.quantity} ${item.unitOfMeasure} • SKU: ${item.no}"
 
@@ -131,11 +131,9 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
         }
 
         binding.tvConfirmDelivery.setOnClickListener {
-            val intent =
-                Intent(this, ConfirmDeliveryActivity::class.java).putExtra(
-                    Constants.OrderID,
-                    orderDetail!!.orderNo
-                )
+            val intent = Intent(this, ConfirmDeliveryActivity::class.java).putExtra(
+                Constants.OrderID, orderDetail!!.orderNo
+            )
             startForResult.launch(intent)
         }
 
@@ -547,9 +545,7 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.startDriverTrip(
                 DeliveryStartRequest(
-                    orderDetail!!.orderNo,
-                    orderDetail!!.driverID,
-                    startKm.toInt()
+                    orderDetail!!.orderNo, orderDetail!!.driverID, startKm.toInt()
                 )
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {

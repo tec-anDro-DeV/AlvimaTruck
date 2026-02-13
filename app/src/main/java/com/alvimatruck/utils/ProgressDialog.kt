@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import androidx.core.graphics.drawable.toDrawable
 import com.alvimatruck.R
 
 
@@ -16,7 +16,7 @@ object ProgressDialog {
                 progressDialog = Dialog(context)
                 progressDialog!!.setCancelable(false)
                 progressDialog!!.setCanceledOnTouchOutside(false)
-                progressDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                progressDialog!!.window!!.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
                 progressDialog!!.setContentView(R.layout.dialog_view_progress)
                 progressDialog!!.show()
 

@@ -18,7 +18,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_marginTop="@dimen/_28sdp"
         android:fontFamily="@font/sansbold"
         android:text="No Record Found"
@@ -28,10 +27,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_marginTop="@dimen/_4sdp"
         android:fontFamily="@font/sansregular"
         android:text="There is no data to show you right now"
-        android:textColor="@color/darkgray"
+        android:textColor="@color/darkGray"
         android:textSize="@dimen/_12ssp" />
 </LinearLayout>

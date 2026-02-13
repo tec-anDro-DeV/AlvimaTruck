@@ -86,7 +86,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             handleBackPressed()
         }
         binding.rlChoosePhoto.setOnClickListener {
-            openImageChooseDailog()
+            openImageChooseDialog()
         }
 
 
@@ -501,7 +501,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
     }
 
-    private fun openImageChooseDailog() {
+    private fun openImageChooseDialog() {
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_image_selection, null)
 
@@ -638,9 +638,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(
-                this,
-                permissionsNeeded.toTypedArray(),
-                Constants.CameraPermissionCode
+                this, permissionsNeeded.toTypedArray(), Constants.CameraPermissionCode
             )
         } else {
             openCamera()
@@ -677,9 +675,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(
-                this,
-                permissionsNeeded.toTypedArray(),
-                Constants.GalleryPermissionCode
+                this, permissionsNeeded.toTypedArray(), Constants.GalleryPermissionCode
             )
         } else {
             openGallery()

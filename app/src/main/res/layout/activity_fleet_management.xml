@@ -199,7 +199,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sansregular"
                             android:text="Request type"
-                            android:textColor="@color/darkgray"
+                            android:textColor="@color/darkGray"
                             android:textSize="@dimen/_12ssp" />
 
                         <TextView
@@ -225,14 +225,13 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/sansregular"
                             android:text="Vendor"
-                            android:textColor="@color/darkgray"
+                            android:textColor="@color/darkGray"
                             android:textSize="@dimen/_12ssp" />
 
                         <TextView
                             android:id="@+id/tvVendorDetails"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
                             android:layout_weight="2"
                             android:fontFamily="@font/sansbold"
                             android:text="@{detail.repairLogVendorDetail}"
@@ -254,7 +253,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sansregular"
                             android:text="Description"
-                            android:textColor="@color/darkgray"
+                            android:textColor="@color/darkGray"
                             android:textSize="@dimen/_12ssp" />
 
                         <TextView
@@ -280,7 +279,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sansregular"
                             android:text="Requested Date"
-                            android:textColor="@color/darkgray"
+                            android:textColor="@color/darkGray"
                             android:textSize="@dimen/_12ssp" />
 
                         <TextView
@@ -308,7 +307,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
                         android:text="Total Cost"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
@@ -334,7 +333,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
                         android:text="Incident Type"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView

@@ -2,14 +2,12 @@ package com.alvimatruck.activity
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.DeliveryRouteListAdapter
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityDeliveryTripRouteBinding
 import com.alvimatruck.interfaces.DeliveryRouteClickListener
-import com.alvimatruck.model.responses.RouteDetail
 import com.alvimatruck.utils.Utils
 import com.intuit.sdp.R
 
@@ -17,7 +15,7 @@ class DeliveryTripRouteActivity : BaseActivity<ActivityDeliveryTripRouteBinding>
     DeliveryRouteClickListener {
     private var routeListAdapter: DeliveryRouteListAdapter? = null
 
-    var routeList: ArrayList<RouteDetail>? = ArrayList()
+//    var routeList: ArrayList<RouteDetail>? = ArrayList()
 
 
     override fun inflateBinding(): ActivityDeliveryTripRouteBinding {
@@ -133,13 +131,13 @@ class DeliveryTripRouteActivity : BaseActivity<ActivityDeliveryTripRouteBinding>
     }
 
 
-    private val startForResult = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            routesListAPI()
-        }
-    }
+//    private val startForResult = registerForActivityResult(
+//        ActivityResultContracts.StartActivityForResult()
+//    ) { result ->
+//        if (result.resultCode == RESULT_OK) {
+//            routesListAPI()
+//        }
+//    }
 
     override fun onRouteClick(routeDetail: String) {
 //        val intent = Intent(this, RouteDetailActivity::class.java).putExtra(

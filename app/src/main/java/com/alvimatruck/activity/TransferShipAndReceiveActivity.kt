@@ -9,7 +9,7 @@ import com.alvimatruck.databinding.ActivityTransferShipAndReciveBinding
 import com.alvimatruck.utils.Utils
 
 class TransferShipAndReceiveActivity : BaseActivity<ActivityTransferShipAndReciveBinding>() {
-    private var transferShipAndReciveAdapter: TransferShipAndReceiveListAdapter? = null
+    private var transferShipAndReceiveListAdapter: TransferShipAndReceiveListAdapter? = null
 
     override fun inflateBinding(): ActivityTransferShipAndReciveBinding {
         return ActivityTransferShipAndReciveBinding.inflate(layoutInflater)
@@ -32,10 +32,10 @@ class TransferShipAndReceiveActivity : BaseActivity<ActivityTransferShipAndReciv
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
 
-        transferShipAndReciveAdapter = TransferShipAndReceiveListAdapter(
+        transferShipAndReceiveListAdapter = TransferShipAndReceiveListAdapter(
             this@TransferShipAndReceiveActivity, Utils.getDummyArrayList(5)
         )
-        binding.rvTransferList.adapter = transferShipAndReciveAdapter
+        binding.rvTransferList.adapter = transferShipAndReceiveListAdapter
 
     }
 }

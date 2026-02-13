@@ -93,8 +93,7 @@ class SalesReportActivity : BaseActivity<ActivitySalesReportBinding>() {
             )!!.webservices.salesReportList(startDate, endDate)
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
-                        call: Call<JsonObject>,
-                        response: Response<JsonObject>
+                        call: Call<JsonObject>, response: Response<JsonObject>
                     ) {
                         ProgressDialog.dismiss()
                         if (response.code() == 401) {
@@ -110,12 +109,11 @@ class SalesReportActivity : BaseActivity<ActivitySalesReportBinding>() {
                                 } as ArrayList<SalesReportDetail>
 
                                 if (salesList!!.isNotEmpty()) {
-                                    binding.rvItems.layoutManager =
-                                        LinearLayoutManager(
-                                            this@SalesReportActivity,
-                                            LinearLayoutManager.VERTICAL,
-                                            false
-                                        )
+                                    binding.rvItems.layoutManager = LinearLayoutManager(
+                                        this@SalesReportActivity,
+                                        LinearLayoutManager.VERTICAL,
+                                        false
+                                    )
 
 
                                     salesReportListAdapter = SalesReportListAdapter(
@@ -146,7 +144,7 @@ class SalesReportActivity : BaseActivity<ActivitySalesReportBinding>() {
                     override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                         Toast.makeText(
                             this@SalesReportActivity,
-                            getString(com.alvimatruck.R.string.api_fail_message),
+                            getString(R.string.api_fail_message),
                             Toast.LENGTH_SHORT
                         ).show()
                         ProgressDialog.dismiss()
@@ -154,9 +152,7 @@ class SalesReportActivity : BaseActivity<ActivitySalesReportBinding>() {
                 })
         } else {
             Toast.makeText(
-                this,
-                getString(com.alvimatruck.R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
     }

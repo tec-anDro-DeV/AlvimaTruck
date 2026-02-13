@@ -43,7 +43,7 @@
         android:background="@drawable/bg_white_top_curve"
         android:clipToOutline="true">
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/mapFragment"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"

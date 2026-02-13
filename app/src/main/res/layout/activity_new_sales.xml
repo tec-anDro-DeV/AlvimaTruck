@@ -338,7 +338,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
                         android:text="Order Date"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
@@ -367,7 +367,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
                         android:text="Products Details"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp" />
 
                     <TextView
@@ -376,7 +376,7 @@
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansregular"
                         android:text="Price (ETB)"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
 
@@ -415,7 +415,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansregular"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp"
                         tools:text="$1,171.19" />
                 </RelativeLayout>
@@ -442,7 +442,7 @@
                 <!--                        android:layout_toEndOf="@+id/tvDiscountLabel"-->
                 <!--                        android:fontFamily="@font/sansregular"-->
                 <!--                        android:text=" (30%)"-->
-                <!--                        android:textColor="@color/darkgray"-->
+                <!--                        android:textColor="@color/darkGray"-->
                 <!--                        android:textSize="@dimen/_12ssp" />-->
 
                 <!--                    <TextView-->
@@ -451,7 +451,7 @@
                 <!--                        android:layout_alignParentEnd="true"-->
                 <!--                        android:fontFamily="@font/sansregular"-->
                 <!--                        android:text="-$351.35"-->
-                <!--                        android:textColor="@color/darkgray"-->
+                <!--                        android:textColor="@color/darkGray"-->
                 <!--                        android:textSize="@dimen/_12ssp" />-->
                 <!--                </RelativeLayout>-->
 
@@ -474,7 +474,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansregular"
-                        android:textColor="@color/darkgray"
+                        android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp"
                         tools:text="+ $117.11" />
                 </RelativeLayout>

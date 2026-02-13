@@ -14,7 +14,6 @@ import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
-import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.alvimatruck.R
@@ -27,12 +26,12 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import kotlin.math.abs
 
 class LocationService : Service() {
 
     private lateinit var fusedClient: FusedLocationProviderClient
     private lateinit var locationManager: LocationManager
-    private lateinit var wakeLock: PowerManager.WakeLock
 
     private var fusedCallback: LocationCallback? = null
     private var gpsListener: LocationListener? = null
@@ -45,6 +44,7 @@ class LocationService : Service() {
 
 
     private var liveCallback: ((Double, Double) -> Unit)? = null
+    private var lastSentTime = 0L
 
 
     override fun onBind(i: Intent?) = LocalBinder()
@@ -62,12 +62,6 @@ class LocationService : Service() {
         thread.start()
         serviceLooper = thread.looper
         handler = Handler(serviceLooper!!)
-
-        // Keep CPU awake even if screen OFF (offline tracking)
-        wakeLock = (getSystemService(POWER_SERVICE) as PowerManager).newWakeLock(
-            PowerManager.PARTIAL_WAKE_LOCK, "Alvima:GPS_LOCK"
-        )
-        wakeLock.acquire()
 
         //startNotification()
         fusedClient = LocationServices.getFusedLocationProviderClient(this)
@@ -98,7 +92,7 @@ class LocationService : Service() {
             update(it.latitude, it.longitude)
         }
 
-        // 2️⃣ Fused Provider (Fast when internet/wifi available)
+        // 2️⃣ Fused Provider (Fast when internet/Wi-Fi available)
         val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000L)
             .setMinUpdateIntervalMillis(2500L).setGranularity(Granularity.GRANULARITY_FINE)
             .setWaitForAccurateLocation(false).build()
@@ -124,14 +118,18 @@ class LocationService : Service() {
     private fun update(lat: Double, lon: Double) {
         Log.d("GPS", "Lat=$lat  Lon=$lon")
 
+        val movedEnough = abs(lat - lastLat) > 0.0001 || abs(lon - lastLon) > 0.0001
+
+        val now = System.currentTimeMillis()
+        val timeOk = now - lastSentTime > 5000   // 5 sec gap
+
         // ✅ Send only if location changed enough (avoid spam)
-//        if (abs(lat - lastLat) > 0.0001 ||
-//            abs(lon - lastLon) > 0.0001
-//        ) {
+        if (movedEnough && timeOk) {
 
             // ✅ Save last values
             lastLat = lat
             lastLon = lon
+            lastSentTime = now
 
             // ✅ Store globally
             AlvimaTuckApplication.latitude = lat
@@ -142,13 +140,11 @@ class LocationService : Service() {
             // WebSocketManager.sendLocation(lat, lon)
 
             SignalRManager.sendLocation(
-                driverId = DriverVanNo,
-                lat = lat,
-                lon = lon
+                driverId = DriverVanNo, lat = lat, lon = lon
             )
 
             Log.d("GPS", "✅ Location Sent to Server")
-        //   }
+        }
 
 
         Handler(Looper.getMainLooper()).post { liveCallback?.invoke(lat, lon) }
@@ -165,8 +161,8 @@ class LocationService : Service() {
         val pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         val n = NotificationCompat.Builder(this, id).setSmallIcon(R.drawable.logo)
-            .setContentTitle("GPS Active").setContentText("Tracking Location…")
-            .setOngoing(true).setContentIntent(pi).build()
+            .setContentTitle("GPS Active").setContentText("Tracking Location…").setOngoing(true)
+            .setContentIntent(pi).build()
 
         if (Build.VERSION.SDK_INT >= 34) startForeground(
             1, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
@@ -177,7 +173,6 @@ class LocationService : Service() {
     override fun onDestroy() {
         fusedCallback?.let { fusedClient.removeLocationUpdates(it) }
         gpsListener?.let { locationManager.removeUpdates(it) }
-        if (wakeLock.isHeld) wakeLock.release()
         serviceLooper?.quit()
         super.onDestroy()
     }

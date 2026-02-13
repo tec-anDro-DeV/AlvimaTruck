@@ -456,7 +456,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                             ).show()
                             isChange = true
                             binding.tvVanStartKilometer.text = startKm
-                            binding.tvStatus.text = "InProgress"
+                            binding.tvStatus.text = getString(R.string.inprogress)
                             status = "InProgress"
                             Utils.isTripInProgress = true
                             binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)

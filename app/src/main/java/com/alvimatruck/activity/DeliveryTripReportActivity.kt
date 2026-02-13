@@ -145,8 +145,7 @@ class DeliveryTripReportActivity : BaseActivity<ActivityDeliveryTripReportBindin
             )!!.webservices.driverTripReport(startDate, endDate)
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
-                        call: Call<JsonObject>,
-                        response: Response<JsonObject>
+                        call: Call<JsonObject>, response: Response<JsonObject>
                     ) {
                         ProgressDialog.dismiss()
                         if (response.code() == 401) {
@@ -158,11 +157,9 @@ class DeliveryTripReportActivity : BaseActivity<ActivityDeliveryTripReportBindin
                                 Log.d("TAG", "onResponse: " + response.body().toString())
                                 binding.tvTotalDeliveryCompleted.text =
                                     response.body()!!.getAsJsonObject("data")
-                                        .get("totalDeliveriesCompleted")
-                                        .toString()
+                                        .get("totalDeliveriesCompleted").toString()
                                 binding.tvDistance.text =
-                                    response.body()!!.getAsJsonObject("data")
-                                        .get("totalDistanceKm")
+                                    response.body()!!.getAsJsonObject("data").get("totalDistanceKm")
                                         .toString() + "Km"
 
 
@@ -181,7 +178,7 @@ class DeliveryTripReportActivity : BaseActivity<ActivityDeliveryTripReportBindin
                     override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                         Toast.makeText(
                             this@DeliveryTripReportActivity,
-                            getString(com.alvimatruck.R.string.api_fail_message),
+                            getString(R.string.api_fail_message),
                             Toast.LENGTH_SHORT
                         ).show()
                         ProgressDialog.dismiss()
@@ -189,9 +186,7 @@ class DeliveryTripReportActivity : BaseActivity<ActivityDeliveryTripReportBindin
                 })
         } else {
             Toast.makeText(
-                this,
-                getString(com.alvimatruck.R.string.please_check_your_internet_connection),
-                Toast.LENGTH_SHORT
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
     }

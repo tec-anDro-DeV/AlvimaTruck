@@ -160,10 +160,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.MapPolygonActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.MapRouteActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

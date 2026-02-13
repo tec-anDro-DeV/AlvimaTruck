@@ -13,7 +13,7 @@ import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityTransferShipToReceiveBinding
 import com.alvimatruck.model.request.ReceiveItemRequest
-import com.alvimatruck.model.responses.TransferReciveDetail
+import com.alvimatruck.model.responses.TransferReceiveDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
@@ -27,9 +27,9 @@ import retrofit2.Response
 class TransferShipToReceiveActivity : BaseActivity<ActivityTransferShipToReceiveBinding>() {
     private var transferShipToReceiveListAdapter: TransferShipToReceiveListAdapter? = null
 
-    var transferList: ArrayList<TransferReciveDetail>? = ArrayList()
+    var transferList: ArrayList<TransferReceiveDetail>? = ArrayList()
 
-    var filterList: ArrayList<TransferReciveDetail>? = ArrayList()
+    var filterList: ArrayList<TransferReceiveDetail>? = ArrayList()
 
     override fun inflateBinding(): ActivityTransferShipToReceiveBinding {
         return ActivityTransferShipToReceiveBinding.inflate(layoutInflater)
@@ -92,7 +92,7 @@ class TransferShipToReceiveActivity : BaseActivity<ActivityTransferShipToReceive
             } else {
                 if (Utils.isOnline(this)) {
                     ProgressDialog.start(this@TransferShipToReceiveActivity)
-                    confirmItemPostAPI(selectedOrders as ArrayList<TransferReciveDetail>, 0)
+                    confirmItemPostAPI(selectedOrders as ArrayList<TransferReceiveDetail>, 0)
                 } else {
                     Toast.makeText(
                         this,
@@ -107,8 +107,7 @@ class TransferShipToReceiveActivity : BaseActivity<ActivityTransferShipToReceive
     }
 
     private fun confirmItemPostAPI(
-        selectedOrderNumbers: ArrayList<TransferReciveDetail>,
-        index: Int
+        selectedOrderNumbers: ArrayList<TransferReceiveDetail>, index: Int
     ) {
         ApiClient.getRestClient(
             Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
@@ -177,71 +176,68 @@ class TransferShipToReceiveActivity : BaseActivity<ActivityTransferShipToReceive
             ProgressDialog.start(this@TransferShipToReceiveActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.transferLines()
-                .enqueue(object : Callback<JsonObject> {
-                    override fun onResponse(
-                        call: Call<JsonObject>, response: Response<JsonObject>
-                    ) {
-                        ProgressDialog.dismiss()
-                        if (response.code() == 401) {
-                            Utils.forceLogout(this@TransferShipToReceiveActivity)  // show dialog before logout
-                            return
-                        }
-                        if (response.isSuccessful) {
-                            try {
-                                Log.d("TAG", "onResponse: " + response.body().toString())
-                                transferList = response.body()!!.getAsJsonArray("data").map {
-                                    Gson().fromJson(it, TransferReciveDetail::class.java)
-                                } as ArrayList<TransferReciveDetail>
-                                filterList = ArrayList(transferList!!)
-                                if (filterList!!.isNotEmpty()) {
-                                    binding.rvTransferList.layoutManager = LinearLayoutManager(
-                                        this@TransferShipToReceiveActivity,
-                                        LinearLayoutManager.VERTICAL,
-                                        false
-                                    )
-
-
-                                    transferShipToReceiveListAdapter =
-                                        TransferShipToReceiveListAdapter(
-                                            this@TransferShipToReceiveActivity, filterList!!
-                                        ) { allSelected ->
-
-                                        }
-                                    binding.rvTransferList.adapter =
-                                        transferShipToReceiveListAdapter
-
-
-                                    binding.llData.visibility = View.VISIBLE
-                                    binding.llNoData.root.visibility = View.GONE
-
-                                } else {
-                                    binding.llData.visibility = View.GONE
-                                    binding.llNoData.root.visibility = View.VISIBLE
-                                }
-
-
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        } else {
-                            Toast.makeText(
-                                this@TransferShipToReceiveActivity,
-                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+            )!!.webservices.transferLines().enqueue(object : Callback<JsonObject> {
+                override fun onResponse(
+                    call: Call<JsonObject>, response: Response<JsonObject>
+                ) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@TransferShipToReceiveActivity)  // show dialog before logout
+                        return
                     }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            transferList = response.body()!!.getAsJsonArray("data").map {
+                                Gson().fromJson(it, TransferReceiveDetail::class.java)
+                            } as ArrayList<TransferReceiveDetail>
+                            filterList = ArrayList(transferList!!)
+                            if (filterList!!.isNotEmpty()) {
+                                binding.rvTransferList.layoutManager = LinearLayoutManager(
+                                    this@TransferShipToReceiveActivity,
+                                    LinearLayoutManager.VERTICAL,
+                                    false
+                                )
 
-                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+
+                                transferShipToReceiveListAdapter = TransferShipToReceiveListAdapter(
+                                    this@TransferShipToReceiveActivity, filterList!!
+                                ) { allSelected ->
+
+                                }
+                                binding.rvTransferList.adapter = transferShipToReceiveListAdapter
+
+
+                                binding.llData.visibility = View.VISIBLE
+                                binding.llNoData.root.visibility = View.GONE
+
+                            } else {
+                                binding.llData.visibility = View.GONE
+                                binding.llNoData.root.visibility = View.VISIBLE
+                            }
+
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
                         Toast.makeText(
                             this@TransferShipToReceiveActivity,
-                            getString(com.alvimatruck.R.string.api_fail_message),
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
                             Toast.LENGTH_SHORT
                         ).show()
-                        ProgressDialog.dismiss()
                     }
-                })
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@TransferShipToReceiveActivity,
+                        getString(com.alvimatruck.R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
         } else {
             Toast.makeText(
                 this,

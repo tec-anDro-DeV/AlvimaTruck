@@ -301,7 +301,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         }
     }
 
-    private fun showFingerprintPrompt(username: String, password: String, vannumber: String) {
+    private fun showFingerprintPrompt(username: String, password: String, vanNumber: String) {
         val executor = ContextCompat.getMainExecutor(this)
         val promptInfo = BiometricPrompt.PromptInfo.Builder().setTitle("Fingerprint Authentication")
             .setSubtitle("Use your fingerprint to log in").setNegativeButtonText("Cancel").build()
@@ -311,7 +311,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     if (Utils.isOnline(this@LoginActivity)) {
-                        login(username, password, vannumber)
+                        login(username, password, vanNumber)
                     } else {
                         Toast.makeText(
                             this@LoginActivity,
@@ -352,14 +352,14 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     }
 
 
-    fun login(username: String, password: String, vannumber: String) {
+    fun login(username: String, password: String, vanNumber: String) {
 
         ProgressDialog.start(this@LoginActivity)
         ApiClient.getRestClient(
             Constants.BASE_URL, ""
         )!!.webservices.login(
             LoginRequest(
-                password, username, vannumber
+                password, username, vanNumber
             )
         ).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -397,7 +397,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                                 SharedHelper.putKey(
                                     this@LoginActivity, Constants.Password, password
                                 )
-                                SharedHelper.putKey(this@LoginActivity, Constants.VanNo, vannumber)
+                                SharedHelper.putKey(this@LoginActivity, Constants.VanNo, vanNumber)
                                 SharedHelper.putKey(this@LoginActivity, Constants.RememberMe, true)
                             }
 
@@ -423,7 +423,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                             }
                             if (!fingerprintEnabled && canAuthenticate == BiometricManager.BIOMETRIC_SUCCESS) {
                                 // First-time login and hardware supports fingerprint → ask user
-                                askEnableFingerprint(username, password, vannumber)
+                                askEnableFingerprint(username, password, vanNumber)
                             } else {
                                 SharedHelper.putKey(
                                     this@LoginActivity, Constants.IS_LOGIN, true
@@ -452,7 +452,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         })
     }
 
-    private fun askEnableFingerprint(username: String, password: String, vannumber: String) {
+    private fun askEnableFingerprint(username: String, password: String, vanNumber: String) {
         val biometricManager = BiometricManager.from(this)
         if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {
             val inflater = layoutInflater
@@ -485,7 +485,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 SharedHelper.putKey(this, Constants.FingerPrintEnabled, true)
                 SharedHelper.putKey(this, Constants.Username, username)
                 SharedHelper.putKey(this, Constants.Password, password)
-                SharedHelper.putKey(this, Constants.VanNo, vannumber)
+                SharedHelper.putKey(this, Constants.VanNo, vanNumber)
                 navigateToNextScreen()
             }
 

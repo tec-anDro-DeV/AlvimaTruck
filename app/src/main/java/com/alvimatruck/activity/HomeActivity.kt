@@ -245,7 +245,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                             binding.tvTodayVisit.text =
                                 dashboardDetails!!.totalCustomerVisits.toString()
                             binding.tvTotalSaleCash.text =
-                                "ETB " + dashboardDetails!!.todaySalesSum.toDouble().to2Decimal()
+                                "ETB " + dashboardDetails!!.todaySalesSum.to2Decimal()
                             binding.tvTotalCollectionCash.text =
                                 dashboardDetails!!.todayCollectionsCount.toString()
 
@@ -264,9 +264,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
                 override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
                     Toast.makeText(
-                        this@HomeActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
+                        this@HomeActivity, getString(R.string.api_fail_message), Toast.LENGTH_SHORT
                     ).show()
                     ProgressDialog.dismiss()
                 }

@@ -13,8 +13,9 @@
 
         <TextView
             android:id="@+id/tvUsername"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/rlSync"
             android:fontFamily="@font/sanssemibold"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
@@ -254,9 +255,9 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
                     android:text="0"
-                    tools:text="34"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_21ssp" />
+                    android:textSize="@dimen/_21ssp"
+                    tools:text="34" />
 
 
             </LinearLayout>
@@ -295,13 +296,13 @@
 
                 <TextView
                     android:id="@+id/tvPendingOrder"
-                    android:text="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    tools:text="10"
+                    android:text="0"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_21ssp" />
+                    android:textSize="@dimen/_21ssp"
+                    tools:text="10" />
 
 
             </LinearLayout>
@@ -343,13 +344,13 @@
 
             <TextView
                 android:id="@+id/tvDeliveredOrder"
-                android:text="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sanssemibold"
-                tools:text="24"
+                android:text="0"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_21ssp" />
+                android:textSize="@dimen/_21ssp"
+                tools:text="24" />
 
         </LinearLayout>
 
