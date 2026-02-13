@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Fuel Refill Request"
+            android:text="@string/fuel_refill_request2"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sanssemibold"
-            android:text="Fuel Amount*"
+            android:text="@string/fuel_amount"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
@@ -61,7 +61,7 @@
             android:background="@drawable/input_bg"
             android:fontFamily="@font/sansregular"
             android:gravity="center_vertical"
-            android:hint="Enter Fuel Amount"
+            android:hint="@string/enter_fuel_amount"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"
             android:paddingHorizontal="@dimen/_10sdp"
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_14sdp"
             android:fontFamily="@font/sanssemibold"
-            android:text="Photo (Meter/Receipt)*"
+            android:text="@string/photo_meter_receipt"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
@@ -139,7 +139,7 @@
                 android:fontFamily="@font/sansbold"
                 android:gravity="center"
                 android:padding="@dimen/_14sdp"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp" />
 
@@ -153,7 +153,7 @@
                 android:fontFamily="@font/sansbold"
                 android:gravity="center"
                 android:padding="@dimen/_14sdp"
-                android:text="Submit"
+                android:text="@string/submit"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>

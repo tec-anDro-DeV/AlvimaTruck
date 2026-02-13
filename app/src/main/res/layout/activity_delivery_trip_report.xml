@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Trip Report"
+            android:text="@string/trip_report"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -57,7 +57,7 @@
                 android:background="@drawable/input_bg"
                 android:fontFamily="@font/sansregular"
                 android:gravity="center_vertical"
-                android:hint="Custom Date"
+                android:hint="@string/custom_date"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/hintGary"
@@ -125,7 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Total"
+                        android:text="@string/total"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
@@ -135,7 +135,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/sansbold"
                         android:maxLines="1"
-                        android:text=" Deliveries Completed"
+                        android:text="@string/deliveries_completed"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
@@ -166,7 +166,7 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/sansbold"
                     android:maxLines="1"
-                    android:text="Distance"
+                    android:text="@string/distance"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 

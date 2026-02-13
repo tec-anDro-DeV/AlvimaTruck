@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sansbold"
-                android:text="Van"
+                android:text="@string/van"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp" />
@@ -91,7 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Shipment Status"
+                    android:text="@string/shipment_status"
                     android:textAlignment="center"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
@@ -100,7 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
-                    android:text="Open"
+                    android:text="@string/open"
                     android:textAlignment="center"
                     android:textColor="@color/red"
                     android:textSize="@dimen/_11ssp" />
@@ -121,7 +121,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Received Status"
+                    android:text="@string/received_status"
                     android:textAlignment="center"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
@@ -130,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
-                    android:text="Released"
+                    android:text="@string/released"
                     android:textAlignment="center"
                     android:textColor="@color/green"
                     android:textSize="@dimen/_11ssp" />

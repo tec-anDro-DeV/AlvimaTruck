@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Delivery List"
+            android:text="@string/delivery_list"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>

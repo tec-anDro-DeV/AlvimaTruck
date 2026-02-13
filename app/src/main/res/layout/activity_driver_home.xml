@@ -93,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Delivery"
+                    android:text="@string/delivery"
 
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp" />
@@ -115,7 +115,7 @@
                     android:autoSizeTextType="uniform"
                     android:fontFamily="@font/sanssemibold"
                     android:maxLines="2"
-                    android:text="Trip Report"
+                    android:text="@string/trip_report"
 
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp" />
@@ -236,7 +236,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="No. of Total Assigned"
+                        android:text="@string/no_of_total_assigned"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_9ssp" />
 
@@ -244,7 +244,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansbold"
-                        android:text="Delivery Order"
+                        android:text="@string/delivery_order"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10ssp" />
                 </LinearLayout>
@@ -280,7 +280,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Pending No. of"
+                        android:text="@string/pending_no_of"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_9ssp" />
 
@@ -288,7 +288,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansbold"
-                        android:text="Delivery Order"
+                        android:text="@string/delivery_order"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10ssp" />
                 </LinearLayout>
@@ -327,7 +327,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="No. of Successfully"
+                    android:text="@string/no_of_successfully"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10ssp" />
 
@@ -337,7 +337,7 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/sansbold"
                     android:maxLines="1"
-                    android:text="Delivery order"
+                    android:text="@string/delivery_order"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
             </LinearLayout>

@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Delivery Details"
+            android:text="@string/delivery_details"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -74,7 +74,7 @@
                         android:layout_marginStart="@dimen/_11sdp"
                         android:layout_toEndOf="@id/ivStock"
                         android:fontFamily="@font/sansregular"
-                        android:text="Delivery ID"
+                        android:text="@string/delivery_id"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
@@ -100,7 +100,7 @@
                         android:background="@drawable/bg_status_red"
                         android:fontFamily="@font/sanssemibold"
                         android:paddingVertical="@dimen/_5sdp"
-                        android:text="Open"
+                        android:text="@string/open"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_11ssp" />
@@ -147,7 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
-                    android:text="Delivery Distance"
+                    android:text="@string/delivery_distance"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
@@ -171,7 +171,7 @@
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_toEndOf="@id/icDistance"
                         android:fontFamily="@font/sansregular"
-                        android:text="Distance"
+                        android:text="@string/distance"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
@@ -206,7 +206,7 @@
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_toEndOf="@id/icDistance1"
                         android:fontFamily="@font/sansregular"
-                        android:text="Van Start Kilometer"
+                        android:text="@string/van_start_kilometer"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
@@ -240,7 +240,7 @@
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_toEndOf="@id/icDistance2"
                         android:fontFamily="@font/sansregular"
-                        android:text="Van End Kilometer"
+                        android:text="@string/van_end_kilometer"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
@@ -264,7 +264,7 @@
                 android:background="@drawable/bg_status_blue"
                 android:fontFamily="@font/sansbold"
                 android:padding="@dimen/_5sdp"
-                android:text="View Customer on Map"
+                android:text="@string/view_customer_on_map"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12ssp" />
@@ -281,7 +281,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Customer Details"
+                    android:text="@string/customer_details"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
@@ -315,7 +315,7 @@
                         android:layout_marginStart="@dimen/_11sdp"
                         android:layout_toEndOf="@id/ivUser"
                         android:fontFamily="@font/sansregular"
-                        android:text="Contact Number : "
+                        android:text="@string/contact_number"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
@@ -342,7 +342,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
-                    android:text="Address"
+                    android:text="@string/address"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
@@ -375,7 +375,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Order Date"
+                        android:text="@string/order_date"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp" />
 
@@ -385,9 +385,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansbold"
-                        android:text="15 Dec 2025"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="15 Dec 2025" />
                 </RelativeLayout>
 
                 <View
@@ -400,7 +400,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Products Details"
+                    android:text="@string/products_details"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
@@ -423,7 +423,7 @@
                 android:fontFamily="@font/sansbold"
                 android:gravity="center"
                 android:padding="@dimen/_14sdp"
-                android:text="Start Trip"
+                android:text="@string/start_trip"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp" />
 
@@ -444,7 +444,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Visited"
+                    android:text="@string/visited"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
 
@@ -461,7 +461,7 @@
                     android:gravity="center"
                     android:maxLines="1"
                     android:padding="@dimen/_14sdp"
-                    android:text="Confirm Delivery"
+                    android:text="@string/confirm_delivery"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp" />
             </LinearLayout>

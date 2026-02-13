@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Incident Reporting"
+            android:text="@string/incident_reporting2"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_7sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Incident Type*"
+                android:text="@string/incident_type2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -67,7 +67,7 @@
                 android:background="@drawable/input_bg"
                 android:fontFamily="@font/sansregular"
                 android:gravity="center_vertical"
-                android:hint="Choose"
+                android:hint="@string/choose"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/hintGary"
@@ -80,7 +80,7 @@
                 android:layout_marginHorizontal="@dimen/_7sdp"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Description*"
+                android:text="@string/description2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -94,7 +94,7 @@
                 android:background="@drawable/input_bg"
                 android:fontFamily="@font/sansregular"
                 android:gravity="top"
-                android:hint="Enter Description"
+                android:hint="@string/enter_description"
                 android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
                 android:minLines="4"
@@ -113,7 +113,7 @@
                     android:layout_marginHorizontal="@dimen/_7sdp"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Incident Photos*"
+                    android:text="@string/incident_photos"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -124,7 +124,7 @@
                     android:layout_marginHorizontal="@dimen/_7sdp"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sansregular"
-                    android:text="Max 5 Photo"
+                    android:text="@string/max_5_photo"
                     android:textColor="@color/orange"
                     android:textSize="@dimen/_9ssp" />
             </RelativeLayout>
@@ -167,7 +167,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
 
@@ -181,7 +181,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Submit"
+                    android:text="@string/submit"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
             </LinearLayout>

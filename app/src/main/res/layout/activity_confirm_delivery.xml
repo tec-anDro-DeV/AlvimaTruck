@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Confirm Delivery"
+            android:text="@string/confirm_delivery"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sanssemibold"
-            android:text="Delivery photo (parcel/site)*"
+            android:text="@string/delivery_photo_parcel_site"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Signature*"
+                android:text="@string/signature"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -119,7 +119,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="end"
                 android:fontFamily="@font/sansregular"
-                android:text="CLEAR"
+                android:text="@string/clear"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/_10ssp" />
         </RelativeLayout>
@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_14sdp"
             android:fontFamily="@font/sanssemibold"
-            android:text="Remarks (Optional)"
+            android:text="@string/remarks_optional"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
@@ -151,7 +151,7 @@
             android:background="@drawable/input_bg"
             android:fontFamily="@font/sansregular"
             android:gravity="top"
-            android:hint="Enter Remark"
+            android:hint="@string/enter_remark"
             android:imeOptions="actionDone"
             android:inputType="textMultiLine"
             android:minLines="4"
@@ -170,7 +170,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_14sdp"
-            android:text="Confirm"
+            android:text="@string/confirm"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>

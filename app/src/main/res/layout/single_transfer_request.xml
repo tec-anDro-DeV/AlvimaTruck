@@ -39,10 +39,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/sansbold"
-                android:text="ID:8521479630125"
                 android:textColor="@color/darkGray"
                 android:textSize="@dimen/_11ssp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:text="ID:8521479630125" />
         </RelativeLayout>
 
         <TextView
@@ -62,7 +62,7 @@
             android:background="@drawable/bg_delete_lightred"
             android:fontFamily="@font/sansbold"
             android:padding="@dimen/_5sdp"
-            android:text="Delete"
+            android:text="@string/delete"
             android:textAlignment="center"
             android:textColor="#D0385A"
             android:textSize="@dimen/_12ssp" />

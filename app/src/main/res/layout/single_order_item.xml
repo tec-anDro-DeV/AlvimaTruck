@@ -65,10 +65,10 @@
                 android:background="@drawable/bg_status_green"
                 android:fontFamily="@font/sanssemibold"
                 android:paddingVertical="@dimen/_5sdp"
-                tools:text="Delivered"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_11ssp"
+                tools:text="Delivered" />
 
 
         </RelativeLayout>
@@ -90,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Route Name"
+                    android:text="@string/route_name"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
@@ -142,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Order Date"
+                    android:text="@string/order_date"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
@@ -167,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_7sdp"
                 android:fontFamily="@font/sansregular"
-                android:text="Order Amount"
+                android:text="@string/order_amount"
                 android:textColor="@color/darkGray"
                 android:textSize="@dimen/_12ssp" />
 

@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="New Transfer Request"
+            android:text="@string/new_transfer_request"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -132,7 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="From"
+                    android:text="@string/from"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="To*"
+                    android:text="@string/to"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -168,7 +168,7 @@
                     android:background="@drawable/border_bg"
                     android:fontFamily="@font/sansregular"
                     android:gravity="center_vertical"
-                    android:hint="Choose"
+                    android:hint="@string/choose"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/hintGary"
@@ -181,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="In-Transit Code*"
+                    android:text="@string/in_transit_code"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -194,7 +194,7 @@
                     android:background="@drawable/border_bg"
                     android:fontFamily="@font/sansregular"
                     android:gravity="center_vertical"
-                    android:hint="Choose"
+                    android:hint="@string/choose"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/hintGary"
@@ -207,7 +207,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Request Date and Time"
+                    android:text="@string/request_date_and_time"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -238,7 +238,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Item"
+                    android:text="@string/item"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -250,7 +250,7 @@
                     android:background="@drawable/border_bg"
                     android:fontFamily="@font/sansregular"
                     android:gravity="center_vertical"
-                    android:hint="Choose Item"
+                    android:hint="@string/choose_item"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/hintGary"
@@ -262,7 +262,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_9sdp"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Quantity"
+                    android:text="@string/quantity"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -275,7 +275,7 @@
                     android:background="@drawable/border_bg"
                     android:fontFamily="@font/sansregular"
                     android:gravity="center_vertical"
-                    android:hint="Enter Quantity"
+                    android:hint="@string/enter_quantity"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:paddingHorizontal="@dimen/_10sdp"
@@ -292,7 +292,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Add"
+                    android:text="@string/add"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
 
@@ -312,7 +312,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Transfer Details"
+                    android:text="@string/transfer_details"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
@@ -332,7 +332,7 @@
                 android:fontFamily="@font/sansbold"
                 android:gravity="center"
                 android:padding="@dimen/_14sdp"
-                android:text="Create Transfer Request"
+                android:text="@string/create_transfer_request"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp"
                 android:visibility="gone" />

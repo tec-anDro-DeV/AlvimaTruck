@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Customers"
+            android:text="@string/customers"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -64,7 +64,7 @@
                     android:drawableStart="@drawable/search"
                     android:drawablePadding="@dimen/_7sdp"
                     android:fontFamily="@font/sansregular"
-                    android:hint="Search here..."
+                    android:hint="@string/search_here"
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:paddingHorizontal="@dimen/_14sdp"

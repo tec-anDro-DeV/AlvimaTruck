@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sansregular"
-                android:text="Route Name"
+                android:text="@string/route_name"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
 
@@ -92,7 +92,7 @@
                     android:layout_marginStart="@dimen/_7sdp"
                     android:layout_toEndOf="@id/icRegularCustomers"
                     android:fontFamily="@font/sansregular"
-                    android:text="Regular Customers"
+                    android:text="@string/regular_customers"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_11ssp" />
 
@@ -127,7 +127,7 @@
                     android:layout_marginStart="@dimen/_7sdp"
                     android:layout_toEndOf="@id/icVisitedCustomers"
                     android:fontFamily="@font/sansregular"
-                    android:text="Visited Customers"
+                    android:text="@string/visited_customers"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_11ssp" />
 
@@ -162,7 +162,7 @@
                     android:layout_marginStart="@dimen/_7sdp"
                     android:layout_toEndOf="@id/icSkippedCustomers"
                     android:fontFamily="@font/sansregular"
-                    android:text="Skipped Customers"
+                    android:text="@string/skipped_customers"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_11ssp" />
 
@@ -197,7 +197,7 @@
                     android:layout_marginStart="@dimen/_7sdp"
                     android:layout_toEndOf="@id/icDistance"
                     android:fontFamily="@font/sansregular"
-                    android:text="Distance"
+                    android:text="@string/distance"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_11ssp" />
 
@@ -220,7 +220,7 @@
                 android:background="@drawable/bg_status_blue"
                 android:fontFamily="@font/sansbold"
                 android:padding="@dimen/_5sdp"
-                android:text="View Route on Map"
+                android:text="@string/view_route_on_map"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12ssp" />

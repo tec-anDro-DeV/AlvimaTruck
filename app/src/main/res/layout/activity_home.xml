@@ -110,7 +110,7 @@
                         android:fontFamily="@font/sanssemibold"
                         android:gravity="center"
                         android:maxLines="2"
-                        android:text="Sales Route"
+                        android:text="@string/sales_route"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10ssp" />
                 </LinearLayout>
@@ -141,7 +141,7 @@
                         android:fontFamily="@font/sanssemibold"
                         android:gravity="center"
                         android:maxLines="1"
-                        android:text="Customer"
+                        android:text="@string/customer"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10ssp" />
                 </LinearLayout>
@@ -172,7 +172,7 @@
                         android:fontFamily="@font/sanssemibold"
                         android:gravity="center"
                         android:maxLines="2"
-                        android:text="Fleet Services"
+                        android:text="@string/fleet_services"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10ssp" />
                 </LinearLayout>
@@ -203,7 +203,7 @@
                         android:fontFamily="@font/sanssemibold"
                         android:gravity="center"
                         android:maxLines="2"
-                        android:text="Report Modules"
+                        android:text="@string/report_modules"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10ssp" />
                 </LinearLayout>
@@ -314,7 +314,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Route Name"
+                        android:text="@string/route_name"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14ssp" />
 
@@ -340,7 +340,7 @@
                         android:fontFamily="@font/sanssemibold"
                         android:gravity="center"
                         android:paddingVertical="@dimen/_5sdp"
-                        android:text="InProgress"
+                        android:text="@string/inprogress"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_11ssp" />
                 </RelativeLayout>
@@ -378,7 +378,7 @@
                             android:layout_marginStart="@dimen/_7sdp"
                             android:layout_toEndOf="@id/icRegularCustomers"
                             android:fontFamily="@font/sansregular"
-                            android:text="Regular Customers"
+                            android:text="@string/regular_customers"
                             android:textColor="@color/darkGray"
                             android:textSize="@dimen/_11ssp" />
 
@@ -412,7 +412,7 @@
                             android:layout_marginStart="@dimen/_7sdp"
                             android:layout_toEndOf="@id/icVisitedCustomers"
                             android:fontFamily="@font/sansregular"
-                            android:text="Visited Customers"
+                            android:text="@string/visited_customers"
                             android:textColor="@color/darkGray"
                             android:textSize="@dimen/_11ssp" />
 
@@ -446,7 +446,7 @@
                             android:layout_marginStart="@dimen/_7sdp"
                             android:layout_toEndOf="@id/icDistance"
                             android:fontFamily="@font/sansregular"
-                            android:text="Distance"
+                            android:text="@string/distance"
                             android:textColor="@color/darkGray"
                             android:textSize="@dimen/_11ssp" />
 
@@ -469,7 +469,7 @@
                         android:background="@drawable/bg_status_blue"
                         android:fontFamily="@font/sansbold"
                         android:padding="@dimen/_5sdp"
-                        android:text="View Route on Map"
+                        android:text="@string/view_route_on_map"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp" />
@@ -495,17 +495,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Today's"
+                        android:text="@string/today_s"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_2sdp"
                         android:ellipsize="end"
                         android:fontFamily="@font/sansbold"
                         android:maxLines="1"
-                        android:text=" Customer Visit"
+                        android:text="@string/customer_visit"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
@@ -539,15 +540,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Total"
+                        android:text="@string/total"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_2sdp"
                         android:fontFamily="@font/sansbold"
-                        android:text=" Sales"
+                        android:text="@string/sales"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
@@ -581,7 +583,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
-                                android:text="Cash"
+                                android:text="@string/cash"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_11ssp" />
 
@@ -622,7 +624,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
-                                android:text="Credit"
+                                android:text="@string/credit"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_11ssp" />
 
@@ -659,15 +661,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Total"
+                        android:text="@string/total"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_2sdp"
                         android:fontFamily="@font/sansbold"
-                        android:text=" Collection"
+                        android:text="@string/collection"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
@@ -701,7 +704,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
-                                android:text="Cash"
+                                android:text="@string/cash"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_11ssp" />
 
@@ -738,7 +741,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
-                                android:text="Credit"
+                                android:text="@string/credit"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_11ssp" />
 

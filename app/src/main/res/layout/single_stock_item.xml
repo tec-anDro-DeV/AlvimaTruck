@@ -46,7 +46,7 @@
                 android:layout_marginStart="@dimen/_11sdp"
                 android:layout_toEndOf="@id/ivStock"
                 android:fontFamily="@font/sansregular"
-                android:text="SKU : "
+                android:text="@string/sku"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -81,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Quantity"
+                    android:text="@string/quantity"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -107,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Unit of Measure"
+                    android:text="@string/unit_of_measure"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 

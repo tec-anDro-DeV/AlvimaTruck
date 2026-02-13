@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sanssemibold"
-            android:text="Select Van No.*"
+            android:text="@string/select_van_no2"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
@@ -35,7 +35,7 @@
             android:drawablePadding="@dimen/_7sdp"
             android:fontFamily="@font/sansregular"
             android:gravity="center_vertical"
-            android:hint="---Select Van No.---"
+            android:hint="@string/select_van_no3"
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_14sdp"
             android:fontFamily="@font/sanssemibold"
-            android:text="Sales Person"
+            android:text="@string/sales_person"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 
@@ -93,7 +93,7 @@
             android:drawableEnd="@drawable/eye"
             android:drawablePadding="@dimen/_7sdp"
             android:fontFamily="@font/sansregular"
-            android:hint="At least 8 character"
+            android:hint="@string/at_least_8_character"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:paddingHorizontal="@dimen/_10sdp"
@@ -115,7 +115,7 @@
                 android:button="@drawable/checkbox_selector"
                 android:fontFamily="@font/sanssemibold"
                 android:paddingHorizontal="@dimen/_5sdp"
-                android:text="Remember me"
+                android:text="@string/remember_me"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -126,7 +126,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Forgot Password?"
+                android:text="@string/forgot_password"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
         </RelativeLayout>
@@ -143,7 +143,7 @@
             android:fontFamily="@font/sanssemibold"
             android:gravity="center"
             android:padding="@dimen/_14sdp"
-            android:text="Submit"
+            android:text="@string/submit"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>
