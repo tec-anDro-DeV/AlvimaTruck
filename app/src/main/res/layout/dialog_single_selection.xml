@@ -79,7 +79,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
 
@@ -92,7 +92,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Confirm"
+            android:text="@string/confirm"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>

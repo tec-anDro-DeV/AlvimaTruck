@@ -31,7 +31,7 @@
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
             android:gravity="center"
-            android:text="Transfer\nShip to Receive"
+            android:text="@string/transfer_ship_to_receive"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -62,7 +62,7 @@
                 android:drawableStart="@drawable/search"
                 android:drawablePadding="@dimen/_7sdp"
                 android:fontFamily="@font/sansregular"
-                android:hint="Search here..."
+                android:hint="@string/search_here"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:paddingHorizontal="@dimen/_14sdp"
@@ -109,7 +109,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_14sdp"
-            android:text="Confirm Receive"
+            android:text="@string/confirm_receive"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
 

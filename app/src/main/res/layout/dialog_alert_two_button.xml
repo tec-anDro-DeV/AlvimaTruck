@@ -43,7 +43,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="No"
+            android:text="@string/no"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
 
@@ -56,7 +56,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Yes"
+            android:text="@string/yes"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>

@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Transfer Order List"
+            android:text="@string/transfer_order_list"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -61,7 +61,7 @@
                 android:drawableStart="@drawable/search"
                 android:drawablePadding="@dimen/_7sdp"
                 android:fontFamily="@font/sansregular"
-                android:hint="Search here..."
+                android:hint="@string/search_here"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:paddingHorizontal="@dimen/_14sdp"
@@ -87,7 +87,7 @@
             android:button="@drawable/checkbox_selector"
             android:fontFamily="@font/sansregular"
             android:paddingHorizontal="@dimen/_5sdp"
-            android:text="Select All to confirm shipment"
+            android:text="@string/select_all_to_confirm_shipment"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp" />
 
@@ -107,10 +107,9 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_14sdp"
-            android:text="Confirm Shipment"
+            android:text="@string/confirm_shipment"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
-
 
     </LinearLayout>
 

@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Reports"
+            android:text="@string/reports"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -55,7 +55,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Trip Report"
+                android:text="@string/trip_report"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
@@ -74,7 +74,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Stoke Report"
+                android:text="@string/stoke_report"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
@@ -93,7 +93,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Sales Report"
+                android:text="@string/sales_report"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />

@@ -47,7 +47,7 @@
                 android:layout_marginStart="@dimen/_11sdp"
                 android:layout_toEndOf="@id/ivStock"
                 android:fontFamily="@font/sansregular"
-                android:text="Delivery No. "
+                android:text="@string/delivery_no"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -56,6 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvCustomerName"
+                android:layout_marginStart="@dimen/_5sdp"
                 android:layout_toEndOf="@id/tvDeliveryLabel"
                 android:fontFamily="@font/sanssemibold"
                 android:text="@{detail.no}"
@@ -94,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sansregular"
-                android:text="Item Details"
+                android:text="@string/item_details"
                 android:textColor="@color/darkGray"
                 android:textSize="@dimen/_12ssp" />
 
@@ -115,7 +116,7 @@
             android:background="@drawable/bg_status_blue"
             android:fontFamily="@font/sansbold"
             android:padding="@dimen/_5sdp"
-            android:text="View Customer Map"
+            android:text="@string/view_customer_map"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp" />

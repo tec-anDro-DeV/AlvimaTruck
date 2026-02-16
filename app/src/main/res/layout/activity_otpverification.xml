@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="OTP Verification"
+            android:text="@string/otp_verification"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sansregular"
-            android:text="Please enter the OTP sent to your registered mobile number to reset your password."
+            android:text="@string/please_enter_the_otp_sent_to_your_registered_mobile_number_to_reset_your_password"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp" />
@@ -105,7 +105,7 @@
             android:fontFamily="@font/sanssemibold"
             android:gravity="center"
             android:padding="@dimen/_14sdp"
-            android:text="Verify"
+            android:text="@string/verify"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
 
@@ -121,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sansregular"
-                android:text="Didn't you receive any code? "
+                android:text="@string/didn_t_you_receive_any_code"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp"
                 android:visibility="visible" />

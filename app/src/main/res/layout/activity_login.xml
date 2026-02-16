@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_14sdp"
             android:fontFamily="@font/sanssemibold"
-            android:text="Password*"
+            android:text="@string/password"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp" />
 

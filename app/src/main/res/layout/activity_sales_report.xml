@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Sales Report"
+            android:text="@string/sales_report"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -54,7 +54,7 @@
             android:background="@drawable/input_bg"
             android:fontFamily="@font/sansregular"
             android:gravity="center_vertical"
-            android:hint="Custom Date"
+            android:hint="@string/custom_date"
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/black"
             android:textColorHint="@color/hintGary"

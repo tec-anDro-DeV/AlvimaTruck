@@ -163,7 +163,7 @@
                     android:background="@drawable/border_bg"
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
-                    android:hint="Qty"
+                    android:hint="@string/qty"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:padding="@dimen/_7sdp"

@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Payment Collection"
+            android:text="@string/payment_collection2"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Customer*"
+                android:text="@string/customer2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -66,7 +66,7 @@
                 android:background="@drawable/input_bg"
                 android:fontFamily="@font/sansregular"
                 android:gravity="center_vertical"
-                android:hint="Choose"
+                android:hint="@string/choose"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/hintGary"
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Invoice"
+                    android:text="@string/invoice"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -189,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Payment Mode*"
+                android:text="@string/payment_mode2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -206,7 +206,7 @@
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/orange"
                     android:fontFamily="@font/sansregular"
-                    android:text="Cash"
+                    android:text="@string/cash"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -217,7 +217,7 @@
                     android:layout_marginStart="@dimen/_10sdp"
                     android:buttonTint="@color/orange"
                     android:fontFamily="@font/sansregular"
-                    android:text="Cheque"
+                    android:text="@string/cheque"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -228,7 +228,7 @@
                     android:layout_marginStart="@dimen/_10sdp"
                     android:buttonTint="@color/orange"
                     android:fontFamily="@font/sansregular"
-                    android:text="Online"
+                    android:text="@string/online"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
             </RadioGroup>
@@ -240,7 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Transaction Ref No.*"
+                android:text="@string/transaction_ref_no2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp"
                 android:visibility="gone" />
@@ -254,7 +254,7 @@
                 android:background="@drawable/input_bg"
                 android:fontFamily="@font/sansregular"
                 android:gravity="center_vertical"
-                android:hint="Enter Transaction Ref No."
+                android:hint="@string/enter_transaction_ref_no"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:paddingHorizontal="@dimen/_10sdp"
@@ -268,7 +268,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Payment Proof photo*"
+                android:text="@string/payment_proof_photo"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -334,7 +334,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
 
@@ -348,7 +348,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Submit"
+                    android:text="@string/submit"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
             </LinearLayout>

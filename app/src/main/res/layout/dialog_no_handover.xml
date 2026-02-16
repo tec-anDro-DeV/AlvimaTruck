@@ -11,7 +11,7 @@
         android:fontFamily="@font/sanssemibold"
         android:paddingHorizontal="@dimen/_10sdp"
         android:paddingTop="@dimen/_10sdp"
-        android:text="Delivery Attempt – No Handover"
+        android:text="@string/delivery_attempt_no_handover"
         android:textColor="@color/black"
         android:textSize="@dimen/_12ssp" />
 
@@ -21,7 +21,7 @@
         android:fontFamily="@font/sansregular"
         android:paddingHorizontal="@dimen/_10sdp"
         android:paddingBottom="@dimen/_10sdp"
-        android:text="Select the reason why delivery could not be completed"
+        android:text="@string/select_the_reason_why_delivery_could_not_be_completed"
         android:textColor="@color/black"
         android:textSize="@dimen/_10ssp" />
 
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/sanssemibold"
         android:padding="@dimen/_10sdp"
-        android:text="Write Reason"
+        android:text="@string/write_reason"
         android:textColor="@color/black"
         android:textSize="@dimen/_12ssp"
         android:visibility="gone" />
@@ -53,7 +53,7 @@
         android:background="@drawable/input_bg2"
         android:fontFamily="@font/sansregular"
         android:gravity="top"
-        android:hint="Enter Reason"
+        android:hint="@string/enter_reason"
         android:inputType="textMultiLine"
         android:minLines="3"
         android:padding="@dimen/_10sdp"
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/sanssemibold"
         android:padding="@dimen/_10sdp"
-        android:text="Add End Kilometers"
+        android:text="@string/add_end_kilometers"
         android:textColor="@color/black"
         android:textSize="@dimen/_12ssp" />
 
@@ -79,7 +79,7 @@
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:background="@drawable/input_bg2"
         android:fontFamily="@font/sansregular"
-        android:hint="End Kilometer"
+        android:hint="@string/end_kilometer"
         android:inputType="number"
         android:padding="@dimen/_10sdp"
         android:textColor="@color/black"
@@ -100,7 +100,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
 
@@ -113,7 +113,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Submit"
+            android:text="@string/submit"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>

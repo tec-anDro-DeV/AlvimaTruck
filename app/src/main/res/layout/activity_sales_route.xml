@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Operations"
+            android:text="@string/operations"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -56,7 +56,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Sales"
+                android:text="@string/sales"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
@@ -75,7 +75,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Route"
+                android:text="@string/route"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />

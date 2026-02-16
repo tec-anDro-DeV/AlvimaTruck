@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sansbold"
-            android:text="Upload file or take photo"
+            android:text="@string/upload_file_or_take_photo"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/_10sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Upload File"
+                android:text="@string/upload_file"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp"
                 app:drawableTopCompat="@drawable/ic_gallery" />
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/_10sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Take Photo"
+                android:text="@string/take_photo"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp"
                 app:drawableTopCompat="@drawable/ic_camera" />
@@ -90,7 +90,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
 
@@ -103,7 +103,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Continue"
+            android:text="@string/continue_"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>

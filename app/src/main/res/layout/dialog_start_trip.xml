@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/sanssemibold"
         android:padding="@dimen/_10sdp"
-        android:text="Add Start Kilometers"
+        android:text="@string/add_start_kilometers"
         android:textColor="@color/black"
         android:textSize="@dimen/_12ssp" />
 
@@ -23,7 +23,7 @@
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:background="@drawable/input_bg2"
         android:fontFamily="@font/sansregular"
-        android:hint="Start Kilometer"
+        android:hint="@string/start_kilometer"
         android:inputType="number"
         android:padding="@dimen/_10sdp"
         android:textColor="@color/black"
@@ -45,7 +45,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
 
@@ -58,7 +58,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Submit"
+            android:text="@string/submit"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>

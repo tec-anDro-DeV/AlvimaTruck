@@ -67,7 +67,7 @@
                 android:background="@drawable/bg_status_green"
                 android:fontFamily="@font/sanssemibold"
                 android:paddingVertical="@dimen/_5sdp"
-                android:text="Visited"
+                android:text="@string/visited"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_11ssp"
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sansbold"
-                android:text="Route Name"
+                android:text="@string/route_name"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp" />
 
@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_9sdp"
             android:fontFamily="@font/sansbold"
-            android:text="Address"
+            android:text="@string/address2"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp" />
 
@@ -134,7 +134,7 @@
             android:background="@drawable/bg_status_blue"
             android:fontFamily="@font/sansbold"
             android:padding="@dimen/_5sdp"
-            android:text="View Customer Map"
+            android:text="@string/view_customer_map"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp" />

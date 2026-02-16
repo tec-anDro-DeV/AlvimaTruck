@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Update Customer"
+            android:text="@string/update_customer"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -52,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Customer Name"
+                android:text="@string/customer_name5"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -66,17 +67,17 @@
                 android:fontFamily="@font/sanssemibold"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="@dimen/_10sdp"
-                android:text="John Doe"
                 android:textColor="@color/black"
                 android:textColorHint="@color/hintGary"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_12ssp"
+                tools:text="John Doe" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Telephone Number*"
+                android:text="@string/telephone_number"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -89,7 +90,7 @@
                 android:background="@drawable/input_bg"
                 android:fontFamily="@font/sansregular"
                 android:gravity="center_vertical"
-                android:hint="Enter Telephone Number"
+                android:hint="@string/enter_telephone_number"
                 android:imeOptions="actionNext"
                 android:inputType="phone"
                 android:maxEms="13"
@@ -109,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="City*"
+                    android:text="@string/city"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 
@@ -119,7 +120,7 @@
                     android:layout_marginStart="@dimen/_14sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="Postal Code*"
+                    android:text="@string/postal_code"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
             </LinearLayout>
@@ -138,7 +139,7 @@
                     android:background="@drawable/input_bg"
                     android:fontFamily="@font/sansregular"
                     android:gravity="center_vertical"
-                    android:hint="Choose City"
+                    android:hint="@string/choose_city"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/hintGary"
@@ -167,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Address*"
+                android:text="@string/address"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
@@ -180,7 +181,7 @@
                 android:background="@drawable/input_bg"
                 android:fontFamily="@font/sansregular"
                 android:gravity="top"
-                android:hint="Enter Address"
+                android:hint="@string/enter_address"
                 android:inputType="textMultiLine"
                 android:minLines="3"
                 android:paddingHorizontal="@dimen/_10sdp"
@@ -206,7 +207,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
 
@@ -220,7 +221,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Update"
+                    android:text="@string/update"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
             </LinearLayout>

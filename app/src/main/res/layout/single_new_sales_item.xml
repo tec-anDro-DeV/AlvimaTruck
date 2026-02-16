@@ -77,7 +77,7 @@
             android:background="@drawable/bg_delete_lightred"
             android:fontFamily="@font/sansbold"
             android:padding="@dimen/_5sdp"
-            android:text="Delete"
+            android:text="@string/delete"
             android:textAlignment="center"
             android:textColor="#D0385A"
             android:textSize="@dimen/_12ssp" />

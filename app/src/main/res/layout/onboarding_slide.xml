@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,7 +13,7 @@
         android:layout_marginBottom="@dimen/_10sdp"
         android:fontFamily="@font/sansbold"
         android:gravity="center"
-        android:text="Accurate Orders, Happy Customers"
+        android:text="@string/accurate_orders_happy_customers"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/black"
         android:textSize="@dimen/_24ssp" />
@@ -27,9 +28,9 @@
         android:layout_marginBottom="@dimen/_95sdp"
         android:fontFamily="@font/sansregular"
         android:gravity="center"
-        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
         android:textColor="@color/black"
-        android:textSize="@dimen/_14ssp" />
+        android:textSize="@dimen/_14ssp"
+        tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry." />
 
 
 </RelativeLayout>

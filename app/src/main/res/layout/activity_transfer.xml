@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Transfer"
+            android:text="@string/transfer"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -55,7 +55,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Transfer\nRequest &amp; Ship"
+                android:text="@string/transfer_request_ship"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
@@ -74,7 +74,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Transfer Shipped\nto Receive"
+                android:text="@string/transfer_shipped_to_receive"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
@@ -93,7 +93,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Transfer\nListing"
+                android:text="@string/transfer_listing"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />

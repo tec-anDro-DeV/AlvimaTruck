@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Operations"
+            android:text="@string/operations"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -56,7 +56,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Deposits"
+                android:text="@string/deposits"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
@@ -75,7 +75,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Store\nRequisition"
+                android:text="@string/store_nrequisition"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
@@ -94,7 +94,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Transfer"
+                android:text="@string/transfer"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />

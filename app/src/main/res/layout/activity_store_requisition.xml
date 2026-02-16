@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Store Requisition"
+            android:text="@string/store_requisition"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -55,7 +55,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Store Requisition\nRequest"
+                android:text="@string/store_requisition_request"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp" />
@@ -74,7 +74,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Store Requisition\nRequest List"
+                android:text="@string/store_requisition_request_list"
 
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp" />
@@ -93,7 +93,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Store Requisition Receiving"
+                android:text="@string/store_requisition_receiving"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>

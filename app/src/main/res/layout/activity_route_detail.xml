@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Route Details"
+            android:text="@string/route_details"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Route Name"
+                    android:text="@string/route_name"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14ssp" />
 
@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
-                    android:text="Route Distance"
+                    android:text="@string/route_distance"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
@@ -124,7 +124,7 @@
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_toEndOf="@id/icDistance"
                         android:fontFamily="@font/sansregular"
-                        android:text="Distance"
+                        android:text="@string/distance"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
@@ -134,9 +134,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
-                        android:text="40km"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="40km" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -159,7 +159,7 @@
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_toEndOf="@id/icDistance1"
                         android:fontFamily="@font/sansregular"
-                        android:text="Van Start Kilometer"
+                        android:text="@string/van_start_kilometer"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
@@ -169,9 +169,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
-                        android:text="1101"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="1101" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -193,7 +193,7 @@
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_toEndOf="@id/icDistance2"
                         android:fontFamily="@font/sansregular"
-                        android:text="Van End Kilometer"
+                        android:text="@string/van_end_kilometer"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
@@ -217,7 +217,7 @@
                 android:background="@drawable/bg_status_blue"
                 android:fontFamily="@font/sansbold"
                 android:padding="@dimen/_5sdp"
-                android:text="View Route on Map"
+                android:text="@string/view_route_on_map"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12ssp" />
@@ -235,7 +235,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
-                    android:text="Total Customers Assigned"
+                    android:text="@string/total_customers_assigned"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
@@ -261,7 +261,7 @@
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_toEndOf="@id/icRegularCustomers"
                         android:fontFamily="@font/sansregular"
-                        android:text="Regular Customers"
+                        android:text="@string/regular_customers"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
@@ -295,7 +295,7 @@
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_toEndOf="@id/icVisitedCustomers"
                         android:fontFamily="@font/sansregular"
-                        android:text="Visited Customers"
+                        android:text="@string/visited_customers"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
@@ -305,9 +305,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
-                        android:text="9"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="9" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -328,7 +328,7 @@
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_toEndOf="@id/icSkippedCustomers"
                         android:fontFamily="@font/sansregular"
-                        android:text="Skipped Customers"
+                        android:text="@string/skipped_customers"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
@@ -338,9 +338,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sanssemibold"
-                        android:text="10"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="10" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -358,7 +358,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
-                    android:text="Customer Visits"
+                    android:text="@string/customer_visits"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
@@ -384,7 +384,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sanssemibold"
-                        android:text="Customer Visited"
+                        android:text="@string/customer_visited"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
@@ -394,9 +394,9 @@
                         android:layout_height="wrap_content"
                         android:layout_toStartOf="@+id/tvTotalCustomer"
                         android:fontFamily="@font/sansbold"
-                        android:text="30"
                         android:textColor="@color/orange"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="30" />
 
                     <TextView
                         android:id="@+id/tvTotalCustomer"
@@ -404,9 +404,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansbold"
-                        android:text="/34"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="/34" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -419,7 +419,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sanssemibold"
-                        android:text="Pending"
+                        android:text="@string/pending"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
@@ -429,9 +429,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansbold"
-                        android:text="4"
                         android:textColor="@color/orange"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="4" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -448,7 +448,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
-                    android:text="Total Sales Value"
+                    android:text="@string/total_sales_value"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
@@ -470,7 +470,7 @@
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_toEndOf="@id/icSaleValue"
                         android:fontFamily="@font/sansregular"
-                        android:text="Total Sale"
+                        android:text="@string/total_sale"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
@@ -503,7 +503,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Cancel Route"
+                    android:text="@string/cancel_route"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
 
@@ -517,7 +517,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Start Trip"
+                    android:text="@string/start_trip"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
             </LinearLayout>

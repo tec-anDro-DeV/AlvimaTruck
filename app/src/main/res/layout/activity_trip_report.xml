@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Trip Report"
+            android:text="@string/trip_report"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
@@ -57,7 +57,7 @@
                 android:background="@drawable/input_bg"
                 android:fontFamily="@font/sansregular"
                 android:gravity="center_vertical"
-                android:hint="Custom Date"
+                android:hint="@string/custom_date"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/hintGary"
@@ -82,15 +82,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Total"
+                        android:text="@string/total"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:fontFamily="@font/sansbold"
-                        android:text=" Sales"
+                        android:text="@string/sales"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
@@ -124,7 +125,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
-                                android:text="Cash"
+                                android:text="@string/cash"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_11ssp" />
 
@@ -165,7 +166,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
-                                android:text="Credit"
+                                android:text="@string/credit"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_11ssp" />
 
@@ -199,15 +200,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Total"
+                        android:text="@string/total"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:fontFamily="@font/sansbold"
-                        android:text=" Collection"
+                        android:text="@string/collection"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
@@ -241,7 +243,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
-                                android:text="Cash"
+                                android:text="@string/cash"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_11ssp" />
 
@@ -282,7 +284,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sansbold"
-                                android:text="Credit"
+                                android:text="@string/credit"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_11ssp" />
 
@@ -316,17 +318,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Route "
+                        android:text="@string/route"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:ellipsize="end"
                         android:fontFamily="@font/sansbold"
                         android:maxLines="1"
-                        android:text="Completed"
+                        android:text="@string/completed"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
@@ -360,17 +363,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Total"
+                        android:text="@string/total"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:ellipsize="end"
                         android:fontFamily="@font/sansbold"
                         android:maxLines="1"
-                        android:text=" Visit"
+                        android:text="@string/visit"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
                 </LinearLayout>
@@ -401,7 +405,7 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/sansbold"
                     android:maxLines="1"
-                    android:text="Distance"
+                    android:text="@string/distance"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11ssp" />
 

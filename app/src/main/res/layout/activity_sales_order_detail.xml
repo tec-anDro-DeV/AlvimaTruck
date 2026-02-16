@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/sanssemibold"
-            android:text="Sales Order Details"
+            android:text="@string/sales_order_details"
             android:textColor="@color/white"
             android:textSize="@dimen/_15ssp" />
 
@@ -90,7 +90,7 @@
                         android:layout_marginStart="@dimen/_11sdp"
                         android:layout_toEndOf="@id/ivStock"
                         android:fontFamily="@font/sansregular"
-                        android:text="Order ID"
+                        android:text="@string/order_id"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
@@ -138,7 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Invoice No."
+                        android:text="@string/invoice_no"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp" />
 
@@ -191,7 +191,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Customer Details"
+                    android:text="@string/customer_details"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
@@ -225,7 +225,7 @@
                         android:layout_marginStart="@dimen/_11sdp"
                         android:layout_toEndOf="@id/ivUser"
                         android:fontFamily="@font/sansregular"
-                        android:text="Contact Number : "
+                        android:text="@string/contact_number"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
@@ -234,6 +234,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tvCustomerName"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:layout_toEndOf="@id/tvContact"
                         android:autoLink="phone"
                         android:fontFamily="@font/sansbold"
@@ -252,7 +253,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
-                    android:text="Address"
+                    android:text="@string/address2"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
@@ -285,7 +286,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Payment Details"
+                        android:text="@string/payment_details"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp" />
 
@@ -308,7 +309,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Delivery Details"
+                        android:text="@string/delivery_details"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_11ssp" />
 
@@ -340,7 +341,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Delivery Date"
+                        android:text="@string/delivery_date"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp" />
 
@@ -350,9 +351,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansbold"
-                        android:text="15 Dec 2025"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="15 Dec 2025" />
                 </RelativeLayout>
 
                 <View
@@ -369,7 +370,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Products Details"
+                        android:text="@string/products_details"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp" />
 
@@ -378,7 +379,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/sansregular"
-                        android:text="Price (ETB)"
+                        android:text="@string/price_etb"
                         android:textColor="@color/darkGray"
                         android:textSize="@dimen/_12ssp" />
                 </RelativeLayout>
@@ -406,7 +407,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansbold"
-                        android:text="Subtotal"
+                        android:text="@string/subtotal"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
 
@@ -464,7 +465,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansbold"
-                        android:text="VAT"
+                        android:text="@string/vat"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
 
@@ -493,7 +494,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansbold"
-                        android:text="Total"
+                        android:text="@string/total"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16ssp" />
 
@@ -518,7 +519,7 @@
                 android:fontFamily="@font/sansbold"
                 android:gravity="center"
                 android:padding="@dimen/_14sdp"
-                android:text="Post Invoice"
+                android:text="@string/post_invoice"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp" />
 

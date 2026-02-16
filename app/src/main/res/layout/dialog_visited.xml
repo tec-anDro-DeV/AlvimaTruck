@@ -11,7 +11,7 @@
         android:fontFamily="@font/sanssemibold"
         android:paddingHorizontal="@dimen/_10sdp"
         android:paddingTop="@dimen/_10sdp"
-        android:text="Visit Completed – No Order"
+        android:text="@string/visit_completed_no_order"
         android:textColor="@color/black"
         android:textSize="@dimen/_12ssp" />
 
@@ -21,7 +21,7 @@
         android:fontFamily="@font/sansregular"
         android:paddingHorizontal="@dimen/_10sdp"
         android:paddingBottom="@dimen/_10sdp"
-        android:text="Select reason why order not taken"
+        android:text="@string/select_reason_why_order_not_taken"
         android:textColor="@color/black"
         android:textSize="@dimen/_10ssp" />
 
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/sanssemibold"
         android:padding="@dimen/_10sdp"
-        android:text="Write Reason"
+        android:text="@string/write_reason"
         android:textColor="@color/black"
         android:textSize="@dimen/_12ssp"
         android:visibility="gone" />
@@ -53,7 +53,7 @@
         android:background="@drawable/input_bg2"
         android:fontFamily="@font/sansregular"
         android:gravity="top"
-        android:hint="Write reason..."
+        android:hint="@string/write_reason_"
         android:inputType="textMultiLine"
         android:minLines="3"
         android:padding="@dimen/_10sdp"
@@ -77,7 +77,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
 
@@ -90,7 +90,7 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="Submit"
+            android:text="@string/submit"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>

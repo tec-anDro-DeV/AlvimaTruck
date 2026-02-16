@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootRow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -35,9 +36,9 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/sanssemibold"
                 android:maxLines="1"
-                android:text="INV-10234"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_12ssp"
+                tools:text="INV-10234" />
 
             <TextView
                 android:id="@+id/tvInvoiceDate"
@@ -45,9 +46,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:maxLines="1"
-                android:text="Due: 21 Aug 2025"
                 android:textColor="@color/darkGray"
-                android:textSize="@dimen/_10ssp" />
+                android:textSize="@dimen/_10ssp"
+                tools:text="Due: 21 Aug 2025" />
         </LinearLayout>
 
         <!-- Amount -->
@@ -58,9 +59,9 @@
             android:fontFamily="@font/sansbold"
             android:gravity="center_vertical|end"
             android:maxLines="1"
-            android:text="ETB 1250"
             android:textColor="@color/orange"
-            android:textSize="@dimen/_12ssp" />
+            android:textSize="@dimen/_12ssp"
+            tools:text="ETB 1250" />
     </LinearLayout>
 
     <View

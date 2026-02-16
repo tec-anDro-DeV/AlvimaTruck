@@ -36,7 +36,7 @@
             android:autoSizeTextType="uniform"
             android:fontFamily="@font/sanssemibold"
             android:maxLines="2"
-            android:text="Customer Detail"
+            android:text="@string/customer_detail"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
@@ -94,9 +94,9 @@
                         android:layout_marginStart="@dimen/_11sdp"
                         android:layout_toEndOf="@id/ivCustomer"
                         android:fontFamily="@font/sansbold"
-                        android:text="Customer Name"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="Customer Name" />
 
                     <TextView
                         android:id="@+id/tvContact"
@@ -106,7 +106,7 @@
                         android:layout_marginStart="@dimen/_11sdp"
                         android:layout_toEndOf="@id/ivCustomer"
                         android:fontFamily="@font/sansregular"
-                        android:text="Contact Number : "
+                        android:text="@string/contact_number2"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11ssp" />
 
@@ -132,7 +132,7 @@
                     android:background="@drawable/bg_status_blue"
                     android:fontFamily="@font/sansbold"
                     android:padding="@dimen/_5sdp"
-                    android:text="View Customer Map"
+                    android:text="@string/view_customer_map"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp" />
@@ -147,7 +147,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/sansbold"
-                        android:text="Contact Name"
+                        android:text="@string/contact_name2"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
 
@@ -157,7 +157,7 @@
                         android:layout_marginStart="@dimen/_1sdp"
                         android:layout_weight="1"
                         android:fontFamily="@font/sansbold"
-                        android:text="Telephone Number"
+                        android:text="@string/telephone_number2"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </LinearLayout>
@@ -197,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_9sdp"
                     android:fontFamily="@font/sansbold"
-                    android:text="Address"
+                    android:text="@string/address2"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
@@ -222,7 +222,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/sansbold"
-                        android:text="City"
+                        android:text="@string/city2"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
 
@@ -231,7 +231,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/sansbold"
-                        android:text="Postal Code"
+                        android:text="@string/postal_code2"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </LinearLayout>
@@ -275,7 +275,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/sansbold"
-                        android:text="Route Name"
+                        android:text="@string/route_name"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
 
@@ -284,7 +284,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/sansbold"
-                        android:text="TIN Number"
+                        android:text="@string/tin_number2"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </LinearLayout>
@@ -321,7 +321,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_9sdp"
                     android:fontFamily="@font/sansbold"
-                    android:text="Customer Posting Group"
+                    android:text="@string/customer_posting_group2"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
@@ -340,7 +340,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_9sdp"
                     android:fontFamily="@font/sansbold"
-                    android:text="Customer Pricing Group"
+                    android:text="@string/customer_pricing_group2"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
@@ -369,7 +369,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
-                    android:text="Credit Limit"
+                    android:text="@string/credit_limit"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 
@@ -396,7 +396,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="Usage:"
+                        android:text="@string/usage"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
 
@@ -441,7 +441,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="Visited"
+                    android:text="@string/visited"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
 
@@ -454,7 +454,7 @@
                     android:fontFamily="@font/sansbold"
                     android:gravity="center"
                     android:padding="@dimen/_14sdp"
-                    android:text="New Order"
+                    android:text="@string/new_order"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
 
@@ -471,7 +471,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansregular"
-                        android:text="*One order is open for this customer. Please post it before creating a new order."
+                        android:text="@string/one_order_is_open_for_this_customer_please_post_it_before_creating_a_new_order"
                         android:textColor="@color/red"
                         android:textSize="@dimen/_10ssp" />
 
@@ -484,7 +484,7 @@
                         android:fontFamily="@font/sansbold"
                         android:gravity="center"
                         android:padding="@dimen/_14sdp"
-                        android:text="View Order"
+                        android:text="@string/view_order"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_14ssp" />
                 </LinearLayout>

@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Request type"
+                    android:text="@string/request_type"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/sansregular"
-                    android:text="Vendor"
+                    android:text="@string/vendor"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
@@ -128,7 +128,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Description"
+                    android:text="@string/description"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
@@ -155,7 +155,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansregular"
-                    android:text="Requested Date"
+                    android:text="@string/requested_date"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 
@@ -183,7 +183,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sansregular"
-                android:text="Total Cost"
+                android:text="@string/total_cost"
                 android:textColor="@color/darkGray"
                 android:textSize="@dimen/_12ssp" />
 
@@ -209,7 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sansregular"
-                android:text="Incident Type"
+                android:text="@string/incident_type"
                 android:textColor="@color/darkGray"
                 android:textSize="@dimen/_12ssp" />
 
