@@ -35,66 +35,66 @@
             android:textSize="@dimen/_16ssp" />
     </RelativeLayout>
 
-    <androidx.core.widget.NestedScrollView
+
+    <LinearLayout
         android:id="@+id/llData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rlTop"
-        android:background="@drawable/bg_white_top_curve">
+        android:background="@drawable/bg_white_top_curve"
+        android:orientation="vertical"
+        android:padding="@dimen/_9sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="@dimen/_9sdp">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:orientation="horizontal">
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_42sdp"
+                android:layout_weight="1"
+                android:background="@drawable/input_bg3"
+                android:drawableStart="@drawable/search"
+                android:drawablePadding="@dimen/_7sdp"
+                android:fontFamily="@font/sansregular"
+                android:hint="@string/search_here"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingHorizontal="@dimen/_14sdp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/_12ssp" />
 
-                <EditText
-                    android:id="@+id/etSearch"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_42sdp"
-                    android:layout_weight="1"
-                    android:background="@drawable/input_bg3"
-                    android:drawableStart="@drawable/search"
-                    android:drawablePadding="@dimen/_7sdp"
-                    android:fontFamily="@font/sansregular"
-                    android:hint="@string/search_here"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:paddingHorizontal="@dimen/_14sdp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-
-                <ImageView
-                    android:layout_width="@dimen/_42sdp"
-                    android:layout_height="@dimen/_42sdp"
-                    android:layout_marginStart="@dimen/_11sdp"
-                    android:background="@drawable/input_bg3"
-                    android:padding="@dimen/_11sdp"
-                    android:src="@drawable/ic_filter"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCustomerList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp" />
-
-
+            <ImageView
+                android:layout_width="@dimen/_42sdp"
+                android:layout_height="@dimen/_42sdp"
+                android:layout_marginStart="@dimen/_11sdp"
+                android:background="@drawable/input_bg3"
+                android:padding="@dimen/_11sdp"
+                android:src="@drawable/ic_filter"
+                android:visibility="gone" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 
-    <include
-        android:id="@+id/llNoData"
-        layout="@layout/no_data" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCustomerList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/_80sdp" />
+
+
+        <include
+            android:id="@+id/llNoData"
+            layout="@layout/no_data"
+            android:visibility="gone" />
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/ivAddCustomer"

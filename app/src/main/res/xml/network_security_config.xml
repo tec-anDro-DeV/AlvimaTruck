@@ -4,5 +4,6 @@
         cleartextTrafficPermitted="true"
         tools:ignore="NetworkSecurityConfig">
         <domain includeSubdomains="true">192.168.1.148</domain>
+        <domain includeSubdomains="true">196.190.220.205</domain>
     </domain-config>
 </network-security-config>

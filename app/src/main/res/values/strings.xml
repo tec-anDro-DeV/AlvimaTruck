@@ -294,7 +294,6 @@
     <string name="enter_repair_cost">Enter Repair Cost</string>
     <string name="replaced_parts_photos">Replaced Parts Photos*</string>
     <string name="reports">Reports</string>
-    <string name="stoke_report">Stoke Report</string>
     <string name="sales_report">Sales Report</string>
     <string name="reset_password">Reset Password</string>
     <string name="old_password">Old Password*</string>
@@ -393,4 +392,5 @@
     <string name="item_details">Item Details</string>
     <string name="delivery_no">Delivery No.</string>
     <string name="password">Password*</string>
+    <string name="delete_order2">Delete Order</string>
 </resources>

@@ -532,7 +532,7 @@
                 android:fontFamily="@font/sansbold"
                 android:gravity="center"
                 android:padding="@dimen/_14sdp"
-                android:text="@string/delete_order"
+                android:text="@string/delete_order2"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
