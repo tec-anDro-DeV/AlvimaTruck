@@ -171,7 +171,7 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
                 driverOrderList!!.count { it.appStatus == "Open" || it.appStatus == "InProgress" }
             binding.tvPendingOrder.text = openCount.toString()
             val pendingCount =
-                driverOrderList!!.count { it.appStatus == "Cancelled" || it.appStatus == "Delivered" }
+                driverOrderList!!.count { it.appStatus == "Cancelled" || it.appStatus == "Delivered" || it.appStatus == "Completed" }
             binding.tvDeliveredOrder.text = pendingCount.toString()
         } else {
             binding.tvAssignOrder.text = "0"
