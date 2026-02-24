@@ -1,6 +1,5 @@
 package com.alvimatruck.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -52,21 +51,21 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
             handleBackPressed()
         }
 
-        binding.btnEdit.setOnClickListener {
-            if (orderDetail!!.orderId.isNullOrEmpty()) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.order_has_not_been_synced_with_bc_yet_please_wait_for_a_while_and_try_again),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                val intent = Intent(
-                    this, EditSalesActivity::class.java
-                ).putExtra(Constants.OrderDetail, Gson().toJson(orderDetail))
-                startForResult.launch(intent)
-            }
-
-        }
+//        binding.btnEdit.setOnClickListener {
+//            if (orderDetail!!.orderId.isNullOrEmpty()) {
+//                Toast.makeText(
+//                    this,
+//                    getString(R.string.order_has_not_been_synced_with_bc_yet_please_wait_for_a_while_and_try_again),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            } else {
+//                val intent = Intent(
+//                    this, EditSalesActivity::class.java
+//                ).putExtra(Constants.OrderDetail, Gson().toJson(orderDetail))
+//                startForResult.launch(intent)
+//            }
+//
+//        }
         binding.rvProducts.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -190,12 +189,12 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
                                 binding.tvStatus.text = getString(R.string.open)
                                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
                                 binding.tvPostInvoice.visibility = View.VISIBLE
-                                binding.btnEdit.visibility = View.VISIBLE
+                                //  binding.btnEdit.visibility = View.VISIBLE
                             } else {
-                                binding.tvStatus.text = getString(R.string.delivered)
+                                binding.tvStatus.text = getString(R.string.posted)
                                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
                                 binding.tvPostInvoice.visibility = View.GONE
-                                binding.btnEdit.visibility = View.GONE
+                                //    binding.btnEdit.visibility = View.GONE
                             }
 
 

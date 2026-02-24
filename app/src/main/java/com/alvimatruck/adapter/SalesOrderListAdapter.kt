@@ -34,7 +34,7 @@ class SalesOrderListAdapter(
             holder.binding.tvStatus.text = mActivity.getString(R.string.open)
             holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
         } else {
-            holder.binding.tvStatus.text = mActivity.getString(R.string.delivered)
+            holder.binding.tvStatus.text = mActivity.getString(R.string.posted)
             holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
         }
 

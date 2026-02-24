@@ -459,36 +459,36 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
 
-                <LinearLayout
-                    android:id="@+id/llViewOrder"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                <!--                <LinearLayout-->
+                <!--                    android:id="@+id/llViewOrder"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    android:orientation="vertical"-->
+                <!--                    android:visibility="gone">-->
 
-                    <TextView
-                        android:id="@+id/tvNotes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sansregular"
-                        android:text="@string/one_order_is_open_for_this_customer_please_post_it_before_creating_a_new_order"
-                        android:textColor="@color/red"
-                        android:textSize="@dimen/_10ssp" />
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/tvNotes"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:fontFamily="@font/sansregular"-->
+                <!--                        android:text="@string/one_order_is_open_for_this_customer_please_post_it_before_creating_a_new_order"-->
+                <!--                        android:textColor="@color/red"-->
+                <!--                        android:textSize="@dimen/_10ssp" />-->
 
-                    <TextView
-                        android:id="@+id/tvViewOrder"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_9sdp"
-                        android:background="@drawable/rounded_button_orange"
-                        android:fontFamily="@font/sansbold"
-                        android:gravity="center"
-                        android:padding="@dimen/_14sdp"
-                        android:text="@string/view_order"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_14ssp" />
-                </LinearLayout>
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/tvViewOrder"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_marginTop="@dimen/_9sdp"-->
+                <!--                        android:background="@drawable/rounded_button_orange"-->
+                <!--                        android:fontFamily="@font/sansbold"-->
+                <!--                        android:gravity="center"-->
+                <!--                        android:padding="@dimen/_14sdp"-->
+                <!--                        android:text="@string/view_order"-->
+                <!--                        android:textColor="@color/white"-->
+                <!--                        android:textSize="@dimen/_14ssp" />-->
+                <!--                </LinearLayout>-->
 
 
             </LinearLayout>

@@ -21,6 +21,7 @@ import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityNewSalesBinding
 import com.alvimatruck.interfaces.DeleteOrderListener
 import com.alvimatruck.model.request.NewOrderRequest
+import com.alvimatruck.model.request.OrderPostRequest
 import com.alvimatruck.model.responses.CustomerDetail
 import com.alvimatruck.model.responses.SingleOrder
 import com.alvimatruck.model.responses.UserDetail
@@ -105,7 +106,38 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
         }
 
         binding.tvConfirmOrder.setOnClickListener {
-            newOrderAPI()
+            val inflater = layoutInflater
+            val alertLayout = inflater.inflate(R.layout.dialog_alert_two_button, null)
+
+            val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
+            val tvMessage = alertLayout.findViewById<TextView>(R.id.tvMessage)
+            val btnNo = alertLayout.findViewById<TextView>(R.id.btnNo)
+            val btnYes = alertLayout.findViewById<TextView>(R.id.btnYes)
+
+            // Set content
+            tvTitle.text = "Confirm & Post Order"
+            tvMessage.text = "Are you sure you want to confirm and post this order?"
+            btnNo.text = getString(R.string.no)
+            btnYes.text = getString(R.string.yes)
+
+
+            val dialog =
+                AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
+            dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+
+            btnNo.setOnClickListener {
+                dialog.dismiss()
+            }
+            btnYes.setOnClickListener {
+                dialog.dismiss()
+                newOrderAPI()
+            }
+
+            dialog.show()
+            val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+            dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
         }
 
         binding.etQuantity.addTextChangedListener(object : TextWatcher {
@@ -224,7 +256,6 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
     }
 
     private fun newOrderAPI() {
-
         if (Utils.isOnline(this)) {
             ProgressDialog.start(this@NewSalesActivity)
             ApiClient.getRestClient(
@@ -243,8 +274,8 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 )
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    ProgressDialog.dismiss()
                     if (response.code() == 401) {
+                        ProgressDialog.dismiss()
                         Utils.forceLogout(this@NewSalesActivity)  // show dialog before logout
                         return
                     }
@@ -257,18 +288,16 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                                     .trim(),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            customerDetail!!.visitedToday = true
-                            customerDetail!!.canCreateNewOrder = false
-                            Utils.isNewOrder = true
-                            val intent = Intent()
-                            intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
-                            setResult(RESULT_OK, intent)
-                            finish()
+                            orderPostAPI(
+                                response.body()!!.get("salesOrderNo").toString().replace('"', ' ')
+                                    .trim()
+                            )
 
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
                     } else {
+                        ProgressDialog.dismiss()
                         Toast.makeText(
                             this@NewSalesActivity,
                             Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
@@ -291,6 +320,76 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun orderPostAPI(orderId: String) {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@NewSalesActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.orderPost(
+                OrderPostRequest(orderId)
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@NewSalesActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@NewSalesActivity,
+                                response.body()!!.get("data").asJsonObject.get("message").toString()
+                                    .replace('"', ' ').trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finishWithSuccess()
+                            customerDetail!!.visitedToday = true
+                            // customerDetail!!.canCreateNewOrder = false
+                            Utils.isNewOrder = true
+                            val intent = Intent()
+                            intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@NewSalesActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        finishWithSuccess()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@NewSalesActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
+
+    private fun finishWithSuccess() {
+        customerDetail?.visitedToday = true
+        Utils.isNewOrder = true
+        val intent = Intent()
+        intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     fun calculateFinalTotal() {
