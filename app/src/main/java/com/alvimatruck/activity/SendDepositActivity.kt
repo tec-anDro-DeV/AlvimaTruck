@@ -11,7 +11,6 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -62,7 +61,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
     var customerList: ArrayList<CustomerDetail>? = ArrayList()
 
     var selectedItem = ""
-    var selectedCustomer: CustomerDetail? = null
+    var selectedInvoice: InvoiceDetail? = null
     var filterList: ArrayList<String>? = ArrayList()
     var itemList: ArrayList<String>? = ArrayList()
     var invoiceList: ArrayList<InvoiceDetail>? = ArrayList()
@@ -97,52 +96,58 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             binding.rlChoosePhoto.visibility = View.VISIBLE
         }
 
-        binding.tvCustomer.setOnClickListener {
+        binding.tvInvoice.setOnClickListener {
             dialogSingleSelection()
         }
+
+        invoiceListAPI()
 
         binding.tvCancel.setOnClickListener {
             handleBackPressed()
         }
 
-        binding.rgPaymentMode.setOnCheckedChangeListener { _, checkedId ->
-
-            val isCash = checkedId == R.id.rbCash
-            binding.etTransRefNo.visibility = if (isCash) View.GONE else View.VISIBLE
-            binding.tvTransRefNoLabel.visibility = if (isCash) View.GONE else View.VISIBLE
-
-            when (checkedId) {
-                R.id.rbCheque -> {
-                    binding.tvTransRefNoLabel.text = getString(R.string.cheque_no)
-                    binding.etTransRefNo.hint = getString(R.string.enter_cheque_no)
-                }
-
-                R.id.rbOnline -> {
-                    binding.tvTransRefNoLabel.text = getString(R.string.transaction_ref_no)
-                    binding.etTransRefNo.hint = getString(R.string.enter_transaction_ref_no)
-                }
-            }
-        }
+//        binding.rgPaymentMode.setOnCheckedChangeListener { _, checkedId ->
+//
+//            val isCash = checkedId == R.id.rbCash
+//            binding.etTransRefNo.visibility = if (isCash) View.GONE else View.VISIBLE
+//            binding.tvTransRefNoLabel.visibility = if (isCash) View.GONE else View.VISIBLE
+//
+//            when (checkedId) {
+//                R.id.rbCheque -> {
+//                    binding.tvTransRefNoLabel.text = getString(R.string.cheque_no)
+//                    binding.etTransRefNo.hint = getString(R.string.enter_cheque_no)
+//                }
+//
+//                R.id.rbOnline -> {
+//                    binding.tvTransRefNoLabel.text = getString(R.string.transaction_ref_no)
+//                    binding.etTransRefNo.hint = getString(R.string.enter_transaction_ref_no)
+//                }
+//            }
+//        }
 
 
         binding.tvSubmit.setOnClickListener {
-            if (selectedCustomer == null) {
-                Toast.makeText(this, getString(R.string.please_select_customer), Toast.LENGTH_SHORT)
-                    .show()
-            } else if (selectedInvoiceList!!.isEmpty()) {
+            if (selectedInvoice == null) {
                 Toast.makeText(this, getString(R.string.please_select_invoice), Toast.LENGTH_SHORT)
                     .show()
-            } else if (binding.rgPaymentMode.checkedRadioButtonId == -1) {
-                Toast.makeText(
-                    this, getString(R.string.please_select_payment_mode), Toast.LENGTH_SHORT
-                ).show()
-            } else if (binding.rgPaymentMode.checkedRadioButtonId != R.id.rbCash && binding.etTransRefNo.text.toString()
-                    .trim().isEmpty()
-            ) {
-                Toast.makeText(
-                    this, getString(R.string.please_enter_transaction_ref_no), Toast.LENGTH_SHORT
-                ).show()
-            } else if (paymentProofImageUri == null) {
+            }
+//            else if (selectedInvoiceList!!.isEmpty()) {
+//                Toast.makeText(this, getString(R.string.please_select_invoice), Toast.LENGTH_SHORT)
+//                    .show()
+//            }
+//            else if (binding.rgPaymentMode.checkedRadioButtonId == -1) {
+//                Toast.makeText(
+//                    this, getString(R.string.please_select_payment_mode), Toast.LENGTH_SHORT
+//                ).show()
+//            }
+//            else if (binding.rgPaymentMode.checkedRadioButtonId != R.id.rbCash && binding.etTransRefNo.text.toString()
+//                    .trim().isEmpty()
+//            ) {
+//                Toast.makeText(
+//                    this, getString(R.string.please_enter_transaction_ref_no), Toast.LENGTH_SHORT
+//                ).show()
+//            }
+            else if (paymentProofImageUri == null) {
                 Toast.makeText(
                     this, getString(R.string.please_upload_payment_proof), Toast.LENGTH_SHORT
                 ).show()
@@ -151,7 +156,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             }
         }
 
-        customerListAPI()
+        //customerListAPI()
 
         binding.ivPaymentProof.setOnClickListener {
             startActivity(
@@ -168,15 +173,16 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
     private fun paymentAPI() {
         if (Utils.isOnline(this)) {
             val invoiceBodyList = ArrayList<RequestBody>()
-            for (invoice in selectedInvoiceList!!) {
-                invoiceBodyList.add(invoice.toRequestBody("text/plain".toMediaType()))
-            }
+            invoiceBodyList.add(selectedInvoice!!.documentNo.toRequestBody("text/plain".toMediaType()))
+//            for (invoice in selectedInvoiceList!!) {
+//                invoiceBodyList.add(invoice.toRequestBody("text/plain".toMediaType()))
+//            }
 
             ProgressDialog.start(this@SendDepositActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.paymentCreate(
-                selectedCustomer!!.bcCustomerNo.toRequestBody("text/plain".toMediaType()),
+                " ".toRequestBody("text/plain".toMediaType()),
                 binding.etTransRefNo.text.toString().toRequestBody("text/plain".toMediaType()),
                 invoiceBodyList,
                 Utils.createFilePart("imageFile", paymentProofImageUri, this),
@@ -226,70 +232,70 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
     }
 
-    private fun setupInvoiceCheckboxes() {
-        binding.llInvoice.removeAllViews()
+//    private fun setupInvoiceCheckboxes() {
+//        binding.llInvoice.removeAllViews()
+//
+//        invoiceList?.forEachIndexed { index, invoice ->
+//
+//            val view = layoutInflater.inflate(R.layout.single_invoice, binding.llInvoice, false)
+//
+//            val rb = view.findViewById<CheckBox>(R.id.cbInvoice)
+//            val root = view.findViewById<LinearLayout>(R.id.rootRow)
+//            val tvNo = view.findViewById<TextView>(R.id.tvInvoiceNo)
+//            val tvDate = view.findViewById<TextView>(R.id.tvInvoiceDate)
+//            val tvAmount = view.findViewById<TextView>(R.id.tvInvoiceAmount)
+//            val divider = view.findViewById<View>(R.id.viewDivider)
+//
+//            tvNo.text = invoice.documentNo
+//            tvDate.text = "Date: ${invoice.getRequestDate() ?: "-"}"
+//            tvAmount.text = "ETB ${invoice.remainingAmount}"
+//
+//            rb.tag = invoice
+//            rb.setOnClickListener {
+//                handleSingleSelection(index)
+//            }
+//
+//            if (invoiceList!!.size - 1 == index) {
+//                divider.visibility = View.GONE
+//            } else {
+//                divider.visibility = View.VISIBLE
+//            }
+//
+//            root.setOnClickListener {
+//                handleSingleSelection(index)
+//            }
+//
+//            binding.llInvoice.addView(view)
+//        }
+//    }
 
-        invoiceList?.forEachIndexed { index, invoice ->
+//    private fun handleSingleSelection(selectedIndex: Int) {
+//        for (i in 0 until binding.llInvoice.childCount) {
+//            val row = binding.llInvoice.getChildAt(i)
+//            val checkBox = row.findViewById<CheckBox>(R.id.cbInvoice)
+//            checkBox.isChecked = (i == selectedIndex)
+//        }
+//        updateTotal()
+//    }
 
-            val view = layoutInflater.inflate(R.layout.single_invoice, binding.llInvoice, false)
-
-            val rb = view.findViewById<CheckBox>(R.id.cbInvoice)
-            val root = view.findViewById<LinearLayout>(R.id.rootRow)
-            val tvNo = view.findViewById<TextView>(R.id.tvInvoiceNo)
-            val tvDate = view.findViewById<TextView>(R.id.tvInvoiceDate)
-            val tvAmount = view.findViewById<TextView>(R.id.tvInvoiceAmount)
-            val divider = view.findViewById<View>(R.id.viewDivider)
-
-            tvNo.text = invoice.documentNo
-            tvDate.text = "Date: ${invoice.getRequestDate() ?: "-"}"
-            tvAmount.text = "ETB ${invoice.remainingAmount}"
-
-            rb.tag = invoice
-            rb.setOnClickListener {
-                handleSingleSelection(index)
-            }
-
-            if (invoiceList!!.size - 1 == index) {
-                divider.visibility = View.GONE
-            } else {
-                divider.visibility = View.VISIBLE
-            }
-
-            root.setOnClickListener {
-                handleSingleSelection(index)
-            }
-
-            binding.llInvoice.addView(view)
-        }
-    }
-
-    private fun handleSingleSelection(selectedIndex: Int) {
-        for (i in 0 until binding.llInvoice.childCount) {
-            val row = binding.llInvoice.getChildAt(i)
-            val checkBox = row.findViewById<CheckBox>(R.id.cbInvoice)
-            checkBox.isChecked = (i == selectedIndex)
-        }
-        updateTotal()
-    }
-
-    private fun updateTotal() {
-        selectedInvoiceList!!.clear()
-        // total = 0.0
-
-        for (i in 0 until binding.llInvoice.childCount) {
-            val row = binding.llInvoice.getChildAt(i)
-
-            val checkBox = row.findViewById<CheckBox>(R.id.cbInvoice)
-
-            if (checkBox.isChecked) {
-                val invoice = checkBox.tag as InvoiceDetail
-                selectedInvoiceList!!.add(invoice.documentNo)
-                // total += invoice.remainingAmount
-            }
-        }
-
-        //binding.tvtotal.text = "ETB $total"
-    }
+//    private fun updateTotal() {
+//        selectedInvoiceList!!.clear()
+//        // total = 0.0
+//
+//        for (i in 0 until binding.llInvoice.childCount) {
+//            val row = binding.llInvoice.getChildAt(i)
+//
+//            val checkBox = row.findViewById<CheckBox>(R.id.cbInvoice)
+//
+//            if (checkBox.isChecked) {
+//                val invoice = checkBox.tag as InvoiceDetail
+//                selectedInvoiceList!!.add(invoice.documentNo)
+//                // total += invoice.remainingAmount
+//            }
+//        }
+//
+//        //binding.tvtotal.text = "ETB $total"
+//    }
 
     private fun dialogSingleSelection() {
         filterList!!.clear()
@@ -306,7 +312,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
         rvBinList.layoutManager = lLayout
         rvBinList.adapter = singleItemSelectionAdapter
         val etBinSearch = alertLayout.findViewById<EditText>(R.id.etItemSearch)
-        etBinSearch.hint = getString(R.string.search_customer)
+        etBinSearch.hint = getString(R.string.search_invoice)
 
 
 
@@ -334,7 +340,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
         val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel2)
         val tvConfirm = alertLayout.findViewById<TextView>(R.id.tvConfirm2)
         val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
-        tvTitle.text = getString(R.string.choose_customer)
+        tvTitle.text = getString(R.string.choose_invoice)
 
 
         val alert = AlertDialog.Builder(this)
@@ -353,16 +359,16 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
         tvConfirm.setOnClickListener { _: View? ->
             if (filterList!!.isNotEmpty()) {
                 selectedItem = singleItemSelectionAdapter.selected
-                for (item in customerList!!) {
-                    val temp = item.searchName + " (" + item.bcCustomerNo + ")"
+                for (item in invoiceList!!) {
+                    val temp = item.documentNo + " (ETB " + item.remainingAmount + ")"
                     if (temp == singleItemSelectionAdapter.selected) {
-                        selectedInvoiceList!!.clear()
-                        total = 0.0
-                        selectedCustomer = item
-                        invoiceListAPI()
+//                        selectedInvoiceList!!.clear()
+//                        total = 0.0
+                        selectedInvoice = item
+                        //invoiceListAPI()
                     }
                 }
-                binding.tvCustomer.text = singleItemSelectionAdapter.selected
+                binding.tvInvoice.text = singleItemSelectionAdapter.selected
                 dialog.dismiss()
             }
         }
@@ -373,7 +379,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             ProgressDialog.start(this@SendDepositActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.invoiceList(selectedCustomer!!.bcCustomerNo)
+            )!!.webservices.invoiceList()
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
                         call: Call<JsonObject>, response: Response<JsonObject>
@@ -391,10 +397,16 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
                                 } as ArrayList<InvoiceDetail>
 
                                 if (invoiceList!!.isNotEmpty()) {
-                                    binding.llInvoiceData.visibility = View.VISIBLE
-                                    setupInvoiceCheckboxes()
+                                    //   binding.llInvoiceData.visibility = View.VISIBLE
+                                    // setupInvoiceCheckboxes()
+                                    itemList!!.clear()
+                                    for (item in invoiceList!!) {
+                                        val code =
+                                            item.documentNo + " (ETB " + item.remainingAmount + ")"
+                                        itemList!!.add(code)
+                                    }
                                 } else {
-                                    binding.llInvoiceData.visibility = View.GONE
+                                    //  binding.llInvoiceData.visibility = View.GONE
                                     Toast.makeText(
                                         this@SendDepositActivity,
                                         "No invoice found",
@@ -434,72 +446,72 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
     }
 
 
-    private fun customerListAPI() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@SendDepositActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.customerList().enqueue(object : Callback<JsonObject> {
-                override fun onResponse(
-                    call: Call<JsonObject>, response: Response<JsonObject>
-                ) {
-                    ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@SendDepositActivity)  // show dialog before logout
-                        return
-                    }
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-
-                            customerList = response.body()!!.getAsJsonArray("items").map {
-                                Gson().fromJson(it, CustomerDetail::class.java)
-                            } as ArrayList<CustomerDetail>
-                            if (customerList!!.isNotEmpty()) {
-                                itemList!!.clear()
-                                for (item in customerList!!) {
-                                    val code = item.searchName + " (" + item.bcCustomerNo + ")"
-                                    itemList!!.add(code)
-                                }
-
-
-                            } else {
-                                Toast.makeText(
-                                    this@SendDepositActivity,
-                                    "No customer found",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@SendDepositActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@SendDepositActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-            ).show()
-        }
-
-    }
+//    private fun customerListAPI() {
+//        if (Utils.isOnline(this)) {
+//            ProgressDialog.start(this@SendDepositActivity)
+//            ApiClient.getRestClient(
+//                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+//            )!!.webservices.customerList().enqueue(object : Callback<JsonObject> {
+//                override fun onResponse(
+//                    call: Call<JsonObject>, response: Response<JsonObject>
+//                ) {
+//                    ProgressDialog.dismiss()
+//                    if (response.code() == 401) {
+//                        Utils.forceLogout(this@SendDepositActivity)  // show dialog before logout
+//                        return
+//                    }
+//                    if (response.isSuccessful) {
+//                        try {
+//                            Log.d("TAG", "onResponse: " + response.body().toString())
+//
+//                            customerList = response.body()!!.getAsJsonArray("items").map {
+//                                Gson().fromJson(it, CustomerDetail::class.java)
+//                            } as ArrayList<CustomerDetail>
+//                            if (customerList!!.isNotEmpty()) {
+//                                itemList!!.clear()
+//                                for (item in customerList!!) {
+//                                    val code = item.searchName + " (" + item.bcCustomerNo + ")"
+//                                    itemList!!.add(code)
+//                                }
+//
+//
+//                            } else {
+//                                Toast.makeText(
+//                                    this@SendDepositActivity,
+//                                    "No customer found",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                            }
+//
+//
+//                        } catch (e: Exception) {
+//                            e.printStackTrace()
+//                        }
+//                    } else {
+//                        Toast.makeText(
+//                            this@SendDepositActivity,
+//                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+//                    Toast.makeText(
+//                        this@SendDepositActivity,
+//                        getString(R.string.api_fail_message),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    ProgressDialog.dismiss()
+//                }
+//            })
+//        } else {
+//            Toast.makeText(
+//                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+//            ).show()
+//        }
+//
+//    }
 
     private fun openImageChooseDialog() {
         val inflater = layoutInflater

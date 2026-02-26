@@ -211,7 +211,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/sansbold"
-                android:text="@{`ETB `+detail.totalAmount}"
+                android:text="@{`ETB `+detail.decimalAmount}"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/_12ssp"
                 tools:text="$1025.27" />

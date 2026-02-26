@@ -108,7 +108,7 @@
     <string name="cheque_no">Cheque Ref No.</string>
     <string name="transaction_ref_no">Transaction Ref No.</string>
     <string name="enter_cheque_no">Enter cheque no.</string>
-    <string name="enter_transaction_ref_no">Enter transaction ref no.</string>
+    <string name="enter_transaction_ref_no">Enter reference number</string>
     <string name="please_select_a_photo">Please select a delivery photo/site</string>
     <string name="please_enter_signature">Please add customer signature</string>
     <string name="search_vendor">Search Vendor</string>
@@ -320,8 +320,8 @@
     <string name="payment_mode2">Payment Mode*</string>
     <string name="cheque">Cheque</string>
     <string name="online">Online</string>
-    <string name="payment_proof_photo">Payment Proof photo*</string>
-    <string name="transaction_ref_no2">Transaction Ref No.*</string>
+    <string name="payment_proof_photo">Document Proof photo*</string>
+    <string name="transaction_ref_no2">Reference No.*</string>
     <string name="store_requisition_request">Store Requisition\nRequest</string>
     <string name="store_requisition_request_list">Store Requisition\nRequest List</string>
     <string name="store_requisition_receiving">Store Requisition Receiving</string>
@@ -394,4 +394,7 @@
     <string name="password">Password*</string>
     <string name="delete_order2">Delete Order</string>
     <string name="posted">Posted</string>
+    <string name="invoice2">Invoice*</string>
+    <string name="search_invoice">Search Invoice</string>
+    <string name="choose_invoice">Choose Invoice</string>
 </resources>

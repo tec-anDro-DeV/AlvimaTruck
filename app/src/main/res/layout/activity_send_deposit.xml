@@ -54,12 +54,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sanssemibold"
-                android:text="@string/customer2"
+                android:text="@string/invoice2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
             <TextView
-                android:id="@+id/tvCustomer"
+                android:id="@+id/tvInvoice"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_44sdp"
                 android:layout_marginTop="@dimen/_7sdp"
@@ -73,89 +73,89 @@
                 android:textSize="@dimen/_12ssp"
                 app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />
 
-            <LinearLayout
-                android:id="@+id/llInvoiceData"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/llInvoiceData"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:orientation="vertical"-->
+            <!--                android:visibility="gone">-->
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:fontFamily="@font/sanssemibold"
-                    android:text="@string/invoice"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_11ssp" />
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginTop="@dimen/_10sdp"-->
+            <!--                    android:fontFamily="@font/sanssemibold"-->
+            <!--                    android:text="@string/invoice"-->
+            <!--                    android:textColor="@color/black"-->
+            <!--                    android:textSize="@dimen/_11ssp" />-->
 
-                <LinearLayout
-                    android:id="@+id/llInvoice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_7sdp"
-                    android:background="@drawable/input_bg"
-                    android:orientation="vertical"
-                    android:padding="@dimen/_10sdp" />
+            <!--                <LinearLayout-->
+            <!--                    android:id="@+id/llInvoice"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginTop="@dimen/_7sdp"-->
+            <!--                    android:background="@drawable/input_bg"-->
+            <!--                    android:orientation="vertical"-->
+            <!--                    android:padding="@dimen/_10sdp" />-->
 
-                <!--                <RelativeLayout-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginTop="@dimen/_10sdp">-->
+            <!--                &lt;!&ndash;                <RelativeLayout&ndash;&gt;-->
+            <!--                &lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                    android:layout_marginTop="@dimen/_10sdp">&ndash;&gt;-->
 
-                <!--                    <TextView-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:fontFamily="@font/sansregular"-->
-                <!--                        android:text="Balance (Due / Credit):"-->
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textSize="@dimen/_12ssp" />-->
+            <!--                &lt;!&ndash;                    <TextView&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:fontFamily="@font/sansregular"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:text="Balance (Due / Credit):"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:textColor="@color/black"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:textSize="@dimen/_12ssp" />&ndash;&gt;-->
 
-                <!--                    <TextView-->
-                <!--                        android:id="@+id/tvPreviousAmount"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_alignParentEnd="true"-->
-                <!--                        android:fontFamily="@font/sansregular"-->
-                <!--                        android:text="-ETB 150.0"-->
-                <!--                        android:textColor="@color/orange"-->
-                <!--                        android:textSize="@dimen/_12ssp" />-->
-                <!--                </RelativeLayout>-->
-
-
-                <!--                <RelativeLayout-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginTop="@dimen/_10sdp">-->
-
-                <!--                    <TextView-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:fontFamily="@font/sansbold"-->
-                <!--                        android:text="Total:"-->
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textSize="@dimen/_14ssp" />-->
-
-                <!--                    <TextView-->
-                <!--                        android:id="@+id/tvtotal"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_alignParentEnd="true"-->
-                <!--                        android:fontFamily="@font/sansbold"-->
-                <!--                        android:text="ETB 0"-->
-                <!--                        android:textColor="@color/orange"-->
-                <!--                        android:textSize="@dimen/_14ssp" />-->
-                <!--                </RelativeLayout>-->
-
-            </LinearLayout>
+            <!--                &lt;!&ndash;                    <TextView&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:id="@+id/tvPreviousAmount"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:layout_alignParentEnd="true"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:fontFamily="@font/sansregular"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:text="-ETB 150.0"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:textColor="@color/orange"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:textSize="@dimen/_12ssp" />&ndash;&gt;-->
+            <!--                &lt;!&ndash;                </RelativeLayout>&ndash;&gt;-->
 
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@color/orange" />
+            <!--                &lt;!&ndash;                <RelativeLayout&ndash;&gt;-->
+            <!--                &lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                    android:layout_marginTop="@dimen/_10sdp">&ndash;&gt;-->
+
+            <!--                &lt;!&ndash;                    <TextView&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:fontFamily="@font/sansbold"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:text="Total:"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:textColor="@color/black"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:textSize="@dimen/_14ssp" />&ndash;&gt;-->
+
+            <!--                &lt;!&ndash;                    <TextView&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:id="@+id/tvtotal"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:layout_alignParentEnd="true"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:fontFamily="@font/sansbold"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:text="ETB 0"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:textColor="@color/orange"&ndash;&gt;-->
+            <!--                &lt;!&ndash;                        android:textSize="@dimen/_14ssp" />&ndash;&gt;-->
+            <!--                &lt;!&ndash;                </RelativeLayout>&ndash;&gt;-->
+
+            <!--            </LinearLayout>-->
+
+
+            <!--            <View-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="@dimen/_1sdp"-->
+            <!--                android:layout_marginTop="@dimen/_10sdp"-->
+            <!--                android:background="@color/orange" />-->
 
 
             <!--            <TextView-->
@@ -184,54 +184,54 @@
             <!--                android:textSize="@dimen/_12ssp" />-->
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/sanssemibold"
-                android:text="@string/payment_mode2"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11ssp" />
+            <!--            <TextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/_10sdp"-->
+            <!--                android:fontFamily="@font/sanssemibold"-->
+            <!--                android:text="@string/payment_mode2"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textSize="@dimen/_11ssp" />-->
 
-            <RadioGroup
-                android:id="@+id/rgPaymentMode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_7sdp"
-                android:orientation="horizontal">
+            <!--            <RadioGroup-->
+            <!--                android:id="@+id/rgPaymentMode"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/_7sdp"-->
+            <!--                android:orientation="horizontal">-->
 
-                <RadioButton
-                    android:id="@+id/rbCash"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/orange"
-                    android:fontFamily="@font/sansregular"
-                    android:text="@string/cash"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_11ssp" />
+            <!--                <RadioButton-->
+            <!--                    android:id="@+id/rbCash"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:buttonTint="@color/orange"-->
+            <!--                    android:fontFamily="@font/sansregular"-->
+            <!--                    android:text="@string/cash"-->
+            <!--                    android:textColor="@color/black"-->
+            <!--                    android:textSize="@dimen/_11ssp" />-->
 
-                <RadioButton
-                    android:id="@+id/rbCheque"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:buttonTint="@color/orange"
-                    android:fontFamily="@font/sansregular"
-                    android:text="@string/cheque"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_11ssp" />
+            <!--                <RadioButton-->
+            <!--                    android:id="@+id/rbCheque"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginStart="@dimen/_10sdp"-->
+            <!--                    android:buttonTint="@color/orange"-->
+            <!--                    android:fontFamily="@font/sansregular"-->
+            <!--                    android:text="@string/cheque"-->
+            <!--                    android:textColor="@color/black"-->
+            <!--                    android:textSize="@dimen/_11ssp" />-->
 
-                <RadioButton
-                    android:id="@+id/rbOnline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:buttonTint="@color/orange"
-                    android:fontFamily="@font/sansregular"
-                    android:text="@string/online"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_11ssp" />
-            </RadioGroup>
+            <!--                <RadioButton-->
+            <!--                    android:id="@+id/rbOnline"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginStart="@dimen/_10sdp"-->
+            <!--                    android:buttonTint="@color/orange"-->
+            <!--                    android:fontFamily="@font/sansregular"-->
+            <!--                    android:text="@string/online"-->
+            <!--                    android:textColor="@color/black"-->
+            <!--                    android:textSize="@dimen/_11ssp" />-->
+            <!--            </RadioGroup>-->
 
 
             <TextView
@@ -243,7 +243,7 @@
                 android:text="@string/transaction_ref_no2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
 
             <EditText
@@ -261,7 +261,7 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/hintGary"
                 android:textSize="@dimen/_12ssp"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <TextView
                 android:layout_width="wrap_content"

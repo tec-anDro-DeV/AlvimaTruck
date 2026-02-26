@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/sansregular"
-                    android:text="@string/to"
+                    android:text="@string/to2"
                     android:textColor="@color/darkGray"
                     android:textSize="@dimen/_12ssp" />
 

@@ -158,9 +158,7 @@ interface ApiInterface {
     ): Call<JsonObject>
 
     @GET(Constants.API_Invoice_List)
-    fun invoiceList(
-        @Query("customerNo") customerNo: String,
-    ): Call<JsonObject>
+    fun invoiceList(): Call<JsonObject>
 
     @DELETE(Constants.API_Delete_Order + "{orderId}")
     fun deleteOrder(

@@ -35,7 +35,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
         }, 3000)
 
-        binding.tvAppVersion.text = "Version " + BuildConfig.VERSION_NAME
+        binding.tvAppVersion.text = "Version " + BuildConfig.VERSION_NAME + " (UAT)"
 
 
     }
