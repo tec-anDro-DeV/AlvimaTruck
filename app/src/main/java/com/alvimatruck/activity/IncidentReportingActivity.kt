@@ -42,7 +42,6 @@ import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
 import com.google.gson.JsonObject
-import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -65,7 +64,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
 
     private var proofImageUri: Uri? = null
-    private lateinit var cropLauncher: ActivityResultLauncher<Intent>
+    //private lateinit var cropLauncher: ActivityResultLauncher<Intent>
 
     private var imagesListAdapter: ImagesListAdapter? = null
     private var listProofImageUri: ArrayList<Uri> = ArrayList()
@@ -353,69 +352,79 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
                 }
             }
 
-        cropLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    result.data?.let {
-                        val resultUri = UCrop.getOutput(it)
-                        resultUri?.let { finalUri ->
-                            handleCroppedImage(finalUri)
-                        }
+//        cropLauncher =
+//            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//                if (result.resultCode == RESULT_OK) {
+//                    result.data?.let {
+//                        val resultUri = UCrop.getOutput(it)
+//                        resultUri?.let { finalUri ->
+//                            handleCroppedImage(finalUri)
+//                        }
+//                    }
+//                }
+//            }
+    }
+
+//    private fun startCrop(sourceUri: Uri) {
+//
+//        val destinationUri = Uri.fromFile(
+//            File(cacheDir, "crop_${System.currentTimeMillis()}.jpg")
+//        )
+//
+//
+//        val options = UCrop.Options()
+//
+//        // 🔒 Disable free-hand resizing
+//        options.setFreeStyleCropEnabled(false)
+//
+//        // 🔒 Hide aspect ratio options (so user cannot change)
+//        options.setShowCropGrid(true)
+//        options.setShowCropFrame(true)
+//        options.setHideBottomControls(true)
+//
+//        // Apply different aspect ratios
+//        val cropIntent = UCrop.of(sourceUri, destinationUri).withAspectRatio(1f, 1f)
+//            .withMaxResultSize(1200, 1200).withOptions(options).getIntent(this)
+//
+//
+//        cropLauncher.launch(cropIntent)
+//    }
+
+    private fun handleImage(uri: Uri) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            // Show progress dialog if needed
+            ProgressDialog.start(this@IncidentReportingActivity)
+            try {
+                val compressedUri = withContext(Dispatchers.IO) {
+                    // This calls the method that was crashing
+                    Utils.getCompressedUri(this@IncidentReportingActivity, uri)
+                }
+
+                compressedUri.let {
+                    if (listProofImageUri.size >= 5) return@let
+                    listProofImageUri.add(it)
+                    // Optimize: Only notify the item that was added, not the whole list
+                    imagesListAdapter?.notifyItemInserted(listProofImageUri.size - 1)
+                    if (listProofImageUri.size == 5) {
+                        binding.rlChoosePhoto.visibility = View.GONE
+                    } else {
+                        binding.rlChoosePhoto.visibility = View.VISIBLE
                     }
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(
+                    this@IncidentReportingActivity, "Error processing image", Toast.LENGTH_SHORT
+                ).show()
+            } finally {
+                ProgressDialog.dismiss()
             }
-    }
-
-    private fun startCrop(sourceUri: Uri) {
-
-        val destinationUri = Uri.fromFile(
-            File(cacheDir, "crop_${System.currentTimeMillis()}.jpg")
-        )
-
-
-        val options = UCrop.Options()
-
-        // 🔒 Disable free-hand resizing
-        options.setFreeStyleCropEnabled(false)
-
-        // 🔒 Hide aspect ratio options (so user cannot change)
-        options.setShowCropGrid(true)
-        options.setShowCropFrame(true)
-        options.setHideBottomControls(true)
-
-        // Apply different aspect ratios
-        val cropIntent = UCrop.of(sourceUri, destinationUri).withAspectRatio(1f, 1f)
-            .withMaxResultSize(1200, 1200).withOptions(options).getIntent(this)
-
-
-        cropLauncher.launch(cropIntent)
-    }
-
-    private fun handleCroppedImage(uri: Uri) {
-        lifecycleScope.launch(Dispatchers.Main) {
-            // Show a loading indicator if you have one
-            val compressedUri = withContext(Dispatchers.IO) {
-                // This runs the compression on a background thread
-                Utils.getCompressedUri(this@IncidentReportingActivity, uri)
-            }
-
-            compressedUri.let {
-                if (listProofImageUri.size >= 5) return@let
-                listProofImageUri.add(it)
-                // Optimize: Only notify the item that was added, not the whole list
-                imagesListAdapter?.notifyItemInserted(listProofImageUri.size - 1)
-                if (listProofImageUri.size == 5) {
-                    binding.rlChoosePhoto.visibility = View.GONE
-                } else {
-                    binding.rlChoosePhoto.visibility = View.VISIBLE
-                }
-            }
-            // Hide loading indicator
         }
     }
 
     private fun handleImageResult(imageUri: Uri) {
-        startCrop(imageUri)
+        //startCrop(imageUri)
+        handleImage(imageUri)
     }
 
     private fun checkCameraPermissionAndOpenCamera() {

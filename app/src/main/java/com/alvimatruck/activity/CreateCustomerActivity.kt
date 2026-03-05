@@ -41,7 +41,6 @@ import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -71,7 +70,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
     private var isUploadingCustomerPhoto: Boolean = true
 
-    private lateinit var cropLauncher: ActivityResultLauncher<Intent>
+    //  private lateinit var cropLauncher: ActivityResultLauncher<Intent>
 
 
     override fun inflateBinding(): ActivityCreateCustomerBinding {
@@ -527,81 +526,91 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
                 }
             }
 
-        cropLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    result.data?.let {
-                        val resultUri = UCrop.getOutput(it)
-                        resultUri?.let { finalUri ->
-                            handleCroppedImage(finalUri)
-                        }
-                    }
-                }
-            }
+//        cropLauncher =
+//            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//                if (result.resultCode == RESULT_OK) {
+//                    result.data?.let {
+//                        val resultUri = UCrop.getOutput(it)
+//                        resultUri?.let { finalUri ->
+//                            handleImage(finalUri)
+//                        }
+//                    }
+//                }
+//            }
     }
 
-    private fun startCrop(sourceUri: Uri) {
+//    private fun startCrop(sourceUri: Uri) {
+//
+//        val destinationUri = Uri.fromFile(
+//            File(cacheDir, "crop_${System.currentTimeMillis()}.jpg")
+//        )
+//
+//
+//        val options = UCrop.Options()
+//        if (isUploadingCustomerPhoto) {
+//            // 🔒 Disable free-hand resizing
+//            options.setFreeStyleCropEnabled(false)
+//        } else {
+//            options.setFreeStyleCropEnabled(true)
+//        }
+//
+//        // 🔒 Hide aspect ratio options (so user cannot change)
+//        options.setShowCropGrid(true)
+//        options.setShowCropFrame(true)
+//        options.setHideBottomControls(true)
+//
+//        // Apply different aspect ratios
+//        val cropIntent = if (isUploadingCustomerPhoto) {
+//
+//            // ⭐ CUSTOMER PHOTO = 1:1 fixed
+//            UCrop.of(sourceUri, destinationUri).withAspectRatio(1f, 1f)
+//                .withMaxResultSize(1080, 1080).withOptions(options).getIntent(this)
+//
+//        } else {
+//
+//            // ⭐ ID PROOF = 16:6 fixed
+//            UCrop.of(sourceUri, destinationUri).withAspectRatio(16f, 9f)
+//                .withMaxResultSize(1600, 600).withOptions(options).getIntent(this)
+//        }
+//
+//        cropLauncher.launch(cropIntent)
+//    }
 
-        val destinationUri = Uri.fromFile(
-            File(cacheDir, "crop_${System.currentTimeMillis()}.jpg")
-        )
-
-
-        val options = UCrop.Options()
-        if (isUploadingCustomerPhoto) {
-            // 🔒 Disable free-hand resizing
-            options.setFreeStyleCropEnabled(false)
-        } else {
-            options.setFreeStyleCropEnabled(true)
-        }
-
-        // 🔒 Hide aspect ratio options (so user cannot change)
-        options.setShowCropGrid(true)
-        options.setShowCropFrame(true)
-        options.setHideBottomControls(true)
-
-        // Apply different aspect ratios
-        val cropIntent = if (isUploadingCustomerPhoto) {
-
-            // ⭐ CUSTOMER PHOTO = 1:1 fixed
-            UCrop.of(sourceUri, destinationUri).withAspectRatio(1f, 1f)
-                .withMaxResultSize(1080, 1080).withOptions(options).getIntent(this)
-
-        } else {
-
-            // ⭐ ID PROOF = 16:6 fixed
-            UCrop.of(sourceUri, destinationUri).withAspectRatio(16f, 9f)
-                .withMaxResultSize(1600, 600).withOptions(options).getIntent(this)
-        }
-
-        cropLauncher.launch(cropIntent)
-    }
-
-    private fun handleCroppedImage(uri: Uri) {
+    private fun handleImage(uri: Uri) {
         lifecycleScope.launch(Dispatchers.Main) {
-            // Show a loading indicator if you have one
-            val compressedUri = withContext(Dispatchers.IO) {
-                // This runs the compression on a background thread
-                Utils.getCompressedUri(this@CreateCustomerActivity, uri)
-            }
+            // Show progress dialog if needed
+            ProgressDialog.start(this@CreateCustomerActivity)
+            try {
+                val compressedUri = withContext(Dispatchers.IO) {
+                    // This calls the method that was crashing
+                    Utils.getCompressedUri(this@CreateCustomerActivity, uri)
+                }
 
-            if (isUploadingCustomerPhoto) {
-                customerPhotoUri = compressedUri
-                binding.ivUser.setImageURI(customerPhotoUri)
-                binding.rlUser.visibility = View.VISIBLE
-                binding.rlChoosePhoto.visibility = View.GONE
-            } else {
-                idProofImageUri = compressedUri
-                binding.ivIDProof.setImageURI(idProofImageUri)
-                binding.rlIDProof.visibility = View.VISIBLE
-                binding.rlChooseID.visibility = View.GONE
+                if (isUploadingCustomerPhoto) {
+                    customerPhotoUri = compressedUri
+                    binding.ivUser.setImageURI(customerPhotoUri)
+                    binding.rlUser.visibility = View.VISIBLE
+                    binding.rlChoosePhoto.visibility = View.GONE
+                } else {
+                    idProofImageUri = compressedUri
+                    binding.ivIDProof.setImageURI(idProofImageUri)
+                    binding.rlIDProof.visibility = View.VISIBLE
+                    binding.rlChooseID.visibility = View.GONE
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(
+                    this@CreateCustomerActivity, "Error processing image", Toast.LENGTH_SHORT
+                ).show()
+            } finally {
+                ProgressDialog.dismiss()
             }
-            // Hide loading indicator
         }
     }
 
     private fun handleImageResult(imageUri: Uri) {
-        startCrop(imageUri)
+        //startCrop(imageUri)
+        handleImage(imageUri)
     }
 
 

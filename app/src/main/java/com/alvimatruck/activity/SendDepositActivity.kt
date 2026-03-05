@@ -40,7 +40,6 @@ import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -68,7 +67,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
     var selectedInvoiceList: ArrayList<String>? = ArrayList()
     var total = 0.0
 
-    private lateinit var cropLauncher: ActivityResultLauncher<Intent>
+    // private lateinit var cropLauncher: ActivityResultLauncher<Intent>
     override fun inflateBinding(): ActivitySendDepositBinding {
         return ActivitySendDepositBinding.inflate(layoutInflater)
     }
@@ -379,64 +378,61 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
             ProgressDialog.start(this@SendDepositActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.invoiceList()
-                .enqueue(object : Callback<JsonObject> {
-                    override fun onResponse(
-                        call: Call<JsonObject>, response: Response<JsonObject>
-                    ) {
-                        ProgressDialog.dismiss()
-                        if (response.code() == 401) {
-                            Utils.forceLogout(this@SendDepositActivity)  // show dialog before logout
-                            return
-                        }
-                        if (response.isSuccessful) {
-                            try {
-                                Log.d("TAG", "onResponse: " + response.body().toString())
-                                invoiceList = response.body()!!.getAsJsonArray("data").map {
-                                    Gson().fromJson(it, InvoiceDetail::class.java)
-                                } as ArrayList<InvoiceDetail>
-
-                                if (invoiceList!!.isNotEmpty()) {
-                                    //   binding.llInvoiceData.visibility = View.VISIBLE
-                                    // setupInvoiceCheckboxes()
-                                    itemList!!.clear()
-                                    for (item in invoiceList!!) {
-                                        val code =
-                                            item.documentNo + " (ETB " + item.remainingAmount + ")"
-                                        itemList!!.add(code)
-                                    }
-                                } else {
-                                    //  binding.llInvoiceData.visibility = View.GONE
-                                    Toast.makeText(
-                                        this@SendDepositActivity,
-                                        "No invoice found",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    selectedInvoiceList!!.clear()
-
-                                }
-
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        } else {
-                            Toast.makeText(
-                                this@SendDepositActivity,
-                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+            )!!.webservices.invoiceList().enqueue(object : Callback<JsonObject> {
+                override fun onResponse(
+                    call: Call<JsonObject>, response: Response<JsonObject>
+                ) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@SendDepositActivity)  // show dialog before logout
+                        return
                     }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            invoiceList = response.body()!!.getAsJsonArray("data").map {
+                                Gson().fromJson(it, InvoiceDetail::class.java)
+                            } as ArrayList<InvoiceDetail>
 
-                    override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                            if (invoiceList!!.isNotEmpty()) {
+                                //   binding.llInvoiceData.visibility = View.VISIBLE
+                                // setupInvoiceCheckboxes()
+                                itemList!!.clear()
+                                for (item in invoiceList!!) {
+                                    val code =
+                                        item.documentNo + " (ETB " + item.remainingAmount + ")"
+                                    itemList!!.add(code)
+                                }
+                            } else {
+                                //  binding.llInvoiceData.visibility = View.GONE
+                                Toast.makeText(
+                                    this@SendDepositActivity, "No invoice found", Toast.LENGTH_SHORT
+                                ).show()
+                                selectedInvoiceList!!.clear()
+
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
                         Toast.makeText(
                             this@SendDepositActivity,
-                            getString(R.string.api_fail_message),
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
                             Toast.LENGTH_SHORT
                         ).show()
-                        ProgressDialog.dismiss()
                     }
-                })
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@SendDepositActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
         } else {
             Toast.makeText(
                 this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
@@ -580,63 +576,72 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
                 }
             }
 
-        cropLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    result.data?.let {
-                        val resultUri = UCrop.getOutput(it)
-                        resultUri?.let { finalUri ->
-                            handleCroppedImage(finalUri)
-                        }
-                    }
-                }
-            }
+//        cropLauncher =
+//            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//                if (result.resultCode == RESULT_OK) {
+//                    result.data?.let {
+//                        val resultUri = UCrop.getOutput(it)
+//                        resultUri?.let { finalUri ->
+//                            handleImage(finalUri)
+//                        }
+//                    }
+//                }
+//            }
     }
 
-    private fun startCrop(sourceUri: Uri) {
+//    private fun startCrop(sourceUri: Uri) {
+//
+//        val destinationUri = Uri.fromFile(
+//            File(cacheDir, "crop_${System.currentTimeMillis()}.jpg")
+//        )
+//
+//
+//        val options = UCrop.Options()
+//
+//        // 🔒 Disable free-hand resizing
+//        options.setFreeStyleCropEnabled(true)
+//
+//        // 🔒 Hide aspect ratio options (so user cannot change)
+//        options.setShowCropGrid(true)
+//        options.setShowCropFrame(true)
+//        options.setHideBottomControls(true)
+//
+//        // Apply different aspect ratios
+//        val cropIntent = UCrop.of(sourceUri, destinationUri).withAspectRatio(16f, 9f)
+//            .withMaxResultSize(1600, 1600).withOptions(options).getIntent(this)
+//
+//
+//        cropLauncher.launch(cropIntent)
+//    }
 
-        val destinationUri = Uri.fromFile(
-            File(cacheDir, "crop_${System.currentTimeMillis()}.jpg")
-        )
-
-
-        val options = UCrop.Options()
-
-        // 🔒 Disable free-hand resizing
-        options.setFreeStyleCropEnabled(true)
-
-        // 🔒 Hide aspect ratio options (so user cannot change)
-        options.setShowCropGrid(true)
-        options.setShowCropFrame(true)
-        options.setHideBottomControls(true)
-
-        // Apply different aspect ratios
-        val cropIntent = UCrop.of(sourceUri, destinationUri).withAspectRatio(16f, 9f)
-            .withMaxResultSize(1600, 1600).withOptions(options).getIntent(this)
-
-
-        cropLauncher.launch(cropIntent)
-    }
-
-    private fun handleCroppedImage(uri: Uri) {
+    private fun handleImage(uri: Uri) {
         lifecycleScope.launch(Dispatchers.Main) {
-            // Show a loading indicator if you have one
-            val compressedUri = withContext(Dispatchers.IO) {
-                // This runs the compression on a background thread
-                Utils.getCompressedUri(this@SendDepositActivity, uri)
+            // Show progress dialog if needed
+            ProgressDialog.start(this@SendDepositActivity)
+            try {
+                val compressedUri = withContext(Dispatchers.IO) {
+                    // This calls the method that was crashing
+                    Utils.getCompressedUri(this@SendDepositActivity, uri)
+                }
+
+                paymentProofImageUri = compressedUri
+                binding.ivPaymentProof.setImageURI(paymentProofImageUri)
+                binding.rlPaymentPhoto.visibility = View.VISIBLE
+                binding.rlChoosePhoto.visibility = View.GONE
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(
+                    this@SendDepositActivity, "Error processing image", Toast.LENGTH_SHORT
+                ).show()
+            } finally {
+                ProgressDialog.dismiss()
             }
-
-            paymentProofImageUri = compressedUri
-            binding.ivPaymentProof.setImageURI(paymentProofImageUri)
-            binding.rlPaymentPhoto.visibility = View.VISIBLE
-            binding.rlChoosePhoto.visibility = View.GONE
-
-            // Hide loading indicator
         }
     }
 
     private fun handleImageResult(imageUri: Uri) {
-        startCrop(imageUri)
+        //  startCrop(imageUri)
+        handleImage(imageUri)
     }
 
     private fun checkCameraPermissionAndOpenCamera() {
