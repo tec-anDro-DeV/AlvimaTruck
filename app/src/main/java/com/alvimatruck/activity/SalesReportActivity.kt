@@ -1,6 +1,7 @@
 package com.alvimatruck.activity
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -55,6 +56,10 @@ class SalesReportActivity : BaseActivity<ActivitySalesReportBinding>() {
 
         binding.btnBack.setOnClickListener {
             handleBackPressed()
+        }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
         }
 
         binding.rvItems.addItemDecoration(

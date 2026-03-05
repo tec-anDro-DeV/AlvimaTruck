@@ -53,6 +53,10 @@ class TripRouteListActivity : BaseActivity<ActivityTripRouteListBinding>(), Rout
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
 
         binding.swipeRefresh.setOnRefreshListener {
             //  binding.swipeRefresh.isRefreshing = true

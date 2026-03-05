@@ -1,5 +1,6 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.adapter.TransferShipAndReceiveListAdapter
@@ -20,6 +21,10 @@ class TransferShipAndReceiveActivity : BaseActivity<ActivityTransferShipAndReciv
 
         binding.btnBack.setOnClickListener {
             handleBackPressed()
+        }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
         }
 
         binding.rvTransferList.addItemDecoration(

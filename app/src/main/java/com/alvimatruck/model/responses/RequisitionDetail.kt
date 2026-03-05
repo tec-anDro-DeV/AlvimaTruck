@@ -9,6 +9,7 @@ data class RequisitionDetail(
     val requestDate: String,
     val status: String,
     val toLocation: String,
+    val requisitionLines: ArrayList<RequisitionLines>,
     var isSelected: Boolean = false
 ) {
     fun getRequestedDate(): String {

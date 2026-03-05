@@ -56,6 +56,10 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>(), Delive
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, DriverHomeActivity::class.java))
+            finishAffinity()
+        }
 
         binding.rvDeliveryList.addItemDecoration(
             EqualSpacingItemDecoration(

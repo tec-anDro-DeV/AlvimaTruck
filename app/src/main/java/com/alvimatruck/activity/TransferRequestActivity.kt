@@ -15,6 +15,10 @@ class TransferRequestActivity : BaseActivity<ActivityTransferRequestBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
         binding.rlCreateTransferRequest.setOnClickListener {
             startActivity(Intent(this, CreateTransferRequestActivity::class.java))
         }

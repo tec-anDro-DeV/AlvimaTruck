@@ -70,6 +70,10 @@ class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
         binding.btnClearSignature.setOnClickListener {
             binding.signature.clear()
         }

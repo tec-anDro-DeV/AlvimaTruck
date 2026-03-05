@@ -33,6 +33,22 @@
             android:text="@string/customers"
             android:textColor="@color/white"
             android:textSize="@dimen/_16ssp" />
+
+        <RelativeLayout
+            android:id="@+id/btnHome"
+            android:layout_width="@dimen/_42sdp"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:background="@drawable/orange_circle">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_home" />
+        </RelativeLayout>
     </RelativeLayout>
 
 

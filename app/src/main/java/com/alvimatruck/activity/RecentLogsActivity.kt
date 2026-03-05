@@ -1,5 +1,6 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -33,6 +34,10 @@ class RecentLogsActivity : BaseActivity<ActivityRecentLogsBinding>() {
         super.onCreate(savedInstanceState)
         binding.btnBack.setOnClickListener {
             handleBackPressed()
+        }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
         }
 
         getLogs()

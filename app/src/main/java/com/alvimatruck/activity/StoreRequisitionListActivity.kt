@@ -1,5 +1,6 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -45,6 +46,10 @@ class StoreRequisitionListActivity : BaseActivity<ActivityStoreRequisitionListBi
 
         binding.btnBack.setOnClickListener {
             handleBackPressed()
+        }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
         }
 
         binding.rvRequisitionList.addItemDecoration(

@@ -18,6 +18,11 @@ class DepositActivity : BaseActivity<ActivityDepositBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
+
 
         binding.rlDeposit.setOnClickListener {
             startActivity(Intent(this, SendDepositActivity::class.java))

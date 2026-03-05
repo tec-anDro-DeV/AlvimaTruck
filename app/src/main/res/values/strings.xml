@@ -397,4 +397,5 @@
     <string name="invoice2">Invoice*</string>
     <string name="search_invoice">Search Invoice</string>
     <string name="choose_invoice">Choose Invoice</string>
+    <string name="store_requisition_ndetails">Store Requisition\nDetails</string>
 </resources>

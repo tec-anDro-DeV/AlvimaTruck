@@ -1,5 +1,6 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -41,6 +42,10 @@ class TransferShipToReceiveActivity : BaseActivity<ActivityTransferShipToReceive
 
         binding.btnBack.setOnClickListener {
             handleBackPressed()
+        }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
         }
 
         binding.rvTransferList.addItemDecoration(

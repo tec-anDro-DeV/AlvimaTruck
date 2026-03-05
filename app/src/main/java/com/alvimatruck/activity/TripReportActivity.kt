@@ -1,6 +1,7 @@
 package com.alvimatruck.activity
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
@@ -48,6 +49,10 @@ class TripReportActivity : BaseActivity<ActivityTripReportBinding>() {
 
         binding.btnBack.setOnClickListener {
             handleBackPressed()
+        }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
         }
 
     }

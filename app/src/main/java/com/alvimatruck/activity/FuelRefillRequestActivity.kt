@@ -65,6 +65,10 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
 
         binding.tvCancel.setOnClickListener {
             handleBackPressed()

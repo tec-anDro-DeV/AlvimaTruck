@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <RelativeLayout
+        android:id="@+id/rlTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_21sdp">
+
+        <RelativeLayout
+            android:id="@+id/btnBack"
+            android:layout_width="@dimen/_42sdp"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/transparent_circle">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_back" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/sanssemibold"
+            android:text="@string/store_requisition_ndetails"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16ssp" />
+
+        <RelativeLayout
+            android:id="@+id/btnHome"
+            android:layout_width="@dimen/_42sdp"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:background="@drawable/orange_circle">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_home" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rlTop"
+        android:background="@drawable/bg_white_top_curve">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_21sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/input_bg"
+                android:orientation="vertical"
+                android:padding="@dimen/_9sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="@string/from"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp" />
+
+
+                <TextView
+                    android:id="@+id/tvFrom"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_44sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/border_bg"
+                    android:fontFamily="@font/sansregular"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hintGary"
+                    android:textSize="@dimen/_12ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="@string/to2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp" />
+
+                <TextView
+                    android:id="@+id/tvTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_44sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/border_bg"
+                    android:fontFamily="@font/sansregular"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hintGary"
+                    android:textSize="@dimen/_12ssp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="@string/requested_date"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp" />
+
+                <TextView
+                    android:id="@+id/tvDateTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_44sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/border_bg"
+                    android:fontFamily="@font/sansregular"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+                    tools:text="MM/dd/yyyy HH:mm" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llRequestList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_9sdp"
+                android:background="@drawable/input_bg"
+                android:orientation="vertical"
+                android:padding="@dimen/_9sdp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sansregular"
+                    android:text="@string/transfer_details"
+                    android:textColor="@color/darkGray"
+                    android:textSize="@dimen/_12ssp" />
+
+                <LinearLayout
+                    android:id="@+id/llItemList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

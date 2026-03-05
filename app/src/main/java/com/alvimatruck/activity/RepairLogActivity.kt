@@ -83,6 +83,10 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
 
         setupLaunchers()
 

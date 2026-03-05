@@ -15,6 +15,10 @@ class StoreRequisitionActivity : BaseActivity<ActivityStoreRequisitionBinding>()
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
 
         binding.rlRequisitionList.setOnClickListener {
             startActivity(Intent(this, StoreRequisitionListActivity::class.java))

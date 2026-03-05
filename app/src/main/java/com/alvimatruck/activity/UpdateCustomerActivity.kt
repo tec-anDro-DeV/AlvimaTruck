@@ -50,6 +50,10 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
         getCityList()
 
         if (intent != null) {

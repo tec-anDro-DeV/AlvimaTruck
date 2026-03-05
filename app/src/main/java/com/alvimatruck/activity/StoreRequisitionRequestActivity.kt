@@ -1,5 +1,6 @@
 package com.alvimatruck.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -75,6 +76,10 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
             handleBackPressed()
         }
 
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
 
         binding.tvDateTime.text = Utils.getFullDateWithTime(System.currentTimeMillis())
 

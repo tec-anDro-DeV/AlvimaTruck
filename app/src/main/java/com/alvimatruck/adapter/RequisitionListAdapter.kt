@@ -2,15 +2,19 @@ package com.alvimatruck.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
+import com.alvimatruck.activity.StoreRequisitionDetailActivity
 import com.alvimatruck.databinding.SingleRequisitionItemBinding
 import com.alvimatruck.model.responses.LocationDetail
 import com.alvimatruck.model.responses.RequisitionDetail
+import com.alvimatruck.utils.Constants
+import com.google.gson.Gson
 
 
 class RequisitionListAdapter(
@@ -83,6 +87,15 @@ class RequisitionListAdapter(
         } else {
             // holder.binding.ivEdit.visibility = View.VISIBLE
             holder.binding.chkShip.visibility = View.VISIBLE
+        }
+
+        holder.itemView.setOnClickListener {
+            mActivity.startActivity(
+                Intent(mActivity, StoreRequisitionDetailActivity::class.java).putExtra(
+                    Constants.OrderDetail, Gson().toJson(list[position])
+                )
+            )
+
         }
 
 

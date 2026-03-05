@@ -16,6 +16,10 @@ class SalesRouteActivity : BaseActivity<ActivitySalesRouteBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
 
         binding.rlRoute.setOnClickListener {
             startActivity(Intent(this, TripRouteListActivity::class.java))

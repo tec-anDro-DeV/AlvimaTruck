@@ -56,6 +56,10 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
 
         if (intent != null) {
             status = intent.getStringExtra(Constants.Status).toString()

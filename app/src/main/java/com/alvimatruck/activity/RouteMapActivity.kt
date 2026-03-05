@@ -2,6 +2,7 @@ package com.alvimatruck.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
@@ -53,6 +54,10 @@ class RouteMapActivity : BaseActivity<ActivityRouteMapBinding>(), OnMapReadyCall
 
         binding.btnBack.setOnClickListener {
             handleBackPressed()
+        }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
         }
 
         if (intent != null) {

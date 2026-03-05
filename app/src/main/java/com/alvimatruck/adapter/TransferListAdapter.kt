@@ -2,12 +2,16 @@ package com.alvimatruck.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.alvimatruck.activity.TransferDetailActivity
 import com.alvimatruck.databinding.SingleTransferItemBinding
 import com.alvimatruck.model.responses.LocationDetail
 import com.alvimatruck.model.responses.TransferDetail
+import com.alvimatruck.utils.Constants
+import com.google.gson.Gson
 
 
 class TransferListAdapter(
@@ -44,6 +48,12 @@ class TransferListAdapter(
         }
         holder.binding.tvToLocation.text =
             locationList?.find { it.code == list[position].transferToCode }?.name ?: ""
+
+        holder.itemView.setOnClickListener {
+            mActivity.startActivity(Intent(mActivity, TransferDetailActivity::class.java).apply {
+                putExtra(Constants.OrderDetail, Gson().toJson(list[position]))
+            })
+        }
 
 
     }

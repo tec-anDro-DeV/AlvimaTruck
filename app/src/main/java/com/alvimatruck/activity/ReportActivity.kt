@@ -17,6 +17,11 @@ class ReportActivity : BaseActivity<ActivityReportBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
+
 
         binding.rlTripReport.setOnClickListener {
             startActivity(Intent(this, TripReportActivity::class.java))

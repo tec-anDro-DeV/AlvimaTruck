@@ -69,6 +69,10 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
         userDetail =
             Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
 

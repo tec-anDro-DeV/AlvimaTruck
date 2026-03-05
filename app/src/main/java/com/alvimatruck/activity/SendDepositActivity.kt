@@ -83,6 +83,10 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
         binding.rlChoosePhoto.setOnClickListener {
             openImageChooseDialog()
         }

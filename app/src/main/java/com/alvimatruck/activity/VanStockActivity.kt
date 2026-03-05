@@ -44,12 +44,19 @@ class VanStockActivity : BaseActivity<ActivityVanStockBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
         userDetail =
             Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
         if (intent != null) {
             if (intent.getBooleanExtra(Constants.IS_HIDE, false)) {
                 binding.bottomMenu.visibility = View.GONE
+                binding.btnHome.visibility = View.VISIBLE
                 binding.tvTitle.text = getString(R.string.stock_report)
+            } else {
+                binding.btnHome.visibility = View.GONE
             }
         }
         getItemList()

@@ -81,6 +81,10 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
 
         setupLaunchers()
         getPriceList()

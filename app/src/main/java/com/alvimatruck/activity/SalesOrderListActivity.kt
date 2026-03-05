@@ -46,6 +46,10 @@ class SalesOrderListActivity : BaseActivity<ActivitySalesOrderListBinding>(),
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
 
 
         binding.rvOrderList.addItemDecoration(

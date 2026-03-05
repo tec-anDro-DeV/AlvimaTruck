@@ -75,6 +75,11 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
+
 
         if (intent != null) {
             routeName = intent.getStringExtra(Constants.RouteDetail).toString()

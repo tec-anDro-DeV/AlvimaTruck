@@ -81,6 +81,10 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
 
         setupLaunchers()
 

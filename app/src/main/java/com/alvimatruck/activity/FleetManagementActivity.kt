@@ -35,6 +35,10 @@ class FleetManagementActivity : BaseActivity<ActivityFleetManagementBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
+        }
 
         binding.rlFuelRefillRequest.setOnClickListener {
             val intent = Intent(this, FuelRefillRequestActivity::class.java)
