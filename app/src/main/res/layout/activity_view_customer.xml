@@ -233,7 +233,8 @@
                         android:fontFamily="@font/sansbold"
                         android:text="@string/postal_code2"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="@dimen/_12ssp"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -261,6 +262,7 @@
                         android:fontFamily="@font/sansregular"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
+                        android:visibility="gone"
                         tools:text="785415" />
                 </LinearLayout>
 

@@ -220,10 +220,6 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         } else if (binding.tvCity.text.toString().trim().isEmpty()) {
             Toast.makeText(this, getString(R.string.please_select_city), Toast.LENGTH_SHORT).show()
             return
-        } else if (binding.tvPostalCode.text.toString().trim().isEmpty()) {
-            Toast.makeText(this, getString(R.string.please_enter_postal_code), Toast.LENGTH_SHORT)
-                .show()
-            return
         } else if (binding.etAddress.text.toString().trim().isEmpty()) {
             Toast.makeText(this, getString(R.string.please_enter_address), Toast.LENGTH_SHORT)
                 .show()
@@ -491,6 +487,8 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
                         for (item in postalCodeList) {
                             if (item.city == singleItemSelectionAdapter.selected) {
                                 textView2?.text = item.code
+                            } else {
+                                textView2?.text = ""
                             }
                         }
                     }

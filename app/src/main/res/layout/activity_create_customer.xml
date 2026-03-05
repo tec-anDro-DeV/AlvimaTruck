@@ -222,6 +222,7 @@
                     android:textSize="@dimen/_11ssp" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_14sdp"
@@ -254,6 +255,7 @@
                     app:drawableEndCompat="@drawable/ic_rounded_arrow_drop_down" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tvPostalCode"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_44sdp"

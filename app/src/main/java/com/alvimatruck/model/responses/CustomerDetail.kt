@@ -53,9 +53,9 @@ data class CustomerDetail(
         if (!city.isNullOrEmpty()) {
             fullAddress += ", $city"
         }
-        if (!postCode.isNullOrEmpty()) {
-            fullAddress += ", $postCode"
-        }
+//        if (!postCode.isNullOrEmpty()) {
+//            fullAddress += ", $postCode"
+//        }
         return fullAddress
     }
 
