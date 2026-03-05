@@ -52,7 +52,6 @@ import retrofit2.Response
 import java.io.File
 
 class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
-    var postItemList: ArrayList<String>? = ArrayList()
     var priceItemList: ArrayList<String> = ArrayList()
     var cityList: ArrayList<String> = ArrayList()
     var postalCodeList: ArrayList<CityDetail> = ArrayList()
@@ -87,28 +86,12 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
         getPriceList()
         getCityList()
 
-        postItemList!!.add("ABDELLA")
-        postItemList!!.add("AGENT")
-        postItemList!!.add("DOMESTIC")
-        postItemList!!.add("EU")
-        postItemList!!.add("FOREIGN")
-        postItemList!!.add("REG.AGENT")
-
         binding.tvCustomerPriceGroup.setOnClickListener {
             dialogSingleSelection(
                 priceItemList,
                 getString(R.string.choose_price_group),
                 getString(R.string.search_price_group),
                 binding.tvCustomerPriceGroup
-            )
-        }
-
-        binding.tvCustomerPostingGroup.setOnClickListener {
-            dialogSingleSelection(
-                postItemList!!,
-                getString(R.string.choose_posting_group),
-                getString(R.string.search_posting_group),
-                binding.tvCustomerPostingGroup
             )
         }
 
@@ -232,11 +215,6 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
             Toast.makeText(this, getString(R.string.please_upload_id_proof), Toast.LENGTH_SHORT)
                 .show()
             return
-        } else if (binding.tvCustomerPostingGroup.text.toString().trim().isEmpty()) {
-            Toast.makeText(
-                this, getString(R.string.please_select_posting_group), Toast.LENGTH_SHORT
-            ).show()
-            return
         } else if (binding.tvCustomerPriceGroup.text.toString().trim().isEmpty()) {
             Toast.makeText(this, getString(R.string.please_select_price_group), Toast.LENGTH_SHORT)
                 .show()
@@ -261,8 +239,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
                 binding.tvPostalCode.text.toString().toRequestBody("text/plain".toMediaType()),
                 binding.etTINNumber.text.toString().toRequestBody("text/plain".toMediaType()),
                 binding.etAddress.text.toString().toRequestBody("text/plain".toMediaType()),
-                binding.tvCustomerPostingGroup.text.toString()
-                    .toRequestBody("text/plain".toMediaType()),
+                "DOMESTIC".toRequestBody("text/plain".toMediaType()),
                 binding.tvCustomerPriceGroup.text.toString()
                     .toRequestBody("text/plain".toMediaType()),
                 AlvimaTuckApplication.latitude.toString().toRequestBody("text/plain".toMediaType()),
