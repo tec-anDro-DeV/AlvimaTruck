@@ -519,7 +519,9 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                                 .toDouble() + existingOrder.vat.toString().toDouble()
                             binding.etSalesPrice.setText(finalPrice.toString())
                             //  tempUnitPrice = existingOrder.unitPrice
+                            binding.tvAdd.text = getString(R.string.update)
                         } else {
+                            binding.tvAdd.text = getString(R.string.add)
                             binding.etQuantity.setText(minQty.toString())
                         }
                         return
@@ -539,8 +541,10 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                                 binding.etSalesPrice.setText(finalPrice.toString())
 
                                 if (existingOrder != null) {
+                                    binding.tvAdd.text = getString(R.string.update)
                                     binding.etQuantity.setText(existingOrder.quantity.toString())
                                 } else {
+                                    binding.tvAdd.text = getString(R.string.add)
                                     binding.etQuantity.setText(minQty.toString())
                                 }
 

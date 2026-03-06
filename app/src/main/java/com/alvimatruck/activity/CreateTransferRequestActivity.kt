@@ -415,8 +415,10 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
                         val existingOrder =
                             requestList.find { it.itemNo == selectedProduct?.itemNo }
                         if (existingOrder != null) {
+                            binding.tvAdd.text = getString(R.string.update)
                             binding.etQuantity.setText(existingOrder.quantity.toString())
                         } else {
+                            binding.tvAdd.text = getString(R.string.add)
                             binding.etQuantity.setText("")
                         }
                     }

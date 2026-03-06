@@ -401,6 +401,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                                 Toast.LENGTH_SHORT
                             ).show()
                             isChange = true
+                            Utils.isTripInProgress = false
                             handleBackPressed()
 
                         } catch (e: Exception) {

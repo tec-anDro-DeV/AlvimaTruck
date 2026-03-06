@@ -230,6 +230,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                             )
 
                             if (dashboardDetails!!.activeRoute != null) {
+                                Utils.isTripInProgress = true
                                 binding.llProgressRoute.visibility = View.VISIBLE
                                 binding.tvRouteId.text = dashboardDetails!!.activeRoute!!.routeName
                                 binding.tvRegularCustomersValue.text =
@@ -241,6 +242,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
                             } else {
                                 binding.llProgressRoute.visibility = View.GONE
+                                Utils.isTripInProgress = false
                             }
                             binding.tvTodayVisit.text =
                                 dashboardDetails!!.totalCustomerVisits.toString()

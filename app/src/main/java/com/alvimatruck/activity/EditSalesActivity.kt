@@ -516,8 +516,10 @@ class EditSalesActivity : BaseActivity<ActivityEditSalesBinding>(), DeleteOrderL
                             val finalPrice = existingOrder.unitPrice.toString()
                                 .toDouble() + existingOrder.vat.toString().toDouble()
                             binding.etSalesPrice.setText(finalPrice.toString())
+                            binding.tvAdd.text = getString(R.string.update)
                         } else {
                             binding.etQuantity.setText(minQty.toString())
+                            binding.tvAdd.text = getString(R.string.add)
                         }
                         return
                     }

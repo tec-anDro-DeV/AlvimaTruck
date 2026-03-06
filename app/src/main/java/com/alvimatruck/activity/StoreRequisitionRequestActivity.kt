@@ -217,14 +217,13 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
 
 
         if (Utils.isOnline(this)) {
-            val storeRequisitionLines: List<StoreRequisitionLine> =
-                requestList.map { item ->
-                    StoreRequisitionLine(
-                        fromLocation = selectedLocation!!.code,
-                        itemNo = item.itemNo,
-                        quantityRequested = item.quantity
-                    )
-                }
+            val storeRequisitionLines: List<StoreRequisitionLine> = requestList.map { item ->
+                StoreRequisitionLine(
+                    fromLocation = selectedLocation!!.code,
+                    itemNo = item.itemNo,
+                    quantityRequested = item.quantity
+                )
+            }
             ProgressDialog.start(this@StoreRequisitionRequestActivity)
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
@@ -401,8 +400,10 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
                         val existingOrder = requestList.find { it.itemNo == selectedProduct?.no }
                         if (existingOrder != null) {
                             binding.etQty.setText(existingOrder.quantity.toString())
+                            binding.tvAdd.text = getString(R.string.update)
                         } else {
                             binding.etQty.setText("")
+                            binding.tvAdd.text = getString(R.string.add)
                         }
                     }
 
