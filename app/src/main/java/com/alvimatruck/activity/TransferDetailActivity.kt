@@ -9,7 +9,7 @@ import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityStoreRequisitionDetailBinding
 import com.alvimatruck.model.responses.LocationDetail
-import com.alvimatruck.model.responses.RequisitionDetail
+import com.alvimatruck.model.responses.TransferDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.SharedHelper
 import com.google.gson.Gson
@@ -17,7 +17,7 @@ import com.google.gson.JsonParser
 
 class TransferDetailActivity : BaseActivity<ActivityStoreRequisitionDetailBinding>() {
 
-    var requisitionDetail: RequisitionDetail? = null
+    var transferDetail: TransferDetail? = null
     var locationList: ArrayList<LocationDetail>? = ArrayList()
 
 
@@ -37,21 +37,21 @@ class TransferDetailActivity : BaseActivity<ActivityStoreRequisitionDetailBindin
         }
         getToLocationList()
         if (intent != null) {
-            requisitionDetail = Gson().fromJson(
+            transferDetail = Gson().fromJson(
                 intent.getStringExtra(Constants.OrderDetail),
-                RequisitionDetail::class.java
+                TransferDetail::class.java
             )
             binding.tvTo.text =
-                locationList?.find { it.code == requisitionDetail!!.fromLocation }?.name ?: ""
+                locationList?.find { it.code == transferDetail!!.transferToCode }?.name ?: ""
             binding.tvFrom.text = "VAN"
 
-            binding.tvDateTime.text = requisitionDetail!!.getRequestedDate()
+            binding.tvDateTime.text = transferDetail!!.getRequestDate()
 
             binding.llItemList.removeAllViews()
 
-            for (i in 0 until requisitionDetail!!.requisitionLines.size) {
+            for (i in 0 until transferDetail!!.transferOrderLines.size) {
 
-                val item = requisitionDetail!!.requisitionLines[i]
+                val item = transferDetail!!.transferOrderLines[i]
 
                 // ✅ Inflate item_product.xml
                 val productView = LayoutInflater.from(this)
@@ -65,10 +65,10 @@ class TransferDetailActivity : BaseActivity<ActivityStoreRequisitionDetailBindin
                 // ✅ Set Dynamic Data
                 tvProductName.text = item.description
                 tvProductDetails.text =
-                    "Qty: ${item.quantityRequested} ${item.unitOfMeasure} • SKU: ${item.no}"
+                    "Qty: ${item.quantity} ${item.unitOfMeasureCode} • SKU: ${item.itemNo}"
 
                 // ✅ Hide Divider for Last Item
-                if (i == requisitionDetail!!.requisitionLines.size - 1) {
+                if (i == transferDetail!!.transferOrderLines.size - 1) {
                     dividerLine.visibility = View.GONE
                 }
 

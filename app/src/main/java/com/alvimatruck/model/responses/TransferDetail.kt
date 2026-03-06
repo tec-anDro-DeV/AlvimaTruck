@@ -7,6 +7,7 @@ data class TransferDetail(
     val transferFromCode: String,
     val transferOrderNo: String,
     val transferToCode: String,
+    val transferOrderLines: ArrayList<TransferOrderLines>,
     var isSelected: Boolean = false
 ) {
     fun getRequestDate(): String {
