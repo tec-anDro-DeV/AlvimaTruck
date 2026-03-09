@@ -234,7 +234,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.createCustomer(
-                Utils.isTripInProgress.toRequestBody("text/plain".toMediaType()),
+                Utils.isRouteInProgress.toRequestBody("text/plain".toMediaType()),
                 binding.etCustomerName.text.toString().toRequestBody("text/plain".toMediaType()),
                 binding.etContactName.text.toString().toRequestBody("text/plain".toMediaType()),
                 binding.etCustomerPhoneNumber.text.toString()
@@ -468,9 +468,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
 
                         for (item in postalCodeList) {
                             if (item.city == singleItemSelectionAdapter.selected) {
-                                textView2?.text = item.code
-                            } else {
-                                textView2?.text = ""
+                                textView2!!.text = item.code
                             }
                         }
                     }

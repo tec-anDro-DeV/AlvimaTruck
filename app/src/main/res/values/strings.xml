@@ -400,4 +400,8 @@
     <string name="store_requisition_ndetails">Store Requisition\nDetails</string>
     <string name="payment_code">Payment Code</string>
     <string name="sold_customers">Sold Customers</string>
+    <string name="end_trip">End Trip</string>
+    <string name="start_trip">Start Trip</string>
+    <string name="stock_transfer_is_not_allowed_once_the_trip_has_started">Stock transfer is not allowed once the trip has started</string>
+    <string name="store_requisition_is_not_allowed_once_the_trip_has_started">Store requisition is not allowed once the trip has started.</string>
 </resources>

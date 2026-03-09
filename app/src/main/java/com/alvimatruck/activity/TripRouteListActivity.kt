@@ -90,7 +90,7 @@ class TripRouteListActivity : BaseActivity<ActivityTripRouteListBinding>(), Rout
                             } as ArrayList<RouteDetail>
 
                             if (routeList!!.isNotEmpty()) {
-                                Utils.isTripInProgress = routeList?.firstOrNull {
+                                Utils.isRouteInProgress = routeList?.firstOrNull {
                                     it.status.equals(
                                         "InProgress",
                                         ignoreCase = true

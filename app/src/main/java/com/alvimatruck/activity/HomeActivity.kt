@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -96,8 +97,94 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
 
-        binding.llTripManagement.setOnClickListener {
 
+
+        binding.llTripManagement.setOnClickListener {
+            if (!Utils.isTripInProgress) {
+
+                val inflater = layoutInflater
+                val alertLayout = inflater.inflate(R.layout.dialog_start_trip, null)
+
+                val etStartKm = alertLayout.findViewById<EditText>(R.id.etStartKm)
+                val btnCancel = alertLayout.findViewById<TextView>(R.id.btnCancel)
+                val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
+
+
+                val dialog =
+                    AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
+                dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+
+                btnCancel.setOnClickListener {
+                    dialog.dismiss()
+                }
+                btnSubmit.setOnClickListener {
+                    if (etStartKm.text.toString().isEmpty()) {
+                        Toast.makeText(
+                            this, getString(R.string.please_enter_start_km), Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        dialog.dismiss()
+                        startTripAPI(etStartKm.text.toString())
+                    }
+
+                }
+                dialog.show()
+                val width =
+                    (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+                dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
+            } else {
+                if (Utils.isRouteInProgress.isEmpty()) {
+                    Toast.makeText(
+                        this,
+                        "Cannot end trip. Please end the route and post all PSI invoices.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    val inflater = layoutInflater
+                    val alertLayout = inflater.inflate(R.layout.dialog_end_trip, null)
+
+                    val etEndKm = alertLayout.findViewById<EditText>(R.id.etEndKm)
+                    val btnCancel = alertLayout.findViewById<TextView>(R.id.btnCancel)
+                    val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
+
+
+                    val dialog =
+                        AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
+                    dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+
+                    btnCancel.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                    btnSubmit.setOnClickListener {
+                        if (etEndKm.text.toString().isEmpty()) {
+                            Toast.makeText(
+                                this, getString(R.string.please_enter_end_km), Toast.LENGTH_SHORT
+                            ).show()
+                        }
+//                    else if (etEndKm.text.toString()
+//                            .toInt() < binding.tvVanStartKilometer.text.toString().toInt()
+//                    ) {
+//                        Toast.makeText(
+//                            this,
+//                            getString(R.string.end_km_should_be_greater_than_start_km),
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+                        else {
+                            dialog.dismiss()
+                            endTripAPI(etEndKm.text.toString())
+                        }
+
+                    }
+                    dialog.show()
+                    val width =
+                        (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+                    dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+                }
+            }
         }
         binding.llReport.setOnClickListener {
             startActivity(Intent(this, ReportActivity::class.java))
@@ -127,6 +214,137 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                 ).putExtra(Constants.RouteDetail, Gson().toJson(routeDetail))
             )
         }
+
+    }
+
+    private fun startTripAPI(startKm: String) {
+        Utils.isTripInProgress = true
+        binding.tvStartEndTrip.text = getString(R.string.end_trip)
+
+//        if (Utils.isOnline(this)) {
+//
+//            ProgressDialog.start(this@RouteDetailActivity)
+//            ApiClient.getRestClient(
+//                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+//            )!!.webservices.startTrip(
+//                StartTripRequest(
+//                    routeDetail!!.routeName, startKm.toInt()
+//                )
+//            ).enqueue(object : Callback<JsonObject> {
+//                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+//                    ProgressDialog.dismiss()
+//                    if (response.code() == 401) {
+//                        Utils.forceLogout(this@RouteDetailActivity)  // show dialog before logout
+//                        return
+//                    }
+//                    if (response.isSuccessful) {
+//                        try {
+//                            Log.d("TAG", "onResponse: " + response.body().toString())
+//                            Toast.makeText(
+//                                this@RouteDetailActivity,
+//                                response.body()!!.get("message").toString().replace('"', ' ')
+//                                    .trim(),
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                            isChange = true
+//                            binding.tvVanStartKilometer.text = startKm
+//                            binding.tvStatus.text = getString(R.string.inprogress)
+//                            status = "InProgress"
+//                            Utils.isRouteInProgress = routeDetail!!.routeName
+//                            binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
+//                            binding.tvStartEndRoute.text = getString(R.string.end_route)
+//                            binding.rlStartKilometer.visibility = View.VISIBLE
+//                            binding.rlEndKilometer.visibility = View.GONE
+//                            binding.llBottomButtons.visibility = View.VISIBLE
+//
+//
+//                        } catch (e: Exception) {
+//                            e.printStackTrace()
+//                        }
+//                    } else {
+//                        Toast.makeText(
+//                            this@RouteDetailActivity,
+//                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+//                    Toast.makeText(
+//                        this@RouteDetailActivity,
+//                        getString(R.string.api_fail_message),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    ProgressDialog.dismiss()
+//                }
+//            })
+//        } else {
+//            Toast.makeText(
+//                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+//            ).show()
+//        }
+
+    }
+
+    private fun endTripAPI(endKm: String) {
+        Utils.isTripInProgress = false
+        binding.tvStartEndTrip.text = getString(R.string.start_trip)
+
+//        if (Utils.isOnline(this)) {
+//
+//            ProgressDialog.start(this@RouteDetailActivity)
+//            ApiClient.getRestClient(
+//                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+//            )!!.webservices.endTrip(
+//                EndTripRequest(
+//                    routeDetail!!.routeName, endKm.toInt()
+//                )
+//            ).enqueue(object : Callback<JsonObject> {
+//                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+//                    ProgressDialog.dismiss()
+//                    if (response.code() == 401) {
+//                        Utils.forceLogout(this@RouteDetailActivity)  // show dialog before logout
+//                        return
+//                    }
+//                    if (response.isSuccessful) {
+//                        try {
+//                            Log.d("TAG", "onResponse: " + response.body().toString())
+//                            Toast.makeText(
+//                                this@RouteDetailActivity,
+//                                response.body()!!.get("message").toString().replace('"', ' ')
+//                                    .trim(),
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                            isChange = true
+//                            Utils.isRouteInProgress = ""
+//                            handleBackPressed()
+//                        } catch (e: Exception) {
+//                            e.printStackTrace()
+//                        }
+//                    } else {
+//                        Toast.makeText(
+//                            this@RouteDetailActivity,
+//                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+//                    Toast.makeText(
+//                        this@RouteDetailActivity,
+//                        getString(R.string.api_fail_message),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    ProgressDialog.dismiss()
+//                }
+//            })
+//        } else {
+//            Toast.makeText(
+//                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+//            ).show()
+//        }
 
     }
 
@@ -230,7 +448,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                             )
 
                             if (dashboardDetails!!.activeRoute != null) {
-                                Utils.isTripInProgress = dashboardDetails!!.activeRoute!!.routeName
+                                Utils.isRouteInProgress = dashboardDetails!!.activeRoute!!.routeName
                                 binding.llProgressRoute.visibility = View.VISIBLE
                                 binding.tvRouteId.text = dashboardDetails!!.activeRoute!!.routeName
                                 binding.tvRegularCustomersValue.text =
@@ -242,7 +460,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
                             } else {
                                 binding.llProgressRoute.visibility = View.GONE
-                                Utils.isTripInProgress = ""
+                                Utils.isRouteInProgress = ""
                             }
                             binding.tvTodayVisit.text =
                                 dashboardDetails!!.totalCustomerVisits.toString()

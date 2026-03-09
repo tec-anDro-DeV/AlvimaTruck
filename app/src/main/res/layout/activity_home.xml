@@ -86,9 +86,42 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/llTripManagement"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_88sdp"
+
+                    android:layout_weight="1"
+                    android:background="@drawable/home_btn_bg"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_new_van_break" />
+
+                    <TextView
+                        android:id="@+id/tvStartEndTrip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:autoSizeMinTextSize="@dimen/_1sdp"
+                        android:autoSizeTextType="uniform"
+                        android:fontFamily="@font/sanssemibold"
+                        android:gravity="center"
+                        android:maxLines="2"
+                        android:text="@string/start_trip"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10ssp" />
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:id="@+id/llSalesRoute"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_88sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
                     android:layout_weight="1"
                     android:background="@drawable/home_btn_bg"
                     android:gravity="center_horizontal"
@@ -146,36 +179,6 @@
                         android:textSize="@dimen/_10ssp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/llTripManagement"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_88sdp"
-                    android:layout_marginStart="@dimen/_6sdp"
-                    android:layout_weight="1"
-                    android:background="@drawable/home_btn_bg"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:padding="@dimen/_8sdp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_new_van_break" />
-
-                    <TextView
-                        android:id="@+id/tvStartEndTrip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_12sdp"
-                        android:autoSizeMinTextSize="@dimen/_1sdp"
-                        android:autoSizeTextType="uniform"
-                        android:fontFamily="@font/sanssemibold"
-                        android:gravity="center"
-                        android:maxLines="2"
-                        android:text="Start Trip"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_10ssp" />
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/llReport"

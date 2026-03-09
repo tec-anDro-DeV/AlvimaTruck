@@ -86,7 +86,7 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
             if (routeName.trim().isEmpty()) {
                 binding.ivAddCustomer.visibility = View.GONE
             } else {
-                if (Utils.isTripInProgress == routeName) {
+                if (Utils.isRouteInProgress == routeName) {
                     binding.ivAddCustomer.visibility = View.VISIBLE
                 } else {
                     binding.ivAddCustomer.visibility = View.GONE

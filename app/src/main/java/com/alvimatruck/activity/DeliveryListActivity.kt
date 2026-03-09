@@ -153,7 +153,7 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>(), Delive
     }
 
     private fun setupData() {
-        Utils.isTripInProgress = driverOrderList?.firstOrNull {
+        Utils.isRouteInProgress = driverOrderList?.firstOrNull {
             it.appStatus.equals(
                 "InProgress",
                 ignoreCase = true
