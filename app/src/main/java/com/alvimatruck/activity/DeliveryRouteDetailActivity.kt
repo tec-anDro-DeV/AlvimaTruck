@@ -50,7 +50,7 @@ class DeliveryRouteDetailActivity : BaseActivity<ActivityDeliveryRouteDetailBind
 //            )
         }
 
-        binding.tvStartEndTrip.setOnClickListener {
+        binding.tvStartEndRoute.setOnClickListener {
             if (status.equals("Pending")) {
                 val inflater = layoutInflater
                 val alertLayout = inflater.inflate(R.layout.dialog_start_trip, null)

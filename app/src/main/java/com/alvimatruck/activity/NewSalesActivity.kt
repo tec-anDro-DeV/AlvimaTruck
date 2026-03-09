@@ -91,7 +91,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             binding.tvTelephoneNumber.text = number ?: ""
             binding.tvSalesperson.text = userDetail?.driverFullName
             binding.tvLocationCode.text = userDetail?.salesPersonCode
-            // binding.tvPaymentCode.text = userDetail?.salesPersonCode
+            binding.tvPaymentCode.text = userDetail?.salesPersonCode
         }
 
         binding.tvPostingDate.text = Utils.getFullDateWithTime(System.currentTimeMillis())
@@ -271,7 +271,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                     binding.tvTotal.text.toString().replace("ETB", "").toDouble(),
                     orderList,
                     userDetail?.salesPersonCode.toString(),
-                    "",
+                    userDetail?.salesPersonCode.toString(),
                     binding.tvSubTotal.text.toString().replace("ETB", "").toDouble(),
                     binding.tvVat.text.toString().replace("+ ETB", "").toDouble(),
                     customerDetail!!.customerPriceGroup.toString()

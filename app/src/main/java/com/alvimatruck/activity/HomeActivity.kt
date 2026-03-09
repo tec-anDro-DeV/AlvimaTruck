@@ -96,8 +96,8 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
 
-        binding.llFeetManagement.setOnClickListener {
-            startActivity(Intent(this, FleetManagementActivity::class.java))
+        binding.llTripManagement.setOnClickListener {
+
         }
         binding.llReport.setOnClickListener {
             startActivity(Intent(this, ReportActivity::class.java))
@@ -230,7 +230,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                             )
 
                             if (dashboardDetails!!.activeRoute != null) {
-                                Utils.isTripInProgress = true
+                                Utils.isTripInProgress = dashboardDetails!!.activeRoute!!.routeName
                                 binding.llProgressRoute.visibility = View.VISIBLE
                                 binding.tvRouteId.text = dashboardDetails!!.activeRoute!!.routeName
                                 binding.tvRegularCustomersValue.text =
@@ -242,7 +242,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
                             } else {
                                 binding.llProgressRoute.visibility = View.GONE
-                                Utils.isTripInProgress = false
+                                Utils.isTripInProgress = ""
                             }
                             binding.tvTodayVisit.text =
                                 dashboardDetails!!.totalCustomerVisits.toString()

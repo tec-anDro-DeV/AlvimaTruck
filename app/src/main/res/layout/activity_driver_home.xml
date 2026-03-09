@@ -122,6 +122,37 @@
             </RelativeLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_13sdp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/rlFeetManagement"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_118sdp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_transfer_3"
+                android:padding="@dimen/_14sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sanssemibold"
+                    android:text="@string/fleet_services"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_118sdp"
+                android:layout_marginStart="@dimen/_13sdp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
         <!--        <LinearLayout-->
         <!--            android:layout_width="match_parent"-->
         <!--            android:layout_height="wrap_content"-->

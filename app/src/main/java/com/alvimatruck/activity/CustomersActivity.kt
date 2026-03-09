@@ -83,6 +83,16 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
 
         if (intent != null) {
             routeName = intent.getStringExtra(Constants.RouteDetail).toString()
+            if (routeName.trim().isEmpty()) {
+                binding.ivAddCustomer.visibility = View.GONE
+            } else {
+                if (Utils.isTripInProgress == routeName) {
+                    binding.ivAddCustomer.visibility = View.VISIBLE
+                } else {
+                    binding.ivAddCustomer.visibility = View.GONE
+                }
+
+            }
         }
 
 

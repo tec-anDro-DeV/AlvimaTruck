@@ -36,7 +36,7 @@ class FleetManagementActivity : BaseActivity<ActivityFleetManagementBinding>() {
             handleBackPressed()
         }
         binding.btnHome.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, DriverHomeActivity::class.java))
             finishAffinity()
         }
 

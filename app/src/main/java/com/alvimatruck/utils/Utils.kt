@@ -51,7 +51,7 @@ import java.util.Date
 
 @SuppressLint("SimpleDateFormat")
 object Utils {
-    var isTripInProgress: Boolean = false
+    var isTripInProgress: String = ""
     var isNewOrder: Boolean = false
 
     var driverOrderList: ArrayList<DeliveryTripDetail>? = ArrayList()

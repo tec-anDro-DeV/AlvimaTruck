@@ -197,7 +197,7 @@ class TransferOrderListActivity : BaseActivity<ActivityTransferOrderListBinding>
                             try {
                                 Log.d("TAG", "onResponse: " + response.body().toString())
 
-                                transferList = response.body()!!.getAsJsonArray("data").map {
+                                transferList = response.body()!!.getAsJsonArray("value").map {
                                     Gson().fromJson(it, TransferDetail::class.java)
                                 } as ArrayList<TransferDetail>
                                 filterList = ArrayList(transferList!!)

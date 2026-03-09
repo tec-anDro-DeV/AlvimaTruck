@@ -86,7 +86,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
 
 
             if (status.equals("Pending")) {
-                binding.tvStartEndTrip.text = getString(R.string.start_trip)
+                binding.tvStartEndRoute.text = getString(R.string.start_route)
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
                 binding.rlStartKilometer.visibility = View.GONE
                 binding.rlEndKilometer.visibility = View.GONE
@@ -94,7 +94,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
 
             } else if (status.equals("InProgress")) {
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
-                binding.tvStartEndTrip.text = getString(R.string.end_trip)
+                binding.tvStartEndRoute.text = getString(R.string.end_route)
                 binding.rlStartKilometer.visibility = View.VISIBLE
                 binding.rlEndKilometer.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.VISIBLE
@@ -121,12 +121,12 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             )
         }
 
-        binding.tvStartEndTrip.setOnClickListener {
+        binding.tvStartEndRoute.setOnClickListener {
             if (status.equals("Pending")) {
-                if (Utils.isTripInProgress) {
+                if (Utils.isTripInProgress.trim().isNotEmpty()) {
                     Toast.makeText(
                         this,
-                        getString(R.string.you_can_t_start_a_new_trip_while_another_trip_is_in_progress),
+                        getString(R.string.you_can_t_start_a_new_route_while_another_route_is_in_progress),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
@@ -401,7 +401,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                                 Toast.LENGTH_SHORT
                             ).show()
                             isChange = true
-                            Utils.isTripInProgress = false
+                            Utils.isTripInProgress = ""
                             handleBackPressed()
 
                         } catch (e: Exception) {
@@ -463,9 +463,9 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                             binding.tvVanStartKilometer.text = startKm
                             binding.tvStatus.text = getString(R.string.inprogress)
                             status = "InProgress"
-                            Utils.isTripInProgress = true
+                            Utils.isTripInProgress = routeDetail!!.routeName
                             binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
-                            binding.tvStartEndTrip.text = getString(R.string.end_trip)
+                            binding.tvStartEndRoute.text = getString(R.string.end_route)
                             binding.rlStartKilometer.visibility = View.VISIBLE
                             binding.rlEndKilometer.visibility = View.GONE
                             binding.llBottomButtons.visibility = View.VISIBLE
@@ -527,7 +527,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                                 Toast.LENGTH_SHORT
                             ).show()
                             isChange = true
-                            Utils.isTripInProgress = false
+                            Utils.isTripInProgress = ""
                             handleBackPressed()
                         } catch (e: Exception) {
                             e.printStackTrace()

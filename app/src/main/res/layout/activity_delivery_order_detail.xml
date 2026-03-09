@@ -431,7 +431,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tvStartEndTrip"
+                android:id="@+id/tvStartEndRoute"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_21sdp"
@@ -439,7 +439,7 @@
                 android:fontFamily="@font/sansbold"
                 android:gravity="center"
                 android:padding="@dimen/_14sdp"
-                android:text="@string/start_trip"
+                android:text="@string/start_route"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp" />
 

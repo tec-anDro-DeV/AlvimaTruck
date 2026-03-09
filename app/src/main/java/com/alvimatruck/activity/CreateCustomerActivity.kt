@@ -234,6 +234,7 @@ class CreateCustomerActivity : BaseActivity<ActivityCreateCustomerBinding>() {
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.createCustomer(
+                Utils.isTripInProgress.toRequestBody("text/plain".toMediaType()),
                 binding.etCustomerName.text.toString().toRequestBody("text/plain".toMediaType()),
                 binding.etContactName.text.toString().toRequestBody("text/plain".toMediaType()),
                 binding.etCustomerPhoneNumber.text.toString()

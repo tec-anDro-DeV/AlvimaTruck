@@ -196,6 +196,7 @@ interface ApiInterface {
     @Multipart
     @POST(Constants.API_Create_Customer)
     fun createCustomer(
+        @Part("RouteName") routeName: RequestBody,
         @Part("CustomerName") customerName: RequestBody,
         @Part("ContactName") contactName: RequestBody,
         @Part("CustomerPhoneNumber") customerPhoneNumber: RequestBody,

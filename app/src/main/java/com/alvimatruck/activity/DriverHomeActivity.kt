@@ -95,9 +95,9 @@ class DriverHomeActivity : BaseActivity<ActivityDriverHomeBinding>() {
             getDriverTrip()
         }
 
-//        binding.rlFeetManagement.setOnClickListener {
-//            startActivity(Intent(this, FleetManagementActivity::class.java))
-//        }
+        binding.rlFeetManagement.setOnClickListener {
+            startActivity(Intent(this, FleetManagementActivity::class.java))
+        }
 
         getDriverTrip()
     }

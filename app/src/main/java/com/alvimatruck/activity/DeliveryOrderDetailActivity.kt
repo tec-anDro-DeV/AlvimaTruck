@@ -152,12 +152,12 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
 
         when (orderDetail!!.appStatus) {
             "Open" -> {
-                binding.tvStartEndTrip.text = getString(R.string.start_trip)
+                binding.tvStartEndRoute.text = getString(R.string.start_route)
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
                 binding.rlStartKilometer.visibility = View.GONE
                 binding.rlEndKilometer.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.GONE
-                binding.tvStartEndTrip.visibility = View.VISIBLE
+                binding.tvStartEndRoute.visibility = View.VISIBLE
                 binding.rlDistance.visibility = View.VISIBLE
             }
 
@@ -166,7 +166,7 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                 binding.rlStartKilometer.visibility = View.VISIBLE
                 binding.rlEndKilometer.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.VISIBLE
-                binding.tvStartEndTrip.visibility = View.GONE
+                binding.tvStartEndRoute.visibility = View.GONE
                 binding.rlDistance.visibility = View.VISIBLE
             }
 
@@ -175,7 +175,7 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                 binding.rlStartKilometer.visibility = View.VISIBLE
                 binding.rlEndKilometer.visibility = View.VISIBLE
                 binding.llBottomButtons.visibility = View.GONE
-                binding.tvStartEndTrip.visibility = View.GONE
+                binding.tvStartEndRoute.visibility = View.GONE
                 binding.rlDistance.visibility = View.GONE
             }
 
@@ -184,8 +184,8 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                 binding.rlStartKilometer.visibility = View.VISIBLE
                 binding.rlEndKilometer.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.GONE
-                binding.tvStartEndTrip.visibility = View.VISIBLE
-                binding.tvStartEndTrip.text = getString(R.string.end_trip)
+                binding.tvStartEndRoute.visibility = View.VISIBLE
+                binding.tvStartEndRoute.text = getString(R.string.end_route)
                 binding.rlDistance.visibility = View.GONE
             }
 
@@ -194,19 +194,19 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                 binding.rlStartKilometer.visibility = View.VISIBLE
                 binding.rlEndKilometer.visibility = View.VISIBLE
                 binding.llBottomButtons.visibility = View.GONE
-                binding.tvStartEndTrip.visibility = View.GONE
+                binding.tvStartEndRoute.visibility = View.GONE
                 binding.rlDistance.visibility = View.GONE
             }
         }
 
 
 
-        binding.tvStartEndTrip.setOnClickListener {
+        binding.tvStartEndRoute.setOnClickListener {
             if (binding.tvStatus.text.equals("Open")) {
-                if (Utils.isTripInProgress) {
+                if (Utils.isTripInProgress.trim().isNotEmpty()) {
                     Toast.makeText(
                         this,
-                        getString(R.string.you_can_t_start_a_new_trip_while_another_trip_is_in_progress),
+                        getString(R.string.you_can_t_start_a_new_route_while_another_route_is_in_progress),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
@@ -511,7 +511,7 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                                 Toast.LENGTH_SHORT
                             ).show()
                             isChange = true
-                            Utils.isTripInProgress = false
+                            Utils.isTripInProgress = ""
                             handleBackPressed()
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -570,12 +570,12 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                             isChange = true
                             binding.tvVanStartKilometer.text = startKm
                             binding.tvStatus.text = "InProgress"
-                            Utils.isTripInProgress = true
+                            Utils.isTripInProgress = orderDetail!!.orderNo
                             binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
                             binding.rlStartKilometer.visibility = View.VISIBLE
                             binding.rlEndKilometer.visibility = View.GONE
                             binding.llBottomButtons.visibility = View.VISIBLE
-                            binding.tvStartEndTrip.visibility = View.GONE
+                            binding.tvStartEndRoute.visibility = View.GONE
                             binding.rlDistance.visibility = View.VISIBLE
 
                         } catch (e: Exception) {
@@ -632,8 +632,8 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
             binding.rlStartKilometer.visibility = View.VISIBLE
             binding.rlEndKilometer.visibility = View.GONE
             binding.llBottomButtons.visibility = View.GONE
-            binding.tvStartEndTrip.visibility = View.VISIBLE
-            binding.tvStartEndTrip.text = getString(R.string.end_trip)
+            binding.tvStartEndRoute.visibility = View.VISIBLE
+            binding.tvStartEndRoute.text = getString(R.string.end_route)
             binding.rlDistance.visibility = View.GONE
         }
     }

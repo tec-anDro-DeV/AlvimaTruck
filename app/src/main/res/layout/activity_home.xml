@@ -147,7 +147,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/llFeetManagement"
+                    android:id="@+id/llTripManagement"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_88sdp"
                     android:layout_marginStart="@dimen/_6sdp"
@@ -163,7 +163,7 @@
                         android:src="@drawable/ic_new_van_break" />
 
                     <TextView
-                        android:id="@+id/tvVehicleBreakdown"
+                        android:id="@+id/tvStartEndTrip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_12sdp"
@@ -172,7 +172,7 @@
                         android:fontFamily="@font/sanssemibold"
                         android:gravity="center"
                         android:maxLines="2"
-                        android:text="@string/fleet_services"
+                        android:text="Start Trip"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10ssp" />
                 </LinearLayout>
@@ -391,6 +391,41 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12ssp"
                             tools:text="12" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_12sdp">
+
+                        <ImageView
+                            android:id="@+id/icSoldCustomers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_people" />
+
+                        <TextView
+                            android:id="@+id/tvSoldCustomersLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_toEndOf="@id/icSoldCustomers"
+                            android:fontFamily="@font/sansregular"
+                            android:text="@string/sold_customers"
+                            android:textColor="@color/darkGray"
+                            android:textSize="@dimen/_11ssp" />
+
+                        <TextView
+                            android:id="@+id/tvSoldCustomersValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/sanssemibold"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12ssp"
+                            tools:text="0" />
                     </RelativeLayout>
 
                     <RelativeLayout

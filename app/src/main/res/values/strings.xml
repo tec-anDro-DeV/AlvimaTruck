@@ -90,9 +90,9 @@
     <string name="real_time_status_updates_help_you_complete_your_route_efficiently_and_grow_with_alvima">Real-time status updates help you complete your route efficiently and grow with Alvima.</string>
     <string name="resend_code">Resend Code</string>
     <string name="your_password_has_been_updated_securely_use_your_new_password_to_sign_in_to_your_account">Your password has been updated securely. Use your new password to sign in to your account.</string>
-    <string name="start_trip">Start Trip</string>
-    <string name="end_trip">End Trip</string>
-    <string name="you_can_t_start_a_new_trip_while_another_trip_is_in_progress">You can’t start a new trip while another trip is in progress.</string>
+    <string name="start_route">Start Route</string>
+    <string name="end_route">End Route</string>
+    <string name="you_can_t_start_a_new_route_while_another_route_is_in_progress">You can’t start a new route while another route is in progress.</string>
     <string name="please_select_customer">Please select customer</string>
     <string name="please_select_invoice">Please select invoice</string>
     <string name="please_select_payment_mode">Please select payment mode</string>
@@ -398,4 +398,6 @@
     <string name="search_invoice">Search Invoice</string>
     <string name="choose_invoice">Choose Invoice</string>
     <string name="store_requisition_ndetails">Store Requisition\nDetails</string>
+    <string name="payment_code">Payment Code</string>
+    <string name="sold_customers">Sold Customers</string>
 </resources>
