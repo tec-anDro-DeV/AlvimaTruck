@@ -21,35 +21,47 @@
             android:layout_height="@dimen/_24sdp"
             android:button="@drawable/checkbox_selector" />
 
-        <!-- Invoice No & Date -->
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvInvoiceNo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:ellipsize="end"
+            android:fontFamily="@font/sanssemibold"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            tools:text="INV-10234" />
 
-            <TextView
-                android:id="@+id/tvInvoiceNo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="@font/sanssemibold"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
-                tools:text="INV-10234" />
+        <!-- Invoice No & Date -->
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:gravity="center_vertical"-->
+        <!--            android:orientation="vertical">-->
 
-            <TextView
-                android:id="@+id/tvInvoiceDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:maxLines="1"
-                android:textColor="@color/darkGray"
-                android:textSize="@dimen/_10ssp"
-                tools:text="Due: 21 Aug 2025" />
-        </LinearLayout>
+        <!--            <TextView-->
+        <!--                android:id="@+id/tvInvoiceNo"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:ellipsize="end"-->
+        <!--                android:fontFamily="@font/sanssemibold"-->
+        <!--                android:maxLines="1"-->
+        <!--                android:textColor="@color/black"-->
+        <!--                android:textSize="@dimen/_12ssp"-->
+        <!--                tools:text="INV-10234" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tvInvoiceDate"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginTop="@dimen/_2sdp"-->
+        <!--                android:maxLines="1"-->
+        <!--                android:textColor="@color/darkGray"-->
+        <!--                android:textSize="@dimen/_10ssp"-->
+        <!--                tools:text="Due: 21 Aug 2025" />-->
+        <!--        </LinearLayout>-->
 
         <!-- Amount -->
         <TextView

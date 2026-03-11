@@ -43,8 +43,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.NewSendPaymentActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.EditStoreRequisitionActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true"
@@ -260,11 +265,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.alvimatruck.activity.StoreRequisitionDetailActivity"
+            android:name=".activity.StoreRequisitionDetailActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.alvimatruck.activity.TransferDetailActivity"
+            android:name=".activity.TransferDetailActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 

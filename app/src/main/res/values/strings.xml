@@ -404,4 +404,5 @@
     <string name="start_trip">Start Trip</string>
     <string name="stock_transfer_is_not_allowed_once_the_trip_has_started">Stock transfer is not allowed once the trip has started</string>
     <string name="store_requisition_is_not_allowed_once_the_trip_has_started">Store requisition is not allowed once the trip has started.</string>
+    <string name="total2">Total:</string>
 </resources>

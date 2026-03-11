@@ -25,7 +25,7 @@ class DepositActivity : BaseActivity<ActivityDepositBinding>() {
 
 
         binding.rlDeposit.setOnClickListener {
-            startActivity(Intent(this, SendDepositActivity::class.java))
+            startActivity(Intent(this, NewSendPaymentActivity::class.java))
         }
 
         binding.rlPaymentLogs.setOnClickListener {
