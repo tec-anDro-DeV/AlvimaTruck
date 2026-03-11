@@ -1,34 +1,66 @@
 package com.alvimatruck.activity
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import com.alvimatruck.R
+import com.alvimatruck.adapter.ImagesListAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
+import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityNewSendPaymentBinding
+import com.alvimatruck.interfaces.DeletePhotoListener
 import com.alvimatruck.model.responses.InvoiceDetail
 import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
+import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
+import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
-class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>() {
+class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), DeletePhotoListener {
     var invoiceList: ArrayList<InvoiceDetail>? = ArrayList()
     var selectedInvoiceList: ArrayList<String>? = ArrayList()
     var total = 0.0
     var userDetail: UserDetail? = null
+
+    private var proofImageUri: Uri? = null
+
+    private var listProofImageUri: ArrayList<Uri> = ArrayList()
+
+    private var imagesListAdapter: ImagesListAdapter? = null
+
+    private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
+    private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
 
     override fun inflateBinding(): ActivityNewSendPaymentBinding {
         return ActivityNewSendPaymentBinding.inflate(layoutInflater)
@@ -46,9 +78,112 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>() {
             startActivity(Intent(this, HomeActivity::class.java))
             finishAffinity()
         }
+        setupLaunchers()
 
         binding.tvBatchName.text = userDetail?.salesPersonCode
         invoiceListAPI()
+
+        binding.rlChoosePhoto.setOnClickListener {
+            if (listProofImageUri.size < 5) {
+                openImageChooseDialog()
+            }
+        }
+
+        binding.rvPhotos.addItemDecoration(
+            EqualSpacingItemDecoration(
+                resources.getDimension(com.intuit.sdp.R.dimen._7sdp).toInt(),
+                EqualSpacingItemDecoration.GRID
+            )
+        )
+        binding.rvPhotos.layoutManager = GridLayoutManager(this, 3)
+
+
+        imagesListAdapter = ImagesListAdapter(
+            this@NewSendPaymentActivity, listProofImageUri, this
+        )
+        binding.rvPhotos.adapter = imagesListAdapter
+
+
+    }
+
+    private fun openImageChooseDialog() {
+        val inflater = layoutInflater
+        val alertLayout = inflater.inflate(R.layout.dialog_image_selection, null)
+
+        val btnCamera = alertLayout.findViewById<LinearLayout>(R.id.llCamera)
+        val btnGallery = alertLayout.findViewById<LinearLayout>(R.id.llGallery)
+
+        val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel)
+        val tvContinue = alertLayout.findViewById<TextView>(R.id.tvContinue)
+
+        val dialog = AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+        var isCamera = false
+
+
+        btnCamera.setOnClickListener {
+            isCamera = true
+            btnCamera.setBackgroundResource(R.drawable.otp_box_focus_bg)
+            btnGallery.setBackgroundResource(R.drawable.border_bg)
+
+        }
+        btnGallery.setOnClickListener {
+            isCamera = false
+            btnCamera.setBackgroundResource(R.drawable.border_bg)
+            btnGallery.setBackgroundResource(R.drawable.otp_box_focus_bg)
+
+        }
+
+        tvCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        tvContinue.setOnClickListener {
+            if (isCamera) {
+                checkCameraPermissionAndOpenCamera()
+            } else {
+                checkGalleryPermissionAndOpenGallery()
+            }
+            dialog.dismiss()
+        }
+
+        dialog.show()
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+    }
+
+    private fun setupLaunchers() {
+        cameraLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val currentUri = proofImageUri
+
+                    currentUri?.let { uri ->
+                        handleImageResult(uri)
+                    }
+                }
+            }
+
+        galleryLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    result.data?.data?.let { uri ->
+                        handleImageResult(uri)
+                    }
+                }
+            }
+
+//        cropLauncher =
+//            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//                if (result.resultCode == RESULT_OK) {
+//                    result.data?.let {
+//                        val resultUri = UCrop.getOutput(it)
+//                        resultUri?.let { finalUri ->
+//                            handleCroppedImage(finalUri)
+//                        }
+//                    }
+//                }
+//            }
     }
 
     private fun invoiceListAPI() {
@@ -169,5 +304,126 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>() {
 
         binding.tvtotal.text = "ETB $total"
     }
+
+    private fun handleImage(uri: Uri) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            // Show progress dialog if needed
+            ProgressDialog.start(this@NewSendPaymentActivity)
+            try {
+                val compressedUri = withContext(Dispatchers.IO) {
+                    // This calls the method that was crashing
+                    Utils.getCompressedUri(this@NewSendPaymentActivity, uri)
+                }
+
+                compressedUri.let {
+                    if (listProofImageUri.size >= 5) return@let
+                    listProofImageUri.add(it)
+                    // Optimize: Only notify the item that was added, not the whole list
+                    imagesListAdapter?.notifyItemInserted(listProofImageUri.size - 1)
+
+                    if (listProofImageUri.size == 5) {
+                        binding.rlChoosePhoto.visibility = View.GONE
+                    } else {
+                        binding.rlChoosePhoto.visibility = View.VISIBLE
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(
+                    this@NewSendPaymentActivity, "Error processing image", Toast.LENGTH_SHORT
+                ).show()
+            } finally {
+                ProgressDialog.dismiss()
+            }
+        }
+    }
+
+    private fun handleImageResult(imageUri: Uri) {
+        // startCrop(imageUri)
+        handleImage(imageUri)
+    }
+
+    private fun checkCameraPermissionAndOpenCamera() {
+        val permissionsNeeded = mutableListOf<String>()
+
+        // For Android 13+ (API 33+), no need for WRITE_EXTERNAL_STORAGE
+        if (ContextCompat.checkSelfPermission(
+                this, CAMERA_PERMISSION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) permissionsNeeded.add(CAMERA_PERMISSION)
+
+        if (permissionsNeeded.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this, permissionsNeeded.toTypedArray(), Constants.CameraPermissionCode
+            )
+        } else {
+            openCamera()
+        }
+    }
+
+    private fun openCamera() {
+        val photoFile = File(externalCacheDir, "photo_${System.currentTimeMillis()}.jpg")
+        val currentUri = FileProvider.getUriForFile(this, "$packageName.provider", photoFile)
+
+        proofImageUri = currentUri
+
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, currentUri)
+        cameraLauncher.launch(intent)
+    }
+
+    private fun checkGalleryPermissionAndOpenGallery() {
+        val permissionsNeeded = mutableListOf<String>()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Android 13+
+            if (ContextCompat.checkSelfPermission(
+                    this, READ_MEDIA_IMAGES
+                ) != PackageManager.PERMISSION_GRANTED
+            ) permissionsNeeded.add(READ_MEDIA_IMAGES)
+        } else {
+            // Android 12 and below
+            if (ContextCompat.checkSelfPermission(
+                    this, READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) permissionsNeeded.add(READ_EXTERNAL_STORAGE)
+        }
+
+        if (permissionsNeeded.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this, permissionsNeeded.toTypedArray(), Constants.GalleryPermissionCode
+            )
+        } else {
+            openGallery()
+        }
+    }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryLauncher.launch(intent)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+            when (requestCode) {
+                Constants.CameraPermissionCode -> openCamera()
+                Constants.GalleryPermissionCode -> openGallery()
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onDeletePhoto(imageUri: Uri) {
+        listProofImageUri.remove(imageUri)
+        imagesListAdapter!!.notifyDataSetChanged()
+        binding.rlChoosePhoto.visibility = View.VISIBLE
+
+    }
+
 
 }

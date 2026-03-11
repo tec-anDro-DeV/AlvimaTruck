@@ -242,6 +242,12 @@
                     android:src="@drawable/ic_file_upload" />
             </RelativeLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPhotos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_9sdp" />
+
             <LinearLayout
                 android:id="@+id/llBottomButtons"
                 android:layout_width="match_parent"

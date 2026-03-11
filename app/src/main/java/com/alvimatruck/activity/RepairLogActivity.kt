@@ -62,9 +62,11 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
     private var proofImageUri: Uri? = null
 
     private var listProofImageUri: ArrayList<Uri> = ArrayList()
-    //   private lateinit var cropLauncher: ActivityResultLauncher<Intent>
 
     private var imagesListAdapter: ImagesListAdapter? = null
+
+    //   private lateinit var cropLauncher: ActivityResultLauncher<Intent>
+
 
     private var vendorList: ArrayList<String> = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
