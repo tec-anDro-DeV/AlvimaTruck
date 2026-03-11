@@ -39,7 +39,8 @@ class Constants {
         const val API_Customer_Price = "Customer/get-price"
 
         const val API_Today_Routes = "MobileRoutes/today-routes"
-        const val API_Check_Route = "RouteAddress/route-check"
+        const val API_Route_Check = "RouteAddress/route-check"
+        const val API_Check_Route = "RouteAddress/check-route"
 
         const val API_Start_Trip = "Trip/start"
         const val API_End_Trip = "Trip/end"

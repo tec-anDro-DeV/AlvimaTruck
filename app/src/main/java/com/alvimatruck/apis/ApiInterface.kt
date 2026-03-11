@@ -2,6 +2,7 @@ package com.alvimatruck.apis
 
 import com.alvimatruck.model.request.CancelTripRequest
 import com.alvimatruck.model.request.ChangePasswordRequest
+import com.alvimatruck.model.request.CheckRouteRequest
 import com.alvimatruck.model.request.CustomerUpdate
 import com.alvimatruck.model.request.DeliveryCancelRequest
 import com.alvimatruck.model.request.DeliveryEndRequest
@@ -152,7 +153,7 @@ interface ApiInterface {
     @GET(Constants.API_Transfer_Lines)
     fun transferLines(): Call<JsonObject>
 
-    @GET(Constants.API_Check_Route)
+    @GET(Constants.API_Route_Check)
     fun routeCheck(
         @Query("route") route: String,
     ): Call<JsonObject>
@@ -230,6 +231,9 @@ interface ApiInterface {
 
     @POST(Constants.API_Order_Post)
     fun orderPost(@Body orderPostRequest: OrderPostRequest): Call<JsonObject>
+
+    @POST(Constants.API_Check_Route)
+    fun checkRoute(@Body checkRouteRequest: CheckRouteRequest): Call<JsonObject>
 
     @Multipart
     @POST(Constants.API_Fleet)

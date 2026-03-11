@@ -24,8 +24,10 @@ import com.alvimatruck.R
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityViewCustomerBinding
+import com.alvimatruck.model.request.CheckRouteRequest
 import com.alvimatruck.model.request.VisitedTripRequest
 import com.alvimatruck.model.responses.CustomerDetail
+import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
@@ -141,6 +143,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                                 binding.llBottomButtons.visibility = View.GONE
                             } else {
                                 binding.llBottomButtons.visibility = View.VISIBLE
+                                checkRouteAPI()
                             }
 
 
@@ -172,6 +175,68 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         }
 
     }
+
+    private fun checkRouteAPI() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@ViewCustomerActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.checkRoute(
+                CheckRouteRequest(
+                    AlvimaTuckApplication.latitude,
+                    AlvimaTuckApplication.longitude,
+                    customerDetail!!.routeName
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@ViewCustomerActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            val inTheRoute =
+                                response.body()!!.get("status").asBoolean
+
+                            if (inTheRoute) {
+                                binding.llBottomButtons.visibility = View.VISIBLE
+                                binding.tvNotes.visibility = View.GONE
+                            } else {
+                                binding.llBottomButtons.visibility = View.GONE
+                                binding.tvNotes.visibility = View.VISIBLE
+                            }
+
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@ViewCustomerActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@ViewCustomerActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

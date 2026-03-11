@@ -491,9 +491,18 @@
                 <!--                        android:textColor="@color/white"-->
                 <!--                        android:textSize="@dimen/_14ssp" />-->
                 <!--                </LinearLayout>-->
-
-
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvNotes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/sansregular"
+                android:text="@string/you_are_outside_the_assigned_route_new_order_and_visited_actions_are_not_allowed"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_10ssp"
+                android:visibility="gone" />
 
 
         </LinearLayout>
