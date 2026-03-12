@@ -28,6 +28,7 @@ import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityNewSendPaymentBinding
 import com.alvimatruck.interfaces.DeletePhotoListener
+import com.alvimatruck.model.responses.BankDetail
 import com.alvimatruck.model.responses.InvoiceDetail
 import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.utils.Constants
@@ -49,7 +50,14 @@ import java.io.File
 
 class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), DeletePhotoListener {
     var invoiceList: ArrayList<InvoiceDetail>? = ArrayList()
-    var selectedInvoiceList: ArrayList<String>? = ArrayList()
+    var selectedInvoiceList: String = ""
+
+    var bankList: ArrayList<BankDetail>? = ArrayList()
+    var selectedBankList: String = ""
+
+    var maxPhotoLimit = 0
+
+
     var total = 0.0
     var userDetail: UserDetail? = null
 
@@ -82,9 +90,10 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
 
         binding.tvBatchName.text = userDetail?.salesPersonCode
         invoiceListAPI()
+        bankListAPI()
 
         binding.rlChoosePhoto.setOnClickListener {
-            if (listProofImageUri.size < 5) {
+            if (listProofImageUri.size < maxPhotoLimit) {
                 openImageChooseDialog()
             }
         }
@@ -186,6 +195,70 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
 //            }
     }
 
+    private fun bankListAPI() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@NewSendPaymentActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.bankList().enqueue(object : Callback<JsonObject> {
+                override fun onResponse(
+                    call: Call<JsonObject>, response: Response<JsonObject>
+                ) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@NewSendPaymentActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+
+                            bankList = response.body()!!.getAsJsonArray("data").map {
+                                Gson().fromJson(it, BankDetail::class.java)
+                            } as ArrayList<BankDetail>
+
+                            if (bankList!!.isNotEmpty()) {
+                                binding.llBank.visibility = View.VISIBLE
+                                setupBankCheckboxes()
+                            } else {
+                                binding.llBank.visibility = View.GONE
+                                Toast.makeText(
+                                    this@NewSendPaymentActivity,
+                                    "No bank found",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@NewSendPaymentActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@NewSendPaymentActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
+
     private fun invoiceListAPI() {
         if (Utils.isOnline(this)) {
             ProgressDialog.start(this@NewSendPaymentActivity)
@@ -249,6 +322,41 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
 
     }
 
+    private fun setupBankCheckboxes() {
+        binding.llBank.removeAllViews()
+
+        bankList?.forEachIndexed { index, bank ->
+
+            val view = layoutInflater.inflate(R.layout.single_bank, binding.llBank, false)
+
+            val cb = view.findViewById<CheckBox>(R.id.cbBank)
+            val root = view.findViewById<LinearLayout>(R.id.rootRow)
+            val tvName = view.findViewById<TextView>(R.id.tvBankName)
+            val tvAccountNo = view.findViewById<TextView>(R.id.tvBankAccountNo)
+            val divider = view.findViewById<View>(R.id.viewDivider)
+
+            tvName.text = bank.name
+            tvAccountNo.text = bank.bankAccountNo
+
+            cb.tag = bank
+            cb.setOnCheckedChangeListener { _, _ ->
+                updateBank()
+            }
+
+            if (bankList!!.size - 1 == index) {
+                divider.visibility = View.GONE
+            } else {
+                divider.visibility = View.VISIBLE
+            }
+
+            root.setOnClickListener {
+                cb.isChecked = !cb.isChecked
+            }
+
+            binding.llBank.addView(view)
+        }
+    }
+
     private fun setupInvoiceCheckboxes() {
         binding.llInvoice.removeAllViews()
 
@@ -287,7 +395,7 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
     }
 
     private fun updateTotal() {
-        selectedInvoiceList!!.clear()
+        selectedInvoiceList = ""
         total = 0.0
 
         for (i in 0 until binding.llInvoice.childCount) {
@@ -297,13 +405,41 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
 
             if (checkBox.isChecked) {
                 val invoice = checkBox.tag as InvoiceDetail
-                selectedInvoiceList!!.add(invoice.documentNo)
+                if (selectedInvoiceList.isEmpty()) {
+                    selectedInvoiceList = invoice.documentNo
+                } else {
+                    selectedInvoiceList += ",${invoice.documentNo}"
+                }
                 total += invoice.remainingAmount
             }
         }
 
         binding.tvtotal.text = "ETB $total"
     }
+
+    private fun updateBank() {
+        selectedBankList = ""
+        maxPhotoLimit = 0
+        for (i in 0 until binding.llBank.childCount) {
+            val row = binding.llBank.getChildAt(i)
+
+            val checkBox = row.findViewById<CheckBox>(R.id.cbBank)
+
+            if (checkBox.isChecked) {
+                maxPhotoLimit += 1
+                val bank = checkBox.tag as BankDetail
+                if (selectedBankList.isEmpty()) {
+                    selectedBankList = bank.bankAccountNo
+                    binding.tvMaxPhoto.visibility = View.GONE
+                } else {
+                    binding.tvMaxPhoto.visibility = View.VISIBLE
+                    selectedBankList += ",${bank.bankAccountNo}"
+                }
+            }
+            binding.tvMaxPhoto.text = "Max $maxPhotoLimit photos"
+        }
+    }
+
 
     private fun handleImage(uri: Uri) {
         lifecycleScope.launch(Dispatchers.Main) {

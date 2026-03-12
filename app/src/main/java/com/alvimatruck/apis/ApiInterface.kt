@@ -161,6 +161,9 @@ interface ApiInterface {
     @GET(Constants.API_Invoice_List)
     fun invoiceList(): Call<JsonObject>
 
+    @GET(Constants.API_Bank_Details)
+    fun bankList(): Call<JsonObject>
+
     @DELETE(Constants.API_Delete_Order + "{orderId}")
     fun deleteOrder(
         @Path("orderId") orderId: String
