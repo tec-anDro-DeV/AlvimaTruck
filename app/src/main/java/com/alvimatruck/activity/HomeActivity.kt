@@ -454,7 +454,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                                 binding.tvRegularCustomersValue.text =
                                     dashboardDetails!!.activeRoute!!.regularCustomerCount.toString()
                                 binding.tvVisitedCustomersValue.text =
-                                    dashboardDetails!!.activeRoute!!.visited.toString()
+                                    dashboardDetails!!.activeRoute!!.visitedCustomers.toString()
+                                binding.tvSoldCustomersValue.text =
+                                    dashboardDetails!!.activeRoute!!.soldCustomers.toString()
                                 binding.tvDistanceValue.text =
                                     dashboardDetails!!.activeRoute!!.distance.toString() + "Km"
 

@@ -69,15 +69,17 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
 
             binding.tvRouteId.text = routeDetail!!.routeName
             binding.tvRegularCustomersValue.text = routeDetail!!.regularCustomerCount.toString()
-            binding.tvVisitedCustomersValue.text = routeDetail!!.visited.toString()
+            binding.tvVisitedCustomersValue.text = routeDetail!!.visitedCustomers.toString()
+            binding.tvSoldCustomersValue.text = routeDetail!!.soldCustomers.toString()
             binding.tvSkippedCustomersValue.text = routeDetail!!.skipped.toString()
-            binding.tvTotalVisitedCustomer.text = routeDetail!!.visited.toString()
+            binding.tvTotalVisitedCustomer.text =
+                (routeDetail!!.visitedCustomers + routeDetail!!.soldCustomers).toString()
             binding.tvTotalCustomer.text = "/" + routeDetail!!.regularCustomerCount.toString()
             binding.tvPendingCustomer.text =
-                (routeDetail!!.regularCustomerCount - routeDetail!!.visited).toString()
+                (routeDetail!!.regularCustomerCount - (routeDetail!!.visitedCustomers + routeDetail!!.soldCustomers)).toString()
 
             binding.progressBar.progress =
-                routeDetail!!.visited * 100 / routeDetail!!.regularCustomerCount
+                (routeDetail!!.visitedCustomers + routeDetail!!.soldCustomers) * 100 / routeDetail!!.regularCustomerCount
             binding.tvStatus.text = routeDetail!!.status
             binding.tvDistanceValue.text = routeDetail!!.distance.toString() + " Km"
             binding.tvVanStartKilometer.text = routeDetail!!.startKm.toString()

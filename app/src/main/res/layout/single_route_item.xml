@@ -136,8 +136,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:text="@{detail.soldCustomers+``}"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
                     tools:text="0" />
@@ -172,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sanssemibold"
-                    android:text="@{detail.visited+``}"
+                    android:text="@{detail.visitedCustomers+``}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"
                     tools:text="0" />

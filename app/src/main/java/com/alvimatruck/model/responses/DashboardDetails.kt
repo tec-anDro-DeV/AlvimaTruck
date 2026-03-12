@@ -18,5 +18,6 @@ data class ActiveRoute(
     val startKm: Double,
     val status: String,
     val totalSalesValues: Int,
-    val visited: Int
+    val soldCustomers: Int,
+    val visitedCustomers: Int
 )
