@@ -54,6 +54,7 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
 
     var bankList: ArrayList<BankDetail>? = ArrayList()
     var selectedBankList: String = ""
+    var selectedBankNoList: String = ""
 
     var maxPhotoLimit = 0
 
@@ -89,6 +90,7 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
         setupLaunchers()
 
         binding.tvBatchName.text = userDetail?.salesPersonCode
+        binding.tvCashonHandNo.text = userDetail?.cashOnHand
         invoiceListAPI()
         bankListAPI()
 
@@ -112,7 +114,192 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
         )
         binding.rvPhotos.adapter = imagesListAdapter
 
+        binding.tvInvoice.setOnClickListener {
+            if (invoiceList!!.isNotEmpty()) {
+                dialogInvoiceSelection()
+            } else {
+                Toast.makeText(this, "No invoices found", Toast.LENGTH_SHORT).show()
+            }
+        }
 
+        binding.tvBank.setOnClickListener {
+            if (bankList!!.isNotEmpty()) {
+                dialogBankSelection()
+            } else {
+                Toast.makeText(this, "No banks found", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+    private fun dialogBankSelection() {
+        val inflater = layoutInflater
+        val alertLayout = inflater.inflate(R.layout.dialog_bank_selection, null)
+
+
+        val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel2)
+        val tvConfirm = alertLayout.findViewById<TextView>(R.id.tvConfirm2)
+        val llBank = alertLayout.findViewById<LinearLayout>(R.id.llBank)
+
+        llBank.removeAllViews()
+        val currentSelectedIds = selectedBankNoList.split(",").toSet()
+
+        bankList?.forEachIndexed { index, bank ->
+
+            val view = layoutInflater.inflate(R.layout.single_bank, llBank, false)
+
+            val cb = view.findViewById<CheckBox>(R.id.cbBank)
+            val root = view.findViewById<LinearLayout>(R.id.rootRow)
+            val tvName = view.findViewById<TextView>(R.id.tvBankName)
+            val tvAccountNo = view.findViewById<TextView>(R.id.tvBankAccountNo)
+            val divider = view.findViewById<View>(R.id.viewDivider)
+            tvName.text = bank.name
+            tvAccountNo.text = bank.bankAccountNo
+
+            cb.isChecked = currentSelectedIds.contains(bank.bankAccountNo)
+
+            cb.tag = bank
+
+            if (bankList!!.size - 1 == index) {
+                divider.visibility = View.GONE
+            } else {
+                divider.visibility = View.VISIBLE
+            }
+
+            root.setOnClickListener {
+                cb.isChecked = !cb.isChecked
+            }
+
+            llBank.addView(view)
+        }
+
+
+        val alert = AlertDialog.Builder(this)
+        alert.setView(alertLayout)
+        alert.setCancelable(false)
+
+        val dialog = alert.create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+        dialog.show()
+
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        tvCancel.setOnClickListener { _: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { _: View? ->
+            selectedBankNoList = ""
+            selectedBankList = ""
+            maxPhotoLimit = 0
+            for (i in 0 until llBank.childCount) {
+                val row = llBank.getChildAt(i)
+
+                val checkBox = row.findViewById<CheckBox>(R.id.cbBank)
+
+                if (checkBox.isChecked) {
+                    maxPhotoLimit += 1
+                    val bank = checkBox.tag as BankDetail
+                    if (selectedBankNoList.isEmpty()) {
+                        selectedBankNoList = bank.bankAccountNo
+                        selectedBankList = bank.name
+                        binding.tvMaxPhoto.visibility = View.GONE
+                    } else {
+                        binding.tvMaxPhoto.visibility = View.VISIBLE
+                        selectedBankNoList += ",${bank.bankAccountNo}"
+                        selectedBankList += ",${bank.name}"
+                    }
+                }
+                binding.tvMaxPhoto.text = "Max $maxPhotoLimit photos"
+            }
+            binding.tvBank.text = selectedBankList.ifEmpty { "" }
+
+            dialog.dismiss()
+        }
+    }
+
+    private fun dialogInvoiceSelection() {
+        val inflater = layoutInflater
+        val alertLayout = inflater.inflate(R.layout.dialog_invoice_selection, null)
+
+
+        val tvCancel = alertLayout.findViewById<TextView>(R.id.tvCancel2)
+        val tvConfirm = alertLayout.findViewById<TextView>(R.id.tvConfirm2)
+        val llInvoice1 = alertLayout.findViewById<LinearLayout>(R.id.llInvoice)
+
+        llInvoice1.removeAllViews()
+        val currentSelectedIds = selectedInvoiceList.split(",").toSet()
+
+        invoiceList?.forEachIndexed { index, invoice ->
+
+            val view = layoutInflater.inflate(R.layout.single_invoice, llInvoice1, false)
+
+            val cb = view.findViewById<CheckBox>(R.id.cbInvoice)
+            val root = view.findViewById<LinearLayout>(R.id.rootRow)
+            val tvNo = view.findViewById<TextView>(R.id.tvInvoiceNo)
+            //val tvDate = view.findViewById<TextView>(R.id.tvInvoiceDate)
+            val tvAmount = view.findViewById<TextView>(R.id.tvInvoiceAmount)
+            val divider = view.findViewById<View>(R.id.viewDivider)
+
+            tvNo.text = invoice.documentNo
+            //   tvDate.text = "Date: ${invoice.getRequestDate() ?: "-"}"
+            tvAmount.text = "ETB ${invoice.remainingAmount}"
+
+            cb.isChecked = currentSelectedIds.contains(invoice.documentNo)
+
+            cb.tag = invoice
+
+            if (invoiceList!!.size - 1 == index) {
+                divider.visibility = View.GONE
+            } else {
+                divider.visibility = View.VISIBLE
+            }
+
+            root.setOnClickListener {
+                cb.isChecked = !cb.isChecked
+            }
+
+            llInvoice1.addView(view)
+        }
+
+
+        val alert = AlertDialog.Builder(this)
+        alert.setView(alertLayout)
+        alert.setCancelable(false)
+
+        val dialog = alert.create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+        dialog.show()
+
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        tvCancel.setOnClickListener { _: View? -> dialog.dismiss() }
+        tvConfirm.setOnClickListener { _: View? ->
+            selectedInvoiceList = ""
+            total = 0.0
+
+            for (i in 0 until llInvoice1.childCount) {
+                val row = llInvoice1.getChildAt(i)
+
+                val checkBox = row.findViewById<CheckBox>(R.id.cbInvoice)
+
+                if (checkBox.isChecked) {
+                    val invoice = checkBox.tag as InvoiceDetail
+                    if (selectedInvoiceList.isEmpty()) {
+                        selectedInvoiceList = invoice.documentNo
+                    } else {
+                        selectedInvoiceList += ",${invoice.documentNo}"
+                    }
+                    total += invoice.remainingAmount
+                }
+            }
+
+            binding.tvtotal.text = "ETB $total"
+            binding.tvInvoice.text =
+                selectedInvoiceList.ifEmpty { "" }
+            dialog.dismiss()
+        }
     }
 
     private fun openImageChooseDialog() {
@@ -217,11 +404,7 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
                                 Gson().fromJson(it, BankDetail::class.java)
                             } as ArrayList<BankDetail>
 
-                            if (bankList!!.isNotEmpty()) {
-                                binding.llBank.visibility = View.VISIBLE
-                                setupBankCheckboxes()
-                            } else {
-                                binding.llBank.visibility = View.GONE
+                            if (bankList!!.isEmpty()) {
                                 Toast.makeText(
                                     this@NewSendPaymentActivity,
                                     "No bank found",
@@ -280,11 +463,7 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
                                 Gson().fromJson(it, InvoiceDetail::class.java)
                             } as ArrayList<InvoiceDetail>
 
-                            if (invoiceList!!.isNotEmpty()) {
-                                binding.llInvoice.visibility = View.VISIBLE
-                                setupInvoiceCheckboxes()
-                            } else {
-                                binding.llInvoice.visibility = View.GONE
+                            if (invoiceList!!.isEmpty()) {
                                 Toast.makeText(
                                     this@NewSendPaymentActivity,
                                     "No invoice found",
@@ -321,125 +500,6 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
         }
 
     }
-
-    private fun setupBankCheckboxes() {
-        binding.llBank.removeAllViews()
-
-        bankList?.forEachIndexed { index, bank ->
-
-            val view = layoutInflater.inflate(R.layout.single_bank, binding.llBank, false)
-
-            val cb = view.findViewById<CheckBox>(R.id.cbBank)
-            val root = view.findViewById<LinearLayout>(R.id.rootRow)
-            val tvName = view.findViewById<TextView>(R.id.tvBankName)
-            val tvAccountNo = view.findViewById<TextView>(R.id.tvBankAccountNo)
-            val divider = view.findViewById<View>(R.id.viewDivider)
-
-            tvName.text = bank.name
-            tvAccountNo.text = bank.bankAccountNo
-
-            cb.tag = bank
-            cb.setOnCheckedChangeListener { _, _ ->
-                updateBank()
-            }
-
-            if (bankList!!.size - 1 == index) {
-                divider.visibility = View.GONE
-            } else {
-                divider.visibility = View.VISIBLE
-            }
-
-            root.setOnClickListener {
-                cb.isChecked = !cb.isChecked
-            }
-
-            binding.llBank.addView(view)
-        }
-    }
-
-    private fun setupInvoiceCheckboxes() {
-        binding.llInvoice.removeAllViews()
-
-        invoiceList?.forEachIndexed { index, invoice ->
-
-            val view = layoutInflater.inflate(R.layout.single_invoice, binding.llInvoice, false)
-
-            val cb = view.findViewById<CheckBox>(R.id.cbInvoice)
-            val root = view.findViewById<LinearLayout>(R.id.rootRow)
-            val tvNo = view.findViewById<TextView>(R.id.tvInvoiceNo)
-            //val tvDate = view.findViewById<TextView>(R.id.tvInvoiceDate)
-            val tvAmount = view.findViewById<TextView>(R.id.tvInvoiceAmount)
-            val divider = view.findViewById<View>(R.id.viewDivider)
-
-            tvNo.text = invoice.documentNo
-            //   tvDate.text = "Date: ${invoice.getRequestDate() ?: "-"}"
-            tvAmount.text = "ETB ${invoice.remainingAmount}"
-
-            cb.tag = invoice
-            cb.setOnCheckedChangeListener { _, _ ->
-                updateTotal()
-            }
-
-            if (invoiceList!!.size - 1 == index) {
-                divider.visibility = View.GONE
-            } else {
-                divider.visibility = View.VISIBLE
-            }
-
-            root.setOnClickListener {
-                cb.isChecked = !cb.isChecked
-            }
-
-            binding.llInvoice.addView(view)
-        }
-    }
-
-    private fun updateTotal() {
-        selectedInvoiceList = ""
-        total = 0.0
-
-        for (i in 0 until binding.llInvoice.childCount) {
-            val row = binding.llInvoice.getChildAt(i)
-
-            val checkBox = row.findViewById<CheckBox>(R.id.cbInvoice)
-
-            if (checkBox.isChecked) {
-                val invoice = checkBox.tag as InvoiceDetail
-                if (selectedInvoiceList.isEmpty()) {
-                    selectedInvoiceList = invoice.documentNo
-                } else {
-                    selectedInvoiceList += ",${invoice.documentNo}"
-                }
-                total += invoice.remainingAmount
-            }
-        }
-
-        binding.tvtotal.text = "ETB $total"
-    }
-
-    private fun updateBank() {
-        selectedBankList = ""
-        maxPhotoLimit = 0
-        for (i in 0 until binding.llBank.childCount) {
-            val row = binding.llBank.getChildAt(i)
-
-            val checkBox = row.findViewById<CheckBox>(R.id.cbBank)
-
-            if (checkBox.isChecked) {
-                maxPhotoLimit += 1
-                val bank = checkBox.tag as BankDetail
-                if (selectedBankList.isEmpty()) {
-                    selectedBankList = bank.bankAccountNo
-                    binding.tvMaxPhoto.visibility = View.GONE
-                } else {
-                    binding.tvMaxPhoto.visibility = View.VISIBLE
-                    selectedBankList += ",${bank.bankAccountNo}"
-                }
-            }
-            binding.tvMaxPhoto.text = "Max $maxPhotoLimit photos"
-        }
-    }
-
 
     private fun handleImage(uri: Uri) {
         lifecycleScope.launch(Dispatchers.Main) {

@@ -12,5 +12,6 @@ data class UserDetail(
     val roleName: String,
     val salesPersonCode: String,
     val token: String,
-    val userId: String
+    val userId: String,
+    val cashOnHand: String
 )

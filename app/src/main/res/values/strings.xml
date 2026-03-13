@@ -407,4 +407,7 @@
     <string name="total2">Total:</string>
     <string name="you_are_outside_the_assigned_route_new_order_and_visited_actions_are_not_allowed">*You are outside the assigned route. \'New Order\' and \'Visited\' actions are not allowed.</string>
     <string name="bank_name_and_account">Bank Name and Account*</string>
+    <string name="cash_on_hand_no">Cash on Hand No.</string>
+    <string name="bank">Bank*</string>
+    <string name="deposit_amount">Deposit Amount</string>
 </resources>
