@@ -220,13 +220,13 @@ interface ApiInterface {
     @Multipart
     @POST(Constants.API_Payment_Create)
     fun paymentCreate(
-        @Part("CustNo") CustNo: RequestBody,
-        //  @Part("CustomerName") CustomerName: RequestBody,
-//        @Part("PaymentCode") PaymentCode: RequestBody,
-        //  @Part("TotalAmount") TotalAmount: RequestBody,
-        @Part("BankReferenceNo") BankReferenceNo: RequestBody,
-        @Part("InvoiceNumbers[]") InvoiceNumbers: ArrayList<RequestBody>,
-        @Part imageFile: MultipartBody.Part? = null,   // optional
+        @Part("InvoiceNo") invoiceNo: RequestBody,
+        @Part("BatchNo") batchNo: RequestBody,
+        @Part("BankReferenceNo") bankReferenceNo: RequestBody,
+        @Part("BankAccountNo") bankAccountNo: RequestBody,
+        @Part("Amount") amount: RequestBody,
+        @Part("CashOnHand") cashOnHand: RequestBody,
+        @Part imageFile: List<MultipartBody.Part>? = null // <-- multiple files
     ): Call<JsonObject>
 
     @PUT(Constants.API_Update_Customer)

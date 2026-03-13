@@ -281,13 +281,13 @@
                     android:padding="@dimen/_14sdp"
                     android:text="@string/cancel"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_14ssp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tvSubmit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_14sdp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_button_orange"
                     android:fontFamily="@font/sansbold"

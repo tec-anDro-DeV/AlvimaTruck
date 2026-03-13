@@ -43,9 +43,6 @@ import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -155,7 +152,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
                     this, getString(R.string.please_upload_payment_proof), Toast.LENGTH_SHORT
                 ).show()
             } else {
-                paymentAPI()
+                // paymentAPI()
             }
         }
 
@@ -173,67 +170,67 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 
     }
 
-    private fun paymentAPI() {
-        if (Utils.isOnline(this)) {
-            val invoiceBodyList = ArrayList<RequestBody>()
-            invoiceBodyList.add(selectedInvoice!!.documentNo.toRequestBody("text/plain".toMediaType()))
-//            for (invoice in selectedInvoiceList!!) {
-//                invoiceBodyList.add(invoice.toRequestBody("text/plain".toMediaType()))
-//            }
-
-            ProgressDialog.start(this@SendDepositActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.paymentCreate(
-                " ".toRequestBody("text/plain".toMediaType()),
-                binding.etTransRefNo.text.toString().toRequestBody("text/plain".toMediaType()),
-                invoiceBodyList,
-                Utils.createFilePart("imageFile", paymentProofImageUri, this),
-            ).enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@SendDepositActivity)  // show dialog before logout
-                        return
-                    }
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            Toast.makeText(
-                                this@SendDepositActivity,
-                                response.body()!!.get("message").toString().replace('"', ' ')
-                                    .trim(),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            handleBackPressed()
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@SendDepositActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@SendDepositActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-            ).show()
-        }
-
-    }
+//    private fun paymentAPI() {
+//        if (Utils.isOnline(this)) {
+//            val invoiceBodyList = ArrayList<RequestBody>()
+//            invoiceBodyList.add(selectedInvoice!!.documentNo.toRequestBody("text/plain".toMediaType()))
+////            for (invoice in selectedInvoiceList!!) {
+////                invoiceBodyList.add(invoice.toRequestBody("text/plain".toMediaType()))
+////            }
+//
+//            ProgressDialog.start(this@SendDepositActivity)
+//            ApiClient.getRestClient(
+//                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+//            )!!.webservices.paymentCreate(
+//                " ".toRequestBody("text/plain".toMediaType()),
+//                binding.etTransRefNo.text.toString().toRequestBody("text/plain".toMediaType()),
+//                invoiceBodyList,
+//                Utils.createFilePart("imageFile", paymentProofImageUri, this),
+//            ).enqueue(object : Callback<JsonObject> {
+//                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+//                    ProgressDialog.dismiss()
+//                    if (response.code() == 401) {
+//                        Utils.forceLogout(this@SendDepositActivity)  // show dialog before logout
+//                        return
+//                    }
+//                    if (response.isSuccessful) {
+//                        try {
+//                            Log.d("TAG", "onResponse: " + response.body().toString())
+//                            Toast.makeText(
+//                                this@SendDepositActivity,
+//                                response.body()!!.get("message").toString().replace('"', ' ')
+//                                    .trim(),
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                            handleBackPressed()
+//                        } catch (e: Exception) {
+//                            e.printStackTrace()
+//                        }
+//                    } else {
+//                        Toast.makeText(
+//                            this@SendDepositActivity,
+//                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+//                    Toast.makeText(
+//                        this@SendDepositActivity,
+//                        getString(R.string.api_fail_message),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    ProgressDialog.dismiss()
+//                }
+//            })
+//        } else {
+//            Toast.makeText(
+//                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+//            ).show()
+//        }
+//
+//    }
 
 //    private fun setupInvoiceCheckboxes() {
 //        binding.llInvoice.removeAllViews()

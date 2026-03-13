@@ -43,6 +43,9 @@ import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -128,6 +131,103 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
             } else {
                 Toast.makeText(this, "No banks found", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.tvSubmit.setOnClickListener {
+            val transRefText = binding.etTransRefNo.text.toString().trim()
+            val selectedBanksCount =
+                if (selectedBankNoList.isEmpty()) 0 else selectedBankNoList.split(",").size
+
+            val refNumbers = transRefText.split(",").filter { it.trim().isNotEmpty() }
+            val enteredRefsCount = refNumbers.size
+
+            if (selectedInvoiceList.isEmpty()) {
+                Toast.makeText(this, "Please select invoice", Toast.LENGTH_SHORT).show()
+            } else if (selectedBankNoList.isEmpty()) {
+                Toast.makeText(this, "Please select bank", Toast.LENGTH_SHORT).show()
+            } else if (transRefText.isEmpty()) {
+                Toast.makeText(
+                    this,
+                    "Please enter transaction reference number(s)",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (enteredRefsCount != selectedBanksCount) {
+                // Validation: Check if count matches
+                Toast.makeText(
+                    this,
+                    "Transaction reference number count does not match selected banks",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                // Success: Proceed to API Call
+                sendPaymentAPI()
+            }
+        }
+    }
+
+    private fun sendPaymentAPI() {
+        if (Utils.isOnline(this)) {
+
+            val partsList = ArrayList<MultipartBody.Part>()
+
+            listProofImageUri.forEachIndexed { index, _ ->
+                val part = Utils.createFilePart("imageFile", listProofImageUri[index], this)
+                partsList.add(part!!)
+            }
+            ProgressDialog.start(this@NewSendPaymentActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.paymentCreate(
+                binding.tvInvoice.text.toString().toRequestBody("text/plain".toMediaType()),
+                binding.tvBatchName.text.toString().toRequestBody("text/plain".toMediaType()),
+                binding.etTransRefNo.text.toString().toRequestBody("text/plain".toMediaType()),
+                selectedBankNoList.toRequestBody("text/plain".toMediaType()),
+                binding.tvtotal.text.toString().replace("ETB", "")
+                    .toRequestBody("text/plain".toMediaType()),
+                binding.tvCashonHandNo.text.toString().toRequestBody("text/plain".toMediaType()),
+                partsList
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@NewSendPaymentActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@NewSendPaymentActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            handleBackPressed()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@NewSendPaymentActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@NewSendPaymentActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
