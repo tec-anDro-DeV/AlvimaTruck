@@ -3,6 +3,7 @@ package com.alvimatruck.utils
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -15,7 +16,10 @@ import android.location.Location
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Environment
+import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.util.Base64
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
@@ -144,6 +148,28 @@ object Utils {
         }
     }
 
+    fun saveBase64Xml(context: Context, base64Xml: String, fileName: String): Uri? {
+
+        val decodedBytes = Base64.decode(base64Xml, Base64.DEFAULT)
+
+        val resolver = context.contentResolver
+
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "$fileName.xml")
+            put(MediaStore.MediaColumns.MIME_TYPE, "text/xml")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+        }
+
+        val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+
+        uri?.let {
+            resolver.openOutputStream(it)?.use { outputStream ->
+                outputStream.write(decodedBytes)
+            }
+        }
+
+        return uri
+    }
     @SuppressLint("SimpleDateFormat")
     fun getFullDate(time: Long?): String {
         return SimpleDateFormat("dd MMM, yyyy").format(Date(time!!))
@@ -153,6 +179,11 @@ object Utils {
     @SuppressLint("SimpleDateFormat")
     fun getFullDateWithTime(time: Long?): String {
         return SimpleDateFormat("MM/dd/yyyy HH:mm").format(Date(time!!))
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getShortDate(time: Long?): String {
+        return SimpleDateFormat("MMddyyyy").format(Date(time!!))
     }
 
 

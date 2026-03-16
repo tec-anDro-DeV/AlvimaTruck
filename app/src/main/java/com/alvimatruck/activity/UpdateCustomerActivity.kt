@@ -62,7 +62,7 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
                 CustomerDetail::class.java
             )
             binding.etCustomerName.text = customerDetail!!.searchName
-            binding.etTelephoneNumber.setText(customerDetail!!.telexNo)
+            binding.etTelephoneNumber.text = customerDetail!!.telexNo
             binding.tvCity.text = customerDetail!!.city
             selectedCity = customerDetail!!.city!!
             binding.tvPostalCode.text = customerDetail!!.postCode
@@ -177,14 +177,6 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
         if (binding.etTelephoneNumber.text.toString().trim().isEmpty()) {
             Toast.makeText(
                 this, getString(R.string.please_enter_telephone_number), Toast.LENGTH_SHORT
-            ).show()
-            return
-        } else if (!Utils.isValidEthiopiaLocalNumber(
-                binding.etTelephoneNumber.text.toString().trim()
-            )
-        ) {
-            Toast.makeText(
-                this, getString(R.string.please_enter_valid_telephone_number), Toast.LENGTH_SHORT
             ).show()
             return
         } else if (binding.tvCity.text.toString().trim().isEmpty()) {

@@ -30,6 +30,7 @@ import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.alvimatruck.utils.Utils.saveBase64Xml
 import com.alvimatruck.utils.Utils.to2Decimal
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -349,14 +350,30 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                                     .replace('"', ' ').trim(),
                                 Toast.LENGTH_SHORT
                             ).show()
+                            val fileUri = saveBase64Xml(
+                                this@NewSalesActivity,
+                                response.body()!!.get("data").asJsonObject.get("xmlData").toString()
+                                    .replace('"', ' ').trim(),
+                                response.body()!!.get("data").asJsonObject.get("invoiceNo")
+                                    .toString()
+                                    .replace('"', ' ')
+                                    .trim() + "_" + Utils.getShortDate(System.currentTimeMillis()) + ".xml"
+                            )
+
+                            if (fileUri != null) {
+                                Toast.makeText(
+                                    this@NewSalesActivity,
+                                    "XML file saved successfully in Downloads folder",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            } else {
+                                Toast.makeText(
+                                    this@NewSalesActivity,
+                                    "Failed to save XML file",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
                             finishWithSuccess()
-                            customerDetail!!.visitedToday = true
-                            // customerDetail!!.canCreateNewOrder = false
-                            Utils.isNewOrder = true
-                            val intent = Intent()
-                            intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
-                            setResult(RESULT_OK, intent)
-                            finish()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

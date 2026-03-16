@@ -61,15 +61,32 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
 
         binding.llSalesRoute.setOnClickListener {
-            startActivity(Intent(this, SalesRouteActivity::class.java))
+            if (Utils.isTripInProgress) {
+                startActivity(Intent(this, SalesRouteActivity::class.java))
+            } else {
+                Toast.makeText(
+                    this,
+                    "Please start the trip first to perform sales and route operations",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
         }
 
         binding.llCustomer.setOnClickListener {
-            startActivity(
-                Intent(
-                    this, CustomersActivity::class.java
-                ).putExtra(Constants.RouteDetail, "")
-            )
+            if (Utils.isTripInProgress) {
+                startActivity(
+                    Intent(
+                        this, CustomersActivity::class.java
+                    ).putExtra(Constants.RouteDetail, "")
+                )
+            } else {
+                Toast.makeText(
+                    this,
+                    "Please start the trip to perform customer operations",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
         binding.rlLogout.setOnClickListener {
