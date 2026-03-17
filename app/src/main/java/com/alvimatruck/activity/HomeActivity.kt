@@ -50,6 +50,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         binding.tvUsername.text = userDetail?.driverFullName
 
+        if (Utils.isTripInProgress) {
+            binding.tvStartEndTrip.text = getString(R.string.end_trip)
+        } else {
+            binding.tvStartEndTrip.text = getString(R.string.start_trip)
+        }
+
 
         binding.rlBottomVanStock.setOnClickListener {
             startActivity(Intent(this, VanStockActivity::class.java))
@@ -66,7 +72,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             } else {
                 Toast.makeText(
                     this,
-                    "Please start the trip first to perform sales and route operations",
+                    getString(R.string.please_start_trip_first_for_sales_and_route_operations),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -83,7 +89,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             } else {
                 Toast.makeText(
                     this,
-                    "Please start the trip to perform customer operations",
+                    getString(R.string.please_start_the_trip_to_perform_customer_operations),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -152,10 +158,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                 dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
 
             } else {
-                if (Utils.isRouteInProgress.isEmpty()) {
+                if (Utils.isRouteInProgress.isNotEmpty()) {
                     Toast.makeText(
                         this,
-                        "Cannot end trip. Please end the route and post all PSI invoices.",
+                        getString(R.string.please_end_the_route_before_ending_the_trip),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {

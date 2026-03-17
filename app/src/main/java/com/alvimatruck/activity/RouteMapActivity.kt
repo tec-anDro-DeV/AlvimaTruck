@@ -70,11 +70,28 @@ class RouteMapActivity : BaseActivity<ActivityRouteMapBinding>(), OnMapReadyCall
             }
         }
 
+        binding.fabMapType.setOnClickListener {
+            toggleMapType()
+        }
+
         val mapFragment =
             supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
 
+    }
+
+    private fun toggleMapType() {
+        if (!::mMap.isInitialized) return
+
+        if (mMap.mapType == GoogleMap.MAP_TYPE_NORMAL) {
+            mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+            // Optionally change icon color or background to indicate active state
+            // binding.fabMapType.setImageResource(R.drawable.ic_map) // Switch icon to Normal map icon
+        } else {
+            mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+            //  binding.fabMapType.setImageResource(R.drawable.ic_layers) // Switch icon to Satellite icon
+        }
     }
 
     private fun checkPermissions() {

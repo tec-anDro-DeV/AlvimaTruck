@@ -410,4 +410,7 @@
     <string name="cash_on_hand_no">Cash on Hand No.</string>
     <string name="bank">Bank*</string>
     <string name="deposit_amount">Deposit Amount</string>
+    <string name="please_start_trip_first_for_sales_and_route_operations">Please start trip first for sales and route operations.</string>
+    <string name="please_start_the_trip_to_perform_customer_operations">Please start the trip to perform customer operations</string>
+    <string name="please_end_the_route_before_ending_the_trip">Please end the route before ending the trip</string>
 </resources>
