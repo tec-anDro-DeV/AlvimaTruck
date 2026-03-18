@@ -72,6 +72,21 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
             customerName = intent.getStringExtra(Constants.CustomerDetail)
         }
 
+        binding.fabMapType.setOnClickListener {
+            toggleMapType()
+        }
+
+    }
+
+    private fun toggleMapType() {
+        if (!::mMap.isInitialized) return
+        if (mMap.mapType == GoogleMap.MAP_TYPE_NORMAL) {
+            mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+            binding.ivMap.setImageResource(R.drawable.ic_normal_map)
+        } else {
+            mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+            binding.ivMap.setImageResource(R.drawable.ic_satellite_map)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

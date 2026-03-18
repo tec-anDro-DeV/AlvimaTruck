@@ -48,6 +48,23 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/fabMapType"
+            android:layout_width="@dimen/_42sdp"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/_16sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:background="@drawable/orange_circle">
+
+            <ImageView
+                android:id="@+id/ivMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_satellite_map" />
+        </RelativeLayout>
     </FrameLayout>
 
 

@@ -83,14 +83,12 @@ class RouteMapActivity : BaseActivity<ActivityRouteMapBinding>(), OnMapReadyCall
 
     private fun toggleMapType() {
         if (!::mMap.isInitialized) return
-
         if (mMap.mapType == GoogleMap.MAP_TYPE_NORMAL) {
             mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
-            // Optionally change icon color or background to indicate active state
-            // binding.fabMapType.setImageResource(R.drawable.ic_map) // Switch icon to Normal map icon
+            binding.ivMap.setImageResource(R.drawable.ic_normal_map)
         } else {
             mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
-            //  binding.fabMapType.setImageResource(R.drawable.ic_layers) // Switch icon to Satellite icon
+            binding.ivMap.setImageResource(R.drawable.ic_satellite_map)
         }
     }
 
