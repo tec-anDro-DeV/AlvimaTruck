@@ -15,6 +15,7 @@ import com.alvimatruck.model.request.OTPVerifyRequest
 import com.alvimatruck.model.request.OrderPostRequest
 import com.alvimatruck.model.request.ReceiveItemRequest
 import com.alvimatruck.model.request.ResetPasswordRequest
+import com.alvimatruck.model.request.StartDayRequest
 import com.alvimatruck.model.request.StartTripRequest
 import com.alvimatruck.model.request.StoreRequisitionApproveRequest
 import com.alvimatruck.model.request.StoreRequisitionRequest
@@ -115,6 +116,9 @@ interface ApiInterface {
 
     @POST(Constants.API_Create_Store_Requisition)
     fun newRequisitionRequest(@Body storeRequisitionRequest: StoreRequisitionRequest): Call<JsonObject>
+
+    @POST(Constants.API_Start_day)
+    fun startDay(@Body startDayRequest: StartDayRequest): Call<JsonObject>
 
     @POST(Constants.API_Store_Requisition_Approve)
     fun storeRequisitionApproveRequest(@Body storeRequisitionApproveRequest: StoreRequisitionApproveRequest): Call<JsonObject>
