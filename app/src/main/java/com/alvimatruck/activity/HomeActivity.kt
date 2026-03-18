@@ -51,7 +51,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         binding.tvUsername.text = userDetail?.driverFullName
 
-        if (Utils.isTripInProgress) {
+        if (SharedHelper.getBoolKey(this@HomeActivity, Constants.DayStart)) {
             binding.tvStartEndTrip.text = getString(R.string.end_trip)
         } else {
             binding.tvStartEndTrip.text = getString(R.string.start_trip)
@@ -68,7 +68,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
 
         binding.llSalesRoute.setOnClickListener {
-            if (Utils.isTripInProgress) {
+            if (SharedHelper.getBoolKey(this@HomeActivity, Constants.DayStart)) {
                 startActivity(Intent(this, SalesRouteActivity::class.java))
             } else {
                 Toast.makeText(
@@ -81,7 +81,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
 
         binding.llCustomer.setOnClickListener {
-            if (Utils.isTripInProgress) {
+            if (SharedHelper.getBoolKey(this@HomeActivity, Constants.DayStart)) {
                 startActivity(
                     Intent(
                         this, CustomersActivity::class.java
@@ -124,7 +124,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
 
         binding.llTripManagement.setOnClickListener {
-            if (!Utils.isTripInProgress) {
+            if (!SharedHelper.getBoolKey(this@HomeActivity, Constants.DayStart)) {
 
                 val inflater = layoutInflater
                 val alertLayout = inflater.inflate(R.layout.dialog_start_trip, null)
@@ -270,7 +270,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            Utils.isTripInProgress = true
+                            SharedHelper.putKey(this@HomeActivity, Constants.DayStart, true)
                             binding.tvStartEndTrip.text = getString(R.string.end_trip)
 
                         } catch (e: Exception) {
@@ -303,7 +303,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     private fun endTripAPI(endKm: String) {
-        Utils.isTripInProgress = false
+        SharedHelper.putKey(this@HomeActivity, Constants.DayStart, false)
         binding.tvStartEndTrip.text = getString(R.string.start_trip)
 
 //        if (Utils.isOnline(this)) {

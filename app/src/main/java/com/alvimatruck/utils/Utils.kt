@@ -57,7 +57,7 @@ import java.util.Date
 object Utils {
     var isRouteInProgress: String = ""
 
-    var isTripInProgress: Boolean = false
+    // var isTripInProgress: Boolean = false
     var isNewOrder: Boolean = false
 
     var driverOrderList: ArrayList<DeliveryTripDetail>? = ArrayList()

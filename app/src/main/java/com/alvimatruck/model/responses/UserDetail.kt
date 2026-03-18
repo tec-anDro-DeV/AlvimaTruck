@@ -13,5 +13,6 @@ data class UserDetail(
     val salesPersonCode: String,
     val token: String,
     val userId: String,
-    val cashOnHand: String
+    val cashOnHand: String,
+    val hasActiveTrip: Boolean
 )

@@ -375,6 +375,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                             response.body()!!.getAsJsonObject("data"), UserDetail::class.java
                         )
                         SharedHelper.putKey(
+                            this@LoginActivity,
+                            Constants.DayStart,
+                            userDetail!!.hasActiveTrip
+                        )
+                        SharedHelper.putKey(
                             this@LoginActivity, Constants.Token, userDetail!!.token
                         )
                         if (userDetail!!.isDefaultPassword) {

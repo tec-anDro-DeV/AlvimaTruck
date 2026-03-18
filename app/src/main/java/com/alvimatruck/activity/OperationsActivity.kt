@@ -6,7 +6,8 @@ import android.widget.Toast
 import com.alvimatruck.R
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityOperationsBinding
-import com.alvimatruck.utils.Utils
+import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.SharedHelper
 
 class OperationsActivity : BaseActivity<ActivityOperationsBinding>() {
     override fun inflateBinding(): ActivityOperationsBinding {
@@ -30,7 +31,7 @@ class OperationsActivity : BaseActivity<ActivityOperationsBinding>() {
         }
 
         binding.rlTransfer.setOnClickListener {
-            if (Utils.isTripInProgress) {
+            if (SharedHelper.getBoolKey(this@OperationsActivity, Constants.DayStart)) {
                 Toast.makeText(
                     this,
                     getString(R.string.stock_transfer_is_not_allowed_once_the_trip_has_started),
@@ -45,7 +46,7 @@ class OperationsActivity : BaseActivity<ActivityOperationsBinding>() {
             startActivity(Intent(this, DepositActivity::class.java))
         }
         binding.rlStoreRequisition.setOnClickListener {
-            if (Utils.isTripInProgress) {
+            if (SharedHelper.getBoolKey(this@OperationsActivity, Constants.DayStart)) {
                 Toast.makeText(
                     this,
                     getString(R.string.store_requisition_is_not_allowed_once_the_trip_has_started),

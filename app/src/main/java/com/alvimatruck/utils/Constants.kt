@@ -101,6 +101,7 @@ class Constants {
 
         const val Password = "password"
         const val RememberMe = "remember_me"
+        const val DayStart = "DayStart"
 
         const val FingerPrintEnabled = "fingerprint_enabled"
 
