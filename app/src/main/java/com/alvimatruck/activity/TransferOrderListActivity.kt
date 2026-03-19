@@ -76,7 +76,7 @@ class TransferOrderListActivity : BaseActivity<ActivityTransferOrderListBinding>
                     filterList!!.addAll(transferList!!)
                 } else {
                     for (item in transferList!!) {
-                        if (item.transferOrderNo.lowercase().contains(s.toString().lowercase())) {
+                        if (item.no.lowercase().contains(s.toString().lowercase())) {
                             filterList!!.add(item)
                         }
                     }
@@ -102,7 +102,7 @@ class TransferOrderListActivity : BaseActivity<ActivityTransferOrderListBinding>
                 ).show()
                 return@setOnClickListener
             } else {
-                val selectedOrderNumbers = selectedOrders.map { it.transferOrderNo }
+                val selectedOrderNumbers = selectedOrders.map { it.no }
                 transferPostAPI(selectedOrderNumbers)
             }
 

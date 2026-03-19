@@ -5,7 +5,7 @@ import com.alvimatruck.utils.Utils
 data class TransferDetail(
     val postingDate: String,
     val transferFromCode: String,
-    val transferOrderNo: String,
+    val no: String,
     val transferToCode: String,
     val transferOrderLines: ArrayList<TransferOrderLines>,
     var isSelected: Boolean = false
