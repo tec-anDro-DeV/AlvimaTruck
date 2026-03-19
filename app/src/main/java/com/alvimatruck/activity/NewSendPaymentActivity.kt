@@ -254,9 +254,9 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
             val tvAccountNo = view.findViewById<TextView>(R.id.tvBankAccountNo)
             val divider = view.findViewById<View>(R.id.viewDivider)
             tvName.text = bank.name
-            tvAccountNo.text = bank.bankAccountNo
+            tvAccountNo.text = bank.no
 
-            cb.isChecked = currentSelectedIds.contains(bank.bankAccountNo)
+            cb.isChecked = currentSelectedIds.contains(bank.no)
 
             cb.tag = bank
 
@@ -300,12 +300,12 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
                     maxPhotoLimit += 1
                     val bank = checkBox.tag as BankDetail
                     if (selectedBankNoList.isEmpty()) {
-                        selectedBankNoList = bank.bankAccountNo
+                        selectedBankNoList = bank.no
                         selectedBankList = bank.name
                         binding.tvMaxPhoto.visibility = View.GONE
                     } else {
                         binding.tvMaxPhoto.visibility = View.VISIBLE
-                        selectedBankNoList += ",${bank.bankAccountNo}"
+                        selectedBankNoList += ",${bank.no}"
                         selectedBankList += ",${bank.name}"
                     }
                 }

@@ -39,6 +39,7 @@
                 tools:text="Commercial bank of Ethiopia /sales" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tvBankAccountNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
