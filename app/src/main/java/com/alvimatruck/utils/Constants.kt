@@ -88,6 +88,7 @@ class Constants {
 
         const val API_Bank_Details = "Bank/bank-details"
         const val API_Start_day = "Trip/start-bc"
+        const val API_End_day = "Trip/end-bc"
 
 
         // Constants Key

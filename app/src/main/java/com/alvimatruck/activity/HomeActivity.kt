@@ -14,6 +14,7 @@ import com.alvimatruck.R
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityHomeBinding
+import com.alvimatruck.model.request.EndDayRequest
 import com.alvimatruck.model.request.StartDayRequest
 import com.alvimatruck.model.responses.DashboardDetails
 import com.alvimatruck.model.responses.UserDetail
@@ -303,63 +304,59 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     private fun endTripAPI(endKm: String) {
-        SharedHelper.putKey(this@HomeActivity, Constants.DayStart, false)
-        binding.tvStartEndTrip.text = getString(R.string.start_trip)
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@HomeActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.endDay(
+                EndDayRequest(
+                    userDetail!!.driverNo, endKm.toInt()
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401) {
+                        Utils.forceLogout(this@HomeActivity)  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@HomeActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            SharedHelper.putKey(this@HomeActivity, Constants.DayStart, false)
+                            binding.tvStartEndTrip.text = getString(R.string.start_trip)
 
-//        if (Utils.isOnline(this)) {
-//
-//            ProgressDialog.start(this@RouteDetailActivity)
-//            ApiClient.getRestClient(
-//                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-//            )!!.webservices.endTrip(
-//                EndTripRequest(
-//                    routeDetail!!.routeName, endKm.toInt()
-//                )
-//            ).enqueue(object : Callback<JsonObject> {
-//                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-//                    ProgressDialog.dismiss()
-//                    if (response.code() == 401) {
-//                        Utils.forceLogout(this@RouteDetailActivity)  // show dialog before logout
-//                        return
-//                    }
-//                    if (response.isSuccessful) {
-//                        try {
-//                            Log.d("TAG", "onResponse: " + response.body().toString())
-//                            Toast.makeText(
-//                                this@RouteDetailActivity,
-//                                response.body()!!.get("message").toString().replace('"', ' ')
-//                                    .trim(),
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                            isChange = true
-//                            Utils.isRouteInProgress = ""
-//                            handleBackPressed()
-//                        } catch (e: Exception) {
-//                            e.printStackTrace()
-//                        }
-//                    } else {
-//                        Toast.makeText(
-//                            this@RouteDetailActivity,
-//                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-//                    Toast.makeText(
-//                        this@RouteDetailActivity,
-//                        getString(R.string.api_fail_message),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    ProgressDialog.dismiss()
-//                }
-//            })
-//        } else {
-//            Toast.makeText(
-//                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-//            ).show()
-//        }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@HomeActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@HomeActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
 
     }
 
@@ -482,7 +479,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                             binding.tvTodayVisit.text =
                                 dashboardDetails!!.totalCustomerVisits.toString()
                             binding.tvTotalSaleCash.text =
-                                "ETB " + dashboardDetails!!.todaySalesSum.to2Decimal()
+                                "ETB " + dashboardDetails!!.todayCashSales.to2Decimal()
+
+                            binding.tvTotalSaleCredit.text =
+                                "ETB " + dashboardDetails!!.todayCreditSales.to2Decimal()
                             binding.tvTotalCollectionCash.text =
                                 dashboardDetails!!.todayCollectionsCount.toString()
 

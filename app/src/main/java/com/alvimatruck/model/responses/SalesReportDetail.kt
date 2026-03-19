@@ -15,7 +15,8 @@ data class SalesReportDetail(
     val salespersonCode: String,
     val unitOfMeasureCode: String,
     val totalAmount: Double,
-    val unitPrice: Double
+    val unitPrice: Double,
+    val payment: String
 ) {
     fun getRequestDate(): String {
         return Utils.getFormatedRequestDate(postingDate)

@@ -666,6 +666,7 @@
                                 android:textSize="@dimen/_11ssp" />
 
                             <TextView
+                                android:id="@+id/tvTotalSaleCredit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:autoSizeMinTextSize="@dimen/_1sdp"

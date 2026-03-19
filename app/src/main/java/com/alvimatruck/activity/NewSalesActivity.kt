@@ -89,6 +89,13 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 customerDetail?.getFormattedTelephoneNo()
             }
 
+            if (customerDetail!!.creditLimitLcy != 0.0) {
+                binding.tvPaymentCode.visibility = View.GONE
+                binding.tvPaymentCodeLabel.visibility = View.GONE
+            } else {
+                binding.tvPaymentCode.visibility = View.VISIBLE
+                binding.tvPaymentCodeLabel.visibility = View.VISIBLE
+            }
             binding.tvTelephoneNumber.text = number ?: ""
             binding.tvSalesperson.text = userDetail?.driverFullName
             binding.tvLocationCode.text = userDetail?.salesPersonCode
@@ -272,7 +279,11 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                     binding.tvTotal.text.toString().replace("ETB", "").toDouble(),
                     orderList,
                     userDetail?.salesPersonCode.toString(),
-                    userDetail?.salesPersonCode.toString(),
+                    if (customerDetail?.creditLimitLcy != 0.0) {
+                        ""
+                    } else {
+                        userDetail?.salesPersonCode ?: ""
+                    },
                     binding.tvSubTotal.text.toString().replace("ETB", "").toDouble(),
                     binding.tvVat.text.toString().replace("+ ETB", "").toDouble(),
                     customerDetail!!.customerPriceGroup.toString()

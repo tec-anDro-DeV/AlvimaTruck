@@ -163,6 +163,7 @@
                 android:textSize="@dimen/_12ssp" />
 
             <TextView
+                android:id="@+id/tvPaymentCodeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"

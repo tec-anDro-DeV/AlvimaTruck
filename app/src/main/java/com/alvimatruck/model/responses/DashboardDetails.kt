@@ -4,7 +4,8 @@ data class DashboardDetails(
     val activeRoute: ActiveRoute?,
     val totalCustomerVisits: Int,
     val todayCollectionsCount: Int,
-    val todaySalesSum: Double
+    val todayCreditSales: Double,
+    val todayCashSales: Double
 )
 
 data class ActiveRoute(

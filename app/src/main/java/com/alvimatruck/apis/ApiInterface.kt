@@ -7,6 +7,7 @@ import com.alvimatruck.model.request.CustomerUpdate
 import com.alvimatruck.model.request.DeliveryCancelRequest
 import com.alvimatruck.model.request.DeliveryEndRequest
 import com.alvimatruck.model.request.DeliveryStartRequest
+import com.alvimatruck.model.request.EndDayRequest
 import com.alvimatruck.model.request.EndTripRequest
 import com.alvimatruck.model.request.LoginRequest
 import com.alvimatruck.model.request.NewOrderRequest
@@ -119,6 +120,9 @@ interface ApiInterface {
 
     @POST(Constants.API_Start_day)
     fun startDay(@Body startDayRequest: StartDayRequest): Call<JsonObject>
+
+    @POST(Constants.API_End_day)
+    fun endDay(@Body endDayRequest: EndDayRequest): Call<JsonObject>
 
     @POST(Constants.API_Store_Requisition_Approve)
     fun storeRequisitionApproveRequest(@Body storeRequisitionApproveRequest: StoreRequisitionApproveRequest): Call<JsonObject>

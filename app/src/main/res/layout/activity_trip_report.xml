@@ -187,9 +187,13 @@
                                 android:textSize="@dimen/_11ssp" />
 
                             <TextView
+                                android:id="@+id/tvTotalSaleCredit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:autoSizeMinTextSize="@dimen/_1sdp"
+                                android:autoSizeTextType="uniform"
                                 android:fontFamily="@font/sansbold"
+                                android:maxLines="1"
                                 android:text="ETB 0.00"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_18ssp" />
