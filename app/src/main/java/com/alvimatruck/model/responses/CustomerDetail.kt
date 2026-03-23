@@ -22,7 +22,7 @@ data class CustomerDetail(
     val status: String,
     var telexNo: String?,
     val tinNo: String?,
-    val balanceLcy: Double,
+    var balanceLcy: Double,
     var visitedToday: Boolean,
     var canCreateNewOrder: Boolean
 ) {

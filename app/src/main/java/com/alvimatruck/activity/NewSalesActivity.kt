@@ -143,7 +143,21 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             }
             btnYes.setOnClickListener {
                 dialog.dismiss()
-                newOrderAPI()
+                if (customerDetail!!.creditLimitLcy > 0.0 && customerDetail!!.creditLimitLcy < (customerDetail!!.balanceLcy + binding.tvTotal.text.toString()
+                        .replace("ETB", "").toDouble())
+                ) {
+                    val currentBalance =
+                        (customerDetail!!.creditLimitLcy - customerDetail!!.balanceLcy).to2Decimal()
+
+                    Toast.makeText(
+                        this,
+                        "Credit balance is ETB ${currentBalance}, which is insufficient for the current order. Please update the orders.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    newOrderAPI()
+                }
+
             }
 
             dialog.show()
@@ -417,6 +431,10 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
 
     private fun finishWithSuccess() {
         customerDetail?.visitedToday = true
+        if (customerDetail!!.creditLimitLcy != 0.0) {
+            customerDetail?.balanceLcy += (binding.tvTotal.text.toString().replace("ETB", "")
+                .toDouble())
+        }
         Utils.isNewOrder = true
         val intent = Intent()
         intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))

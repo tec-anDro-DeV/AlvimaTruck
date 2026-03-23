@@ -65,15 +65,6 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
             }
         }
 
-//    private val openUpdateSalesOrder =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == RESULT_OK) {
-//                customerDetail!!.canCreateNewOrder = true
-//                showUpdatedData() // refresh UI
-//            }
-//
-//        }
-
     private fun showUpdatedData() {
         binding.tvCustomerName.text = customerDetail!!.searchName
         binding.tvContactNumber.text = customerDetail!!.getFormattedContactNo()
@@ -110,13 +101,6 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         } else {
             binding.tvVisited.visibility = View.VISIBLE
         }
-//        if (customerDetail!!.canCreateNewOrder) {
-//            binding.tvNewOrder.visibility = View.VISIBLE
-//            binding.llViewOrder.visibility = View.GONE
-//        } else {
-//            binding.tvNewOrder.visibility = View.GONE
-//            binding.llViewOrder.visibility = View.VISIBLE
-//        }
     }
 
     private fun checkTripStatusAPI() {
@@ -271,14 +255,6 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
-
-//        binding.tvViewOrder.setOnClickListener {
-//            val intent = Intent(
-//                this,
-//                SalesOrderListActivity::class.java
-//            ).putExtra(Constants.CustomerDetail, customerDetail!!.searchName)
-//            openUpdateSalesOrder.launch(intent)
-//        }
 
         binding.btnEdit.setOnClickListener {
             val intent = Intent(
