@@ -480,11 +480,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                                 dashboardDetails!!.totalCustomerVisits.toString()
                             binding.tvTotalSaleCash.text =
                                 "ETB " + dashboardDetails!!.todayCashSales.to2Decimal()
-
                             binding.tvTotalSaleCredit.text =
                                 "ETB " + dashboardDetails!!.todayCreditSales.to2Decimal()
                             binding.tvTotalCollectionCash.text =
-                                dashboardDetails!!.todayCollectionsCount.toString()
+                                "ETB " + dashboardDetails!!.todayCashCollections.to2Decimal()
+                            binding.tvTotalCollectionCredit.text =
+                                "ETB " + dashboardDetails!!.todayCreditCollections.to2Decimal()
 
 
                         } catch (e: Exception) {

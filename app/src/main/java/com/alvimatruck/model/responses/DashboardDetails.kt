@@ -3,9 +3,10 @@ package com.alvimatruck.model.responses
 data class DashboardDetails(
     val activeRoute: ActiveRoute?,
     val totalCustomerVisits: Int,
-    val todayCollectionsCount: Int,
     val todayCreditSales: Double,
-    val todayCashSales: Double
+    val todayCashSales: Double,
+    val todayCashCollections: Double,
+    val todayCreditCollections: Double
 )
 
 data class ActiveRoute(
