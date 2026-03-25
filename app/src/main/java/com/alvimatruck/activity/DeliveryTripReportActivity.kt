@@ -154,8 +154,11 @@ class DeliveryTripReportActivity : BaseActivity<ActivityDeliveryTripReportBindin
                         call: Call<JsonObject>, response: Response<JsonObject>
                     ) {
                         ProgressDialog.dismiss()
-                        if (response.code() == 401) {
-                            Utils.forceLogout(this@DeliveryTripReportActivity)  // show dialog before logout
+                        if (response.code() == 401 || response.code() == 402) {
+                            Utils.forceLogout(
+                                this@DeliveryTripReportActivity,
+                                response.code()
+                            )  // show dialog before logout
                             return
                         }
                         if (response.isSuccessful) {

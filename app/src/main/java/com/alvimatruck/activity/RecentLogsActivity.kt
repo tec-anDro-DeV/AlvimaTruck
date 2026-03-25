@@ -62,8 +62,11 @@ class RecentLogsActivity : BaseActivity<ActivityRecentLogsBinding>() {
                         call: Call<JsonObject>, response: Response<JsonObject>
                     ) {
                         ProgressDialog.dismiss()
-                        if (response.code() == 401) {
-                            Utils.forceLogout(this@RecentLogsActivity)  // show dialog before logout
+                        if (response.code() == 401 || response.code() == 402) {
+                            Utils.forceLogout(
+                                this@RecentLogsActivity,
+                                response.code()
+                            )  // show dialog before logout
                             return
                         }
                         if (response.isSuccessful) {

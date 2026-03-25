@@ -304,9 +304,12 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 )
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    if (response.code() == 401) {
+                    if (response.code() == 401 || response.code() == 402) {
                         ProgressDialog.dismiss()
-                        Utils.forceLogout(this@NewSalesActivity)  // show dialog before logout
+                        Utils.forceLogout(
+                            this@NewSalesActivity,
+                            response.code()
+                        )  // show dialog before logout
                         return
                     }
                     if (response.isSuccessful) {
@@ -362,8 +365,11 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@NewSalesActivity)  // show dialog before logout
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@NewSalesActivity,
+                            response.code()
+                        )  // show dialog before logout
                         return
                     }
                     if (response.isSuccessful) {

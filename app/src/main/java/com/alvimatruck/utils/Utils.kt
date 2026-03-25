@@ -170,6 +170,7 @@ object Utils {
 
         return uri
     }
+
     @SuppressLint("SimpleDateFormat")
     fun getFullDate(time: Long?): String {
         return SimpleDateFormat("dd MMM, yyyy").format(Date(time!!))
@@ -210,7 +211,7 @@ object Utils {
     }
 
 
-    fun forceLogout(context: Context) {
+    fun forceLogout(context: Context, code: Int) {
         if (context !is Activity) {
             logout(context) // fallback directly
             return
@@ -221,6 +222,15 @@ object Utils {
         val alertLayout = inflater.inflate(R.layout.dialog_logout2, null)
 
         val btnYes = alertLayout.findViewById<TextView>(R.id.btnYes)
+        val tvMessage = alertLayout.findViewById<TextView>(R.id.tvMessage)
+
+        if (code == 401) {
+            tvMessage.text =
+                context.getString(R.string.you_are_logged_in_on_another_device_so_this_session_will_be_logged_out_for_security)
+        } else {
+            tvMessage.text =
+                context.getString(R.string.your_account_is_no_longer_active_please_contact_the_administrator)
+        }
 
 
         val dialog = AlertDialog.Builder(context).setView(alertLayout).setCancelable(false).create()

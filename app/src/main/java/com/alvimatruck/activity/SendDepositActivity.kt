@@ -189,7 +189,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 //            ).enqueue(object : Callback<JsonObject> {
 //                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
 //                    ProgressDialog.dismiss()
-//                    if (response.code() == 401) {
+//                    if (response.code() == 401 || response.code() == 402) {
 //                        Utils.forceLogout(this@SendDepositActivity)  // show dialog before logout
 //                        return
 //                    }
@@ -384,8 +384,11 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
                     call: Call<JsonObject>, response: Response<JsonObject>
                 ) {
                     ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@SendDepositActivity)  // show dialog before logout
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@SendDepositActivity,
+                            response.code()
+                        )  // show dialog before logout
                         return
                     }
                     if (response.isSuccessful) {
@@ -453,7 +456,7 @@ class SendDepositActivity : BaseActivity<ActivitySendDepositBinding>() {
 //                    call: Call<JsonObject>, response: Response<JsonObject>
 //                ) {
 //                    ProgressDialog.dismiss()
-//                    if (response.code() == 401) {
+//                    if (response.code() == 401 || response.code() == 402) {
 //                        Utils.forceLogout(this@SendDepositActivity)  // show dialog before logout
 //                        return
 //                    }

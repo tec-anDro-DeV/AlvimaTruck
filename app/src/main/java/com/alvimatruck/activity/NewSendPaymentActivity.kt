@@ -189,8 +189,11 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@NewSendPaymentActivity)  // show dialog before logout
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@NewSendPaymentActivity,
+                            response.code()
+                        )  // show dialog before logout
                         return
                     }
                     if (response.isSuccessful) {
@@ -492,8 +495,11 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
                     call: Call<JsonObject>, response: Response<JsonObject>
                 ) {
                     ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@NewSendPaymentActivity)  // show dialog before logout
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@NewSendPaymentActivity,
+                            response.code()
+                        )  // show dialog before logout
                         return
                     }
                     if (response.isSuccessful) {
@@ -552,8 +558,11 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
                     call: Call<JsonObject>, response: Response<JsonObject>
                 ) {
                     ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@NewSendPaymentActivity)  // show dialog before logout
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@NewSendPaymentActivity,
+                            response.code()
+                        )  // show dialog before logout
                         return
                     }
                     if (response.isSuccessful) {

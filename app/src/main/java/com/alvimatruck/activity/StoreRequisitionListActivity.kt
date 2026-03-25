@@ -125,9 +125,12 @@ class StoreRequisitionListActivity : BaseActivity<ActivityStoreRequisitionListBi
                 call: Call<JsonObject>, response: Response<JsonObject>
             ) {
 
-                if (response.code() == 401) {
+                if (response.code() == 401 || response.code() == 402) {
                     ProgressDialog.dismiss()
-                    Utils.forceLogout(this@StoreRequisitionListActivity)  // show dialog before logout
+                    Utils.forceLogout(
+                        this@StoreRequisitionListActivity,
+                        response.code()
+                    )  // show dialog before logout
                     return
                 }
                 if (response.isSuccessful) {
@@ -196,8 +199,11 @@ class StoreRequisitionListActivity : BaseActivity<ActivityStoreRequisitionListBi
                     call: Call<JsonObject>, response: Response<JsonObject>
                 ) {
                     ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@StoreRequisitionListActivity)  // show dialog before logout
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@StoreRequisitionListActivity,
+                            response.code()
+                        )  // show dialog before logout
                         return
                     }
                     if (response.isSuccessful) {

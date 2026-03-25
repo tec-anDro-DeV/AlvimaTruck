@@ -257,8 +257,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@HomeActivity)  // show dialog before logout
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@HomeActivity,
+                            response.code()
+                        )  // show dialog before logout
                         return
                     }
                     if (response.isSuccessful) {
@@ -315,8 +318,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@HomeActivity)  // show dialog before logout
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@HomeActivity,
+                            response.code()
+                        )  // show dialog before logout
                         return
                     }
                     if (response.isSuccessful) {
@@ -447,8 +453,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             )!!.webservices.getSalesDashboardReport().enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     ProgressDialog.dismiss()
-                    if (response.code() == 401) {
-                        Utils.forceLogout(this@HomeActivity)  // show dialog before logout
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@HomeActivity,
+                            response.code()
+                        )  // show dialog before logout
                         return
                     }
                     if (response.isSuccessful) {

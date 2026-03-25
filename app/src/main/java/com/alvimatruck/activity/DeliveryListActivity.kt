@@ -109,8 +109,11 @@ class DeliveryListActivity : BaseActivity<ActivityDeliveryListBinding>(), Delive
                         response: Response<JsonObject>
                     ) {
                         ProgressDialog.dismiss()
-                        if (response.code() == 401) {
-                            Utils.forceLogout(this@DeliveryListActivity)  // show dialog before logout
+                        if (response.code() == 401 || response.code() == 402) {
+                            Utils.forceLogout(
+                                this@DeliveryListActivity,
+                                response.code()
+                            )  // show dialog before logout
                             return
                         }
                         if (response.isSuccessful) {

@@ -200,8 +200,8 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
                         isLoading = false
                         ProgressDialog.dismiss()
 
-                        if (response.code() == 401) {
-                            Utils.forceLogout(this@CustomersActivity)
+                        if (response.code() == 401 || response.code() == 402) {
+                            Utils.forceLogout(this@CustomersActivity, response.code())
                             return
                         }
 
