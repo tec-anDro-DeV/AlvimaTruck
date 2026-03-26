@@ -345,7 +345,7 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
 
             tvNo.text = invoice.documentNo
             //   tvDate.text = "Date: ${invoice.getRequestDate() ?: "-"}"
-            tvAmount.text = "ETB ${invoice.remainingAmount}"
+            tvAmount.text = "ETB ${invoice.amount}"
 
             cb.isChecked = currentSelectedIds.contains(invoice.documentNo)
 
@@ -394,7 +394,7 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
                     } else {
                         selectedInvoiceList += ",${invoice.documentNo}"
                     }
-                    total += invoice.remainingAmount
+                    total += invoice.amount
                 }
             }
 
