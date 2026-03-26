@@ -45,6 +45,10 @@ class StoreRequisitionDetailActivity : BaseActivity<ActivityStoreRequisitionDeta
                 locationList?.find { it.code == requisitionDetail!!.fromLocation }?.name ?: ""
             binding.tvDateTime.text = requisitionDetail!!.getRequestedDate()
 
+            binding.tvProfitCenter.text = requisitionDetail!!.profitCenter
+            binding.tvCostCenter.text = requisitionDetail!!.costCenter
+            binding.tvInTransit.text = requisitionDetail!!.inTransitCode
+
             binding.llItemList.removeAllViews()
 
             for (i in 0 until requisitionDetail!!.requisitionLines.size) {

@@ -24,7 +24,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_250sdp"
+            android:layout_height="@dimen/_200sdp"
             android:layout_marginTop="@dimen/_7sdp"
             android:background="@drawable/input_bg">
 

@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/sansbold"
-                    android:text="@{detail.invoiceNumbers}"
+                    android:text="@{detail.invoiceNo}"
                     android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"

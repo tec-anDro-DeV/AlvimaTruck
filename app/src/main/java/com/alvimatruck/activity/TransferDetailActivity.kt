@@ -45,6 +45,9 @@ class TransferDetailActivity : BaseActivity<ActivityStoreRequisitionDetailBindin
                 locationList?.find { it.code == transferDetail!!.transferToCode }?.name ?: ""
             binding.tvFrom.text = getString(R.string.van)
 
+            binding.tvProfitCenter.text = transferDetail!!.profitCenter
+            binding.tvCostCenter.text = transferDetail!!.costCenter
+            binding.tvInTransit.text = transferDetail!!.inTransitCode
             binding.tvDateTime.text = transferDetail!!.getRequestDate()
 
             binding.llItemList.removeAllViews()

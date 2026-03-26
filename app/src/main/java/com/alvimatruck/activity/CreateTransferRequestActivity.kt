@@ -41,8 +41,8 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
     var itemList: ArrayList<String> = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
 
-    //    var costCenterList: ArrayList<String> = ArrayList()
-//    var profitCenterList: ArrayList<String> = ArrayList()
+    var costCenterList: ArrayList<String> = ArrayList()
+    var profitCenterList: ArrayList<String> = ArrayList()
     var inTransitList: ArrayList<String> = ArrayList()
     var toLocationList: ArrayList<String> = ArrayList()
 
@@ -87,8 +87,8 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
 
 
         getItemList()
-        //    getCostCenterList()
-        //  getProfitCenterList()
+        getCostCenterList()
+        getProfitCenterList()
         getInTransitList()
         getToLocationList()
 
@@ -100,23 +100,23 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
                 binding.tvItem
             )
         }
-//        binding.tvCostCenter.setOnClickListener {
-//            dialogSingleSelection(
-//                costCenterList,
-//                getString(R.string.choose_cost_center),
-//                getString(R.string.search_cost_center),
-//                binding.tvCostCenter
-//            )
-//        }
-//
-//        binding.tvProfitCenter.setOnClickListener {
-//            dialogSingleSelection(
-//                profitCenterList,
-//                getString(R.string.choose_profit_center),
-//                getString(R.string.search_profit_center),
-//                binding.tvProfitCenter
-//            )
-//        }
+        binding.tvCostCenter.setOnClickListener {
+            dialogSingleSelection(
+                costCenterList,
+                getString(R.string.choose_cost_center),
+                getString(R.string.search_cost_center),
+                binding.tvCostCenter
+            )
+        }
+
+        binding.tvProfitCenter.setOnClickListener {
+            dialogSingleSelection(
+                profitCenterList,
+                getString(R.string.choose_profit_center),
+                getString(R.string.search_profit_center),
+                binding.tvProfitCenter
+            )
+        }
 
         binding.tvInTransit.setOnClickListener {
             dialogSingleSelection(
@@ -195,16 +195,15 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
         binding.rvTransferList.adapter = transferRequestItemListAdapter
 
         binding.tvCreateTransferRequest.setOnClickListener {
-//            if (binding.tvProfitCenter.text.toString().isEmpty()) {
-//                Toast.makeText(
-//                    this, getString(R.string.please_select_profit_center), Toast.LENGTH_SHORT
-//                ).show()
-//            } else if (binding.tvCostCenter.text.toString().isEmpty()) {
-//                Toast.makeText(
-//                    this, getString(R.string.please_select_cost_center), Toast.LENGTH_SHORT
-//                ).show()
-//            } else
-            if (binding.tvTo.text.toString().isEmpty()) {
+            if (binding.tvProfitCenter.text.toString().isEmpty()) {
+                Toast.makeText(
+                    this, getString(R.string.please_select_profit_center), Toast.LENGTH_SHORT
+                ).show()
+            } else if (binding.tvCostCenter.text.toString().isEmpty()) {
+                Toast.makeText(
+                    this, getString(R.string.please_select_cost_center), Toast.LENGTH_SHORT
+                ).show()
+            } else if (binding.tvTo.text.toString().isEmpty()) {
                 Toast.makeText(
                     this, getString(R.string.please_select_to_location), Toast.LENGTH_SHORT
                 ).show()
@@ -325,13 +324,13 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
         val inflater = layoutInflater
         val alertLayout = inflater.inflate(R.layout.dialog_single_selection, null)
         val selectedGroup: String = when (textView) {
-//            binding.tvCostCenter -> {
-//                selectedCostCenter
-//            }
-//
-//            binding.tvProfitCenter -> {
-//                selectedProfitCenter
-//            }
+            binding.tvCostCenter -> {
+                selectedCostCenter
+            }
+
+            binding.tvProfitCenter -> {
+                selectedProfitCenter
+            }
 
             binding.tvItem -> {
                 selectedItem
@@ -400,13 +399,13 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
         tvConfirm.setOnClickListener { _: View? ->
             if (filterList!!.isNotEmpty()) {
                 when (textView) {
-//                    binding.tvCostCenter -> {
-//                        selectedCostCenter = singleItemSelectionAdapter.selected
-//                    }
-//
-//                    binding.tvProfitCenter -> {
-//                        selectedProfitCenter = singleItemSelectionAdapter.selected
-//                    }
+                    binding.tvCostCenter -> {
+                        selectedCostCenter = singleItemSelectionAdapter.selected
+                    }
+
+                    binding.tvProfitCenter -> {
+                        selectedProfitCenter = singleItemSelectionAdapter.selected
+                    }
 
                     binding.tvItem -> {
                         selectedItem = singleItemSelectionAdapter.selected
@@ -497,40 +496,40 @@ class CreateTransferRequestActivity : BaseActivity<ActivityCreateTransferRequest
             ).show()
         }
     }
-//
-//    private fun getCostCenterList() {
-//        costCenterList.clear()
-//
-//        val jsonString = SharedHelper.getKey(this, Constants.API_CostCenter_Code)
-//
-//        if (jsonString.isNotEmpty()) {
-//            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
-//
-//            for (item in dataArray) {
-//                val code = item.asJsonObject.get("code")?.asString
-//                if (!code.isNullOrEmpty()) {
-//                    costCenterList.add(code)
-//                }
-//            }
-//        }
-//    }
 
-//    private fun getProfitCenterList() {
-//        profitCenterList.clear()
-//
-//        val jsonString = SharedHelper.getKey(this, Constants.API_ProfitCenter_Code)
-//
-//        if (jsonString.isNotEmpty()) {
-//            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
-//
-//            for (item in dataArray) {
-//                val code = item.asJsonObject.get("code")?.asString
-//                if (!code.isNullOrEmpty()) {
-//                    profitCenterList.add(code)
-//                }
-//            }
-//        }
-//    }
+    private fun getCostCenterList() {
+        costCenterList.clear()
+
+        val jsonString = SharedHelper.getKey(this, Constants.API_CostCenter_Code)
+
+        if (jsonString.isNotEmpty()) {
+            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
+
+            for (item in dataArray) {
+                val code = item.asJsonObject.get("code")?.asString
+                if (!code.isNullOrEmpty()) {
+                    costCenterList.add(code)
+                }
+            }
+        }
+    }
+
+    private fun getProfitCenterList() {
+        profitCenterList.clear()
+
+        val jsonString = SharedHelper.getKey(this, Constants.API_ProfitCenter_Code)
+
+        if (jsonString.isNotEmpty()) {
+            val dataArray = JsonParser.parseString(jsonString).asJsonObject.getAsJsonArray("data")
+
+            for (item in dataArray) {
+                val code = item.asJsonObject.get("code")?.asString
+                if (!code.isNullOrEmpty()) {
+                    profitCenterList.add(code)
+                }
+            }
+        }
+    }
 
     private fun getInTransitList() {
         inTransitList.clear()

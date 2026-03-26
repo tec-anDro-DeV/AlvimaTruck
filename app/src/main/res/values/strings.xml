@@ -132,6 +132,7 @@
     <string name="create">Create</string>
     <string name="new_transfer_request">New Transfer Request</string>
     <string name="in_transit_code">In-Transit Code*</string>
+    <string name="in_transit_code2">In-Transit Code</string>
     <string name="request_date_and_time">Request Date and Time</string>
     <string name="item">Item</string>
     <string name="add">Add</string>
@@ -172,7 +173,7 @@
     <string name="deliveries_completed">Deliveries Completed</string>
     <string name="trip_route_list">Trip / Route List</string>
     <string name="deposit">Deposit</string>
-    <string name="payment_collection">Cash Payment\nCollection</string>
+    <string name="cash_deposit">Cash Deposit</string>
     <string name="payment_logs">Payment Logs</string>
     <string name="delete">Delete</string>
     <string name="van">Van</string>
@@ -395,4 +396,5 @@
     <string name="payment_method">Payment Method</string>
     <string name="confirm_post_order"><![CDATA[Confirm & Post Order]]></string>
     <string name="are_you_sure_you_want_to_confirm_and_post_this_order">Are you sure you want to confirm and post this order?</string>
+    <string name="delivered">Delivered</string>
 </resources>

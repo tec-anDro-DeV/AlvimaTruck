@@ -9,6 +9,9 @@ data class RequisitionDetail(
     val requestDate: String,
     val status: String,
     val toLocation: String,
+    val profitCenter: String,
+    val costCenter: String,
+    val inTransitCode: String,
     val requisitionLines: ArrayList<RequisitionLines>,
     var isSelected: Boolean = false
 ) {

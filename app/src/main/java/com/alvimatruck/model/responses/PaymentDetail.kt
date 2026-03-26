@@ -6,7 +6,7 @@ import com.alvimatruck.utils.Utils.to2Decimal
 data class PaymentDetail(
     val postingDate: String,
     val customerName: String,
-    val invoiceNumbers: String,
+    val invoiceNo: String,
     val paymentCode: String,
     val paymentId: Int,
     val salesPersonCode: String,
