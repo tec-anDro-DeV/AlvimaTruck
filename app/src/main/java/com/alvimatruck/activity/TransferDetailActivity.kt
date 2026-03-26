@@ -27,7 +27,7 @@ class TransferDetailActivity : BaseActivity<ActivityStoreRequisitionDetailBindin
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.tvTitle.text = "Transfer Details"
+        binding.tvTitle.text = getString(R.string.transfer_details)
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
@@ -43,7 +43,7 @@ class TransferDetailActivity : BaseActivity<ActivityStoreRequisitionDetailBindin
             )
             binding.tvTo.text =
                 locationList?.find { it.code == transferDetail!!.transferToCode }?.name ?: ""
-            binding.tvFrom.text = "VAN"
+            binding.tvFrom.text = getString(R.string.van)
 
             binding.tvDateTime.text = transferDetail!!.getRequestDate()
 

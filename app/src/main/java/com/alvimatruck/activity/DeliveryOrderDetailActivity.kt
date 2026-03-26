@@ -578,7 +578,7 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
                             ).show()
                             isChange = true
                             binding.tvVanStartKilometer.text = startKm
-                            binding.tvStatus.text = "InProgress"
+                            binding.tvStatus.text = getString(R.string.inprogress)
                             Utils.isRouteInProgress = orderDetail!!.orderNo
                             binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
                             binding.rlStartKilometer.visibility = View.VISIBLE
@@ -636,7 +636,7 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == RESULT_OK) {
-            binding.tvStatus.text = "Delivered"
+            binding.tvStatus.text = getString(R.string.delivered)
             binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
             binding.rlStartKilometer.visibility = View.VISIBLE
             binding.rlEndKilometer.visibility = View.GONE

@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alvimatruck.R
 import com.alvimatruck.adapter.NewSalesItemListAdapter
@@ -245,12 +244,12 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
         super.handleBackPressed(callback)
     }
 
-    private val startForResult = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            getSalesOrderDetailAPI()
-            isChange = true
-        }
-    }
+//    private val startForResult = registerForActivityResult(
+//        ActivityResultContracts.StartActivityForResult()
+//    ) { result ->
+//        if (result.resultCode == RESULT_OK) {
+//            getSalesOrderDetailAPI()
+//            isChange = true
+//        }
+//    }
 }

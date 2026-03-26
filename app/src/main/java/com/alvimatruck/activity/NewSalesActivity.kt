@@ -127,8 +127,9 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
             val btnYes = alertLayout.findViewById<TextView>(R.id.btnYes)
 
             // Set content
-            tvTitle.text = "Confirm & Post Order"
-            tvMessage.text = "Are you sure you want to confirm and post this order?"
+            tvTitle.text = getString(R.string.confirm_post_order)
+            tvMessage.text =
+                getString(R.string.are_you_sure_you_want_to_confirm_and_post_this_order)
             btnNo.text = getString(R.string.no)
             btnYes.text = getString(R.string.yes)
 

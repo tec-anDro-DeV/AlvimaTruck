@@ -40,7 +40,7 @@ class StoreRequisitionDetailActivity : BaseActivity<ActivityStoreRequisitionDeta
                 intent.getStringExtra(Constants.OrderDetail),
                 RequisitionDetail::class.java
             )
-            binding.tvTo.text = "VAN"
+            binding.tvTo.text = getString(R.string.van)
             binding.tvFrom.text =
                 locationList?.find { it.code == requisitionDetail!!.fromLocation }?.name ?: ""
             binding.tvDateTime.text = requisitionDetail!!.getRequestedDate()

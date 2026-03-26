@@ -397,7 +397,3 @@ object Utils {
         ).format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
     }
 }
-
-data class TransferItem(
-    var name: String, var isSelected: Boolean = false
-)
