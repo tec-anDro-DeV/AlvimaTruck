@@ -70,6 +70,9 @@ interface ApiInterface {
     @GET(Constants.API_Payment_Logs)
     fun getPaymentLogs(): Call<JsonObject>
 
+    @GET(Constants.API_Credit_Payment_Logs)
+    fun getCreditPaymentLogs(): Call<JsonObject>
+
     @GET(Constants.API_Sales_Orders)
     fun getSalesOrder(): Call<JsonObject>
 
@@ -174,6 +177,9 @@ interface ApiInterface {
     @GET(Constants.API_Invoice_List)
     fun invoiceList(): Call<JsonObject>
 
+    @GET(Constants.API_Credit_Invoice_List)
+    fun creditInvoiceList(@Query("customerNo") customerNo: String): Call<JsonObject>
+
     @GET(Constants.API_Bank_Details)
     fun bankList(): Call<JsonObject>
 
@@ -239,6 +245,16 @@ interface ApiInterface {
         @Part("BankAccountNo") bankAccountNo: RequestBody,
         @Part("Amount") amount: RequestBody,
         @Part("CashOnHand") cashOnHand: RequestBody,
+        @Part imageFile: List<MultipartBody.Part>? = null // <-- multiple files
+    ): Call<JsonObject>
+
+    @Multipart
+    @POST(Constants.API_Credit_Payment_Create)
+    fun creditPaymentCreate(
+        @Part("InvoiceNo") invoiceNo: RequestBody,
+        @Part("BankReferenceNo") bankReferenceNo: RequestBody,
+        @Part("BankAccountNo") bankAccountNo: RequestBody,
+        @Part("Amount") amount: RequestBody,
         @Part imageFile: List<MultipartBody.Part>? = null // <-- multiple files
     ): Call<JsonObject>
 

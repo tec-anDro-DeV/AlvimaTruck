@@ -4,11 +4,11 @@ class Constants {
     companion object {
 
         // Base URL
-        //const val BASE_URL = "http://192.168.1.148:8696/api/" //Local
-        const val BASE_URL = "http://196.190.220.205:61/api/" //Sandbox
+        const val BASE_URL = "http://192.168.1.148:8696/api/" //Local
+        //const val BASE_URL = "http://196.190.220.205:61/api/" //Sandbox
 
-        //const val IMAGE_URL = "http://192.168.1.148:8696/" //Local
-        const val IMAGE_URL = "http://196.190.220.205:61/" //Sandbox
+        const val IMAGE_URL = "http://192.168.1.148:8696/" //Local
+        //const val IMAGE_URL = "http://196.190.220.205:61/" //Sandbox
 
         //Auth Flow
         const val API_VanList = "Dropdown/get-van-sales-dropdown"
@@ -57,8 +57,12 @@ class Constants {
         const val API_Delete_Order = "SalesOrder/delete-order/"
 
         const val API_Payment_Logs = "Payment/get-by-salesperson"
+        const val API_Credit_Payment_Logs = "Payment/customer-credit-merged"
         const val API_Invoice_List = "Payment/invoice-dropdown"
+        const val API_Credit_Invoice_List = "Payment/customer-credit-dropdown"
         const val API_Payment_Create = "Payment/create"
+
+        const val API_Credit_Payment_Create = "Payment/create-credit-payment"
 
         const val API_Fleet_Log_List = "FleetManagement/get-all-fleet-mobile"
         const val API_Fleet = "FleetManagement/create-fleat"

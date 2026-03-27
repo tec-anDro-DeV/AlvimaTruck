@@ -79,6 +79,24 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rlPaymentLogs"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_73sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:background="@drawable/ic_payment_logs">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_70sdp"
+                android:fontFamily="@font/sanssemibold"
+                android:text="@string/payment_logs"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/rlCreditPayment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_73sdp"
@@ -96,8 +114,9 @@
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>
 
+
         <RelativeLayout
-            android:id="@+id/rlPaymentLogs"
+            android:id="@+id/rlCreditPaymentLogs"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_73sdp"
             android:layout_marginTop="@dimen/_14sdp"
@@ -109,7 +128,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="@string/payment_logs"
+                android:text="@string/credit_payment_logs"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>

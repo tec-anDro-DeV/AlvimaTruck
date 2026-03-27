@@ -174,7 +174,8 @@
     <string name="trip_route_list">Trip / Route List</string>
     <string name="deposit">Deposit</string>
     <string name="cash_deposit">Cash Deposit</string>
-    <string name="payment_logs">Payment Logs</string>
+    <string name="payment_logs">Cash Payment\nLogs</string>
+    <string name="credit_payment_logs">Credit Payment\nLogs</string>
     <string name="delete">Delete</string>
     <string name="van">Van</string>
     <string name="date_requested">Date Requested</string>
