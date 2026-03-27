@@ -233,7 +233,8 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
                             customerDetail!!.city = binding.tvCity.text.toString().trim()
                             customerDetail!!.address = binding.etAddress.text.toString().trim()
                             customerDetail!!.postCode = binding.tvPostalCode.text.toString().trim()
-
+                            customerDetail!!.latitude = AlvimaTuckApplication.latitude
+                            customerDetail!!.longitude = AlvimaTuckApplication.longitude
 
                             val intent = Intent()
                             intent.putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))

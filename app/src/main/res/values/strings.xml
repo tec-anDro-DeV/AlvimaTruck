@@ -397,4 +397,6 @@
     <string name="confirm_post_order"><![CDATA[Confirm & Post Order]]></string>
     <string name="are_you_sure_you_want_to_confirm_and_post_this_order">Are you sure you want to confirm and post this order?</string>
     <string name="delivered">Delivered</string>
+    <string name="customer2">Customer*</string>
+    <string name="credit_payment_ncollection">Credit Payment\nCollection</string>
 </resources>

@@ -28,6 +28,10 @@ class DepositActivity : BaseActivity<ActivityDepositBinding>() {
             startActivity(Intent(this, NewSendPaymentActivity::class.java))
         }
 
+        binding.rlCreditPayment.setOnClickListener {
+            startActivity(Intent(this, CreditPaymentActivity::class.java))
+        }
+
         binding.rlPaymentLogs.setOnClickListener {
             startActivity(Intent(this, PaymentLogsActivity::class.java))
         }

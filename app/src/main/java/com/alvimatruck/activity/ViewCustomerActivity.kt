@@ -43,6 +43,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
     var customerDetail: CustomerDetail? = null
 
     var reasonList: ArrayList<String> = ArrayList()
+    var customerInTheRoute = false
 
     //  var tripStart: Boolean = false
     override fun inflateBinding(): ActivityViewCustomerBinding {
@@ -229,6 +230,61 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         }
     }
 
+    private fun checkCustomerInRouteAPI() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@ViewCustomerActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.checkRoute(
+                CheckRouteRequest(
+                    customerDetail!!.latitude,
+                    customerDetail!!.longitude,
+                    customerDetail!!.routeName
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@ViewCustomerActivity,
+                            response.code()
+                        )  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            customerInTheRoute = response.body()!!.get("status").asBoolean
+
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@ViewCustomerActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@ViewCustomerActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -248,6 +304,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                     binding.btnEdit.visibility = View.VISIBLE
                     binding.llBottomButtons.visibility = View.VISIBLE
                     checkRouteAPI()
+                    checkCustomerInRouteAPI()
                 } else {
                     binding.btnEdit.visibility = View.GONE
                     binding.llBottomButtons.visibility = View.GONE
@@ -281,11 +338,20 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         }
 
         binding.tvNewOrder.setOnClickListener {
-            val intent = Intent(
-                this, NewSalesActivity::class.java
-            ).putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
+            if (customerInTheRoute) {
+                val intent = Intent(
+                    this, NewSalesActivity::class.java
+                ).putExtra(Constants.CustomerDetail, Gson().toJson(customerDetail))
 
-            openUpdateCustomer.launch(intent)
+                openUpdateCustomer.launch(intent)
+            } else {
+                Toast.makeText(
+                    this,
+                    "Customer is outside the route. Update location to continue.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
         }
 
         binding.tvVisited.setOnClickListener {

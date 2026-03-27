@@ -79,6 +79,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rlCreditPayment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_73sdp"
             android:layout_marginTop="@dimen/_14sdp"
@@ -90,7 +91,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:fontFamily="@font/sanssemibold"
-                android:text="Credit Payment\nCollection"
+                android:text="@string/credit_payment_ncollection"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </RelativeLayout>
