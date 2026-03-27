@@ -31,6 +31,7 @@ class Constants {
         const val API_ProfitCenter_Code = "Dropdown/get-profitcenter-dropdown"
         const val API_Intransit_Code = "Dropdown/get-intransit-dropdown"
         const val API_To_Location = "Dropdown/get-withoutvanlocation-dropdown"
+        const val API_Route_Location = "Dropdown/route-map-by-name"
         const val API_Vendor_List = "Vendor"
 
         const val API_Create_Customer = "Customer/create-customer"

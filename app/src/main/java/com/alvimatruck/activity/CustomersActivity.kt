@@ -6,18 +6,22 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alvimatruck.R
 import com.alvimatruck.adapter.CustomerListAdapter
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityCustomersBinding
 import com.alvimatruck.interfaces.CustomerClickListener
+import com.alvimatruck.model.request.CheckRouteRequest
 import com.alvimatruck.model.responses.CustomerDetail
+import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
@@ -44,6 +48,8 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
     // For search debouncing (prevents API call on every single keystroke)
     private val searchHandler = Handler(Looper.getMainLooper())
     private var searchRunnable: Runnable? = null
+
+    var inTheRoute = false
 
 
     private val openUpdateCustomer =
@@ -88,6 +94,7 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
             } else {
                 if (Utils.isRouteInProgress == routeName) {
                     binding.ivAddCustomer.visibility = View.VISIBLE
+                    checkRouteAPI()
                 } else {
                     binding.ivAddCustomer.visibility = View.GONE
                 }
@@ -138,9 +145,18 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
 
 
         binding.ivAddCustomer.setOnClickListener {
-            // startActivity(Intent(this@CustomersActivity, CreateCustomerActivity::class.java))
-            val intent = Intent(this, CreateCustomerActivity::class.java)
-            startForResult.launch(intent)
+            if (inTheRoute) {
+                val intent = Intent(this, CreateCustomerActivity::class.java)
+                startForResult.launch(intent)
+            } else {
+                Toast.makeText(
+                    this,
+                    "You are outside the route, so you cannot create a customer",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+
         }
 
         binding.etSearch.addTextChangedListener(object : TextWatcher {
@@ -161,6 +177,60 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
                 searchHandler.postDelayed(searchRunnable!!, 500) // Wait 500ms after typing stops
             }
         })
+    }
+
+    private fun checkRouteAPI() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@CustomersActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.checkRoute(
+                CheckRouteRequest(
+                    AlvimaTuckApplication.latitude,
+                    AlvimaTuckApplication.longitude,
+                    routeName
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@CustomersActivity,
+                            response.code()
+                        )  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            inTheRoute = response.body()!!.get("status").asBoolean
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@CustomersActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@CustomersActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private val startForResult = registerForActivityResult(

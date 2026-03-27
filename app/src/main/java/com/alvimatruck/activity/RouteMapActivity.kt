@@ -31,6 +31,7 @@ class RouteMapActivity : BaseActivity<ActivityRouteMapBinding>(), OnMapReadyCall
     var routeDetail: RouteDetail? = null
 
     private var latLngList: List<LatLng> = emptyList()
+    private var currentPolygon: com.google.android.gms.maps.model.Polygon? = null
 
 
     private val requestPermissionLauncher = registerForActivityResult(
@@ -171,18 +172,19 @@ class RouteMapActivity : BaseActivity<ActivityRouteMapBinding>(), OnMapReadyCall
     private fun drawPolygon(points: List<LatLng>) {
         if (points.isEmpty()) return
 
+        currentPolygon?.remove()
+
         val polygonOptions =
             PolygonOptions().addAll(points).strokeColor(0xFF2196F3.toInt()) // blue border
                 .strokeWidth(4f).fillColor(0x552196F3) // semi-transparent blue fill
 
-        mMap.addPolygon(polygonOptions)
+        currentPolygon = mMap.addPolygon(polygonOptions)
 
-        // Move camera to polygon bounds
-        val boundsBuilder = LatLngBounds.builder()
-        for (latLng in points) {
-            boundsBuilder.include(latLng)
-        }
-        val bounds = boundsBuilder.build()
+        // Optimization: Build bounds efficiently
+        val bounds = LatLngBounds.builder().apply {
+            points.forEach { include(it) }
+        }.build()
+
         mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
     }
 }

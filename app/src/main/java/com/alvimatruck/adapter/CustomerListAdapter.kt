@@ -41,6 +41,7 @@ class CustomerListAdapter(
                     Constants.LATITUDE, list[position].latitude
                 ).putExtra(Constants.LONGITUDE, list[position].longitude)
                     .putExtra(Constants.CustomerDetail, list[position].searchName)
+                    .putExtra(Constants.RouteDetail, list[position]!!.routeName)
             )
         }
 

@@ -141,6 +141,11 @@ interface ApiInterface {
         @Query("endDate") endDate: String,
     ): Call<JsonObject>
 
+    @GET(Constants.API_Route_Location)
+    fun routePolygon(
+        @Query("routeName") routeName: String,
+    ): Call<JsonObject>
+
     @GET(Constants.API_Trip_Report)
     fun tripReport(
         @Query("startDate") startDate: String,

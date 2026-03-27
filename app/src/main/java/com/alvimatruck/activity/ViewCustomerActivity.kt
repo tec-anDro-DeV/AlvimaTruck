@@ -44,7 +44,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
 
     var reasonList: ArrayList<String> = ArrayList()
 
-    var tripStart: Boolean = false
+    //  var tripStart: Boolean = false
     override fun inflateBinding(): ActivityViewCustomerBinding {
         return ActivityViewCustomerBinding.inflate(layoutInflater)
     }
@@ -103,65 +103,65 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
         }
     }
 
-    private fun checkTripStatusAPI() {
-        if (Utils.isOnline(this)) {
-            ProgressDialog.start(this@ViewCustomerActivity)
-            ApiClient.getRestClient(
-                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
-            )!!.webservices.routeCheck(
-                customerDetail!!.routeName
-            ).enqueue(object : Callback<JsonObject> {
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    ProgressDialog.dismiss()
-                    if (response.code() == 401 || response.code() == 402) {
-                        Utils.forceLogout(
-                            this@ViewCustomerActivity,
-                            response.code()
-                        )  // show dialog before logout
-                        return
-                    }
-                    if (response.isSuccessful) {
-                        try {
-                            Log.d("TAG", "onResponse: " + response.body().toString())
-                            tripStart =
-                                response.body()!!.get("data").asJsonObject.get("success").asBoolean
-
-                            if (!tripStart) {
-                                binding.llBottomButtons.visibility = View.GONE
-                            } else {
-                                binding.llBottomButtons.visibility = View.VISIBLE
-                                checkRouteAPI()
-                            }
-
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@ViewCustomerActivity,
-                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-                    Toast.makeText(
-                        this@ViewCustomerActivity,
-                        getString(R.string.api_fail_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    ProgressDialog.dismiss()
-                }
-            })
-        } else {
-            Toast.makeText(
-                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
-            ).show()
-        }
-
-    }
+//    private fun checkTripStatusAPI() {
+//        if (Utils.isOnline(this)) {
+//            ProgressDialog.start(this@ViewCustomerActivity)
+//            ApiClient.getRestClient(
+//                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+//            )!!.webservices.routeCheck(
+//                customerDetail!!.routeName
+//            ).enqueue(object : Callback<JsonObject> {
+//                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+//                    ProgressDialog.dismiss()
+//                    if (response.code() == 401 || response.code() == 402) {
+//                        Utils.forceLogout(
+//                            this@ViewCustomerActivity,
+//                            response.code()
+//                        )  // show dialog before logout
+//                        return
+//                    }
+//                    if (response.isSuccessful) {
+//                        try {
+//                            Log.d("TAG", "onResponse: " + response.body().toString())
+//                            tripStart =
+//                                response.body()!!.get("data").asJsonObject.get("success").asBoolean
+//
+//                            if (!tripStart) {
+//                                binding.llBottomButtons.visibility = View.GONE
+//                            } else {
+//                                binding.llBottomButtons.visibility = View.VISIBLE
+//                                checkRouteAPI()
+//                            }
+//
+//
+//                        } catch (e: Exception) {
+//                            e.printStackTrace()
+//                        }
+//                    } else {
+//                        Toast.makeText(
+//                            this@ViewCustomerActivity,
+//                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+//                    Toast.makeText(
+//                        this@ViewCustomerActivity,
+//                        getString(R.string.api_fail_message),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    ProgressDialog.dismiss()
+//                }
+//            })
+//        } else {
+//            Toast.makeText(
+//                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+//            ).show()
+//        }
+//
+//    }
 
     private fun checkRouteAPI() {
         if (Utils.isOnline(this)) {
@@ -192,9 +192,11 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
 
                             if (inTheRoute) {
                                 binding.llBottomButtons.visibility = View.VISIBLE
+                                binding.btnEdit.visibility = View.VISIBLE
                                 binding.tvNotes.visibility = View.GONE
                             } else {
                                 binding.llBottomButtons.visibility = View.GONE
+                                binding.btnEdit.visibility = View.GONE
                                 binding.tvNotes.visibility = View.VISIBLE
                             }
 
@@ -241,7 +243,15 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
             if (customerDetail!!.status == "Pending") {
                 binding.llBottomButtons.visibility = View.GONE
             } else {
-                checkTripStatusAPI()
+                // checkTripStatusAPI()
+                if (Utils.isRouteInProgress == customerDetail!!.routeName) {
+                    binding.btnEdit.visibility = View.VISIBLE
+                    binding.llBottomButtons.visibility = View.VISIBLE
+                    checkRouteAPI()
+                } else {
+                    binding.btnEdit.visibility = View.GONE
+                    binding.llBottomButtons.visibility = View.GONE
+                }
             }
 
 
@@ -255,6 +265,7 @@ class ViewCustomerActivity : BaseActivity<ActivityViewCustomerBinding>() {
                     Constants.LATITUDE, customerDetail!!.latitude
                 ).putExtra(Constants.LONGITUDE, customerDetail!!.longitude)
                     .putExtra(Constants.CustomerDetail, customerDetail!!.searchName)
+                    .putExtra(Constants.RouteDetail, customerDetail!!.routeName)
             )
         }
 

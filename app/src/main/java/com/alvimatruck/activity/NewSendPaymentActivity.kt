@@ -257,7 +257,7 @@ class NewSendPaymentActivity : BaseActivity<ActivityNewSendPaymentBinding>(), De
             val tvAccountNo = view.findViewById<TextView>(R.id.tvBankAccountNo)
             val divider = view.findViewById<View>(R.id.viewDivider)
             tvName.text = bank.name
-            tvAccountNo.text = bank.no
+            tvAccountNo.text = bank.bankAccountNo
 
             cb.isChecked = currentSelectedIds.contains(bank.no)
 

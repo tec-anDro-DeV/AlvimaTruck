@@ -5,13 +5,18 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.alvimatruck.R
+import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityMapRouteBinding
 import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.ProgressDialog
+import com.alvimatruck.utils.SharedHelper
+import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.bitmapDescriptorFromVector
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -20,7 +25,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolygonOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.gson.JsonObject
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -37,6 +44,8 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
     var origin: LatLng? = null // Starting point
     private var destination: LatLng? = null// Ending point
     var customerName: String? = null
+    var routeName: String? = null
+    private var currentPolygon: com.google.android.gms.maps.model.Polygon? = null
 
     private val updateHandler = android.os.Handler(android.os.Looper.getMainLooper())
     private val updateRunnable = object : Runnable {
@@ -76,7 +85,90 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
             toggleMapType()
         }
 
+
     }
+
+    private fun polygonLocationList() {
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@MapRouteActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.routePolygon(routeName!!)
+                .enqueue(object : retrofit2.Callback<JsonObject> {
+                    override fun onResponse(
+                        call: retrofit2.Call<JsonObject>, response: retrofit2.Response<JsonObject>
+                    ) {
+                        ProgressDialog.dismiss()
+                        if (response.code() == 401 || response.code() == 402) {
+                            Utils.forceLogout(
+                                this@MapRouteActivity,
+                                response.code()
+                            )  // show dialog before logout
+                            return
+                        }
+                        if (response.isSuccessful) {
+                            try {
+                                Log.d("TAG", "onResponse: " + response.body().toString())
+                                val dataArray = response.body()?.getAsJsonArray("data")
+                                val tempList = ArrayList<LatLng>()
+                                dataArray?.forEach {
+                                    val obj = it.asJsonObject
+                                    tempList.add(
+                                        LatLng(
+                                            obj.get("latitude").asDouble,
+                                            obj.get("longitude").asDouble
+                                        )
+                                    )
+                                }
+                                drawPolygon(tempList)
+
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        } else {
+                            Toast.makeText(
+                                this@MapRouteActivity,
+                                Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onFailure(call: retrofit2.Call<JsonObject?>, t: Throwable) {
+                        Toast.makeText(
+                            this@MapRouteActivity,
+                            getString(R.string.api_fail_message),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        ProgressDialog.dismiss()
+                    }
+                })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun drawPolygon(points: List<LatLng>) {
+        if (points.isEmpty()) return
+
+        currentPolygon?.remove()
+
+        val polygonOptions =
+            PolygonOptions().addAll(points).strokeColor(0xFF2196F3.toInt()) // blue border
+                .strokeWidth(4f).fillColor(0x552196F3) // semi-transparent blue fill
+
+        currentPolygon = mMap.addPolygon(polygonOptions)
+
+        // Optimization: Build bounds efficiently
+        val bounds = LatLngBounds.builder().apply {
+            points.forEach { include(it) }
+        }.build()
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+    }
+
 
     private fun toggleMapType() {
         if (!::mMap.isInitialized) return
@@ -99,6 +191,13 @@ class MapRouteActivity : BaseActivity<ActivityMapRouteBinding>(), OnMapReadyCall
 
         // Start the update loop immediately
         updateHandler.post(updateRunnable)
+
+        if (intent != null) {
+            routeName = intent.getStringExtra(Constants.RouteDetail)
+            if (routeName != null && routeName!!.isNotEmpty()) {
+                polygonLocationList()
+            }
+        }
     }
 
 
