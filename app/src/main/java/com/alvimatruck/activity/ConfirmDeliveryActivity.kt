@@ -183,7 +183,7 @@ class ConfirmDeliveryActivity : BaseActivity<ActivityConfirmDeliveryBinding>() {
             val bitmap = binding.signature.getBitmap()
 
             // 2. Create a temporary file in the cache directory
-            val signatureFile = File(cacheDir, "signature_${System.currentTimeMillis()}.png")
+            val signatureFile = File(cacheDir, "signature_${System.currentTimeMillis()}.jpg")
 
             // 3. Save the bitmap to the file
             signatureFile.outputStream().use { out ->
