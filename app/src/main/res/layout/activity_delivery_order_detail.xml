@@ -358,7 +358,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sansbold"
-                    android:text="@string/address"
+                    android:text="@string/address2"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp" />
 

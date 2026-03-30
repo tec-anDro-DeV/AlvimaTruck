@@ -114,7 +114,10 @@ class CreditPaymentActivity : BaseActivity<ActivityCreditPaymentBinding>(), Dele
         bankListAPI()
 
         binding.tvCustomer.setOnClickListener {
-            dialogSingleSelection()
+            if (itemList!!.isNotEmpty()) {
+                dialogSingleSelection()
+            }
+
         }
 
         binding.rlChoosePhoto.setOnClickListener {

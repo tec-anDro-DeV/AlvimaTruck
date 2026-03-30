@@ -16,6 +16,7 @@ import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.alvimatruck.utils.Utils.to2Decimal
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
 import com.google.gson.JsonObject
@@ -97,16 +98,17 @@ class TripReportActivity : BaseActivity<ActivityTripReportBinding>() {
                             Log.d("TAG", "onResponse: " + response.body().toString())
                             binding.tvTotalSaleCash.text =
                                 "ETB " + response.body()!!.getAsJsonObject("data")
-                                    .get("totalCashSales").toString()
+                                    .get("totalCashSales").toString().toDouble().to2Decimal()
                             binding.tvTotalSaleCredit.text =
                                 "ETB " + response.body()!!.getAsJsonObject("data")
-                                    .get("totalCreditSales").toString()
+                                    .get("totalCreditSales").toString().toDouble().to2Decimal()
                             binding.tvTotalCollectionCash.text =
                                 "ETB " + response.body()!!.getAsJsonObject("data")
-                                    .get("totalCashCollections").toString()
+                                    .get("totalCashCollections").toString().toDouble().to2Decimal()
                             binding.tvTotalCollectionCredit.text =
                                 "ETB " + response.body()!!.getAsJsonObject("data")
-                                    .get("totalCreditCollections").toString()
+                                    .get("totalCreditCollections").toString().toDouble()
+                                    .to2Decimal()
                             binding.tvTotalVisit.text =
                                 response.body()!!.getAsJsonObject("data").get("totalVisits")
                                     .toString()

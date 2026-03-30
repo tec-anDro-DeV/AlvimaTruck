@@ -303,7 +303,24 @@
                     android:textSize="@dimen/_11ssp" />
 
 
-                <EditText
+                <!--                <EditText-->
+                <!--                    android:id="@+id/etSalesPrice"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="@dimen/_44sdp"-->
+                <!--                    android:layout_marginTop="@dimen/_7sdp"-->
+                <!--                    android:background="@drawable/border_bg"-->
+                <!--                    android:fontFamily="@font/sansregular"-->
+                <!--                    android:gravity="center_vertical"-->
+                <!--                    android:hint="@string/enter_sales_price"-->
+                <!--                    android:imeOptions="actionNext"-->
+                <!--                    android:inputType="numberDecimal"-->
+                <!--                    android:paddingHorizontal="@dimen/_10sdp"-->
+                <!--                    android:textColor="@color/black"-->
+                <!--                    android:textColorHint="@color/hintGary"-->
+                <!--                    android:textSize="@dimen/_12ssp" />-->
+
+
+                <TextView
                     android:id="@+id/etSalesPrice"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_44sdp"
