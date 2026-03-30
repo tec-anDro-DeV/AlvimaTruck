@@ -13,7 +13,8 @@ data class CreditPaymentDetail(
     val amount: Double,
     val markPaymentDate: String,
     val paymentInProcess: Boolean,
-    val paymentStatus: String
+    val paymentStatus: String,
+    val entryNo: Int
 ) {
     fun getRequestDate(): String {
         return Utils.getFormatedRequestDate(markPaymentDate)

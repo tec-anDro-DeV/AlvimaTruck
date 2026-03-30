@@ -38,7 +38,7 @@
                 android:layout_marginStart="@dimen/_4sdp"
                 android:layout_toEndOf="@id/tvPaymentIdLabel"
                 android:fontFamily="@font/sansbold"
-
+                android:text="@{detail.entryNo+``}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp"
                 tools:text="#12345" />

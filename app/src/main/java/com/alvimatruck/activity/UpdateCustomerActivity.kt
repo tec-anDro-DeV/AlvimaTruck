@@ -174,12 +174,7 @@ class UpdateCustomerActivity : BaseActivity<ActivityUpdateCustomerBinding>() {
     }
 
     private fun validationAndSubmit() {
-        if (binding.etTelephoneNumber.text.toString().trim().isEmpty()) {
-            Toast.makeText(
-                this, getString(R.string.please_enter_telephone_number), Toast.LENGTH_SHORT
-            ).show()
-            return
-        } else if (binding.tvCity.text.toString().trim().isEmpty()) {
+        if (binding.tvCity.text.toString().trim().isEmpty()) {
             Toast.makeText(this, getString(R.string.please_select_city), Toast.LENGTH_SHORT).show()
             return
         } else if (binding.etAddress.text.toString().trim().isEmpty()) {
