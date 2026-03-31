@@ -111,7 +111,7 @@ class CreditPaymentActivity : BaseActivity<ActivityCreditPaymentBinding>(), Dele
         setupLaunchers()
         //invoiceListAPI()
         customerListAPI()
-        bankListAPI()
+
 
         binding.tvCustomer.setOnClickListener {
             if (itemList!!.isNotEmpty()) {
@@ -278,6 +278,7 @@ class CreditPaymentActivity : BaseActivity<ActivityCreditPaymentBinding>(), Dele
                     call: Call<JsonObject>, response: Response<JsonObject>
                 ) {
                     ProgressDialog.dismiss()
+                    bankListAPI()
                     if (response.code() == 401 || response.code() == 402) {
                         Utils.forceLogout(
                             this@CreditPaymentActivity,

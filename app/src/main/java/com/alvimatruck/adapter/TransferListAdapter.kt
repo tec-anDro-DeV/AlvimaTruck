@@ -4,14 +4,18 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.alvimatruck.R
 import com.alvimatruck.activity.TransferDetailActivity
 import com.alvimatruck.databinding.SingleTransferItemBinding
 import com.alvimatruck.model.responses.LocationDetail
 import com.alvimatruck.model.responses.TransferDetail
 import com.alvimatruck.utils.Constants
 import com.google.gson.Gson
+import java.util.Locale.getDefault
 
 
 class TransferListAdapter(
@@ -41,7 +45,10 @@ class TransferListAdapter(
             list[position].isSelected = isChecked
 
             // Check if ALL items are now selected
-            val isAllSelected = list.all { it.isSelected }
+            val openItems = list.filter { it.status.lowercase(getDefault()) == "open" }
+
+            // Check if ALL items are now selected
+            val isAllSelected = openItems.isNotEmpty() && openItems.all { it.isSelected }
 
             // Notify the activity to update the main "Select All" checkbox
             onSelectionChanged(isAllSelected)
@@ -53,6 +60,20 @@ class TransferListAdapter(
             mActivity.startActivity(Intent(mActivity, TransferDetailActivity::class.java).apply {
                 putExtra(Constants.OrderDetail, Gson().toJson(list[position]))
             })
+        }
+
+        if (list[position].status.lowercase(getDefault()) == "open") {
+            holder.binding.tvStatus.background =
+                ContextCompat.getDrawable(
+                    mActivity, R.drawable.bg_status_red
+                )
+            holder.binding.chkShip.visibility = View.VISIBLE
+        } else {
+            holder.binding.tvStatus.background =
+                ContextCompat.getDrawable(
+                    mActivity, R.drawable.bg_status_green
+                )
+            holder.binding.chkShip.visibility = View.GONE
         }
 
 

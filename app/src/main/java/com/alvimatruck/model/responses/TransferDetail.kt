@@ -10,6 +10,7 @@ data class TransferDetail(
     val profitCenter: String,
     val costCenter: String,
     val inTransitCode: String,
+    val status: String,
     val transferOrderLines: ArrayList<TransferOrderLines>,
     var isSelected: Boolean = false
 ) {

@@ -49,10 +49,11 @@
                 android:background="@drawable/bg_status_red"
                 android:fontFamily="@font/sanssemibold"
                 android:paddingVertical="@dimen/_5sdp"
-                android:text="@string/open"
+                android:text="@{detail.status}"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_11ssp" />
+                android:textSize="@dimen/_11ssp"
+                tools:text="Open" />
 
 
         </RelativeLayout>

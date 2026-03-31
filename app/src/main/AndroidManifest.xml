@@ -156,10 +156,7 @@
             android:name=".activity.TransferRequestActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.TransferActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.CreateTransferRequestActivity"
             android:exported="false"
@@ -170,10 +167,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.TransferOrderListActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.TransferShipAndReceiveActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

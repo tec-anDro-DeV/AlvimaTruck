@@ -316,15 +316,11 @@
     <string name="to2">To</string>
     <string name="from2">From*</string>
     <string name="create_store_requisition">Create Store Requisition</string>
-    <string name="transfer_request_ship"><![CDATA[Transfer\nRequest & Ship]]></string>
-    <string name="transfer_shipped_to_receive">Transfer Shipped\nto Receive</string>
-    <string name="transfer_listing">Transfer\nListing</string>
     <string name="transfer_order_list">Transfer Order List</string>
     <string name="select_all_to_confirm_shipment">Select All to confirm shipment</string>
     <string name="confirm_shipment">Confirm Shipment</string>
     <string name="create_transfer_request2">Create transfer\nRequest</string>
     <string name="transfer_request_list">Transfer\nRequest List</string>
-    <string name="transfer_ship_and_receive">Transfer\nShip and Receive</string>
     <string name="transfer_ship_to_receive">Transfer\nShip to Receive</string>
     <string name="confirm_receive">Confirm Receive</string>
     <string name="completed">Completed</string>
