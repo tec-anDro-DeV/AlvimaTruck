@@ -3,6 +3,7 @@ package com.alvimatruck.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.net.toUri
 
 class SharedHelper {
     companion object {
@@ -38,6 +39,21 @@ class SharedHelper {
             sharedPreferences =
                 context.getSharedPreferences("AlvimaTruck_preferances", Context.MODE_PRIVATE)
             return sharedPreferences!!.getBoolean(Key, false)
+        }
+
+        fun putKey(context: Context, Key: String?, Value: android.net.Uri?) {
+            sharedPreferences =
+                context.getSharedPreferences("AlvimaTruck_preferances", Context.MODE_PRIVATE)
+            editor = sharedPreferences!!.edit()
+            editor!!.putString(Key, Value?.toString())
+            editor!!.apply()
+        }
+
+        fun getURIKey(context: Context, Key: String?): android.net.Uri? {
+            sharedPreferences =
+                context.getSharedPreferences("AlvimaTruck_preferances", Context.MODE_PRIVATE)
+            val uriString = sharedPreferences!!.getString(Key, null)
+            return uriString?.toUri()
         }
 
     }

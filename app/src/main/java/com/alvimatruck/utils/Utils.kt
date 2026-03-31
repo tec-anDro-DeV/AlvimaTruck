@@ -28,11 +28,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toDrawable
+import androidx.documentfile.provider.DocumentFile
 import com.alvimatruck.R
 import com.alvimatruck.activity.LoginActivity
 import com.alvimatruck.custom.SignalRManager
 import com.alvimatruck.model.responses.DeliveryTripDetail
 import com.alvimatruck.service.AlvimaTuckApplication
+import com.alvimatruck.utils.Constants.Companion.FOLDER_URI_KEY
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -146,6 +148,29 @@ object Utils {
         } catch (_: Exception) {
             "Something went wrong"
         }
+    }
+
+    fun saveXmlSAF(context: Context, base64Xml: String, fileName: String): Boolean {
+        try {
+            val folderUri = SharedHelper.getURIKey(context, FOLDER_URI_KEY) ?: return false
+
+            val decodedBytes = Base64.decode(base64Xml, Base64.DEFAULT)
+
+            val documentFile = DocumentFile.fromTreeUri(context, folderUri)
+
+            val newFile = documentFile?.createFile("application/xml", fileName)
+
+            newFile?.uri?.let { uri ->
+                context.contentResolver.openOutputStream(uri)?.use {
+                    it.write(decodedBytes)
+                }
+                return true
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return false
     }
 
     fun saveBase64Xml(context: Context, base64Xml: String, fileName: String): Uri? {

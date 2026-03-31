@@ -4,7 +4,7 @@ class Constants {
     companion object {
 
         // Base URL
-        // const val BASE_URL = "http://192.168.1.148:8696/api/" //Local
+        //const val BASE_URL = "http://192.168.1.148:8696/api/" //Local
         const val BASE_URL = "http://196.190.220.205:61/api/" //Sandbox
 
         //const val IMAGE_URL = "http://192.168.1.148:8696/" //Local
@@ -120,6 +120,7 @@ class Constants {
         const val CustomerDetail = "customer_detail"
         const val OrderID = "order_id"
         const val OrderDetail = "order_detail"
+        const val FOLDER_URI_KEY = "xml_folder_uri"
         const val ImageUri = "image_uri"
         const val DeliveryDetail = "delivery_detail"
 

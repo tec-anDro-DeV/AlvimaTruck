@@ -27,10 +27,11 @@ import com.alvimatruck.model.responses.SingleOrder
 import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.model.responses.VanStockDetail
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.Constants.Companion.FOLDER_URI_KEY
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
-import com.alvimatruck.utils.Utils.saveBase64Xml
+import com.alvimatruck.utils.Utils.saveXmlSAF
 import com.alvimatruck.utils.Utils.to2Decimal
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -41,6 +42,9 @@ import retrofit2.Response
 class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderListener {
     var itemList: ArrayList<String> = ArrayList()
     var filterList: ArrayList<String>? = ArrayList()
+
+    var pendingBase64Xml: String? = null
+    var pendingFileName: String? = null
 
     // var selectedLocationCode = ""
     // var selectedPaymentCode = ""
@@ -58,6 +62,59 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
     var orderList: ArrayList<SingleOrder> = ArrayList()
 
     var productList: ArrayList<VanStockDetail>? = ArrayList()
+
+
+    val REQUEST_CODE_FOLDER = 1001
+
+    fun openFolderPicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+        startActivityForResult(intent, REQUEST_CODE_FOLDER)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE_FOLDER && resultCode == RESULT_OK) {
+            data?.data?.let { uri ->
+
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+
+                SharedHelper.putKey(this, FOLDER_URI_KEY, uri)
+
+                Toast.makeText(this, "Folder selected successfully", Toast.LENGTH_SHORT).show()
+
+                saveXmlAfterFolderSelection()
+            }
+        }
+    }
+
+    fun saveXmlAfterFolderSelection() {
+
+        val base64Xml = pendingBase64Xml
+        val fileName = pendingFileName
+
+        if (base64Xml == null || fileName == null) return
+
+        val isSaved = saveXmlSAF(this, base64Xml, fileName)
+
+        if (isSaved) {
+            Toast.makeText(this, "XML saved successfully", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "Failed to save XML", Toast.LENGTH_LONG).show()
+        }
+
+        // Clear temp data
+        pendingBase64Xml = null
+        pendingFileName = null
+
+        finishWithSuccess()
+    }
 
 
     override fun inflateBinding(): ActivityNewSalesBinding {
@@ -192,8 +249,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 Toast.makeText(this, getString(R.string.please_select_item), Toast.LENGTH_SHORT)
                     .show()
             } else if (binding.etSalesPrice.text.toString().isEmpty()) {
-                Toast.makeText(this, "Can not add item without price", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, "Can not add item without price", Toast.LENGTH_SHORT).show()
             } else if (binding.etQuantity.text.toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.enter_quantity), Toast.LENGTH_SHORT).show()
             } else if (binding.etQuantity.text.toString().toInt() < minQty) {
@@ -308,8 +364,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                     if (response.code() == 401 || response.code() == 402) {
                         ProgressDialog.dismiss()
                         Utils.forceLogout(
-                            this@NewSalesActivity,
-                            response.code()
+                            this@NewSalesActivity, response.code()
                         )  // show dialog before logout
                         return
                     }
@@ -368,8 +423,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                     ProgressDialog.dismiss()
                     if (response.code() == 401 || response.code() == 402) {
                         Utils.forceLogout(
-                            this@NewSalesActivity,
-                            response.code()
+                            this@NewSalesActivity, response.code()
                         )  // show dialog before logout
                         return
                     }
@@ -382,30 +436,49 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                                     .replace('"', ' ').trim(),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            val fileUri = saveBase64Xml(
-                                this@NewSalesActivity,
+                            pendingBase64Xml =
                                 response.body()!!.get("data").asJsonObject.get("xmlData").toString()
-                                    .replace('"', ' ').trim(),
-                                response.body()!!.get("data").asJsonObject.get("invoiceNo")
-                                    .toString()
-                                    .replace('"', ' ')
-                                    .trim() + "_" + Utils.getShortDate(System.currentTimeMillis()) + ".xml"
-                            )
+                                    .replace('"', ' ').trim()
 
-                            if (fileUri != null) {
-                                Toast.makeText(
-                                    this@NewSalesActivity,
-                                    "XML file saved successfully in Downloads folder",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                            pendingFileName =
+                                response.body()!!.get("data").asJsonObject.get("invoiceNo")
+                                    .toString().replace('"', ' ').trim() + "_" + Utils.getShortDate(
+                                    System.currentTimeMillis()
+                                ) + ".xml"
+
+                            val folderUri =
+                                SharedHelper.getURIKey(this@NewSalesActivity, FOLDER_URI_KEY)
+
+
+                            if (folderUri == null) {
+                                // 🔥 First time → ask user to select folder
+                                openFolderPicker()
                             } else {
-                                Toast.makeText(
-                                    this@NewSalesActivity,
-                                    "Failed to save XML file",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                // Already selected → save directly
+                                saveXmlAfterFolderSelection()
                             }
-                            finishWithSuccess()
+//                            val fileUri = saveBase64Xml(
+//                                this@NewSalesActivity,
+//                                base64Xml,
+//                                fileName
+//                            )
+//
+//                            if (fileUri != null) {
+//                                Toast.makeText(
+//                                    this@NewSalesActivity,
+//                                    "XML file saved successfully in Downloads folder",
+//                                    Toast.LENGTH_LONG
+//                                ).show()
+//                            } else {
+//                                Toast.makeText(
+//                                    this@NewSalesActivity,
+//                                    "Failed to save XML file",
+//                                    Toast.LENGTH_LONG
+//                                ).show()
+//                            }
+                            //  finishWithSuccess()
+
+
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
