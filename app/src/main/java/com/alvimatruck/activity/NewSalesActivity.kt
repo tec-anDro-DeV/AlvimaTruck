@@ -441,7 +441,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                                     .replace('"', ' ').trim()
 
                             pendingFileName =
-                                response.body()!!.get("data").asJsonObject.get("invoiceNo")
+                                "INV-" + response.body()!!.get("data").asJsonObject.get("invoiceNo")
                                     .toString().replace('"', ' ').trim() + "_" + Utils.getShortDate(
                                     System.currentTimeMillis()
                                 ) + ".xml"

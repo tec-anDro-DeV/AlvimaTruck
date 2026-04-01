@@ -209,7 +209,7 @@ object Utils {
 
     @SuppressLint("SimpleDateFormat")
     fun getShortDate(time: Long?): String {
-        return SimpleDateFormat("MMddyyyy").format(Date(time!!))
+        return SimpleDateFormat("yyyyMM-dd").format(Date(time!!))
     }
 
 
