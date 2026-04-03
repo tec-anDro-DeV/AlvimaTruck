@@ -16,9 +16,11 @@ import com.alvimatruck.model.request.OrderPostRequest
 import com.alvimatruck.model.responses.FullOrderDetail
 import com.alvimatruck.model.responses.SingleOrder
 import com.alvimatruck.utils.Constants
+import com.alvimatruck.utils.Constants.Companion.FOLDER_URI_KEY
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
 import com.alvimatruck.utils.Utils
+import com.alvimatruck.utils.Utils.saveXmlSAF
 import com.alvimatruck.utils.Utils.to2Decimal
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -34,6 +36,20 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
     var orderID: String? = null
     var isChange: Boolean = false
     var orderDetail: FullOrderDetail? = null
+    val REQUEST_CODE_FOLDER = 1001
+
+    var pendingBase64Xml: String? = null
+    var pendingFileName: String? = null
+
+    fun openFolderPicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+        startActivityForResult(intent, REQUEST_CODE_FOLDER)
+    }
+
+
     override fun inflateBinding(): ActivitySalesOrderDetailBinding {
         return ActivitySalesOrderDetailBinding.inflate(layoutInflater)
     }
@@ -122,8 +138,31 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
                                     .replace('"', ' ').trim(),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            isChange = true
-                            getSalesOrderDetailAPI()
+                            pendingBase64Xml =
+                                response.body()!!.get("data").asJsonObject.get("xmlData").toString()
+                                    .replace('"', ' ').trim()
+
+                            pendingFileName =
+                                "INV-" + response.body()!!.get("data").asJsonObject.get("invoiceNo")
+                                    .toString().replace('"', ' ').trim() + "_" + Utils.getShortDate(
+                                    System.currentTimeMillis()
+                                ) + ".xml"
+
+                            val folderUri =
+                                SharedHelper.getURIKey(
+                                    this@SalesOrderDetailActivity,
+                                    FOLDER_URI_KEY
+                                )
+
+
+                            if (folderUri == null) {
+                                // 🔥 First time → ask user to select folder
+                                openFolderPicker()
+                            } else {
+                                // Already selected → save directly
+                                saveXmlAfterFolderSelection()
+                            }
+
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
@@ -152,6 +191,30 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
         }
 
     }
+
+    fun saveXmlAfterFolderSelection() {
+
+        val base64Xml = pendingBase64Xml
+        val fileName = pendingFileName
+
+        if (base64Xml == null || fileName == null) return
+
+        val isSaved = saveXmlSAF(this, base64Xml, fileName)
+
+        if (isSaved) {
+            Toast.makeText(this, "XML saved successfully", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "Failed to save XML", Toast.LENGTH_LONG).show()
+        }
+
+        // Clear temp data
+        pendingBase64Xml = null
+        pendingFileName = null
+
+        isChange = true
+        getSalesOrderDetailAPI()
+    }
+
 
     private fun getSalesOrderDetailAPI() {
         if (Utils.isOnline(this)) {

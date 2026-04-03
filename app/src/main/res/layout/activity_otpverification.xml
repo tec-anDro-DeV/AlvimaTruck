@@ -130,6 +130,7 @@
                 android:id="@+id/tvResendCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
                 android:fontFamily="@font/sanssemibold"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/_12ssp"

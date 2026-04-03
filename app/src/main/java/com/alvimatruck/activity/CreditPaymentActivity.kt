@@ -345,7 +345,7 @@ class CreditPaymentActivity : BaseActivity<ActivityCreditPaymentBinding>(), Dele
             val partsList = ArrayList<MultipartBody.Part>()
 
             listProofImageUri.forEachIndexed { index, _ ->
-                val part = Utils.createFilePart("imageFile", listProofImageUri[index], this)
+                val part = Utils.createFilePart("imageFiles", listProofImageUri[index], this)
                 partsList.add(part!!)
             }
             ProgressDialog.start(this@CreditPaymentActivity)

@@ -20,6 +20,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Base64
+import android.util.Log
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
@@ -86,6 +87,19 @@ object Utils {
         return ETHIOPIA_ANY_LOCAL_REGEX.matches(cleaned)
     }
 
+//    fun createFilePart(fieldName: String, uri: Uri?, context: Context): MultipartBody.Part? {
+//        if (uri == null) return null
+//
+//        val inputStream = context.contentResolver.openInputStream(uri) ?: return null
+//        val fileBytes = inputStream.readBytes()
+//        inputStream.close()
+//
+//        val requestBody = fileBytes.toRequestBody("image/*".toMediaTypeOrNull())
+//        return MultipartBody.Part.createFormData(
+//            fieldName, "file_${System.currentTimeMillis()}.jpg", requestBody
+//        )
+//    }
+
     fun createFilePart(fieldName: String, uri: Uri?, context: Context): MultipartBody.Part? {
         if (uri == null) return null
 
@@ -93,9 +107,18 @@ object Utils {
         val fileBytes = inputStream.readBytes()
         inputStream.close()
 
+        // 🔥 DEBUG CHECK
+        if (fileBytes.isEmpty()) {
+            Log.e("Kaivan--------------UPLOAD", "File is empty!")
+            return null
+        }
+
         val requestBody = fileBytes.toRequestBody("image/*".toMediaTypeOrNull())
+
         return MultipartBody.Part.createFormData(
-            fieldName, "file_${System.currentTimeMillis()}.jpg", requestBody
+            fieldName,
+            "file_${System.currentTimeMillis()}.jpg",
+            requestBody
         )
     }
 
