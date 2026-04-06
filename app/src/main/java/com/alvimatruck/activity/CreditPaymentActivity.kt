@@ -721,6 +721,10 @@ class CreditPaymentActivity : BaseActivity<ActivityCreditPaymentBinding>(), Dele
     }
 
     private fun invoiceListAPI() {
+        selectedInvoiceList = ""
+        total = 0.0
+        binding.tvInvoice.text = ""
+        binding.tvtotal.text = ""
         if (Utils.isOnline(this)) {
             ProgressDialog.start(this@CreditPaymentActivity)
             ApiClient.getRestClient(

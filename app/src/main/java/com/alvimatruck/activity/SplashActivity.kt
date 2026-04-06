@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import com.alvimatruck.BuildConfig
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivitySplashBinding
 import com.alvimatruck.utils.Constants
@@ -35,7 +34,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
         }, 3000)
 
-        binding.tvAppVersion.text = "Version " + BuildConfig.VERSION_NAME + " (UAT)"
+        //  binding.tvAppVersion.text = "Version " + BuildConfig.VERSION_NAME + " (UAT)"
+        binding.tvAppVersion.text = "Version 1.1 (UAT)"
 
 
     }
