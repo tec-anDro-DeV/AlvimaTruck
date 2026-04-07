@@ -201,7 +201,7 @@ class StoreRequisitionRequestActivity : BaseActivity<ActivityStoreRequisitionReq
                 ).show()
             } else if (binding.tvFrom.text.toString().isEmpty()) {
                 Toast.makeText(
-                    this, getString(R.string.please_select_to_location), Toast.LENGTH_SHORT
+                    this, getString(R.string.please_select_from_location), Toast.LENGTH_SHORT
                 ).show()
             } else if (binding.tvInTransit.text.toString().isEmpty()) {
                 Toast.makeText(

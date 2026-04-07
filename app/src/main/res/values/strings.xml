@@ -28,6 +28,7 @@
     <string name="please_select_profit_center">Please select Profit Center</string>
     <string name="please_select_cost_center">Please select Cost Center</string>
     <string name="please_select_to_location">Please select To Location</string>
+    <string name="please_select_from_location">Please select From Location</string>
     <string name="please_select_in_transit">Please select In Transit</string>
     <string name="please_enter_start_km">Please enter start km</string>
     <string name="please_enter_end_km">Please enter end km</string>

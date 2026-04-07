@@ -25,4 +25,8 @@ data class SalesReportDetail(
     fun decimalAmount(): String {
         return totalAmount.to2Decimal()
     }
+
+    fun decimalUnitPrice(): String {
+        return unitPrice.to2Decimal()
+    }
 }
