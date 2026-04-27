@@ -267,10 +267,10 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                 ).show()
             } else {
                 // Get current values
-                if (binding.etSalesPrice.isEnabled) {
-                    tempUnitPrice = binding.etSalesPrice.text.toString().toDouble() * 100 / 115
-                    tempVat = binding.etSalesPrice.text.toString().toDouble() - tempUnitPrice
-                }
+//                if (binding.etSalesPrice.isEnabled) {
+//                    tempUnitPrice = binding.etSalesPrice.text.toString().toDouble() * 100 / 115
+//                    tempVat = binding.etSalesPrice.text.toString().toDouble() - tempUnitPrice
+//                }
                 val qty = binding.etQuantity.text.toString().toInt()
                 val finalTotal = (tempUnitPrice + tempVat) * qty.toDouble()
 
