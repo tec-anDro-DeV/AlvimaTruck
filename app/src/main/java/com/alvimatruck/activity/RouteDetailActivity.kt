@@ -78,8 +78,15 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             binding.tvPendingCustomer.text =
                 (routeDetail!!.regularCustomerCount - (routeDetail!!.visitedCustomers + routeDetail!!.soldCustomers)).toString()
 
-            binding.progressBar.progress =
-                (routeDetail!!.visitedCustomers + routeDetail!!.soldCustomers) * 100 / routeDetail!!.regularCustomerCount
+            val totalCustomers = routeDetail?.regularCustomerCount ?: 0
+            val progress = if (totalCustomers > 0) {
+                ((routeDetail?.visitedCustomers ?: 0) +
+                        (routeDetail?.soldCustomers ?: 0)) * 100 / totalCustomers
+            } else {
+                0
+            }
+
+            binding.progressBar.progress = progress
             binding.tvStatus.text = routeDetail!!.status
             binding.tvDistanceValue.text = routeDetail!!.distance.toString() + " Km"
             binding.tvVanStartKilometer.text = routeDetail!!.startKm.toString()
