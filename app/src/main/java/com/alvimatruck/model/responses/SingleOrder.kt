@@ -17,6 +17,10 @@ data class SingleOrder(
         return finalPrice.to2Decimal()
     }
 
+    fun finalwithoutTaxPrice(): String {
+        return (unitPrice * quantity).to2Decimal()
+    }
+
     fun singleUnitPriceWithTax(): String {
         return (unitPrice + vat).to2Decimal()
     }

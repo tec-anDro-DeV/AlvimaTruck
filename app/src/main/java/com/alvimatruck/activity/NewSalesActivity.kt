@@ -670,7 +670,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                                 tempVat =
                                     response.body()!!.asJsonObject.get("unitPriceInclVAT").asDouble
                                 val finalPrice = tempUnitPrice + tempVat
-                                binding.etSalesPrice.text = finalPrice.toString()
+                                binding.etSalesPrice.text = tempUnitPrice.toString()
 
                                 if (existingOrder != null) {
                                     binding.tvAdd.text = getString(R.string.update)

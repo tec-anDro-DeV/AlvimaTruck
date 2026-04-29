@@ -328,9 +328,6 @@
                     android:background="@drawable/border_bg"
                     android:fontFamily="@font/sansregular"
                     android:gravity="center_vertical"
-                    android:hint="@string/enter_sales_price"
-                    android:imeOptions="actionNext"
-                    android:inputType="numberDecimal"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/hintGary"
@@ -437,7 +434,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sansbold"
-                        android:text="@string/subtotal"
+                        android:text="@string/total"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp" />
 
@@ -446,8 +443,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:fontFamily="@font/sansregular"
-                        android:textColor="@color/darkGray"
+                        android:fontFamily="@font/sansbold"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12ssp"
                         tools:text="$1,171.19" />
                 </RelativeLayout>
@@ -490,7 +487,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_7sdp">
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -515,11 +513,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
                     android:layout_marginVertical="@dimen/_7sdp"
-                    android:background="@color/gray" />
+                    android:background="@color/gray"
+                    android:visibility="gone" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
