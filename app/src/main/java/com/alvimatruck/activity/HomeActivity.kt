@@ -472,6 +472,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                                 Utils.isRouteInProgress = dashboardDetails!!.activeRoute!!.routeName
                                 binding.llProgressRoute.visibility = View.VISIBLE
                                 binding.tvRouteId.text = dashboardDetails!!.activeRoute!!.routeName
+                                binding.tvStatus.text = dashboardDetails!!.activeRoute!!.status
                                 binding.tvRegularCustomersValue.text =
                                     dashboardDetails!!.activeRoute!!.regularCustomerCount.toString()
                                 binding.tvVisitedCustomersValue.text =

@@ -2,6 +2,7 @@ package com.alvimatruck.model.responses
 
 data class RouteDetail(
     val locations: ArrayList<Location>,
+    val sessions: ArrayList<Sessions>,
     val regularCustomerCount: Int,
     val skipped: Int,
     val distance: Double,

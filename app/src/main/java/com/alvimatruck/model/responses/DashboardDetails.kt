@@ -14,6 +14,7 @@ data class ActiveRoute(
     val endKm: Int,
     val isSuccess: Boolean,
     val locations: ArrayList<Location>,
+    val sessions: ArrayList<Sessions>,
     val regularCustomerCount: Int,
     val routeName: String,
     val skipped: Int,

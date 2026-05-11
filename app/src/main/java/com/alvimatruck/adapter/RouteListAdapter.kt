@@ -31,7 +31,7 @@ class RouteListAdapter(
         //   holder.binding.tvData.text = "Demo List Item " + (position + 1)
 
         when (list[position].status) {
-            "InProgress" -> {
+            "InProgress", "Reopened" -> {
                 holder.binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
             }
 

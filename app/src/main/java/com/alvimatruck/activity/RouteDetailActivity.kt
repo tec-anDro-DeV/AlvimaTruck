@@ -100,6 +100,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 binding.rlStartKilometer.visibility = View.GONE
                 binding.rlEndKilometer.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.VISIBLE
+                binding.tvReOpenRoute.visibility = View.GONE
 
             } else if (status.equals("InProgress")) {
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
@@ -107,18 +108,27 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 binding.rlStartKilometer.visibility = View.VISIBLE
                 binding.rlEndKilometer.visibility = View.GONE
                 binding.llBottomButtons.visibility = View.VISIBLE
-
+                binding.tvReOpenRoute.visibility = View.GONE
             } else if (status.equals("Cancelled")) {
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
                 binding.rlStartKilometer.visibility = View.VISIBLE
                 binding.rlEndKilometer.visibility = View.VISIBLE
                 binding.llBottomButtons.visibility = View.GONE
+                binding.tvReOpenRoute.visibility = View.VISIBLE
+
+            } else if (status.equals("Reopened")) {
+                binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
+                binding.rlStartKilometer.visibility = View.VISIBLE
+                binding.rlEndKilometer.visibility = View.VISIBLE
+                binding.llBottomButtons.visibility = View.GONE
+                binding.tvReOpenRoute.visibility = View.VISIBLE
+                binding.tvReOpenRoute.text = "End Reopened Route"
             } else {
                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
                 binding.rlStartKilometer.visibility = View.VISIBLE
                 binding.rlEndKilometer.visibility = View.VISIBLE
                 binding.llBottomButtons.visibility = View.GONE
-
+                binding.tvReOpenRoute.visibility = View.VISIBLE
             }
         }
 
@@ -204,6 +214,94 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                     } else {
                         dialog.dismiss()
                         endTripAPI(etEndKm.text.toString())
+                    }
+
+                }
+                dialog.show()
+                val width =
+                    (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+                dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+            }
+        }
+
+        binding.tvReOpenRoute.setOnClickListener {
+            if (status.equals("Completed")) {
+                if (Utils.isRouteInProgress.trim().isNotEmpty()) {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.you_can_t_start_a_new_route_while_another_route_is_in_progress),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    val inflater = layoutInflater
+                    val alertLayout = inflater.inflate(R.layout.dialog_start_trip, null)
+
+                    val etStartKm = alertLayout.findViewById<EditText>(R.id.etStartKm)
+                    val btnCancel = alertLayout.findViewById<TextView>(R.id.btnCancel)
+                    val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
+                    val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
+                    tvTitle.text = getString(R.string.add_re_open_start_kilometers)
+
+
+                    val dialog =
+                        AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
+                    dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+
+                    btnCancel.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                    btnSubmit.setOnClickListener {
+                        if (etStartKm.text.toString().isEmpty()) {
+                            Toast.makeText(
+                                this, getString(R.string.please_enter_start_km), Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            dialog.dismiss()
+                            reopenStartTripAPI(etStartKm.text.toString())
+                        }
+
+                    }
+                    dialog.show()
+                    val width =
+                        (resources.displayMetrics.widthPixels * 0.9).toInt() // 80% of screen width
+                    dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+                }
+            } else {
+                val inflater = layoutInflater
+                val alertLayout = inflater.inflate(R.layout.dialog_end_trip, null)
+
+                val etEndKm = alertLayout.findViewById<EditText>(R.id.etEndKm)
+                val btnCancel = alertLayout.findViewById<TextView>(R.id.btnCancel)
+                val btnSubmit = alertLayout.findViewById<TextView>(R.id.btnSubmit)
+                val tvTitle = alertLayout.findViewById<TextView>(R.id.tvTitle)
+                tvTitle.text = getString(R.string.end_re_open_end_kilometers)
+
+
+                val dialog =
+                    AlertDialog.Builder(this).setView(alertLayout).setCancelable(false).create()
+                dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+
+                btnCancel.setOnClickListener {
+                    dialog.dismiss()
+                }
+                btnSubmit.setOnClickListener {
+                    if (etEndKm.text.toString().isEmpty()) {
+                        Toast.makeText(
+                            this, getString(R.string.please_enter_end_km), Toast.LENGTH_SHORT
+                        ).show()
+                    } else if (etEndKm.text.toString()
+                            .toInt() < binding.tvVanStartKilometer.text.toString().toInt()
+                    ) {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.end_km_should_be_greater_than_start_km),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        dialog.dismiss()
+                        endReopenTripAPI(etEndKm.text.toString())
                     }
 
                 }
@@ -515,6 +613,70 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
 
     }
 
+    private fun reopenStartTripAPI(startKm: String) {
+        if (Utils.isOnline(this)) {
+
+            ProgressDialog.start(this@RouteDetailActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.startReopenTrip(
+                StartTripRequest(
+                    routeDetail!!.routeName, startKm.toInt()
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@RouteDetailActivity,
+                            response.code()
+                        )  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@RouteDetailActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            isChange = true
+                            binding.tvStatus.text = getString(R.string.reopened)
+                            status = "Reopened"
+                            Utils.isRouteInProgress = routeDetail!!.routeName
+                            binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
+                            binding.tvReOpenRoute.text = "End Reopened Route"
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@RouteDetailActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@RouteDetailActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
+
     private fun endTripAPI(endKm: String) {
         if (Utils.isOnline(this)) {
 
@@ -522,6 +684,67 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.endTrip(
+                EndTripRequest(
+                    routeDetail!!.routeName, endKm.toInt()
+                )
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@RouteDetailActivity,
+                            response.code()
+                        )  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+                            Toast.makeText(
+                                this@RouteDetailActivity,
+                                response.body()!!.get("message").toString().replace('"', ' ')
+                                    .trim(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            isChange = true
+                            Utils.isRouteInProgress = ""
+                            handleBackPressed()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@RouteDetailActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@RouteDetailActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
+
+    private fun endReopenTripAPI(endKm: String) {
+        if (Utils.isOnline(this)) {
+
+            ProgressDialog.start(this@RouteDetailActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.endReopenTrip(
                 EndTripRequest(
                     routeDetail!!.routeName, endKm.toInt()
                 )

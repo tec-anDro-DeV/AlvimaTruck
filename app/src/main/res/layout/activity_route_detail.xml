@@ -572,6 +572,20 @@
                     android:textSize="@dimen/_14ssp" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tvReOpenRoute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_21sdp"
+                android:background="@drawable/rounded_button_orange"
+                android:fontFamily="@font/sansbold"
+                android:gravity="center"
+                android:padding="@dimen/_14sdp"
+                android:text="@string/re_open_route"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
+                android:visibility="gone" />
+
 
         </LinearLayout>
 

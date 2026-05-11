@@ -102,6 +102,7 @@
     <string name="choose_vendor">Choose Vendor</string>
     <string name="visited">Visited</string>
     <string name="inprogress">InProgress</string>
+    <string name="reopened">Reopened</string>
     <string name="open">Open</string>
     <string name="confirm_delivery">Confirm Delivery</string>
     <string name="delivery_photo_parcel_site">Delivery photo (parcel/site)*</string>
@@ -397,4 +398,7 @@
     <string name="delivered">Delivered</string>
     <string name="customer2">Customer*</string>
     <string name="credit_payment_ncollection">Credit Payment\nCollection</string>
+    <string name="re_open_route">Re-Open Route</string>
+    <string name="add_re_open_start_kilometers">Add Re-open Start Kilometers</string>
+    <string name="end_re_open_end_kilometers">Add Re-open End Kilometers</string>
 </resources>

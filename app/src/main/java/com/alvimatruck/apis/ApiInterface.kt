@@ -85,6 +85,9 @@ interface ApiInterface {
     @POST(Constants.API_Start_Trip)
     fun startTrip(@Body startTripRequest: StartTripRequest): Call<JsonObject>
 
+    @POST(Constants.API_Reopen_Trip)
+    fun startReopenTrip(@Body startTripRequest: StartTripRequest): Call<JsonObject>
+
     @POST(Constants.API_Start_DriverTrip)
     fun startDriverTrip(@Body deliveryStartRequest: DeliveryStartRequest): Call<JsonObject>
 
@@ -93,6 +96,9 @@ interface ApiInterface {
 
     @POST(Constants.API_End_Trip)
     fun endTrip(@Body endTripRequest: EndTripRequest): Call<JsonObject>
+
+    @POST(Constants.API_Reopen_end_Trip)
+    fun endReopenTrip(@Body endTripRequest: EndTripRequest): Call<JsonObject>
 
     @POST(Constants.API_Visit_Trip)
     fun visitTrip(@Body visitedTripRequest: VisitedTripRequest): Call<JsonObject>
