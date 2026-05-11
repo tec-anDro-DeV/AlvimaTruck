@@ -401,4 +401,6 @@
     <string name="re_open_route">Re-Open Route</string>
     <string name="add_re_open_start_kilometers">Add Re-open Start Kilometers</string>
     <string name="end_re_open_end_kilometers">Add Re-open End Kilometers</string>
+    <string name="van_re_open_start_kilometer">Van Re-open Start Kilometer</string>
+    <string name="van_re_open_end_kilometer">Van Re-open End Kilometer</string>
 </resources>

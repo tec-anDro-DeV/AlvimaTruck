@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -91,6 +92,7 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
             binding.tvDistanceValue.text = routeDetail!!.distance.toString() + " Km"
             binding.tvVanStartKilometer.text = routeDetail!!.startKm.toString()
             binding.tvEndKilometer.text = routeDetail!!.endKm.toString()
+            setupSessions(routeDetail!!.sessions)
             binding.tvTotalSaleValue.text = "ETB " + routeDetail!!.totalSalesValues.toString()
 
 
@@ -257,8 +259,21 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                                 this, getString(R.string.please_enter_start_km), Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            dialog.dismiss()
-                            reopenStartTripAPI(etStartKm.text.toString())
+                            val lastEndKm = if (routeDetail!!.sessions.isNotEmpty()) {
+                                routeDetail!!.sessions.last().endKm
+                            } else {
+                                routeDetail!!.endKm
+                            }
+                            if (etStartKm.text.toString().toInt() < lastEndKm) {
+                                Toast.makeText(
+                                    this,
+                                    "Start km should be greater than or equal to $lastEndKm",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                dialog.dismiss()
+                                reopenStartTripAPI(etStartKm.text.toString())
+                            }
                         }
 
                     }
@@ -291,17 +306,23 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                         Toast.makeText(
                             this, getString(R.string.please_enter_end_km), Toast.LENGTH_SHORT
                         ).show()
-                    } else if (etEndKm.text.toString()
-                            .toInt() < binding.tvVanStartKilometer.text.toString().toInt()
-                    ) {
-                        Toast.makeText(
-                            this,
-                            getString(R.string.end_km_should_be_greater_than_start_km),
-                            Toast.LENGTH_SHORT
-                        ).show()
                     } else {
-                        dialog.dismiss()
-                        endReopenTripAPI(etEndKm.text.toString())
+                        val lastStartKm = if (routeDetail!!.sessions.isNotEmpty()) {
+                            routeDetail!!.sessions.last().startKm
+                        } else {
+                            routeDetail!!.startKm
+                        }
+
+                        if (etEndKm.text.toString().toInt() < lastStartKm) {
+                            Toast.makeText(
+                                this,
+                                getString(R.string.end_km_should_be_greater_than_start_km),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            dialog.dismiss()
+                            endReopenTripAPI(etEndKm.text.toString())
+                        }
                     }
 
                 }
@@ -542,6 +563,33 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
         }
     }
 
+    private fun setupSessions(sessions: ArrayList<com.alvimatruck.model.responses.Sessions>) {
+        binding.llSessionsContainer.removeAllViews()
+
+        // Filter out session 0 and iterate
+        sessions.filter { it.session > 0 }.forEach { session ->
+            val inflater = android.view.LayoutInflater.from(this)
+            val sessionView =
+                inflater.inflate(R.layout.item_route_session, binding.llSessionsContainer, false)
+
+            val tvStartValue = sessionView.findViewById<TextView>(R.id.tvStartValue)
+            val tvEndValue = sessionView.findViewById<TextView>(R.id.tvEndValue)
+            val rlReopenEndKilometer =
+                sessionView.findViewById<RelativeLayout>(R.id.rlReopenEndKilometer)
+            tvStartValue.text = session.startKm.toString()
+
+            if (session.endKm != 0) {
+                tvEndValue.text = session.endKm.toString()
+                rlReopenEndKilometer.visibility = View.VISIBLE
+            } else {
+                rlReopenEndKilometer.visibility = View.GONE
+            }
+
+
+            binding.llSessionsContainer.addView(sessionView)
+        }
+    }
+
 
     private fun startTripAPI(startKm: String) {
         if (Utils.isOnline(this)) {
@@ -643,11 +691,8 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                                 Toast.LENGTH_SHORT
                             ).show()
                             isChange = true
-                            binding.tvStatus.text = getString(R.string.reopened)
-                            status = "Reopened"
-                            Utils.isRouteInProgress = routeDetail!!.routeName
-                            binding.tvStatus.setBackgroundResource(R.drawable.bg_status_orange)
-                            binding.tvReOpenRoute.text = "End Reopened Route"
+                            Utils.isRouteInProgress = ""
+                            handleBackPressed()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

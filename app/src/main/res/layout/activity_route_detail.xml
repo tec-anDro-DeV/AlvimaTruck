@@ -223,6 +223,12 @@
                         android:textSize="@dimen/_12ssp"
                         tools:text="1200" />
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSessionsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
             </LinearLayout>
 
             <TextView
