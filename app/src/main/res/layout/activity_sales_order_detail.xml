@@ -415,7 +415,6 @@
                 android:padding="@dimen/_9sdp">
 
                 <RelativeLayout
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -473,7 +472,6 @@
                 <!--                </RelativeLayout>-->
 
                 <RelativeLayout
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_7sdp">
@@ -498,7 +496,6 @@
                 </RelativeLayout>
 
                 <View
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
                     android:layout_marginVertical="@dimen/_7sdp"

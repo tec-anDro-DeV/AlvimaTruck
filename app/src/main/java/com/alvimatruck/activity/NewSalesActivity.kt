@@ -527,9 +527,9 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
         var vat = 0.0
         var total = 0.0
         for (item in orderList) {
-            subtotal += (item.unitPrice * item.quantity)
+            total += (item.unitPrice * item.quantity)
             vat += (item.vat * item.quantity)
-            total += item.finalPrice
+            subtotal = total - vat
         }
         binding.tvSubTotal.text = "ETB " + subtotal.to2Decimal()
         binding.tvVat.text = "+ ETB " + vat.to2Decimal()
