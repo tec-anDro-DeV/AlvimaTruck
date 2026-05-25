@@ -109,7 +109,103 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
             }
         }
 
+        binding.tvXMLInvoice.setOnClickListener {
+//            if (orderDetail!!.invoiceNo!!.isNotEmpty()) {
+//                downloadXMLInvoice()
+//            }
 
+            if (orderDetail!!.orderId.isNullOrEmpty()) {
+                Toast.makeText(
+                    this,
+                    getString(R.string.please_contact_to_admin_for_post_invoice),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            } else {
+                downloadXMLInvoice()
+            }
+        }
+
+
+    }
+
+    private fun downloadXMLInvoice() {
+
+        if (Utils.isOnline(this)) {
+            ProgressDialog.start(this@SalesOrderDetailActivity)
+            ApiClient.getRestClient(
+                Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
+            )!!.webservices.invoiceDownload(
+                orderDetail!!.orderId!!
+            ).enqueue(object : Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    ProgressDialog.dismiss()
+                    if (response.code() == 401 || response.code() == 402) {
+                        Utils.forceLogout(
+                            this@SalesOrderDetailActivity,
+                            response.code()
+                        )  // show dialog before logout
+                        return
+                    }
+                    if (response.isSuccessful) {
+                        try {
+                            Log.d("TAG", "onResponse: " + response.body().toString())
+//                            Toast.makeText(
+//                                this@SalesOrderDetailActivity,
+//                                response.body()!!.get("data").asJsonObject.get("message").toString()
+//                                    .replace('"', ' ').trim(),
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+                            pendingBase64Xml =
+                                response.body()!!.get("xmlData").toString()
+                                    .replace('"', ' ').trim()
+
+                            pendingFileName =
+                                "INV-" + orderDetail!!.invoiceNo + "_" + Utils.getShortDate(
+                                    System.currentTimeMillis()
+                                ) + ".xml"
+
+                            val folderUri =
+                                SharedHelper.getURIKey(
+                                    this@SalesOrderDetailActivity,
+                                    FOLDER_URI_KEY
+                                )
+
+
+                            if (folderUri == null) {
+                                // 🔥 First time → ask user to select folder
+                                openFolderPicker()
+                            } else {
+                                // Already selected → save directly
+                                saveXmlAfterFolderSelection()
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@SalesOrderDetailActivity,
+                            Utils.parseErrorMessage(response), // Assuming Utils.parseErrorMessage handles this
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
+                    Toast.makeText(
+                        this@SalesOrderDetailActivity,
+                        getString(R.string.api_fail_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    ProgressDialog.dismiss()
+                }
+            })
+        } else {
+            Toast.makeText(
+                this, getString(R.string.please_check_your_internet_connection), Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun orderPostAPI() {
@@ -263,10 +359,13 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
                                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_red)
                                 binding.tvPostInvoice.visibility = View.VISIBLE
                                 //  binding.btnEdit.visibility = View.VISIBLE
+                                binding.tvXMLInvoice.visibility = View.GONE
                             } else {
                                 binding.tvStatus.text = getString(R.string.posted)
                                 binding.tvStatus.setBackgroundResource(R.drawable.bg_status_green)
                                 binding.tvPostInvoice.visibility = View.GONE
+                                binding.tvXMLInvoice.visibility = View.VISIBLE
+
                                 //    binding.btnEdit.visibility = View.GONE
                             }
 

@@ -538,6 +538,19 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp" />
 
+            <TextView
+                android:id="@+id/tvXMLInvoice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_21sdp"
+                android:background="@drawable/rounded_button_red"
+                android:fontFamily="@font/sansbold"
+                android:gravity="center"
+                android:padding="@dimen/_14sdp"
+                android:text="Download XML Invoice"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp" />
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -222,6 +222,11 @@ interface ApiInterface {
         @Query("salespersonCode") salespersonCode: String,
     ): Call<JsonObject>
 
+    @GET(Constants.API_Invoice_XML + "{salesOrderNo}")
+    fun invoiceDownload(
+        @Path("salesOrderNo") salesOrderNo: String
+    ): Call<JsonObject>
+
     @Multipart
     @POST(Constants.API_Create_Customer)
     fun createCustomer(
