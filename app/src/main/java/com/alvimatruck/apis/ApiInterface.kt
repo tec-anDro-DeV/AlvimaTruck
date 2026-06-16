@@ -141,7 +141,8 @@ interface ApiInterface {
         @Query("page") page: Int? = null,
         @Query("pageSize") pageSize: Int? = null,
         @Query("routeName") routeName: String? = null,
-        @Query("search") search: String? = null
+        @Query("search") search: String? = null,
+        @Query("isSorted") isSorted: Boolean? = null
     ): Call<JsonObject>
 
     @GET(Constants.API_Sales_Report)

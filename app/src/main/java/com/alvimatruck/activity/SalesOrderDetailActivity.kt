@@ -49,6 +49,26 @@ class SalesOrderDetailActivity : BaseActivity<ActivitySalesOrderDetailBinding>()
         startActivityForResult(intent, REQUEST_CODE_FOLDER)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE_FOLDER && resultCode == RESULT_OK) {
+            data?.data?.let { uri ->
+
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+
+                SharedHelper.putKey(this, FOLDER_URI_KEY, uri)
+
+                Toast.makeText(this, "Folder selected successfully", Toast.LENGTH_SHORT).show()
+
+                saveXmlAfterFolderSelection()
+            }
+        }
+    }
+
 
     override fun inflateBinding(): ActivitySalesOrderDetailBinding {
         return ActivitySalesOrderDetailBinding.inflate(layoutInflater)

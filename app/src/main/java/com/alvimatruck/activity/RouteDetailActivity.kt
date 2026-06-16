@@ -28,6 +28,7 @@ import com.alvimatruck.model.request.CancelTripRequest
 import com.alvimatruck.model.request.EndTripRequest
 import com.alvimatruck.model.request.StartTripRequest
 import com.alvimatruck.model.responses.RouteDetail
+import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
 import com.alvimatruck.utils.SharedHelper
@@ -599,7 +600,8 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.startTrip(
                 StartTripRequest(
-                    routeDetail!!.routeName, startKm.toInt()
+                    routeDetail!!.routeName, startKm.toInt(), AlvimaTuckApplication.latitude,
+                    AlvimaTuckApplication.longitude
                 )
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -669,7 +671,8 @@ class RouteDetailActivity : BaseActivity<ActivityRouteDetailBinding>() {
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.startReopenTrip(
                 StartTripRequest(
-                    routeDetail!!.routeName, startKm.toInt()
+                    routeDetail!!.routeName, startKm.toInt(), AlvimaTuckApplication.latitude,
+                    AlvimaTuckApplication.longitude
                 )
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {

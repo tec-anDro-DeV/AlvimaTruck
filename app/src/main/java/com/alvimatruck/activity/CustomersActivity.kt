@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alvimatruck.R
 import com.alvimatruck.adapter.CustomerListAdapter
 import com.alvimatruck.apis.ApiClient
@@ -116,9 +117,9 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
 
         // Scroll Listener for Pagination
         binding.rvCustomerList.addOnScrollListener(object :
-            androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            RecyclerView.OnScrollListener() {
             override fun onScrolled(
-                recyclerView: androidx.recyclerview.widget.RecyclerView,
+                recyclerView: RecyclerView,
                 dx: Int,
                 dy: Int
             ) {
@@ -253,6 +254,7 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
         if (Utils.isOnline(this)) {
             isLoading = true
             ProgressDialog.start(this@CustomersActivity)
+            val isSorted: Boolean = routeName.trim().isNotEmpty()
 
             ApiClient.getRestClient(
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
@@ -260,7 +262,8 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
                 page = page,
                 pageSize = pageSize,
                 routeName = routeName,
-                binding.etSearch.text.toString().trim().ifEmpty { null }
+                binding.etSearch.text.toString().trim().ifEmpty { null },
+                isSorted
             )
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(
@@ -325,7 +328,7 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
                         ProgressDialog.dismiss()
                         Toast.makeText(
                             this@CustomersActivity,
-                            getString(com.alvimatruck.R.string.api_fail_message),
+                            getString(R.string.api_fail_message),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -333,7 +336,7 @@ class CustomersActivity : BaseActivity<ActivityCustomersBinding>(), CustomerClic
         } else {
             Toast.makeText(
                 this,
-                getString(com.alvimatruck.R.string.please_check_your_internet_connection),
+                getString(R.string.please_check_your_internet_connection),
                 Toast.LENGTH_SHORT
             ).show()
         }

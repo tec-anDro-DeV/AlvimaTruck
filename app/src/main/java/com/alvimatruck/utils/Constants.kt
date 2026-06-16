@@ -4,11 +4,11 @@ class Constants {
     companion object {
 
         // Base URL
-        //const val BASE_URL = "http://192.168.1.148:8696/api/" //Local
-        const val BASE_URL = "http://196.190.220.205:61/api/" //Sandbox
+        const val BASE_URL = "http://192.168.1.148:8696/api/" //Local
+        //const val BASE_URL = "http://196.190.220.205:61/api/" //Sandbox
 
-        //const val IMAGE_URL = "http://192.168.1.148:8696/" //Local
-        const val IMAGE_URL = "http://196.190.220.205:61/" //Sandbox
+        const val IMAGE_URL = "http://192.168.1.148:8696/" //Local
+        //const val IMAGE_URL = "http://196.190.220.205:61/" //Sandbox
 
         //Auth Flow
         const val API_VanList = "Dropdown/get-van-sales-dropdown"
