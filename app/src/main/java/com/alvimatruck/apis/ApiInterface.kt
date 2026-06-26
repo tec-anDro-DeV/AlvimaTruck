@@ -283,6 +283,7 @@ interface ApiInterface {
     @POST(Constants.API_Fleet)
     fun fuelRequest(
         @Part("FleetType") FleetType: RequestBody,
+        @Part("PlateNo") PlateNo: RequestBody,
         @Part("FuelRefillAmount") fuelRefillAmount: RequestBody,
         @Part("Latitude") latitude: RequestBody,
         @Part("Longitude") longitude: RequestBody,
@@ -293,6 +294,7 @@ interface ApiInterface {
     @POST(Constants.API_Fleet)
     fun repairLogRequest(
         @Part("FleetType") FleetType: RequestBody,
+        @Part("PlateNo") PlateNo: RequestBody,
         @Part("Latitude") latitude: RequestBody,
         @Part("Longitude") longitude: RequestBody,
         @Part("RepairLogVendorDetail") vendorDetail: RequestBody,
@@ -305,6 +307,7 @@ interface ApiInterface {
     @POST(Constants.API_Fleet)
     fun incidentReportRequest(
         @Part("FleetType") FleetType: RequestBody,
+        @Part("PlateNo") PlateNo: RequestBody,
         @Part("Latitude") latitude: RequestBody,
         @Part("Longitude") longitude: RequestBody,
         @Part("IncidentReportType") incidentReportType: RequestBody,

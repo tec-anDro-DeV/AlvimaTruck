@@ -33,6 +33,7 @@ import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityRepairLogBinding
 import com.alvimatruck.interfaces.DeletePhotoListener
+import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
@@ -41,6 +42,7 @@ import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
@@ -60,6 +62,8 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
 
     private var proofImageUri: Uri? = null
+    var userDetail: UserDetail? = null
+
 
     private var listProofImageUri: ArrayList<Uri> = ArrayList()
 
@@ -79,6 +83,9 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        userDetail =
+            Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
 
         listProofImageUri.clear()
 
@@ -233,6 +240,7 @@ class RepairLogActivity : BaseActivity<ActivityRepairLogBinding>(), DeletePhotoL
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.repairLogRequest(
                 "1".toRequestBody("text/plain".toMediaType()),
+                userDetail?.plateNo!!.toRequestBody("text/plain".toMediaType()),
                 AlvimaTuckApplication.latitude.toString().toRequestBody("text/plain".toMediaType()),
                 AlvimaTuckApplication.longitude.toString()
                     .toRequestBody("text/plain".toMediaType()),

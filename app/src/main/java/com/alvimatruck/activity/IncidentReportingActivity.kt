@@ -33,6 +33,7 @@ import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.custom.EqualSpacingItemDecoration
 import com.alvimatruck.databinding.ActivityIncidentReportingBinding
 import com.alvimatruck.interfaces.DeletePhotoListener
+import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
@@ -41,6 +42,7 @@ import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -64,7 +66,9 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
 
     private var proofImageUri: Uri? = null
+
     //private lateinit var cropLauncher: ActivityResultLauncher<Intent>
+    var userDetail: UserDetail? = null
 
     private var imagesListAdapter: ImagesListAdapter? = null
     private var listProofImageUri: ArrayList<Uri> = ArrayList()
@@ -76,6 +80,10 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        userDetail =
+            Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
         listProofImageUri.clear()
 
         binding.btnBack.setOnClickListener {
@@ -164,6 +172,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.incidentReportRequest(
                 "2".toRequestBody("text/plain".toMediaType()),
+                userDetail?.plateNo!!.toRequestBody("text/plain".toMediaType()),
                 AlvimaTuckApplication.latitude.toString().toRequestBody("text/plain".toMediaType()),
                 AlvimaTuckApplication.longitude.toString()
                     .toRequestBody("text/plain".toMediaType()),
@@ -177,8 +186,7 @@ class IncidentReportingActivity : BaseActivity<ActivityIncidentReportingBinding>
                     ProgressDialog.dismiss()
                     if (response.code() == 401 || response.code() == 402) {
                         Utils.forceLogout(
-                            this@IncidentReportingActivity,
-                            response.code()
+                            this@IncidentReportingActivity, response.code()
                         )  // show dialog before logout
                         return
                     }

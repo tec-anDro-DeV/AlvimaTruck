@@ -23,6 +23,7 @@ import com.alvimatruck.R
 import com.alvimatruck.apis.ApiClient
 import com.alvimatruck.custom.BaseActivity
 import com.alvimatruck.databinding.ActivityFuelRefillRequestBinding
+import com.alvimatruck.model.responses.UserDetail
 import com.alvimatruck.service.AlvimaTuckApplication
 import com.alvimatruck.utils.Constants
 import com.alvimatruck.utils.ProgressDialog
@@ -31,6 +32,7 @@ import com.alvimatruck.utils.Utils
 import com.alvimatruck.utils.Utils.CAMERA_PERMISSION
 import com.alvimatruck.utils.Utils.READ_EXTERNAL_STORAGE
 import com.alvimatruck.utils.Utils.READ_MEDIA_IMAGES
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,7 +50,9 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
 
     private var meterProofImageUri: Uri? = null
+
     // private lateinit var cropLauncher: ActivityResultLauncher<Intent>
+    var userDetail: UserDetail? = null
 
 
     override fun inflateBinding(): ActivityFuelRefillRequestBinding {
@@ -61,7 +65,8 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
 
         setupLaunchers()
 
-
+        userDetail =
+            Gson().fromJson(SharedHelper.getKey(this, Constants.UserDetail), UserDetail::class.java)
         binding.btnBack.setOnClickListener {
             handleBackPressed()
         }
@@ -118,19 +123,21 @@ class FuelRefillRequestActivity : BaseActivity<ActivityFuelRefillRequestBinding>
                 Constants.BASE_URL, SharedHelper.getKey(this, Constants.Token)
             )!!.webservices.fuelRequest(
                 "0".toRequestBody("text/plain".toMediaType()),
+                userDetail!!.plateNo.toRequestBody("text/plain".toMediaType()),
                 binding.etFuelAmount.text.toString().trim()
                     .toRequestBody("text/plain".toMediaType()),
                 AlvimaTuckApplication.latitude.toString().toRequestBody("text/plain".toMediaType()),
                 AlvimaTuckApplication.longitude.toString()
                     .toRequestBody("text/plain".toMediaType()),
-                Utils.createFilePart("FuelRefillMeter", meterProofImageUri, this)
+                Utils.createFilePart(
+                    "FuelRefillMeter", meterProofImageUri, this
+                )
             ).enqueue(object : Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     ProgressDialog.dismiss()
                     if (response.code() == 401 || response.code() == 402) {
                         Utils.forceLogout(
-                            this@FuelRefillRequestActivity,
-                            response.code()
+                            this@FuelRefillRequestActivity, response.code()
                         )  // show dialog before logout
                         return
                     }
