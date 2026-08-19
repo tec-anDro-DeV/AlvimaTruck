@@ -44,6 +44,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.math.BigDecimal
@@ -354,37 +355,109 @@ object Utils {
     }
 
     fun getCompressedUri(context: Context, uri: Uri): Uri {
+
         val fileSize = getFileSizeFromUri(context, uri)
-        // Return original URI if size is unknown or already within the limit
+
+        // Already below 1 MB -> keep original image
         if (fileSize == -1L || fileSize <= MAX_FILE_SIZE_BYTES) {
             return uri
         }
 
-        // Prepare the output file for the compressed image in the app's cache directory
-        val compressedFileName = "compressed_${System.currentTimeMillis()}.jpg"
-        val compressedFile = File(context.cacheDir, compressedFileName)
+        val compressedFile = File(
+            context.cacheDir,
+            "compressed_${System.currentTimeMillis()}.jpg"
+        )
 
-        // Use a try-with-resources block to auto-close streams
         try {
-            context.contentResolver.openInputStream(uri)?.use { inputStream ->
-                FileOutputStream(compressedFile).use { outputStream ->
-                    // Decode and compress the bitmap
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-                    bitmap.compress(
-                        Bitmap.CompressFormat.JPEG, 80, outputStream
-                    ) // Adjust quality (0-100)
-                }
+
+            // ---------- Read image size only ----------
+            val options = BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
             }
+
+            context.contentResolver.openInputStream(uri)?.use {
+                BitmapFactory.decodeStream(it, null, options)
+            }
+
+            // ---------- Calculate sample size ----------
+            options.inSampleSize = calculateInSampleSize(
+                options,
+                2048,
+                2048
+            )
+
+            options.inJustDecodeBounds = false
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888
+
+            // ---------- Decode downsampled bitmap ----------
+            val bitmap = context.contentResolver.openInputStream(uri)?.use {
+                BitmapFactory.decodeStream(it, null, options)
+            } ?: return uri
+
+            var quality = 100
+            var imageBytes: ByteArray
+
+            do {
+                val baos = ByteArrayOutputStream()
+
+                bitmap.compress(
+                    Bitmap.CompressFormat.JPEG,
+                    quality,
+                    baos
+                )
+
+                imageBytes = baos.toByteArray()
+
+                quality -= 5
+
+            } while (
+                imageBytes.size > MAX_FILE_SIZE_BYTES &&
+                quality >= 20
+            )
+
+            FileOutputStream(compressedFile).use {
+                it.write(imageBytes)
+                it.flush()
+            }
+
+            bitmap.recycle()
+
+            return FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.provider",
+                compressedFile
+            )
+
         } catch (e: Exception) {
             e.printStackTrace()
-            // In case of an error, return the original URI
             return uri
         }
+    }
 
-        // Return the content URI for the newly created compressed file
-        return FileProvider.getUriForFile(
-            context, "${context.packageName}.provider", compressedFile
-        )
+    private fun calculateInSampleSize(
+        options: BitmapFactory.Options,
+        reqWidth: Int,
+        reqHeight: Int
+    ): Int {
+
+        val height = options.outHeight
+        val width = options.outWidth
+        var inSampleSize = 1
+
+        if (height > reqHeight || width > reqWidth) {
+
+            var halfHeight = height / 2
+            var halfWidth = width / 2
+
+            while (
+                (halfHeight / inSampleSize) >= reqHeight &&
+                (halfWidth / inSampleSize) >= reqWidth
+            ) {
+                inSampleSize *= 2
+            }
+        }
+
+        return inSampleSize
     }
 
     fun loadProfileWithPlaceholder(

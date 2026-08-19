@@ -644,6 +644,7 @@ class DeliveryOrderDetailActivity : BaseActivity<ActivityDeliveryOrderDetailBind
             binding.tvStartEndRoute.visibility = View.VISIBLE
             binding.tvStartEndRoute.text = getString(R.string.end_route)
             binding.rlDistance.visibility = View.GONE
+            isChange = true
         }
     }
 }
