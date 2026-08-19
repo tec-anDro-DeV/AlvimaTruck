@@ -2,12 +2,15 @@ package com.alvimatruck.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -38,6 +41,7 @@ import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Locale
 
 class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderListener {
     var itemList: ArrayList<String> = ArrayList()
@@ -63,6 +67,8 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
 
     var productList: ArrayList<VanStockDetail>? = ArrayList()
 
+    private var countDownTimer: CountDownTimer? = null
+    private var timeLeftInMillis: Long = 120000 // 2 minutes
 
     val REQUEST_CODE_FOLDER = 1001
 
@@ -213,7 +219,7 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    newOrderAPI()
+                    showSelectMobileNumberDialog()
                 }
 
             }
@@ -808,6 +814,169 @@ class NewSalesActivity : BaseActivity<ActivityNewSalesBinding>(), DeleteOrderLis
         } else {
             calculateFinalTotal()
         }
+    }
+
+    private fun showSelectMobileNumberDialog() {
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.dialog_select_mobile_number, null)
+
+        val tvMobile1 = dialogView.findViewById<TextView>(R.id.tvMobile1)
+        val tvMobile2 = dialogView.findViewById<TextView>(R.id.tvMobile2)
+        val btnCancel = dialogView.findViewById<TextView>(R.id.btnCancel)
+        val btnSendOTP = dialogView.findViewById<TextView>(R.id.btnSendOTP)
+
+        val mobile1 = customerDetail?.getFormattedContactNo() ?: ""
+        val mobile2 = customerDetail?.getFormattedTelephoneNo() ?: ""
+
+        tvMobile1.text = mobile1
+        tvMobile2.text = mobile2
+
+        var selectedMobile = mobile1
+
+        val ivSelect1 = (tvMobile1.parent as ViewGroup).getChildAt(0) as ImageView
+        val ivSelect2 = (tvMobile2.parent as ViewGroup).getChildAt(0) as ImageView
+
+        fun updateSelection(isFirst: Boolean) {
+            if (isFirst) {
+                ivSelect1.setImageResource(R.drawable.select_circle)
+                ivSelect2.setImageResource(R.drawable.outline_circle)
+                selectedMobile = mobile1
+            } else {
+                ivSelect1.setImageResource(R.drawable.outline_circle)
+                ivSelect2.setImageResource(R.drawable.select_circle)
+                selectedMobile = mobile2
+            }
+        }
+
+        (tvMobile1.parent as View).setOnClickListener { updateSelection(true) }
+        (tvMobile2.parent as View).setOnClickListener { updateSelection(false) }
+
+        val dialog = AlertDialog.Builder(this).setView(dialogView).setCancelable(false).create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+        btnCancel.setOnClickListener { dialog.dismiss() }
+        btnSendOTP.setOnClickListener {
+            if (selectedMobile.isNotEmpty() && selectedMobile != "-") {
+                dialog.dismiss()
+                showVerifyOtpDialog(selectedMobile)
+            } else {
+                Toast.makeText(this, "Please select a valid mobile number", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
+        dialog.show()
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt()
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+    }
+
+    private fun showVerifyOtpDialog(mobileNumber: String) {
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.dialog_verify_customer_otp, null)
+
+        val etOtp1 = dialogView.findViewById<EditText>(R.id.etOtp1)
+        val etOtp2 = dialogView.findViewById<EditText>(R.id.etOtp2)
+        val etOtp3 = dialogView.findViewById<EditText>(R.id.etOtp3)
+        val etOtp4 = dialogView.findViewById<EditText>(R.id.etOtp4)
+        val tvResendCode = dialogView.findViewById<TextView>(R.id.tvResendCode)
+        val btnCancel = dialogView.findViewById<TextView>(R.id.btnCancel)
+        val btnVerify = dialogView.findViewById<TextView>(R.id.btnVerify)
+
+        val otpFields = listOf(etOtp1, etOtp2, etOtp3, etOtp4)
+        setupOtpInputBehavior(otpFields)
+
+        val dialog = AlertDialog.Builder(this).setView(dialogView).setCancelable(false).create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+        btnCancel.setOnClickListener {
+            countDownTimer?.cancel()
+            dialog.dismiss()
+        }
+
+        tvResendCode.setOnClickListener {
+            if (tvResendCode.isEnabled) {
+                // sendOtpApi(mobileNumber, true, tvResendCode, otpFields)
+                startOtpTimer(tvResendCode)
+            }
+        }
+
+        btnVerify.setOnClickListener {
+            val otp = otpFields.joinToString("") { it.text.toString().trim() }
+            if (otp.length == 4) {
+                countDownTimer?.cancel()
+                dialog.dismiss()
+                newOrderAPI()
+            } else {
+                Toast.makeText(
+                    this,
+                    getString(R.string.please_enter_all_4_digits),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        dialog.show()
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt()
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+        startOtpTimer(tvResendCode)
+    }
+
+    private fun setupOtpInputBehavior(otpFields: List<EditText>) {
+        otpFields.forEachIndexed { index, editText ->
+            editText.setBackgroundResource(R.drawable.otp_box_gray_bg)
+            editText.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    v.setBackgroundResource(R.drawable.otp_box_focus_bg)
+                } else {
+                    v.setBackgroundResource(R.drawable.otp_box_gray_bg)
+                }
+            }
+            editText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (s?.length == 1 && index < otpFields.size - 1) {
+                        otpFields[index + 1].requestFocus()
+                    } else if (s?.isEmpty() == true && index > 0) {
+                        otpFields[index - 1].requestFocus()
+                    }
+                }
+
+                override fun afterTextChanged(s: Editable?) {}
+            })
+        }
+        otpFields.first().requestFocus()
+    }
+
+
+    private fun startOtpTimer(tvResendCode: TextView) {
+        timeLeftInMillis = 120000
+        tvResendCode.isEnabled = false
+        countDownTimer?.cancel()
+        countDownTimer = object : CountDownTimer(timeLeftInMillis, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val seconds = (millisUntilFinished / 1000) % 60
+                val minutes = (millisUntilFinished / 1000) / 60
+                tvResendCode.text =
+                    String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+            }
+
+            override fun onFinish() {
+                tvResendCode.isEnabled = true
+                tvResendCode.text = getString(R.string.resend_code)
+            }
+        }.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        countDownTimer?.cancel()
     }
 
 
